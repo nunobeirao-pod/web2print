@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+html{scroll-behavior:smooth}
+</style>
+</helmet>
+<div data-screen-label="Talk to us" style="min-height:100vh;display:flex;flex-direction:column">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
+      <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap">
+        <a href="Who We Are.dc.html">Who we are</a><a href="Shop%20All.dc.html">Shop All</a><a href="Tees.dc.html">Tees</a><a href="Hoodies and Sweats.dc.html">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html">Athleisure</a><a href="Accessories.dc.html">Accessories</a><a href="Create%20your%20own.dc.html">Create your own</a><a href="Talk%20to%20us.dc.html">Talk to us</a>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
+        <span style="display:flex;align-items:center">
+          <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+            <input autoFocus="{{ true }}" value="{{ searchQ }}" onChange="{{ onSearchChange }}" onKeyDown="{{ onSearchKey }}" placeholder="Search…" style="width:150px;border:none;border-bottom:1px solid #1C1B19;background:transparent;font-size:13.5px;font-family:inherit;color:#1C1B19;outline:none;padding:2px;margin-right:6px"></input>
+          </sc-if>
+          <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
+        </span>
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+          <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4"><span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span></sc-for>
+            </div>
+          </sc-if>
+        </span>
+        <a href="Authentication.dc.html" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></a>
+        <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <a href="Checkout.dc.html" title="Cart" style="color:inherit;position:relative;cursor:pointer;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-11px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">2</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PERKS BAR -->
+  <div style="background:#1C1B19;color:#FBFAF8">
+    <div style="max-width:1440px;margin:0 auto;padding:12px 48px;display:flex;justify-content:center;gap:clamp(24px,6vw,96px);font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase">
+      <span>Easy returns</span><span>Worldwide shipping</span><span>Secure payments</span>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header style="max-width:1440px;margin:0 auto;width:100%;box-sizing:border-box;padding:88px 48px 40px;text-align:center">
+    <h1 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:clamp(44px,5vw,72px);letter-spacing:-0.01em">How can we help? <sup style="font-size:0.28em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8B867B;letter-spacing:0">{{ faqTotal }}</sup></h1>
+    <p style="margin:0;font-size:14.5px;color:#8B867B">Answers, order help and a human when you need one.</p>
+    <div style="display:flex;justify-content:center;gap:10px;margin-top:36px">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+        <button onClick="{{ t.go }}" style="background:{{ t.bg }};color:{{ t.ink }};border:1px solid {{ t.border }};border-radius:999px;padding:12px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="border-color:#1C1B19">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <main style="max-width:880px;margin:0 auto;width:100%;box-sizing:border-box;padding:0 48px 120px;flex:1">
+
+    <!-- FAQS -->
+    <sc-if value="{{ isFaqs }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:48px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.go }}" style="background:{{ c.bg }};color:{{ c.ink }};border:none;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer">{{ c.label }} <sup style="font-size:9.5px;color:{{ c.supInk }}">{{ c.count }}</sup></button>
+        </sc-for>
+      </div>
+      <div style="border-top:1px solid #E6E2D8">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+          <div style="border-bottom:1px solid #E6E2D8">
+            <div onClick="{{ f.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px 4px;cursor:pointer" style-hover="color:#4A4FE4">
+              <span style="font-size:16px;font-weight:500">{{ f.q }}</span>
+              <span style="font-size:20px;font-weight:300;color:#8B867B;flex:none;transition:transform 200ms ease;transform:{{ f.rot }}">+</span>
+            </div>
+            <div style="overflow:hidden;max-height:{{ f.mh }};transition:max-height 250ms ease">
+              <p style="margin:0;padding:0 4px 24px;font-size:14.5px;line-height:1.65;color:#4A473F;max-width:640px">{{ f.a }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- CONTACT -->
+    <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:64px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <input placeholder="Name" style="border:1px solid #DDD8CC;border-radius:10px;padding:15px 18px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none" style-focus="border-color:#4A4FE4;box-shadow:0 0 0 3px rgba(74,79,228,0.12)">
+            <input placeholder="Email address" style="border:1px solid #DDD8CC;border-radius:10px;padding:15px 18px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none" style-focus="border-color:#4A4FE4;box-shadow:0 0 0 3px rgba(74,79,228,0.12)">
+          </div>
+          <input placeholder="Order number (optional)" style="border:1px solid #DDD8CC;border-radius:10px;padding:15px 18px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none" style-focus="border-color:#4A4FE4;box-shadow:0 0 0 3px rgba(74,79,228,0.12)">
+          <textarea placeholder="How can we help?" rows="{{ six }}" style="border:1px solid #DDD8CC;border-radius:10px;padding:15px 18px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none;resize:vertical" style-focus="border-color:#4A4FE4;box-shadow:0 0 0 3px rgba(74,79,228,0.12)"></textarea>
+          <div>
+            <button onClick="{{ sendContact }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:15px 34px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">{{ contactBtn }}</button>
+          </div>
+        </div>
+        <aside style="display:flex;flex-direction:column;gap:28px;font-size:14px;line-height:1.6;color:#4A473F">
+          <div>
+            <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Email</div>
+            <a href="mailto:hello@web2print.studio">hello@web2print.studio</a>
+          </div>
+          <div>
+            <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Hours</div>
+            Monday – Friday<br>9:00 – 18:00 (CET)
+          </div>
+          <div>
+            <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Response time</div>
+            We reply within one business day. Include your order number for faster help.
+          </div>
+        </aside>
+      </div>
+    </sc-if>
+
+    <!-- LIVE CHAT -->
+    <sc-if value="{{ isChat }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(28,27,25,0.06)">
+        <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #E6E2D8">
+          <span style="width:36px;height:36px;border-radius:999px;background:#4A4FE4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex:none">W</span>
+          <div>
+            <div style="font-size:14px;font-weight:600">Web2Print Assistant</div>
+            <div style="font-size:12px;color:#3E9B5F;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:999px;background:#3E9B5F;display:inline-block"></span>Online — typically replies in minutes</div>
+          </div>
+        </div>
+        <div style="padding:24px 20px;display:flex;flex-direction:column;gap:12px;min-height:280px">
+          <sc-for list="{{ chat }}" as="m" hint-placeholder-count="2">
+            <div style="align-self:{{ m.align }};background:{{ m.bg }};color:{{ m.ink }};border-radius:{{ m.radius }};padding:11px 16px;font-size:14px;line-height:1.55;max-width:78%">{{ m.text }}</div>
+          </sc-for>
+        </div>
+        <div style="padding:0 20px 14px;display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ quick }}" as="q" hint-placeholder-count="3">
+            <button onClick="{{ q.go }}" style="background:#F3F0E9;color:#1C1B19;border:none;border-radius:999px;padding:8px 16px;font-size:13px;font-family:inherit;cursor:pointer" style-hover="background:#E6E2D8">{{ q.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:10px;padding:14px 20px;border-top:1px solid #E6E2D8">
+          <input value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" placeholder="Write a message…" style="flex:1;border:1px solid #DDD8CC;border-radius:999px;padding:12px 18px;font-size:14px;font-family:inherit;background:#FBFAF8;color:#1C1B19;outline:none" style-focus="border-color:#4A4FE4">
+          <button onClick="{{ send }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Send</button>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="background:#FBFAF8;color:#1C1B19;padding:56px 0 0;position:relative;overflow:hidden;border-top:1px solid #E6E2D8">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Company <sup style="font-size:10px;font-weight:400;color:#8B867B">6</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Company.dc.html#returns" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Returns &amp; exchanges</a>
+          <a href="Company.dc.html#privacy" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Privacy policy</a>
+          <a href="Company.dc.html#shipping" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Shipping policy</a>
+          <a href="Company.dc.html#terms" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Terms &amp; conditions</a>
+          <a href="Company.dc.html#careers" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Careers</a>
+          <a href="Company.dc.html#stores" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Stores</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Client Services <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Dashboard.dc.html" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">My account</a>
+          <a href="Dashboard.dc.html#track" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Track your order</a>
+          <a href="Dashboard.dc.html#return" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Make a return</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Contact us <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Talk%20to%20us.dc.html?tab=contact" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Contact</a>
+          <a href="Talk%20to%20us.dc.html?tab=faqs" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">FAQs</a>
+          <a href="Talk%20to%20us.dc.html?tab=chat" style="font-size:13.5px;color:#4A473F;text-decoration:none" style-hover="color:#1C1B19">Live chat</a>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:2px">
+          <a href="https://facebook.com/web2print" target="_blank" rel="noopener" title="Facebook" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.2-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5V21h3.1z"></path></svg>
+          </a>
+          <a href="https://instagram.com/web2print" target="_blank" rel="noopener" title="Instagram" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+          </a>
+          <a href="https://tiktok.com/@web2print" target="_blank" rel="noopener" title="TikTok" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M14 4v9.4a3.4 3.4 0 1 1-3-3.38"></path><path d="M14 5.6c.7 1.7 2.2 2.8 4 2.9"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:40px;display:flex;justify-content:center;line-height:0.9;font-size:19.5vw;font-weight:700;letter-spacing:-0.03em;color:#1C1B19;opacity:0.06;filter:blur(6px);user-select:none;pointer-events:none;white-space:nowrap;z-index:0">Web2Print</div>
+    <div data-pay-row="true" style="margin:36px 0 0;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-amex" src="uploads/American%20Express-100.jpg" shape="rect" placeholder="pay-amex"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-applepay" src="uploads/Apple%20Pay-100.jpg" shape="rect" placeholder="pay-applepay"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-gpay" src="uploads/Google%20Pay-100.jpg" shape="rect" placeholder="pay-gpay"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-mastercard" src="uploads/MasterCard-100.jpg" shape="rect" placeholder="pay-mastercard"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-paypal" src="uploads/Paypal-100.jpg" shape="rect" placeholder="pay-paypal"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-shop" src="uploads/Shop-100.jpg" shape="rect" placeholder="pay-shop"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-visa" src="uploads/Visa-100.jpg" shape="rect" placeholder="pay-visa"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-klarna" src="uploads/Klarna-100.jpg" shape="rect" placeholder="pay-klarna"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-clearpay" src="uploads/After%20Pay-100.jpg" shape="rect" placeholder="pay-clearpay"></image-slot></span>
+      </div>
+    </div>
+    <div style="height:36px"></div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}}">
+class Component extends DCLogic {
+  state = { tab: (new URLSearchParams(window.location.search).get('tab')) || 'contact', cat: -1, open: -1, chat: [
+    { who: 'bot', text: 'Hi! I\u2019m the Web2Print assistant. Ask me about your order, printing, shipping or returns.' },
+  ], draft: '', sent: false, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '' };
+  static CATS = ['Ordering & Payment', 'Printing & Quality', 'Shipping', 'Returns & Exchanges'];
+  static FAQS = [
+    { c: 0, q: 'Which size should I order?', a: 'Most of our garments have a regular fit; each product page includes a size guide with exact measurements. If you are between sizes, we recommend sizing up \u2014 and you can always exchange for free within 14 days.' },
+    { c: 0, q: 'Which payment methods do you accept?', a: 'We accept Visa, MasterCard, American Express, Apple Pay, Google Pay, PayPal, Klarna and MB Way. All payments are processed over an encrypted connection.' },
+    { c: 0, q: 'Can I change or cancel my order?', a: 'Custom pieces go to print quickly. You can edit or cancel your order from your dashboard until it enters production \u2014 usually within 2 hours of placing it. After that, contact us and we\u2019ll do our best.' },
+    { c: 0, q: 'What should I do if my payment fails?', a: 'Try clearing your cache and cookies or switching to another payment method. If it still fails, reach us on live chat and we\u2019ll hold your design while we sort it out.' },
+    { c: 1, q: 'What file types can I upload for printing?', a: 'PNG, JPG, SVG and PDF up to 50 MB. For the sharpest result, upload at least 300 DPI at print size \u2014 the editor warns you if your artwork resolution is too low.' },
+    { c: 1, q: 'Will the printed colors match my screen?', a: 'We print in CMYK, so very bright screen colors (neons, saturated blues) may shift slightly. The editor\u2019s print preview simulates the final result, and every order includes a free digital proof.' },
+    { c: 1, q: 'What printing techniques do you use?', a: 'Direct-to-garment for detailed, full-color artwork; screen printing for large runs; and embroidery for caps and premium pieces. The editor suggests the best technique for your design automatically.' },
+    { c: 1, q: 'How do I take care of my printed garment?', a: 'Wash inside-out at 30\u00b0C, skip the tumble dryer and never iron directly on the print. Cared for this way, prints stay vivid for years.' },
+    { c: 2, q: 'How long does production and shipping take?', a: 'Custom pieces are printed in 2\u20133 business days. Shipping adds 2\u20134 days in Europe and 5\u201310 days worldwide. You\u2019ll see an estimated delivery date at checkout.' },
+    { c: 2, q: 'How can I track my package?', a: 'As soon as your order ships you receive an email with tracking. You can also follow production and delivery status live from your dashboard.' },
+    { c: 2, q: 'Do you ship worldwide?', a: 'Yes \u2014 we ship to over 180 countries. Shipping cost and estimated time are calculated at checkout based on your address.' },
+    { c: 2, q: 'Will I pay customs fees?', a: 'Orders within the EU have no customs fees. For other destinations, duties may apply depending on local rules; they are shown as an estimate at checkout when applicable.' },
+    { c: 3, q: 'Can I return a custom-printed item?', a: 'Custom pieces are printed just for you, so we accept returns when there is a print defect or a sizing issue \u2014 the first size exchange is always free. Catalogue (non-custom) items can be returned within 14 days.' },
+    { c: 3, q: 'How long do I have to request a return or exchange?', a: 'You have 14 days from delivery to request a return or exchange from your dashboard \u2014 no forms, just pick the order and the reason.' },
+    { c: 3, q: 'What if my item arrives faulty?', a: 'Send us a photo through live chat or the contact form within 7 days and we\u2019ll reprint and reship it free of charge \u2014 no need to return the faulty piece.' },
+    { c: 3, q: 'How long will my refund take?', a: 'Once your return is approved, refunds go back to your original payment method within 5\u201310 business days depending on your bank.' },
+  ];
+  static REPLIES = [
+    { k: /track|order|encomenda|package/i, t: 'You can follow production and delivery live from your dashboard \u2192 Orders. Want me to open it for you?' },
+    { k: /return|exchange|refund|devolu/i, t: 'Returns and exchanges can be requested from your dashboard within 14 days of delivery. The first size exchange is free!' },
+    { k: /siz|fit|tamanho/i, t: 'Each product page has a size guide with exact measurements. If in doubt, size up \u2014 exchanges are free.' },
+    { k: /ship|deliver|envio/i, t: 'Custom pieces print in 2\u20133 business days, then shipping takes 2\u20134 days in Europe and 5\u201310 worldwide.' },
+  ];
+  renderVals() {
+    const { tab, cat, open, chat, draft, sent, langOpen, lang, searchOpen, searchQ } = this.state;
+    const all = Component.FAQS;
+    const shown = cat === -1 ? all : all.filter(f => f.c === cat);
+    const counts = Component.CATS.map((_, i) => all.filter(f => f.c === i).length);
+    const chip = (active) => ({ bg: active ? '#1C1B19' : '#F3F0E9', ink: active ? '#fff' : '#1C1B19', supInk: active ? 'rgba(255,255,255,0.6)' : '#8B867B' });
+    const reply = (txt) => {
+      const r = Component.REPLIES.find(x => x.k.test(txt));
+      return r ? r.t : 'Thanks! A teammate will jump in shortly \u2014 meanwhile, check the FAQs tab, most answers live there.';
+    };
+    const pushMsg = (txt) => {
+      if (!txt.trim()) return;
+      this.setState(s => ({ chat: s.chat.concat({ who: 'me', text: txt }), draft: '' }));
+      setTimeout(() => this.setState(s => ({ chat: s.chat.concat({ who: 'bot', text: reply(txt) }) })), 700);
+    };
+    return {
+      toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
+      searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
+      onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
+      openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
+      faqTotal: all.length,
+      isFaqs: tab === 'faqs', isContact: tab === 'contact', isChat: tab === 'chat',
+      six: 6,
+      tabs: [
+        { label: 'Contact', id: 'contact' }, { label: 'Live chat', id: 'chat' }, { label: 'FAQs', id: 'faqs' },
+      ].map(t => ({ ...t, go: () => this.setState({ tab: t.id }),
+        bg: tab === t.id ? '#1C1B19' : 'transparent', ink: tab === t.id ? '#fff' : '#1C1B19', border: tab === t.id ? '#1C1B19' : '#DDD8CC' })),
+      cats: [{ label: 'All', count: all.length, ...chip(cat === -1), go: () => this.setState({ cat: -1, open: -1 }) }]
+        .concat(Component.CATS.map((c, i) => ({ label: c, count: counts[i], ...chip(cat === i), go: () => this.setState({ cat: i, open: -1 }) }))),
+      faqs: shown.map((f, i) => ({ ...f,
+        toggle: () => this.setState({ open: open === i ? -1 : i }),
+        rot: open === i ? 'rotate(45deg)' : 'rotate(0deg)',
+        mh: open === i ? '400px' : '0px' })),
+      contactBtn: sent ? 'Message sent \u2713' : 'Send message',
+      sendContact: () => { this.setState({ sent: true }); setTimeout(() => this.setState({ sent: false }), 3000); },
+      chat: chat.map(m => m.who === 'me'
+        ? { ...m, align: 'flex-end', bg: '#1C1B19', ink: '#fff', radius: '16px 16px 4px 16px' }
+        : { ...m, align: 'flex-start', bg: '#F3F0E9', ink: '#1C1B19', radius: '16px 16px 16px 4px' }),
+      quick: ['Where is my order?', 'Returns & exchanges', 'Sizing help'].map(l => ({ label: l, go: () => pushMsg(l) })),
+      draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      onKey: (e) => { if (e.key === 'Enter') pushMsg(this.state.draft); },
+      send: () => pushMsg(this.state.draft),
+    };
+  }
+}
+</script>
+</body>
+</html>

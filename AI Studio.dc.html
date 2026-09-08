@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes grow{from{width:4%}to{width:92%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.45}}
+</style>
+</helmet>
+<div data-screen-label="AI Studio" style="min-height:100vh">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="max-width:1280px;margin:0 auto;padding:0 48px;height:64px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;text-decoration:none">Web2Print <span style="font-family:inherit;font-weight:700;font-style:italic;color:#4A4FE4">Studio AI</span></a>
+      <div style="display:flex;gap:clamp(14px,2vw,30px);font-size:14px;font-weight:500;white-space:nowrap;padding:0 24px;color:#4A473F">
+        <a href="Shop%20All.dc.html">Men</a><a href="Shop%20All.dc.html">Women</a><a href="Shop%20All.dc.html">Collections</a><a href="AI%20Studio.dc.html" style="color:#1C1B19;border-bottom:2px solid #4A4FE4;padding-bottom:2px">Custom</a><a href="Homepage.dc.html">Inspiration</a>
+      </div>
+      <div style="display:flex;gap:24px;justify-content:flex-end;font-size:13.5px;font-weight:500;color:#4A473F;align-items:center">
+        <span style="cursor:pointer">Search</span><a href="Authentication.dc.html" style="color:inherit">Account</a>
+        <a href="Checkout.dc.html" style="position:relative;color:#1C1B19">Cart<span style="position:absolute;top:-8px;right:-15px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">2</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px">
+
+    <!-- AI HOME -->
+    <section style="padding:72px 0 0;text-align:center">
+      <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#4A4FE4;margin-bottom:18px">Your creative director</div>
+      <h1 style="margin:0 0 36px;font-family:inherit;font-weight:700;font-size:clamp(40px,4.5vw,58px);line-height:1.08;letter-spacing:-0.01em">What would you like<br>to create today?</h1>
+
+      <!-- MODES -->
+      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:22px">
+        <sc-for list="{{ modes }}" as="m" hint-placeholder-count="4">
+          <span onClick="{{ m.pick }}" style="padding:10px 22px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ m.bg }};color:{{ m.ink }};border:1px solid {{ m.border }};transition:all 150ms" style-hover="border-color:#1C1B19">{{ m.label }}</span>
+        </sc-for>
+      </div>
+
+      <!-- PROMPT -->
+      <div style="max-width:760px;margin:0 auto;background:#fff;border:1px solid #DDD8CC;border-radius:20px;padding:22px 22px 16px;text-align:left;box-shadow:0 12px 48px rgba(28,27,25,0.07)">
+        <textarea value="{{ prompt }}" onChange="{{ setPrompt }}" placeholder="{{ placeholder }}" style="width:100%;box-sizing:border-box;border:none;outline:none;font-size:16px;font-family:inherit;background:transparent;resize:none;min-height:56px;color:#1C1B19"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;font-size:12px;color:#8B867B">
+            <span style="border:1px solid #EEEBE3;border-radius:999px;padding:6px 13px;cursor:pointer" style-hover="border-color:#C9C4B8">＋ Reference image</span>
+            <span style="border:1px solid #EEEBE3;border-radius:999px;padding:6px 13px;cursor:pointer" style-hover="border-color:#C9C4B8">🎙 Voice</span>
+          </div>
+          <button onClick="{{ generate }}" style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:13px 30px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 150ms" style-hover="background:#3B40C9;transform:translateY(-1px)">✦ Generate</button>
+        </div>
+      </div>
+
+      <!-- SUGGESTIONS -->
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:18px;max-width:820px;margin-left:auto;margin-right:auto">
+        <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="6">
+          <span onClick="{{ s.use }}" style="border:1px solid #E6E2D8;border-radius:999px;padding:8px 16px;font-size:12.5px;color:#4A473F;cursor:pointer;transition:all 150ms;background:#fff" style-hover="border-color:#4A4FE4;color:#4A4FE4">{{ s.label }}</span>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- GENERATING -->
+    <sc-if value="{{ isGenerating }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:64px 0 0;max-width:760px;margin:0 auto;animation:fadeUp 300ms ease-out both">
+        <div style="background:#fff;border:1px solid #E6E2D8;border-radius:18px;padding:28px 32px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+            <span style="font-size:14px;font-weight:600;animation:pulse 1.4s ease-in-out infinite">✦ {{ generatingLabel }}</span>
+            <span style="font-size:12px;color:#8B867B">"{{ activePrompt }}"</span>
+          </div>
+          <div style="height:6px;background:#F1EEE7;border-radius:999px;overflow:hidden"><div style="height:100%;background:#4A4FE4;border-radius:999px;animation:grow 1.8s ease-out both"></div></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px">
+            <div style="aspect-ratio:1;border-radius:12px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.4s infinite"></div>
+            <div style="aspect-ratio:1;border-radius:12px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.4s 0.15s infinite"></div>
+            <div style="aspect-ratio:1;border-radius:12px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.4s 0.3s infinite"></div>
+            <div style="aspect-ratio:1;border-radius:12px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.4s 0.45s infinite"></div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- RESULTS -->
+    <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:64px 0 0;animation:fadeUp 400ms ease-out both">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px">
+          <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:30px">{{ resultsTitle }}</h2>
+          <div style="display:flex;gap:16px;font-size:12.5px;font-weight:500">
+            <span style="color:#4A4FE4;cursor:pointer">Generate variations</span>
+            <span style="cursor:pointer;color:#4A473F">Compare versions</span>
+            <span style="cursor:pointer;color:#4A473F">Save prompt</span>
+            <span style="cursor:pointer;color:#4A473F">Share</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ resultsIsArtwork }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <sc-for list="{{ artResults }}" as="r" hint-placeholder-count="4">
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden;transition:all 200ms" style-hover="transform:translateY(-3px);box-shadow:0 12px 32px rgba(28,27,25,0.08)">
+                <div style="aspect-ratio:1"><image-slot id="{{ r.slot }}" src="{{ r.img }}" credit="{{ r.credit }}" credit-href="{{ r.chref }}" shape="rect" placeholder="{{ r.ph }}"></image-slot></div>
+                <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:12px;color:#8B867B">{{ r.tag }}</span>
+                  <a href="Create%20your%20own.dc.html" style="background:#1C1B19;color:#fff;border-radius:999px;padding:7px 14px;font-size:11.5px;font-weight:500;cursor:pointer;text-decoration:none" style-hover="background:#3A3833">Put on a garment</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ resultsIsCollection }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px">
+            <sc-for list="{{ collResults }}" as="r" hint-placeholder-count="4">
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+                <div style="aspect-ratio:4/4.4"><image-slot id="{{ r.slot }}" src="{{ r.img }}" credit="{{ r.credit }}" credit-href="{{ r.chref }}" shape="rect" placeholder="{{ r.ph }}"></image-slot></div>
+                <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px;font-weight:500">{{ r.name }}</span><span style="font-size:12px;color:#8B867B">{{ r.price }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px 24px">
+              <div style="font-size:12.5px;font-weight:600;margin-bottom:12px">Collection palette</div>
+              <div style="display:flex;gap:8px">
+                <span style="flex:1;height:44px;border-radius:8px;background:#26241F"></span>
+                <span style="flex:1;height:44px;border-radius:8px;background:#B0A28E"></span>
+                <span style="flex:1;height:44px;border-radius:8px;background:#E8E4DA"></span>
+                <span style="flex:1;height:44px;border-radius:8px;background:#8C3B2E"></span>
+              </div>
+            </div>
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center">
+              <div><div style="font-size:12.5px;font-weight:600;margin-bottom:4px">Brand mood + marketing visuals</div><div style="font-size:12px;color:#8B867B">4 campaign shots · 6 social posts drafted</div></div>
+              <span style="font-size:12.5px;font-weight:500;color:#4A4FE4;cursor:pointer">Open →</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ resultsIsBrand }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:14px">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:26px">
+              <div style="font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">Brand concept</div>
+              <div style="font-family:inherit;font-weight:700;font-size:34px;margin-bottom:6px">Café do Norte</div>
+              <div style="font-size:13px;color:#8B867B;margin-bottom:18px">Warm, honest, neighbourhood luxury.</div>
+              <div style="aspect-ratio:5/3;border-radius:12px;overflow:hidden"><image-slot id="ai-brand-logo" shape="rect" placeholder="logo directions ×3"></image-slot></div>
+            </div>
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:26px">
+              <div style="font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">Palette & type</div>
+              <div style="display:flex;gap:7px;margin-bottom:18px">
+                <span style="flex:1;height:40px;border-radius:8px;background:#3B2F26"></span>
+                <span style="flex:1;height:40px;border-radius:8px;background:#C4A484"></span>
+                <span style="flex:1;height:40px;border-radius:8px;background:#EFE7DB"></span>
+              </div>
+              <div style="font-family:inherit;font-weight:700;font-size:22px;margin-bottom:4px">Instrument Serif</div>
+              <div style="font-size:14px;margin-bottom:18px">Helvetica Neue</div>
+              <div style="font-size:12px;color:#8B867B;line-height:1.6">Guidelines drafted — voice, spacing, dos & don'ts. Fully editable.</div>
+            </div>
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:26px">
+              <div style="font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">Applications</div>
+              <div style="display:flex;flex-direction:column;gap:9px;font-size:13px">
+                <div style="display:flex;justify-content:space-between"><span>Social media kit</span><span style="color:#4A4FE4;font-weight:500;cursor:pointer">View</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Hang tags & labels</span><span style="color:#4A4FE4;font-weight:500;cursor:pointer">View</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Packaging concept</span><span style="color:#4A4FE4;font-weight:500;cursor:pointer">View</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Business cards</span><span style="color:#4A4FE4;font-weight:500;cursor:pointer">View</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Embroidered apparel</span><span style="color:#4A4FE4;font-weight:500;cursor:pointer">View</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ resultsIsMockups }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <sc-for list="{{ mockResults }}" as="r" hint-placeholder-count="4">
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+                <div style="aspect-ratio:4/5"><image-slot id="{{ r.slot }}" src="{{ r.img }}" credit="{{ r.credit }}" credit-href="{{ r.chref }}" shape="rect" placeholder="{{ r.ph }}"></image-slot></div>
+                <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:12.5px;font-weight:500">{{ r.name }}</span><span style="font-size:11.5px;color:#4A4FE4;font-weight:500;cursor:pointer">Download</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- REFINE -->
+        <div style="max-width:640px;margin:20px auto 0;display:flex;gap:8px;background:#fff;border:1px solid #DDD8CC;border-radius:999px;padding:8px 8px 8px 22px;align-items:center">
+          <span style="color:#4A4FE4;font-size:14px">✦</span>
+          <input placeholder="Refine — 'warmer tones', 'make it embroidery-ready', 'less detail'…" style="flex:1;border:none;outline:none;font-size:13.5px;font-family:inherit;background:transparent;min-width:0">
+          <button onClick="{{ generate }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:12.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Refine</button>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- PRODUCT RECOMMENDATIONS -->
+    <section style="padding:96px 0 0">
+      <div style="background:#1C1B19;border-radius:20px;padding:40px 44px;color:#FBFAF8;display:grid;grid-template-columns:1fr 1.3fr;gap:44px;align-items:center">
+        <div>
+          <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#9FA3F2;margin-bottom:14px">No product names needed</div>
+          <div style="font-family:inherit;font-weight:700;font-size:30px;line-height:1.2;margin-bottom:14px">"I need uniforms for a café."</div>
+          <div style="font-size:13.5px;color:#8B867B;line-height:1.65">Describe the situation — Studio AI translates intent into garments, materials and methods.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ recs }}" as="r" hint-placeholder-count="6">
+            <span style="border:1px solid rgba(251,250,248,0.25);border-radius:999px;padding:10px 20px;font-size:13px;cursor:pointer;transition:all 150ms" style-hover="background:rgba(251,250,248,0.1)">{{ r }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECENT CREATIONS -->
+    <section style="padding:96px 0 120px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px">
+        <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:34px">Recent creations</h2>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ galleryTabs }}" as="t" hint-placeholder-count="4">
+            <span onClick="{{ t.pick }}" style="padding:8px 16px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;background:{{ t.bg }};color:{{ t.ink }};transition:all 150ms" style-hover="background:{{ t.hoverBg }}">{{ t.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:14px">
+        <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="7">
+          <div style="grid-column:span {{ g.cs }};grid-row:span {{ g.rs }};border-radius:14px;overflow:hidden;position:relative;cursor:pointer" style-hover="opacity:0.92">
+            <image-slot id="{{ g.slot }}" src="{{ g.img }}" credit="{{ g.credit }}" credit-href="{{ g.chref }}" shape="rect" placeholder="{{ g.ph }}"></image-slot>
+            <span style="position:absolute;left:12px;bottom:52px;background:rgba(28,27,25,0.6);color:#fff;border-radius:999px;padding:5px 12px;font-size:10.5px;backdrop-filter:blur(4px);pointer-events:none">{{ g.tag }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+
+  <!-- AI CHAT DOCK -->
+  <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;right:24px;bottom:92px;width:360px;background:#fff;border:1px solid #E6E2D8;border-radius:20px;box-shadow:0 24px 80px rgba(28,27,25,0.2);z-index:90;overflow:hidden;animation:fadeUp 250ms ease-out both">
+      <div style="padding:16px 20px;border-bottom:1px solid #F1EEE7;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:10px;align-items:center">
+          <span style="width:30px;height:30px;border-radius:50%;background:#4A4FE4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">✦</span>
+          <div><div style="font-size:13.5px;font-weight:600">Studio assistant</div><div style="font-size:11px;color:#41573B">Knows your current design</div></div>
+        </div>
+        <span onClick="{{ toggleChat }}" style="cursor:pointer;color:#8B867B;padding:4px" style-hover="color:#1C1B19">✕</span>
+      </div>
+      <div style="padding:18px 20px;display:flex;flex-direction:column;gap:12px;max-height:320px;overflow-y:auto">
+        <div style="align-self:flex-end;background:#1C1B19;color:#fff;border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13px;max-width:85%">Will my North Run Club print survive frequent washing?</div>
+        <div style="align-self:flex-start;background:#F5F3ED;border-radius:14px 14px 14px 4px;padding:10px 14px;font-size:13px;line-height:1.55;max-width:90%">Yes — your design uses DTF on the 420&nbsp;gsm hoodie, tested for 60+ washes at 30°. One suggestion: your club text is 24px; for crisp edges after many washes I'd nudge it to 28px. Want me to adjust it?</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:6px 13px;font-size:11.5px;cursor:pointer" style-hover="border-color:#4A4FE4;color:#4A4FE4">Yes, adjust it</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:6px 13px;font-size:11.5px;cursor:pointer" style-hover="border-color:#4A4FE4;color:#4A4FE4">Care instructions</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:6px 13px;font-size:11.5px;cursor:pointer" style-hover="border-color:#4A4FE4;color:#4A4FE4">Compare embroidery</span>
+        </div>
+      </div>
+      <div style="padding:12px 14px;border-top:1px solid #F1EEE7;display:flex;gap:8px">
+        <input placeholder="Ask about printing, sizing, materials…" style="flex:1;border:1px solid #EEEBE3;border-radius:999px;padding:11px 16px;font-size:12.5px;font-family:inherit;outline:none;min-width:0" style-focus="border-color:#4A4FE4">
+        <button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;width:38px;height:38px;font-size:14px;cursor:pointer;flex-shrink:0" style-hover="background:#3B40C9">→</button>
+      </div>
+    </div>
+  </sc-if>
+  <div onClick="{{ toggleChat }}" style="position:fixed;right:24px;bottom:24px;z-index:90;background:#1C1B19;color:#FBFAF8;border-radius:999px;padding:14px 22px;display:flex;gap:10px;align-items:center;cursor:pointer;box-shadow:0 12px 40px rgba(28,27,25,0.25);transition:transform 150ms" style-hover="transform:translateY(-2px)">
+    <span style="color:#9FA3F2">✦</span><span style="font-size:13.5px;font-weight:500">Ask the studio</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1280}}">
+class Component extends DCLogic {
+  state = { mode: 'Artwork', prompt: '', activePrompt: '', phase: 'idle', chatOpen: true, galleryTab: 'Today' };
+  static MODES = {
+    Artwork: { placeholder: 'Describe artwork — style, subject, mood… e.g. "minimal mountain line drawing for an oversized hoodie"', title: 'Four directions — pick one, refine, or put it straight on a garment', gen: 'Sketching four directions…' },
+    Collection: { placeholder: 'Describe a collection — e.g. "summer streetwear collection for a surf brand, 5 pieces"', title: 'Summer Streetwear — a coordinated 4-piece drop', gen: 'Building your collection…' },
+    Brand: { placeholder: 'Describe your brand — e.g. "a neighbourhood specialty café in Porto, warm and honest"', title: 'A complete brand starting point — everything editable', gen: 'Drafting your brand…' },
+    Mockups: { placeholder: 'Describe the shot — e.g. "campaign photo of my hoodie on a model, golden hour, street"', title: 'Campaign-ready mockups from your design', gen: 'Staging your photoshoot…' },
+  };
+  static SUGGESTIONS = {
+    Artwork: ['Minimal oversized hoodie for a coffee brand', 'Luxury embroidery for a hotel', 'Streetwear inspired by Tokyo', 'Vintage badge for a run club', 'Embroidery-ready crest', 'Sticker pack, hand-drawn'],
+    Collection: ['Summer streetwear collection', 'Gym apparel collection', 'Music festival merchandise', 'Corporate capsule for a startup', 'Team kit — tees, hoodies, caps'],
+    Brand: ['Specialty café brand', 'Boutique hotel apparel identity', 'Startup uniform branding', 'Festival identity + merch'],
+    Mockups: ['Studio mockup, grey seamless', 'Lifestyle shot, café interior', 'Social launch post, 4:5', 'Website hero banner', 'Email header'],
+  };
+  renderVals() {
+    const st = this.state;
+    const m = Component.MODES[st.mode];
+    return {
+      modes: Object.keys(Component.MODES).map(k => ({
+        label: k,
+        bg: st.mode === k ? '#1C1B19' : '#fff', ink: st.mode === k ? '#FBFAF8' : '#4A473F', border: st.mode === k ? '#1C1B19' : '#E6E2D8',
+        pick: () => this.setState({ mode: k, phase: 'idle', prompt: '' }),
+      })),
+      placeholder: m.placeholder,
+      prompt: st.prompt, setPrompt: e => this.setState({ prompt: e.target.value }),
+      suggestions: (Component.SUGGESTIONS[st.mode] || []).map(label => ({ label, use: () => this.setState({ prompt: label }) })),
+      generate: () => {
+        const p = st.prompt || (Component.SUGGESTIONS[st.mode] || [''])[0];
+        this.setState({ phase: 'generating', activePrompt: p });
+        clearTimeout(this._t);
+        this._t = setTimeout(() => this.setState({ phase: 'results' }), 1900);
+      },
+      isGenerating: st.phase === 'generating',
+      generatingLabel: m.gen,
+      activePrompt: st.activePrompt,
+      hasResults: st.phase === 'results',
+      resultsTitle: m.title,
+      resultsIsArtwork: st.mode === 'Artwork', resultsIsCollection: st.mode === 'Collection',
+      resultsIsBrand: st.mode === 'Brand', resultsIsMockups: st.mode === 'Mockups',
+      artResults: [
+        { slot: 'air-1', img: ((window.__resources||{})['u1685354218016']||'https://images.unsplash.com/photo-1685354218016-3899c9ef79ad?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Redicul Pict on Unsplash', chref: 'https://unsplash.com/@rdcl', ph: 'AI artwork — direction 1', tag: 'Bold' },
+        { slot: 'air-2', img: ((window.__resources||{})['u1680292783974']||'https://images.unsplash.com/photo-1680292783974-a9a336c10366?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Chris Lynch on Unsplash', chref: 'https://unsplash.com/@chris_lynch_', ph: 'AI artwork — direction 2', tag: 'Minimal' },
+        { slot: 'air-3', img: ((window.__resources||{})['u1529374255404']||'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Masaaki Komori on Unsplash', chref: 'https://unsplash.com/@gaspanik', ph: 'AI artwork — direction 3', tag: 'Hand-drawn' },
+        { slot: 'air-4', img: ((window.__resources||{})['u1609873814058']||'https://images.unsplash.com/photo-1609873814058-a8928924184a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Gab on Unsplash', chref: 'https://unsplash.com/@gabriele_macera', ph: 'AI artwork — direction 4', tag: 'Embroidery-ready' },
+      ],
+      collResults: [
+        { slot: 'aic-1', img: ((window.__resources||{})['u1583743814966']||'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Faith & Yarn on Unsplash', chref: 'https://unsplash.com/@faithandyarn_', ph: 'collection tee', name: 'Graphic Tee', price: 'from €28' },
+        { slot: 'aic-2', img: ((window.__resources||{})['u1556821840']||'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Jannes Jacobs on Unsplash', chref: 'https://unsplash.com/@jannesjacobs', ph: 'collection hoodie', name: 'Oversized Hoodie', price: 'from €58' },
+        { slot: 'aic-3', img: ((window.__resources||{})['u1592367630397']||'https://images.unsplash.com/photo-1592367630397-65872fe016e9?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Mediamodifier on Unsplash', chref: 'https://unsplash.com/@mediamodifier', ph: 'collection cap', name: 'Structured Cap', price: 'from €21' },
+        { slot: 'aic-4', img: ((window.__resources||{})['u1630381260512']||'https://images.unsplash.com/photo-1630381260512-e3fe55c11973?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Mediamodifier on Unsplash', chref: 'https://unsplash.com/@mediamodifier', ph: 'collection tote', name: 'Canvas Tote', price: 'from €14' },
+      ],
+      mockResults: [
+        { slot: 'aim-1', img: ((window.__resources||{})['u1651761179569']||'https://images.unsplash.com/photo-1651761179569-4ba2aa054997?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by mockupbee on Unsplash', chref: 'https://unsplash.com/@mockupbee', ph: 'studio mockup', name: 'Studio' },
+        { slot: 'aim-2', img: ((window.__resources||{})['u1554568218']||'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Christian Bolt on Unsplash', chref: 'https://unsplash.com/@christianbolt', ph: 'lifestyle mockup', name: 'Lifestyle' },
+        { slot: 'aim-3', img: ((window.__resources||{})['u1515886657613']||'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Dom Hill on Unsplash', chref: 'https://unsplash.com/@domjewel', ph: 'campaign shot', name: 'Campaign' },
+        { slot: 'aim-4', img: ((window.__resources||{})['u1542406775']||'https://images.unsplash.com/photo-1542406775-ade58c52d2e4?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by rico cori on Unsplash', chref: 'https://unsplash.com/@ricocori', ph: 'social post 4:5', name: 'Social post' },
+      ],
+      recs: ['Bib Aprons', 'Classic Polos', 'Structured Caps', 'Canvas Totes', 'Chest embroidery', 'Organic cotton'],
+      galleryTabs: ['Today', 'This week', 'Collections', 'Brands'].map(label => ({
+        label,
+        bg: st.galleryTab === label ? '#1C1B19' : 'transparent', ink: st.galleryTab === label ? '#FBFAF8' : '#4A473F',
+        hoverBg: st.galleryTab === label ? '#1C1B19' : '#F1EEE7',
+        pick: () => this.setState({ galleryTab: label }),
+      })),
+      gallery: [
+        { slot: 'aig-1', img: ((window.__resources||{})['u1611817757591']||'https://images.unsplash.com/photo-1611817757591-c3f345024273?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by LOGAN WEAVER on Unsplash', chref: 'https://unsplash.com/@lgnwvr', cs: 2, rs: 2, ph: 'generated campaign visual', tag: 'Campaign' },
+        { slot: 'aig-2', img: ((window.__resources||{})['u1529374255404']||'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Masaaki Komori on Unsplash', chref: 'https://unsplash.com/@gaspanik', cs: 1, rs: 1, ph: 'generated crest', tag: 'Embroidery' },
+        { slot: 'aig-3', img: ((window.__resources||{})['u1685354218016']||'https://images.unsplash.com/photo-1685354218016-3899c9ef79ad?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Redicul Pict on Unsplash', chref: 'https://unsplash.com/@rdcl', cs: 1, rs: 2, ph: 'generated pattern', tag: 'Pattern' },
+        { slot: 'aig-4', img: ((window.__resources||{})['u1581655353564']||'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Haryo Setyadi on Unsplash', chref: 'https://unsplash.com/@uyk', cs: 1, rs: 1, ph: 'generated typography', tag: 'Type' },
+        { slot: 'aig-5', img: ((window.__resources||{})['u1562157873']||'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Md Salman on Unsplash', chref: 'https://unsplash.com/@mohammadsalman', cs: 1, rs: 1, ph: 'generated sticker pack', tag: 'Stickers' },
+        { slot: 'aig-6', img: ((window.__resources||{})['u1542406775']||'https://images.unsplash.com/photo-1542406775-ade58c52d2e4?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by rico cori on Unsplash', chref: 'https://unsplash.com/@ricocori', cs: 2, rs: 1, ph: 'generated lookbook shot', tag: 'Mockup' },
+      ],
+      chatOpen: st.chatOpen, toggleChat: () => this.setState(s => ({ chatOpen: !s.chatOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>

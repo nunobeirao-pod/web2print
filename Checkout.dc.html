@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
+@keyframes popIn{0%{transform:scale(0.4);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div data-screen-label="Checkout" style="position:relative">
+<span onClick="{{ goBack }}" title="Back" style="position:fixed;top:24px;left:24px;z-index:20;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #E6E2D8;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#1C1B19">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1B19" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5L8 12L15 19"></path></svg>
+</span>
+
+<!-- SUCCESS -->
+<sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px;text-align:center">
+    <div style="width:92px;height:92px;border-radius:50%;background:#41573B;display:flex;align-items:center;justify-content:center;animation:popIn 500ms cubic-bezier(0.34,1.4,0.64,1) both;margin-bottom:32px">
+      <span style="color:#fff;font-size:40px;line-height:1">✓</span>
+    </div>
+    <h1 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:52px;letter-spacing:-0.01em;animation:fadeUp 500ms 150ms ease-out both">Your design is on its way.</h1>
+    <div style="font-size:16px;color:#8B867B;margin-bottom:36px;animation:fadeUp 500ms 250ms ease-out both">Order <strong style="color:#1C1B19">#W2P-1858</strong></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;animation:fadeUp 500ms 350ms ease-out both">
+      <button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Track order</button>
+      <a href="Shop%20All.dc.html"><button style="background:transparent;border:1px solid #DDD8CC;border-radius:999px;padding:13px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Continue shopping</button></a>
+    </div>
+    <div onClick="{{ resetDemo }}" style="margin-top:56px;font-size:11.5px;color:#B8B2A5;cursor:pointer">← back to checkout (demo)</div>
+  </div>
+</sc-if>
+
+<!-- CHECKOUT -->
+<sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:1400px;margin:0 auto;padding:0;display:grid;grid-template-columns:1fr 1fr;min-height:100vh">
+
+    <!-- LEFT -->
+    <div style="padding:44px 64px;max-width:600px;margin:0 auto;width:100%;box-sizing:border-box">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;text-decoration:none;display:block;margin-bottom:36px">Web2Print</a>
+
+      <!-- EXPRESS CHECKOUT -->
+      <div style="text-align:center;font-size:13px;color:#4A473F;margin-bottom:14px">Express checkout</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px">
+        <button style="background:#4A4FE4;color:#fff;border:none;border-radius:8px;padding:14px 0;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:0.02em">shop</button>
+        <button style="background:#FFC439;color:#003087;border:none;border-radius:8px;padding:14px 0;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer;font-style:italic">PayPal</button>
+        <button style="background:#000;color:#fff;border:none;border-radius:8px;padding:14px 0;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer"> Pay</button>
+        <button style="background:#fff;color:#1C1B19;border:1px solid #DDD8CC;border-radius:8px;padding:14px 0;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer">G Pay</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px"><span style="flex:1;height:1px;background:#EEEBE3"></span><span style="font-size:11.5px;color:#B8B2A5">OR</span><span style="flex:1;height:1px;background:#EEEBE3"></span></div>
+
+      <!-- CONTACT -->
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+        <h2 style="margin:0;font-size:16px;font-weight:600">Contact</h2>
+        <a href="Authentication.dc.html" style="font-size:12.5px;color:#1C1B19;text-decoration:underline">Sign in</a>
+      </div>
+      <input placeholder="Email" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none;margin-bottom:10px" style-focus="border-color:#4A4FE4">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px">
+        <span onClick="{{ toggleNews }}" style="width:18px;height:18px;border-radius:4px;border:1.5px solid #1C1B19;background:{{ newsBg }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">{{ newsCheck }}</span>
+        <span style="font-size:13px;color:#4A473F">Email me with news and offers</span>
+      </div>
+
+      <!-- DELIVERY -->
+      <h2 style="margin:0 0 14px;font-size:16px;font-weight:600">Delivery</h2>
+      <select style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none;margin-bottom:10px">
+        <option>Portugal</option><option>Spain</option><option>France</option>
+      </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <input placeholder="First name" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+        <input placeholder="Last name" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+      </div>
+      <input placeholder="Address" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none;margin-bottom:10px" style-focus="border-color:#4A4FE4">
+      <input placeholder="Apartment, suite, etc. (optional)" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none;margin-bottom:10px" style-focus="border-color:#4A4FE4">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
+        <input placeholder="Postal code" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+        <input placeholder="City" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+        <select style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none"><option>Lisbon</option><option>Porto</option><option>Coimbra</option></select>
+      </div>
+      <input placeholder="Phone" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none;margin-bottom:28px" style-focus="border-color:#4A4FE4">
+
+      <!-- SHIPPING METHOD -->
+      <h2 style="margin:0 0 14px;font-size:16px;font-weight:600">Shipping method</h2>
+      <div style="background:#F5F3ED;border-radius:8px;padding:16px;font-size:13.5px;color:#8B867B;margin-bottom:28px">Enter your shipping address to view available shipping methods.</div>
+
+      <!-- PAYMENT -->
+      <h2 style="margin:0 0 6px;font-size:16px;font-weight:600">Payment</h2>
+      <div style="font-size:12.5px;color:#8B867B;margin-bottom:14px">All transactions are secure and encrypted.</div>
+      <div style="border:1.5px solid {{ payCardBorder }};border-radius:10px 10px 0 0;overflow:hidden">
+        <div onClick="{{ pickCard }}" style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;cursor:pointer;background:{{ payCardBg }}">
+          <span style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #1C1B19;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ payCardDot }}"></span></span>Credit card</span>
+          <span style="font-size:11px;color:#8B867B">VISA · Mastercard · +2</span>
+        </div>
+        <sc-if value="{{ showCardForm }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:0 18px 18px;display:flex;flex-direction:column;gap:10px">
+            <input placeholder="Card number" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <input placeholder="Expiration date (MM / YY)" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+              <input placeholder="Security code" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+            </div>
+            <input placeholder="Name on card" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+            <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+              <span onClick="{{ toggleBilling }}" style="width:18px;height:18px;border-radius:4px;border:1.5px solid #1C1B19;background:{{ billingBg }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">{{ billingCheck }}</span>
+              <span style="font-size:13px;color:#4A473F">Use shipping address as billing address</span>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      <div onClick="{{ pickApple }}" style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border:1.5px solid {{ payAppleBorder }};border-top:none;cursor:pointer">
+        <span style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #1C1B19;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ payAppleDot }}"></span></span>Apple Pay</span>
+        <span style="font-size:11px;color:#8B867B"> Pay</span>
+      </div>
+      <div onClick="{{ pickPaypal }}" style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border:1.5px solid {{ payPaypalBorder }};border-top:none;cursor:pointer">
+        <span style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #1C1B19;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ payPaypalDot }}"></span></span>PayPal</span>
+        <span style="font-size:12px;color:#003087;font-weight:800;font-style:italic">PayPal</span>
+      </div>
+      <div onClick="{{ pickKlarna }}" style="display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border:1.5px solid {{ payKlarnaBorder }};border-top:none;border-radius:0 0 10px 10px;cursor:pointer;margin-bottom:20px">
+        <span style="display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #1C1B19;display:flex;align-items:center;justify-content:center"><span style="width:8px;height:8px;border-radius:50%;background:{{ payKlarnaDot }}"></span></span>Klarna</span>
+        <span style="font-size:11px;background:#FFB3C7;color:#1C1B19;border-radius:4px;padding:2px 8px;font-weight:700">Klarna</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:32px">
+        <span onClick="{{ toggleSave }}" style="width:18px;height:18px;border-radius:4px;border:1.5px solid #1C1B19;background:{{ saveBg }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">{{ saveCheck }}</span>
+        <span style="font-size:13px;color:#4A473F">Save my information for a faster checkout</span>
+      </div>
+
+      <button onClick="{{ completeOrder }}" style="width:100%;background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:18px 0;font-size:15.5px;font-weight:500;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px" style-hover="background:#3B40C9">
+        <sc-if value="{{ processing }}" hint-placeholder-val="{{ false }}"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 700ms linear infinite"></span></sc-if>
+        {{ ctaLabel }}
+      </button>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <aside style="background:#F5F3ED;padding:44px 64px;display:flex;flex-direction:column;max-width:600px;margin:0 auto;width:100%;box-sizing:border-box">
+      <div style="display:flex;gap:16px;margin-bottom:24px">
+        <div style="position:relative;width:64px;height:64px;border-radius:8px;background:#EFEBE2;flex-shrink:0;overflow:hidden">
+          <span style="position:absolute;top:-6px;right:-6px;background:#1C1B19;color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">{{ qty }}</span>
+        </div>
+        <div style="flex:1;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font-size:14px;font-weight:600">Regular Hoodie 300</div><div style="font-size:12.5px;color:#8B867B;margin-top:2px">Navy / M</div></div>
+          <span style="font-family:inherit;font-weight:700;font-size:15px">{{ subtotal }}</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:26px">
+        <input value="{{ promoInput }}" onChange="{{ setPromoInput }}" placeholder="Discount code or gift card" style="flex:1;border:1px solid #DDD8CC;border-radius:8px;padding:13px 16px;font-size:13.5px;font-family:inherit;outline:none;background:#fff" style-focus="border-color:#4A4FE4">
+        <button onClick="{{ applyPromo }}" style="background:#fff;border:1px solid #DDD8CC;border-radius:8px;padding:0 22px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;color:#8B867B" style-hover="border-color:#1C1B19">Apply</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;color:#1C1B19">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>{{ subtotal }}</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span>Shipping <span style="color:#8B867B;font-size:12px">?</span></span><span style="color:#8B867B;font-size:13px">Enter shipping address</span></div>
+      </div>
+
+      <div style="border-top:1px solid #E6E2D8;margin-top:20px;padding-top:16px;display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:15px;font-weight:600">Total</span>
+        <span style="font-size:12px;color:#8B867B;margin-right:8px">EUR</span>
+        <span style="font-family:inherit;font-weight:700;font-size:24px">{{ subtotal }}</span>
+      </div>
+      <div style="font-size:11.5px;color:#8B867B;margin-top:4px">Including {{ tax }} in taxes</div>
+    </aside>
+  </div>
+</sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1400}}">
+class Component extends DCLogic {
+  state = { news: false, billing: true, save: false, pay: 'card', promoInput: '', qty: 1, phase: 'checkout' };
+  goBack = () => { if (window.history.length > 1) window.history.back(); else { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; } };
+  renderVals() {
+    const st = this.state;
+    const unit = 33.95;
+    const sub = unit * st.qty;
+    const tax = sub * 0.23;
+    const eur = n => '€' + n.toFixed(2).replace('.', ',');
+    const border = (k) => st.pay === k ? '#4A4FE4' : '#E6E2D8';
+    const bg = (k) => st.pay === k ? '#F4F4FE' : '#fff';
+    const dot = (k) => st.pay === k ? '#4A4FE4' : 'transparent';
+    return {
+      goBack: this.goBack,
+      isSuccess: st.phase === 'success', isCheckout: st.phase !== 'success',
+      resetDemo: () => this.setState({ phase: 'checkout' }),
+      toggleNews: () => this.setState(s => ({ news: !s.news })), newsBg: st.news ? '#1C1B19' : '#fff', newsCheck: st.news ? '✓' : '',
+      pickCard: () => this.setState({ pay: 'card' }), pickApple: () => this.setState({ pay: 'apple' }), pickPaypal: () => this.setState({ pay: 'paypal' }), pickKlarna: () => this.setState({ pay: 'klarna' }),
+      payCardBorder: border('card'), payCardBg: bg('card'), payCardDot: dot('card'), showCardForm: st.pay === 'card',
+      payAppleBorder: border('apple'), payAppleDot: dot('apple'),
+      payPaypalBorder: border('paypal'), payPaypalDot: dot('paypal'),
+      payKlarnaBorder: border('klarna'), payKlarnaDot: dot('klarna'),
+      toggleBilling: () => this.setState(s => ({ billing: !s.billing })), billingBg: st.billing ? '#1C1B19' : '#fff', billingCheck: st.billing ? '✓' : '',
+      toggleSave: () => this.setState(s => ({ save: !s.save })), saveBg: st.save ? '#1C1B19' : '#fff', saveCheck: st.save ? '✓' : '',
+      promoInput: st.promoInput, setPromoInput: (e) => this.setState({ promoInput: e.target.value }),
+      applyPromo: () => {},
+      qty: st.qty, subtotal: eur(sub), tax: eur(tax),
+      processing: st.phase === 'processing',
+      ctaLabel: st.phase === 'processing' ? 'Processing payment…' : 'Pay now',
+      completeOrder: () => {
+        if (st.phase === 'processing') return;
+        this.setState({ phase: 'processing' });
+        setTimeout(() => this.setState({ phase: 'success' }), 1400);
+      },
+    };
+  }
+}
+
+</script>
+</body>
+</html>

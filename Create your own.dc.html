@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#EFEDE8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
+input[type=range]{accent-color:#4A4FE4}
+</style>
+</helmet>
+<div data-screen-label="Create your own" style="height:100vh;display:flex;flex-direction:column;user-select:none">
+
+  <!-- TOP BAR -->
+  <div style="height:56px;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8;display:flex;align-items:center;padding:0 16px;gap:16px;z-index:60;flex-shrink:0">
+    <a href="Homepage.dc.html" style="font-size:15px;font-weight:600;letter-spacing:-0.01em;padding-right:8px;color:#1C1B19;text-decoration:none">Web2Print</a>
+    <div style="display:flex;align-items:center;gap:10px;border-left:1px solid #E6E2D8;padding-left:16px">
+      <span style="font-size:13.5px;font-weight:500">Oversized Hoodie — North Run Club</span>
+      <span style="font-size:11.5px;color:#8B867B;display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#41573B"></span>Saved just now</span>
+    </div>
+    <div style="display:flex;gap:4px;margin-left:8px">
+      <span onClick="{{ undo }}" title="Undo" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:{{ undoInk }}" style-hover="background:#F1EEE7">↩</span>
+      <span onClick="{{ redo }}" title="Redo" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:{{ redoInk }}" style-hover="background:#F1EEE7">↪</span>
+    </div>
+    <div style="flex:1"></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span onClick="{{ togglePreview }}" style="border:1px solid {{ previewBorder }};color:{{ previewInk }};background:{{ previewBg }};border-radius:999px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer;transition:all 150ms">Preview</span>
+      <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer" style-hover="border-color:#1C1B19">Save Design</span>
+      <span onClick="{{ toggleShare }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:500;cursor:pointer" style-hover="border-color:#1C1B19">Share</span>
+      <div style="display:flex;margin:0 2px">
+        <span style="width:28px;height:28px;border-radius:50%;background:#B0A28E;border:2px solid #FBFAF8;font-size:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600">MR</span>
+        <span style="width:28px;height:28px;border-radius:50%;background:#3E4A5C;border:2px solid #FBFAF8;font-size:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;margin-left:-8px">JT</span>
+      </div>
+      <a href="Checkout.dc.html" style="text-decoration:none"><button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:10px 24px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3B40C9">Finish Design</button></a>
+      <a href="Checkout.dc.html" style="font-size:13px;color:#4A473F;position:relative;padding-left:6px;text-decoration:none">Cart<span style="position:absolute;top:-6px;right:-12px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:9px;font-weight:600;padding:1px 5px">2</span></a>
+    </div>
+  </div>
+
+  <!-- SHARE POPOVER -->
+  <sc-if value="{{ shareOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:64px;right:120px;z-index:100;background:#fff;border-radius:16px;box-shadow:0 16px 60px rgba(28,27,25,0.18);border:1px solid #EEEBE3;padding:22px;width:300px">
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px">Share this design</div>
+      <input placeholder="Invite by email" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:11px 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:12px" style-focus="border-color:#4A4FE4">
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:#4A473F">
+        <div style="display:flex;justify-content:space-between"><span>Team editing</span><span style="color:#41573B;font-weight:500">On</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Comments</span><span style="color:#41573B;font-weight:500">On</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Approval workflow</span><span style="color:#8B867B">Ask Marta</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Brand assets</span><span style="color:#8B867B">🔒 Locked</span></div>
+      </div>
+      <button style="width:100%;margin-top:14px;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:11px 0;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer">Copy link</button>
+    </div>
+  </sc-if>
+
+  <!-- WORKSPACE -->
+  <div style="flex:1;position:relative;overflow:hidden">
+
+    <!-- LEFT RAIL -->
+    <div style="position:absolute;left:12px;top:12px;bottom:12px;width:64px;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border:1px solid #E6E2D8;border-radius:16px;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;z-index:40;box-shadow:0 4px 20px rgba(28,27,25,0.06);overflow-y:auto">
+      <sc-for list="{{ rail }}" as="r" hint-placeholder-count="10">
+        <div onClick="{{ r.pick }}" title="{{ r.label }}" style="width:48px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;background:{{ r.bg }};color:{{ r.ink }};transition:background 150ms" style-hover="background:{{ r.hoverBg }}">
+          <span style="font-size:15px;line-height:1">{{ r.icon }}</span>
+          <span style="font-size:8.5px;font-weight:500;letter-spacing:0.02em">{{ r.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- SLIDE-OUT PANEL -->
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:86px;top:12px;bottom:12px;width:300px;background:rgba(251,250,248,0.97);backdrop-filter:blur(16px);border:1px solid #E6E2D8;border-radius:16px;z-index:39;box-shadow:0 12px 48px rgba(28,27,25,0.12);display:flex;flex-direction:column;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 20px 12px">
+          <span style="font-size:14px;font-weight:600">{{ panelTitle }}</span>
+          <span onClick="{{ closePanel }}" style="cursor:pointer;color:#8B867B;padding:2px 6px" style-hover="color:#1C1B19">✕</span>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 20px 20px">
+
+          <sc-if value="{{ panelIsAI }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #C9CBF5;background:#F4F4FE;border-radius:14px;padding:14px;margin-bottom:14px">
+              <div style="font-size:13px;color:#8B867B;padding:2px 2px 30px">Describe artwork, embroidery, type or a full concept…</div>
+              <div style="display:flex;justify-content:flex-end"><button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:9px 20px;font-size:12.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3B40C9">✦ Generate</button></div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+              <sc-for list="{{ aiPresets }}" as="ap" hint-placeholder-count="6">
+                <span style="border:1px solid #E6E2D8;border-radius:999px;padding:6px 12px;font-size:11.5px;color:#4A473F;cursor:pointer" style-hover="border-color:#4A4FE4;color:#4A4FE4">{{ ap }}</span>
+              </sc-for>
+            </div>
+            <div style="font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Recent generations</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <sc-for list="{{ aiRecent }}" as="ar" hint-placeholder-count="4">
+                <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer" style-hover="opacity:0.9"><image-slot id="{{ ar }}" shape="rect" placeholder="AI result"></image-slot></div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ panelIsText }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div onClick="{{ addHeading }}" style="border:1px solid #E6E2D8;border-radius:12px;padding:16px;cursor:pointer;background:#fff" style-hover="border-color:#1C1B19"><span style="font-family:inherit;font-weight:700;font-size:24px">Add a heading</span></div>
+              <div onClick="{{ addSub }}" style="border:1px solid #E6E2D8;border-radius:12px;padding:16px;cursor:pointer;background:#fff" style-hover="border-color:#1C1B19"><span style="font-size:16px;font-weight:600">Add a subheading</span></div>
+              <div onClick="{{ addBody }}" style="border:1px solid #E6E2D8;border-radius:12px;padding:16px;cursor:pointer;background:#fff" style-hover="border-color:#1C1B19"><span style="font-size:13px">Add body text</span></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ panelIsLayers }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ layerRows }}" as="l" hint-placeholder-count="2">
+                <div onClick="{{ l.select }}" style="display:flex;align-items:center;gap:10px;border:1px solid {{ l.border }};background:{{ l.bg }};border-radius:10px;padding:10px 12px;cursor:pointer">
+                  <span style="width:30px;height:30px;border-radius:6px;background:#EFEBE2;display:flex;align-items:center;justify-content:center;font-size:12px">{{ l.icon }}</span>
+                  <span style="flex:1;font-size:12.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ l.name }}</span>
+                  <span onClick="{{ l.toggleLock }}" style="cursor:pointer;font-size:12px;color:#8B867B">{{ l.lockIcon }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ panelIsHistory }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:0">
+              <sc-for list="{{ versions }}" as="v" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px;padding:10px 2px;border-bottom:1px solid #F1EEE7;align-items:center">
+                  <div style="flex:1"><div style="font-size:12.5px;font-weight:500">{{ v.name }}</div><div style="font-size:11px;color:#8B867B">{{ v.time }}</div></div>
+                  <span style="font-size:11.5px;font-weight:500;color:#4A4FE4;cursor:pointer">Restore</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ panelIsGrid }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <sc-for list="{{ panelTiles }}" as="t" hint-placeholder-count="6">
+                <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;position:relative" style-hover="opacity:0.9">
+                  <image-slot id="{{ t.slot }}" shape="rect" placeholder="{{ t.ph }}"></image-slot>
+                  <sc-if value="{{ t.locked }}" hint-placeholder-val="{{ false }}">
+                    <span style="position:absolute;top:8px;right:8px;font-size:11px;pointer-events:none">🔒</span>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- CANVAS -->
+    <div onMouseDown="{{ deselect }}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <div style="transform:scale({{ zoom }});transition:transform 200ms ease-out">
+        <!-- GARMENT -->
+        <div style="position:relative;width:520px;height:600px">
+          <!-- hood -->
+          <div style="position:absolute;top:0;left:150px;width:220px;height:120px;background:{{ garmentHex }};border-radius:110px 110px 26px 26px;box-shadow:inset 0 -18px 30px rgba(0,0,0,0.12)"></div>
+          <!-- sleeves -->
+          <div style="position:absolute;top:110px;left:0;width:110px;height:360px;background:{{ garmentHex }};border-radius:54px;transform:rotate(9deg);box-shadow:inset 8px 0 24px rgba(0,0,0,0.08)"></div>
+          <div style="position:absolute;top:110px;right:0;width:110px;height:360px;background:{{ garmentHex }};border-radius:54px;transform:rotate(-9deg);box-shadow:inset -8px 0 24px rgba(0,0,0,0.08)"></div>
+          <!-- body -->
+          <div style="position:absolute;top:96px;left:78px;width:364px;height:470px;background:{{ garmentHex }};border-radius:30px 30px 40px 40px;box-shadow:inset 0 24px 40px rgba(0,0,0,0.08),inset 0 -14px 26px rgba(0,0,0,0.06)">
+            <!-- pocket -->
+            <div style="position:absolute;bottom:36px;left:92px;width:180px;height:86px;background:rgba(0,0,0,0.06);border-radius:14px 14px 26px 26px"></div>
+            <!-- grid overlay -->
+            <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;border-radius:30px;background-image:linear-gradient(rgba(74,79,228,0.12) 1px,transparent 1px),linear-gradient(90deg,rgba(74,79,228,0.12) 1px,transparent 1px);background-size:26px 26px;pointer-events:none"></div>
+            </sc-if>
+            <!-- PRINT AREA -->
+            <div style="position:absolute;top:64px;left:62px;width:240px;height:300px;border:{{ printAreaBorder }};border-radius:4px">
+              <sc-if value="{{ showSafe }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:14px;border:1px dashed rgba(163,75,51,0.5);border-radius:3px;pointer-events:none"></div>
+              </sc-if>
+              <div style="position:absolute;top:-22px;left:0;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:{{ printLabelInk }};pointer-events:none">{{ viewLabel }} print area · A3</div>
+              <!-- ELEMENTS -->
+              <sc-if value="{{ isFront }}" hint-placeholder-val="{{ true }}">
+                <sc-for list="{{ elements }}" as="el" hint-placeholder-count="2">
+                  <div onMouseDown="{{ el.startDrag }}" style="position:absolute;left:{{ el.x }}px;top:{{ el.y }}px;cursor:{{ el.cursor }};outline:{{ el.outline }};outline-offset:4px;opacity:{{ el.opacity }};z-index:5">
+                    <sc-if value="{{ el.isText }}" hint-placeholder-val="{{ true }}">
+                      <div style="font-family:{{ el.font }};font-weight:{{ el.weight }};font-size:{{ el.size }}px;letter-spacing:{{ el.spacing }}em;color:{{ el.color }};white-space:nowrap;line-height:1.1;text-shadow:{{ el.shadow }}">{{ el.text }}</div>
+                    </sc-if>
+                    <sc-if value="{{ el.isGraphic }}" hint-placeholder-val="{{ false }}">
+                      <div style="width:{{ el.size }}px;height:{{ el.size }}px;border-radius:8px;overflow:hidden;pointer-events:none">
+                        <image-slot id="{{ el.slot }}" shape="rect" placeholder="artwork"></image-slot>
+                      </div>
+                    </sc-if>
+                    <!-- selection handles -->
+                    <sc-if value="{{ el.selected }}" hint-placeholder-val="{{ false }}">
+                      <span style="position:absolute;left:-8px;top:-8px;width:8px;height:8px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px"></span>
+                      <span style="position:absolute;right:-8px;top:-8px;width:8px;height:8px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px"></span>
+                      <span style="position:absolute;left:-8px;bottom:-8px;width:8px;height:8px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px"></span>
+                      <span style="position:absolute;right:-8px;bottom:-8px;width:8px;height:8px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px;cursor:nwse-resize"></span>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOATING CONTEXT TOOLBAR -->
+    <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:20px;left:clamp(96px,calc(50% - 225px),calc(100% - 740px));z-index:45;background:rgba(28,27,25,0.92);backdrop-filter:blur(10px);border-radius:999px;padding:7px 10px;display:flex;gap:2px;align-items:center;box-shadow:0 8px 30px rgba(28,27,25,0.25)">
+        <span onClick="{{ duplicateSel }}" title="Duplicate" style="color:#FBFAF8;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,0.12)">Duplicate</span>
+        <span onClick="{{ centerSel }}" title="Align centre" style="color:#FBFAF8;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,0.12)">Centre</span>
+        <span onClick="{{ lockSel }}" style="color:#FBFAF8;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,0.12)">{{ lockLabel }}</span>
+        <span style="width:1px;height:16px;background:rgba(255,255,255,0.2);margin:0 4px"></span>
+        <span style="color:#FBFAF8;font-size:12px;padding:0 6px;display:flex;align-items:center;gap:8px">Opacity <input type="range" min="20" max="100" value="{{ selOpacityPct }}" onChange="{{ setOpacity }}" style="width:70px"></span>
+        <span style="width:1px;height:16px;background:rgba(255,255,255,0.2);margin:0 4px"></span>
+        <span onClick="{{ deleteSel }}" title="Delete" style="color:#F2A08D;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,0.12)">Delete</span>
+      </div>
+    </sc-if>
+
+    <!-- RIGHT INSPECTOR -->
+    <sc-if value="{{ inspectorOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;right:12px;top:12px;width:264px;background:rgba(251,250,248,0.97);backdrop-filter:blur(16px);border:1px solid #E6E2D8;border-radius:16px;z-index:44;box-shadow:0 12px 48px rgba(28,27,25,0.12);padding:18px 18px 20px;max-height:calc(100% - 120px);overflow-y:auto">
+        <div style="font-size:13px;font-weight:600;margin-bottom:14px">{{ inspectorTitle }}</div>
+
+        <sc-if value="{{ selIsText }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="font-size:11px;color:#8B867B;margin-bottom:6px">Font</div>
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ fontOpts }}" as="f" hint-placeholder-count="3">
+                  <span onClick="{{ f.pick }}" style="flex:1;text-align:center;border:1px solid {{ f.border }};background:{{ f.bg }};border-radius:8px;padding:8px 0;font-size:12px;cursor:pointer;font-family:{{ f.family }}">{{ f.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:#8B867B;margin-bottom:6px">Weight</div>
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ weightOpts }}" as="w" hint-placeholder-count="3">
+                  <span onClick="{{ w.pick }}" style="flex:1;text-align:center;border:1px solid {{ w.border }};background:{{ w.bg }};border-radius:8px;padding:8px 0;font-size:12px;cursor:pointer;font-weight:{{ w.val }}">{{ w.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8B867B;margin-bottom:6px"><span>Size</span><span>{{ selSize }}px</span></div>
+              <input type="range" min="10" max="72" value="{{ selSize }}" onChange="{{ setSize }}" style="width:100%">
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8B867B;margin-bottom:6px"><span>Letter spacing</span><span>{{ selSpacing }}</span></div>
+              <input type="range" min="0" max="30" value="{{ selSpacingRaw }}" onChange="{{ setSpacing }}" style="width:100%">
+            </div>
+            <div>
+              <div style="font-size:11px;color:#8B867B;margin-bottom:6px">Colour</div>
+              <div style="display:flex;gap:7px">
+                <sc-for list="{{ inkOpts }}" as="k" hint-placeholder-count="6">
+                  <span onClick="{{ k.pick }}" style="width:24px;height:24px;border-radius:50%;background:{{ k.hex }};border:1px solid rgba(28,27,25,0.15);box-shadow:{{ k.ring }};cursor:pointer"></span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;font-weight:500">Curved text</span>
+              <span onClick="{{ toggleCurve }}" style="width:36px;height:21px;border-radius:999px;background:{{ curveBg }};position:relative;cursor:pointer;transition:background 150ms"><span style="position:absolute;top:2.5px;left:{{ curveKnob }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left 150ms;box-shadow:0 1px 4px rgba(0,0,0,0.2)"></span></span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;font-weight:500">Soft shadow</span>
+              <span onClick="{{ toggleShadow }}" style="width:36px;height:21px;border-radius:999px;background:{{ shadowBg }};position:relative;cursor:pointer;transition:background 150ms"><span style="position:absolute;top:2.5px;left:{{ shadowKnob }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left 150ms;box-shadow:0 1px 4px rgba(0,0,0,0.2)"></span></span>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selIsGraphic }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="border:1px solid #DDD8CC;border-radius:999px;padding:7px 13px;font-size:11.5px;cursor:pointer" style-hover="border-color:#1C1B19">Crop</span>
+              <span style="border:1px solid #C9CBF5;background:#F4F4FE;color:#4A4FE4;border-radius:999px;padding:7px 13px;font-size:11.5px;cursor:pointer;font-weight:500">✦ Remove background</span>
+              <span style="border:1px solid #DDD8CC;border-radius:999px;padding:7px 13px;font-size:11.5px;cursor:pointer" style-hover="border-color:#1C1B19">Filters</span>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8B867B;margin-bottom:6px"><span>Scale</span><span>{{ selSize }}px</span></div>
+              <input type="range" min="60" max="220" value="{{ selSize }}" onChange="{{ setSize }}" style="width:100%">
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8B867B;margin-bottom:6px"><span>Brightness</span><span>100%</span></div>
+              <input type="range" min="50" max="150" value="100" style="width:100%">
+            </div>
+            <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px 14px;background:#fff">
+              <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Print compatibility</div>
+              <div style="display:flex;flex-direction:column;gap:7px;font-size:12px">
+                <div style="display:flex;justify-content:space-between"><span>DTF print</span><span style="color:#41573B;font-weight:500">✓ Perfect</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Embroidery</span><span style="color:#8A5F1E;font-weight:500">{{ embCompat }}</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- VALIDATION WARNINGS -->
+    <sc-if value="{{ hasWarnings }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;bottom:126px;left:50%;transform:translateX(-50%);z-index:45;display:flex;flex-direction:column;gap:8px;align-items:center">
+        <sc-for list="{{ warnings }}" as="w" hint-placeholder-count="1">
+          <div style="background:#fff;border:1px solid #EED9C4;border-radius:999px;padding:9px 10px 9px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 30px rgba(28,27,25,0.12)">
+            <span style="font-size:12.5px;color:#8A5F1E;font-weight:500">⚠ {{ w.msg }}</span>
+            <span onClick="{{ w.fix }}" style="background:#1C1B19;color:#fff;border-radius:999px;padding:6px 14px;font-size:11.5px;font-weight:500;cursor:pointer" style-hover="background:#3A3833">{{ w.fixLabel }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- GARMENT OPTIONS (bottom-left floating) -->
+    <div style="position:absolute;left:12px;bottom:70px;z-index:44">
+      <sc-if value="{{ garmentOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="background:rgba(251,250,248,0.97);backdrop-filter:blur(16px);border:1px solid #E6E2D8;border-radius:16px;padding:18px;width:250px;box-shadow:0 12px 48px rgba(28,27,25,0.12);margin-bottom:10px">
+          <div style="font-size:11px;color:#8B867B;margin-bottom:8px">Colour — {{ garmentName }}</div>
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <sc-for list="{{ garmentColours }}" as="g" hint-placeholder-count="6">
+              <span onClick="{{ g.pick }}" style="width:26px;height:26px;border-radius:50%;background:{{ g.hex }};border:1px solid rgba(28,27,25,0.15);box-shadow:{{ g.ring }};cursor:pointer"></span>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;color:#8B867B;margin-bottom:8px">Print method</div>
+          <div style="display:flex;gap:6px;margin-bottom:16px">
+            <sc-for list="{{ methodOpts }}" as="m" hint-placeholder-count="2">
+              <span onClick="{{ m.pick }}" style="flex:1;text-align:center;border:1px solid {{ m.border }};background:{{ m.bg }};color:{{ m.ink }};border-radius:999px;padding:8px 0;font-size:12px;font-weight:500;cursor:pointer">{{ m.label }}</span>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;color:#8B867B;margin-bottom:8px">Variant</div>
+          <div style="display:flex;gap:6px">
+            <span style="flex:1;text-align:center;border:1px solid #4A4FE4;background:#F4F4FE;color:#4A4FE4;border-radius:999px;padding:8px 0;font-size:12px;font-weight:500;cursor:pointer">Hoodie</span>
+            <span style="flex:1;text-align:center;border:1px solid #DDD8CC;border-radius:999px;padding:8px 0;font-size:12px;cursor:pointer" style-hover="border-color:#1C1B19">Tee</span>
+            <span style="flex:1;text-align:center;border:1px solid #DDD8CC;border-radius:999px;padding:8px 0;font-size:12px;cursor:pointer" style-hover="border-color:#1C1B19">Sweat</span>
+          </div>
+        </div>
+      </sc-if>
+      <div onClick="{{ toggleGarment }}" style="background:rgba(28,27,25,0.92);color:#FBFAF8;backdrop-filter:blur(10px);border-radius:999px;padding:11px 20px;display:flex;gap:10px;align-items:center;cursor:pointer;box-shadow:0 8px 30px rgba(28,27,25,0.2);width:max-content">
+        <span style="width:16px;height:16px;border-radius:50%;background:{{ garmentHex }};border:1.5px solid rgba(255,255,255,0.4)"></span>
+        <span style="font-size:12.5px;font-weight:500">{{ garmentName }} · {{ methodLabel }} · €58</span>
+        <span style="font-size:10px;color:rgba(255,255,255,0.6)">{{ garmentChevron }}</span>
+      </div>
+    </div>
+
+    <!-- VIEW SWITCHER (bottom-centre floating) -->
+    <div style="position:absolute;bottom:70px;left:50%;transform:translateX(-50%);z-index:43;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border:1px solid #E6E2D8;border-radius:999px;padding:5px;display:flex;gap:2px;box-shadow:0 4px 20px rgba(28,27,25,0.08)">
+      <sc-for list="{{ views }}" as="v" hint-placeholder-count="5">
+        <span onClick="{{ v.pick }}" style="padding:8px 18px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;background:{{ v.bg }};color:{{ v.ink }};transition:all 150ms;display:flex;gap:6px;align-items:center">{{ v.label }}<sc-if value="{{ v.hasContent }}" hint-placeholder-val="{{ false }}"><span style="width:5px;height:5px;border-radius:50%;background:#4A4FE4"></span></sc-if></span>
+      </sc-for>
+    </div>
+
+    <!-- PREVIEW MODES (right-bottom floating) -->
+    <div style="position:absolute;right:12px;bottom:70px;z-index:43;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border:1px solid #E6E2D8;border-radius:999px;padding:5px;display:flex;gap:2px;box-shadow:0 4px 20px rgba(28,27,25,0.08)">
+      <span style="padding:8px 14px;border-radius:999px;font-size:12px;font-weight:500;background:#1C1B19;color:#fff">Studio</span>
+      <span style="padding:8px 14px;border-radius:999px;font-size:12px;color:#4A473F;cursor:pointer" style-hover="background:#F1EEE7">Lifestyle</span>
+      <span style="padding:8px 14px;border-radius:999px;font-size:12px;color:#4A473F;cursor:pointer" style-hover="background:#F1EEE7">3D</span>
+      <span style="padding:8px 14px;border-radius:999px;font-size:12px;color:#4A473F;cursor:pointer" style-hover="background:#F1EEE7">Fabric</span>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div style="height:48px;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border-top:1px solid #E6E2D8;display:flex;align-items:center;justify-content:center;gap:22px;z-index:60;flex-shrink:0;font-size:12.5px;color:#4A473F">
+    <div style="display:flex;gap:8px;align-items:center">
+      <span onClick="{{ zoomOut }}" style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F1EEE7">−</span>
+      <span style="font-weight:600;color:#1C1B19;min-width:42px;text-align:center">{{ zoomPct }}</span>
+      <span onClick="{{ zoomIn }}" style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F1EEE7">+</span>
+    </div>
+    <span onClick="{{ resetView }}" style="cursor:pointer;padding:6px 10px;border-radius:8px" style-hover="background:#F1EEE7">Reset view</span>
+    <span onClick="{{ toggleGrid }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ gridInk }};font-weight:{{ gridWeight }}" style-hover="background:#F1EEE7">Grid</span>
+    <span onClick="{{ toggleSnap }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ snapInk }};font-weight:{{ snapWeight }}" style-hover="background:#F1EEE7">Snap</span>
+    <span onClick="{{ toggleSafe }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ safeInk }};font-weight:{{ safeWeight }}" style-hover="background:#F1EEE7">Safe area</span>
+    <span onClick="{{ togglePrint }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ printInk }};font-weight:{{ printWeight }}" style-hover="background:#F1EEE7">Print area</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = {
+    panel: null, selected: 'txt1', view: 'Front', garment: 0, method: 'DTF',
+    zoom: 1, grid: false, snap: true, safe: true, printArea: true, previewMode: false,
+    shareOpen: false, garmentOpen: false,
+    elements: [
+      { id: 'txt1', type: 'text', text: 'NORTH RUN CLUB', x: 28, y: 58, size: 24, font: 'sans', weight: 600, spacing: 8, color: '#FBFAF8', curved: false, shadow: false, opacity: 1, locked: false },
+      { id: 'gfx1', type: 'graphic', slot: 'ed-gfx1', x: 70, y: 120, size: 110, opacity: 1, locked: false },
+    ],
+    past: [], future: [],
+  };
+  snapshot() { return JSON.parse(JSON.stringify(this.state.elements)); }
+  commit(mutate) {
+    this.setState(st => {
+      const els = JSON.parse(JSON.stringify(st.elements));
+      mutate(els);
+      return { elements: els, past: [...st.past, st.elements].slice(-30), future: [] };
+    });
+  }
+  startDrag(id, e) {
+    const el = this.state.elements.find(x => x.id === id);
+    if (el.locked) { this.setState({ selected: id }); return; }
+    e.stopPropagation(); e.preventDefault();
+    this.setState({ selected: id });
+    const startX = e.clientX, startY = e.clientY, ox = el.x, oy = el.y, zoom = this.state.zoom;
+    const before = this.snapshot();
+    const move = ev => {
+      let nx = ox + (ev.clientX - startX) / zoom, ny = oy + (ev.clientY - startY) / zoom;
+      if (this.state.snap) { nx = Math.round(nx / 4) * 4; ny = Math.round(ny / 4) * 4; }
+      this.setState(st => ({ elements: st.elements.map(x => x.id === id ? { ...x, x: nx, y: ny } : x) }));
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up);
+      this.setState(st => ({ past: [...st.past, before].slice(-30), future: [] }));
+    };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  updateSel(patch) {
+    const id = this.state.selected;
+    this.commit(els => { const el = els.find(x => x.id === id); if (el) Object.assign(el, patch); });
+  }
+  renderVals() {
+    const st = this.state;
+    const sel = st.elements.find(x => x.id === st.selected) || null;
+    const GARMENTS = [
+      { name: 'Deep Navy', hex: '#3E4A5C' }, { name: 'Washed Black', hex: '#26241F' },
+      { name: 'Bone', hex: '#E8E4DA' }, { name: 'Sage', hex: '#7A8471' },
+      { name: 'Sand', hex: '#B0A28E' }, { name: 'Brick', hex: '#8C3B2E' },
+    ];
+    const g = GARMENTS[st.garment];
+    const railDefs = [
+      { icon: '▦', label: 'Templates' }, { icon: '✦', label: 'AI Create' }, { icon: '⇪', label: 'Uploads' },
+      { icon: 'T', label: 'Text' }, { icon: '◐', label: 'Graphics' }, { icon: '◎', label: 'Logos' },
+      { icon: '✳', label: 'Icons' }, { icon: '▣', label: 'Brand' }, { icon: '≣', label: 'Layers' }, { icon: '↺', label: 'History' },
+    ];
+    // validation
+    const warnings = [];
+    if (sel && sel.type === 'text' && sel.size < 14) warnings.push({ msg: 'Small text may not print clearly', fixLabel: 'Set to 18px', fix: () => this.updateSel({ size: 18 }) });
+    st.elements.forEach(el => {
+      const w = el.type === 'text' ? el.text.length * el.size * 0.6 : el.size;
+      const h = el.type === 'text' ? el.size * 1.2 : el.size;
+      if (el.x < 0 || el.y < 0 || el.x + w > 240 || el.y + h > 300) warnings.push({
+        msg: (el.type === 'text' ? 'Text' : 'Artwork') + ' is outside the print area', fixLabel: 'Move inside',
+        fix: () => this.commit(els => { const e2 = els.find(x => x.id === el.id); e2.x = Math.max(0, Math.min(e2.x, 240 - w)); e2.y = Math.max(0, Math.min(e2.y, 300 - h)); }),
+      });
+    });
+    if (st.method === 'Embroidery' && st.elements.some(e => e.type === 'graphic')) warnings.push({ msg: 'Embroidery supports max 12 colours — simplify artwork', fixLabel: '✦ Auto-simplify', fix: () => this.setState({ method: 'DTF' }) });
+    const fontMap = { sans: "'Helvetica Neue',Helvetica,sans-serif", serif: "'Instrument Serif',serif", mono: "monospace" };
+    const preview = st.previewMode;
+    return {
+      undo: () => this.setState(s => s.past.length ? { elements: s.past[s.past.length-1], past: s.past.slice(0,-1), future: [s.elements, ...s.future] } : null),
+      redo: () => this.setState(s => s.future.length ? { elements: s.future[0], future: s.future.slice(1), past: [...s.past, s.elements] } : null),
+      undoInk: st.past.length ? '#1C1B19' : '#C4BFB2', redoInk: st.future.length ? '#1C1B19' : '#C4BFB2',
+      togglePreview: () => this.setState(s => ({ previewMode: !s.previewMode, selected: null })),
+      previewBg: preview ? '#1C1B19' : 'transparent', previewInk: preview ? '#fff' : '#1C1B19', previewBorder: preview ? '#1C1B19' : '#DDD8CC',
+      shareOpen: st.shareOpen, toggleShare: () => this.setState(s => ({ shareOpen: !s.shareOpen })),
+      rail: railDefs.map(r => ({
+        ...r,
+        bg: st.panel === r.label ? '#1C1B19' : 'transparent',
+        hoverBg: st.panel === r.label ? '#1C1B19' : '#F1EEE7',
+        ink: st.panel === r.label ? '#FBFAF8' : '#4A473F',
+        pick: () => this.setState(s => ({ panel: s.panel === r.label ? null : r.label })),
+      })),
+      panelOpen: !!st.panel, panelTitle: st.panel || '', closePanel: () => this.setState({ panel: null }),
+      panelIsAI: st.panel === 'AI Create',
+      panelIsText: st.panel === 'Text',
+      panelIsLayers: st.panel === 'Layers',
+      panelIsHistory: st.panel === 'History',
+      panelIsGrid: ['Templates','Uploads','Graphics','Logos','Icons','Brand'].includes(st.panel),
+      panelTiles: Array.from({length:6}, (_,i) => ({ slot: 'ed-' + (st.panel||'x').toLowerCase() + '-' + i, ph: (st.panel||'') + ' ' + (i+1), locked: st.panel === 'Brand' })),
+      aiPresets: ['Vintage badge', 'Line art', 'Embroidery crest', 'Typography lockup', 'Seamless pattern', 'Full concept'],
+      aiRecent: ['ed-ai-r1','ed-ai-r2','ed-ai-r3','ed-ai-r4'],
+      addHeading: () => this.commit(els => els.push({ id: 'txt'+Date.now(), type:'text', text:'HEADING', x:40, y:20, size:28, font:'serif', weight:400, spacing:2, color:'#FBFAF8', curved:false, shadow:false, opacity:1, locked:false })),
+      addSub: () => this.commit(els => els.push({ id: 'txt'+Date.now(), type:'text', text:'Subheading', x:50, y:100, size:18, font:'sans', weight:600, spacing:1, color:'#FBFAF8', curved:false, shadow:false, opacity:1, locked:false })),
+      addBody: () => this.commit(els => els.push({ id: 'txt'+Date.now(), type:'text', text:'Body text', x:60, y:160, size:13, font:'sans', weight:400, spacing:0, color:'#FBFAF8', curved:false, shadow:false, opacity:1, locked:false })),
+      layerRows: st.elements.map(el => ({
+        icon: el.type === 'text' ? 'T' : '◐',
+        name: el.type === 'text' ? el.text : 'Artwork',
+        border: st.selected === el.id ? '#4A4FE4' : '#E6E2D8',
+        bg: st.selected === el.id ? '#F4F4FE' : '#fff',
+        lockIcon: el.locked ? '🔒' : '○',
+        select: () => this.setState({ selected: el.id }),
+        toggleLock: (e) => { e.stopPropagation(); this.commit(els => { const x = els.find(y => y.id === el.id); x.locked = !x.locked; }); },
+      })),
+      versions: [
+        { name: 'Current version', time: 'Autosaved just now' },
+        { name: 'Added club crest', time: 'Today, 14:12' },
+        { name: 'Changed to Deep Navy', time: 'Today, 13:47' },
+        { name: 'First draft', time: 'Yesterday, 19:03' },
+      ],
+      zoom: st.zoom, zoomPct: Math.round(st.zoom * 100) + '%',
+      zoomIn: () => this.setState(s => ({ zoom: Math.min(2, +(s.zoom + 0.1).toFixed(2)) })),
+      zoomOut: () => this.setState(s => ({ zoom: Math.max(0.5, +(s.zoom - 0.1).toFixed(2)) })),
+      resetView: () => this.setState({ zoom: 1 }),
+      toggleGrid: () => this.setState(s => ({ grid: !s.grid })), showGrid: st.grid && !preview,
+      gridInk: st.grid ? '#4A4FE4' : '#4A473F', gridWeight: st.grid ? 600 : 400,
+      toggleSnap: () => this.setState(s => ({ snap: !s.snap })),
+      snapInk: st.snap ? '#4A4FE4' : '#4A473F', snapWeight: st.snap ? 600 : 400,
+      toggleSafe: () => this.setState(s => ({ safe: !s.safe })), showSafe: st.safe && st.printArea && !preview,
+      safeInk: st.safe ? '#4A4FE4' : '#4A473F', safeWeight: st.safe ? 600 : 400,
+      togglePrint: () => this.setState(s => ({ printArea: !s.printArea })),
+      printInk: st.printArea ? '#4A4FE4' : '#4A473F', printWeight: st.printArea ? 600 : 400,
+      printAreaBorder: (st.printArea && !preview) ? '1.5px dashed rgba(74,79,228,0.55)' : '1.5px dashed transparent',
+      printLabelInk: (st.printArea && !preview) ? '#8B867B' : 'transparent',
+      garmentHex: g.hex, garmentName: g.name,
+      garmentOpen: st.garmentOpen, toggleGarment: () => this.setState(s => ({ garmentOpen: !s.garmentOpen })),
+      garmentChevron: st.garmentOpen ? '▾' : '▴',
+      garmentColours: GARMENTS.map((c, i) => ({
+        hex: c.hex, ring: i === st.garment ? '0 0 0 2px #FBFAF8, 0 0 0 4px #4A4FE4' : 'none',
+        pick: () => this.setState({ garment: i }),
+      })),
+      methodLabel: st.method,
+      methodOpts: ['DTF', 'Embroidery'].map(m => ({
+        label: m,
+        border: st.method === m ? '#4A4FE4' : '#DDD8CC', bg: st.method === m ? '#F4F4FE' : 'transparent', ink: st.method === m ? '#4A4FE4' : '#4A473F',
+        pick: () => this.setState({ method: m }),
+      })),
+      views: ['Front','Back','Left sleeve','Pocket','Neck label'].map(v => ({
+        label: v,
+        bg: st.view === v ? '#1C1B19' : 'transparent', ink: st.view === v ? '#FBFAF8' : '#4A473F',
+        hasContent: v === 'Front',
+        pick: () => this.setState({ view: v, selected: null }),
+      })),
+      viewLabel: st.view, isFront: st.view === 'Front',
+      elements: st.elements.map(el => ({
+        ...el,
+        isText: el.type === 'text', isGraphic: el.type === 'graphic',
+        font: fontMap[el.font] || fontMap.sans,
+        spacing: (el.spacing || 0) / 100,
+        shadow: el.shadow ? '0 4px 14px rgba(0,0,0,0.35)' : 'none',
+        selected: st.selected === el.id && !preview,
+        outline: (st.selected === el.id && !preview) ? '1.5px solid #4A4FE4' : 'none',
+        cursor: el.locked ? 'default' : 'move',
+        startDrag: (e) => { if (!preview) this.startDrag(el.id, e); },
+      })),
+      deselect: () => this.setState({ selected: null, garmentOpen: false, shareOpen: false }),
+      hasSelection: !!sel && !preview,
+      lockLabel: sel && sel.locked ? 'Unlock' : 'Lock',
+      duplicateSel: () => sel && this.commit(els => { const c = JSON.parse(JSON.stringify(sel)); c.id = sel.type + Date.now(); c.x += 16; c.y += 16; els.push(c); }),
+      deleteSel: () => sel && this.commit(els => { const i = els.findIndex(x => x.id === sel.id); if (i > -1) els.splice(i, 1); }) || this.setState({ selected: null }),
+      centerSel: () => sel && this.updateSel({ x: Math.round((240 - (sel.type === 'text' ? sel.text.length * sel.size * 0.6 : sel.size)) / 2) }),
+      lockSel: () => sel && this.updateSel({ locked: !sel.locked }),
+      selOpacityPct: sel ? Math.round(sel.opacity * 100) : 100,
+      setOpacity: e => this.updateSel({ opacity: +e.target.value / 100 }),
+      inspectorOpen: !!sel && !preview,
+      inspectorTitle: sel ? (sel.type === 'text' ? 'Text' : 'Artwork') : '',
+      selIsText: !!sel && sel.type === 'text',
+      selIsGraphic: !!sel && sel.type === 'graphic',
+      selSize: sel ? sel.size : 0,
+      setSize: e => this.updateSel({ size: +e.target.value }),
+      selSpacing: sel ? ((sel.spacing || 0) / 100).toFixed(2) + 'em' : '0',
+      selSpacingRaw: sel ? sel.spacing || 0 : 0,
+      setSpacing: e => this.updateSel({ spacing: +e.target.value }),
+      fontOpts: [{k:'sans',label:'Sans'},{k:'serif',label:'Serif'},{k:'mono',label:'Mono'}].map(f => ({
+        label: f.label, family: fontMap[f.k],
+        border: sel && sel.font === f.k ? '#4A4FE4' : '#DDD8CC', bg: sel && sel.font === f.k ? '#F4F4FE' : '#fff',
+        pick: () => this.updateSel({ font: f.k }),
+      })),
+      weightOpts: [{v:400,label:'Reg'},{v:500,label:'Med'},{v:600,label:'Bold'}].map(w => ({
+        label: w.label, val: w.v,
+        border: sel && sel.weight === w.v ? '#4A4FE4' : '#DDD8CC', bg: sel && sel.weight === w.v ? '#F4F4FE' : '#fff',
+        pick: () => this.updateSel({ weight: w.v }),
+      })),
+      inkOpts: ['#FBFAF8','#1C1B19','#4A4FE4','#B0A28E','#8C3B2E','#41573B'].map(hex => ({
+        hex, ring: sel && sel.color === hex ? '0 0 0 2px #FBFAF8, 0 0 0 3.5px #4A4FE4' : 'none',
+        pick: () => this.updateSel({ color: hex }),
+      })),
+      toggleCurve: () => sel && this.updateSel({ curved: !sel.curved }),
+      curveBg: sel && sel.curved ? '#4A4FE4' : '#DDD8CC', curveKnob: sel && sel.curved ? '17px' : '3px',
+      toggleShadow: () => sel && this.updateSel({ shadow: !sel.shadow }),
+      shadowBg: sel && sel.shadow ? '#4A4FE4' : '#DDD8CC', shadowKnob: sel && sel.shadow ? '17px' : '3px',
+      embCompat: st.method === 'Embroidery' ? '⚠ Simplify colours' : '~ 12 colours max',
+      hasWarnings: warnings.length > 0 && !preview,
+      warnings,
+    };
+  }
+}
+</script>
+</body>
+</html>

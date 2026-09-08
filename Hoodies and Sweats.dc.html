@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+</style>
+</helmet>
+<div data-screen-label="Catalogue" style="min-height:100vh">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
+      <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap">
+        <a href="Who We Are.dc.html">Who we are</a><a href="Shop%20All.dc.html">Shop All</a><a href="Tees.dc.html">Tees</a><a href="Hoodies and Sweats.dc.html">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html">Athleisure</a><a href="Accessories.dc.html">Accessories</a><a href="Create%20your%20own.dc.html">Create your own</a><a href="Talk%20to%20us.dc.html">Talk to us</a>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
+        <span style="display:flex;align-items:center">
+          <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+            <input autoFocus="{{ true }}" value="{{ searchQ }}" onChange="{{ onSearchChange }}" onKeyDown="{{ onSearchKey }}" placeholder="Search…" style="width:150px;border:none;border-bottom:1px solid #1C1B19;background:transparent;font-size:13.5px;font-family:inherit;color:#1C1B19;outline:none;padding:2px;margin-right:6px"></input>
+          </sc-if>
+          <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
+        </span>
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+          <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4"><span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span></sc-for>
+            </div>
+          </sc-if>
+        </span>
+        <a href="Authentication.dc.html" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></a>
+        <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <span onClick="{{ toggleCart }}" title="Cart" style="color:inherit;position:relative;cursor:pointer;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-11px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">1</span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CART DRAWER -->
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCart }}" style="position:fixed;inset:0;z-index:90;background:rgba(20,20,18,0.18);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100vw;z-index:91;background:linear-gradient(155deg,rgba(255,255,255,0.32) 0%,rgba(255,255,255,0.08) 18%,rgba(238,235,228,0.42) 45%,rgba(238,235,228,0.5) 100%);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(28,27,25,0.22),inset 1px 0 0 rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.6);color:#1C1B19;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,0.35),transparent 55%)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 26px 0">
+        <span style="font-size:19px;font-weight:600">{{ cartQty }} items in your cart</span>
+        <span onClick="{{ closeCart }}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px" style-hover="background:rgba(255,255,255,0.85)">✕</span>
+      </div>
+      <div style="padding:20px 26px;flex:1;overflow-y:auto">
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;padding:14px 18px;text-align:center;font-size:13.5px;margin-bottom:18px">{{ freeShipMsg }}
+          <div style="height:5px;background:rgba(28,27,25,0.15);border-radius:999px;margin-top:10px;overflow:hidden"><div style="height:100%;width:{{ freeShipPct }}%;background:#1C1B19"></div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:16px;display:flex;gap:14px;margin-bottom:18px">
+          <div style="width:70px;height:70px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="cart-item-1" data-src="{{ cartItemImg }}" shape="rect" placeholder="Regular Hoodie 300"></image-slot></div>
+          <div style="flex:1">
+            <div style="font-size:14.5px;font-weight:600">Regular Hoodie 300</div>
+            <div style="font-size:13px;color:#4A473F;margin-top:2px">39,00€</div>
+            <div style="font-size:12px;color:#8B867B">Navy / M</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:10px">
+              <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.6);border-radius:999px;padding:5px 12px">
+                <span onClick="{{ cartQtyDec }}" style="cursor:pointer">−</span><span style="font-size:13px;font-weight:600">{{ cartQty }}</span><span onClick="{{ cartQtyInc }}" style="cursor:pointer">+</span>
+              </div>
+              <span style="cursor:pointer;color:#8B867B" title="Remove">🗑</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:15px;font-weight:600">You may also like</span><span style="color:#8B867B">⌃</span></div>
+          <div style="display:flex;gap:10px;overflow-x:auto">
+            <sc-for list="{{ upsell }}" as="u" hint-placeholder-count="4">
+              <div style="flex:0 0 100px">
+                <div style="position:relative;aspect-ratio:1;background:rgba(239,235,226,0.7);border-radius:8px;overflow:hidden;margin-bottom:6px">
+                  <image-slot id="{{ u.slot }}" data-src="{{ u.img }}" shape="rect" placeholder="{{ u.ph }}"></image-slot>
+                  <span style="position:absolute;bottom:6px;right:6px;width:20px;height:20px;border-radius:50%;background:#1C1B19;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">+</span>
+                </div>
+                <div style="font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ u.name }}</div>
+                <div style="font-size:11px;color:#4A473F">{{ u.price }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;text-align:center;font-size:11.5px;color:#4A473F;margin-top:18px;padding:12px">Worldwide Shipping · Secure Payments · Easy Returns</div>
+        <div style="background:rgba(255,255,255,0.55);backdrop-filter:blur(10px);border-radius:14px;padding:20px;margin-top:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+            <div><div style="font-size:16px;font-weight:700">Subtotal</div><div style="font-size:12px;color:#8B867B">{{ cartQty }} items</div></div>
+            <span style="font-family:inherit;font-weight:700;font-size:20px">{{ cartSubtotal }}</span>
+          </div>
+          <a href="Checkout.dc.html" style="display:block"><button style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Checkout</button></a>
+          <div style="text-align:center;font-size:11.5px;color:#8B867B;margin-top:10px">Shipping &amp; taxes calculated at checkout</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- BANNER -->
+  <div style="position:relative;height:320px;overflow:hidden;background:#EFEBE2">
+    <image-slot id="cat-banner" src="uploads/hoodies%20banner.png" shape="rect" placeholder="Campaign banner"></image-slot>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,20,18,0.45),transparent 60%);pointer-events:none"></div>
+    <div style="position:absolute;left:48px;bottom:36px;color:#fff;pointer-events:none;max-width:600px">
+      <h1 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:48px;letter-spacing:-0.01em">Hoodies & Sweats</h1>
+      <p style="margin:0;font-size:15px;color:rgba(255,255,255,0.85)">Layer up.</p>
+    </div>
+  </div>
+
+
+
+  <div style="max-width:1440px;margin:0 auto;padding:0 48px">
+    <div style="padding-top:72px">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;position:relative">
+        <span onClick="{{ toggleFiltersPanel }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #1C1B19;border-radius:999px;padding:11px 22px;font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer" style-hover="background:#1C1B19;color:#fff">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M8 12h12M4 17h16"></path><circle cx="6" cy="7" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="16" cy="12" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="10" cy="17" r="1.6" fill="currentColor" stroke="none"></circle></svg>
+          Filters
+        </span>
+        <span style="font-size:14px;color:#4A473F;margin-right:auto;margin-left:20px"><strong style="color:#1C1B19">{{ resultCount }}</strong> products</span>
+        <div style="position:relative">
+          <span onClick="{{ toggleSort }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 20px;font-size:13.5px;font-weight:500;cursor:pointer;display:flex;gap:10px;align-items:center" style-hover="border-color:#1C1B19">Sort — {{ sortLabel }} <span style="color:#8B867B;font-size:11px">▾</span></span>
+          <sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;right:0;top:48px;background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(28,27,25,0.14);border:1px solid #EEEBE3;padding:8px;z-index:20;min-width:210px">
+              <sc-for list="{{ sortOptions }}" as="so" hint-placeholder-count="4"><div onClick="{{ so.pick }}" style="padding:10px 14px;font-size:13.5px;border-radius:8px;cursor:pointer;font-weight:{{ so.weight }};color:{{ so.ink }}" style-hover="background:#F5F3ED">{{ so.label }}</div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ filtersPanelOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:0;top:56px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(28,27,25,0.16);border:1px solid #EEEBE3;padding:8px;z-index:20;min-width:260px">
+            <sc-for list="{{ facets }}" as="f" hint-placeholder-count="6">
+              <div style="border-bottom:1px solid #EEEBE3">
+                <div onClick="{{ f.toggle }}" style="display:flex;justify-content:space-between;align-items:center;gap:6px;cursor:pointer;font-size:14px;font-weight:600;padding:14px 10px" style-hover="color:#4A473F">{{ f.title }} <span style="color:#8B867B;font-size:12px;transform:{{ f.rot }};transition:transform 150ms">▾</span></div>
+                <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:10px;padding:0 10px 14px">
+                    <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
+                      <div onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;font-size:12.5px;color:#4A473F" style-hover="color:#1C1B19">
+                        <span style="width:14px;height:14px;border-radius:4px;border:1.5px solid {{ o.boxBorder }};background:{{ o.boxBg }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:8px;flex-shrink:0">{{ o.check }}</span>
+                        <sc-if value="{{ o.swatch }}" hint-placeholder-val="{{ false }}"><span style="width:12px;height:12px;border-radius:50%;background:{{ o.swatch }};border:1px solid rgba(28,27,25,0.15);flex-shrink:0"></span></sc-if>
+                        <span>{{ o.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- GRID -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px 20px;padding-bottom:72px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="16">
+          <a href="{{ p.href }}" style="display:block;color:#1C1B19">
+            <div style="position:relative;aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden">
+              <sc-if value="{{ p.fire }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:10px;left:10px;font-size:18px;z-index:2">🔥</span></sc-if>
+              <span onClick="{{ p.wish }}" style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(251,250,248,0.92);display:flex;align-items:center;justify-content:center;z-index:2" style-hover="background:#fff">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
+              </span>
+              <image-slot id="{{ p.slot }}" src="{{ p.img }}" shape="rect" placeholder="{{ p.ph }}"></image-slot>
+            </div>
+            <div style="padding-top:14px;display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+                <span style="font-size:14.5px;font-weight:500">{{ p.name }}</span>
+                <span style="font-size:15px;font-weight:600">€{{ p.price }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
+                <span style="font-size:11.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:#FBFAF8;color:#1C1B19;padding:56px 0 0;position:relative;overflow:hidden;border-top:1px solid #E6E2D8">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Company <sup style="font-size:10px;font-weight:400;color:#8B867B">6</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Company.dc.html#returns" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Returns &amp; exchanges</a>
+          <a href="Company.dc.html#privacy" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Privacy policy</a>
+          <a href="Company.dc.html#shipping" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Shipping policy</a>
+          <a href="Company.dc.html#terms" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Terms &amp; conditions</a>
+          <a href="Company.dc.html#careers" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Careers</a>
+          <a href="Company.dc.html#stores" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Stores</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Client Services <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Dashboard.dc.html" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">My account</a>
+          <a href="Dashboard.dc.html#track" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Track your order</a>
+          <a href="Dashboard.dc.html#return" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Make a return</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Contact us <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Talk%20to%20us.dc.html?tab=contact" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Contact</a>
+          <a href="Talk%20to%20us.dc.html?tab=faqs" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">FAQs</a>
+          <a href="Talk%20to%20us.dc.html?tab=chat" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Live chat</a>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:2px">
+          <a href="https://facebook.com/web2print" target="_blank" rel="noopener" title="Facebook" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.2-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5V21h3.1z"></path></svg></a>
+          <a href="https://instagram.com/web2print" target="_blank" rel="noopener" title="Instagram" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="https://tiktok.com/@web2print" target="_blank" rel="noopener" title="TikTok" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 4v9.4a3.4 3.4 0 1 1-3-3.38"></path><path d="M14 5.6c.7 1.7 2.2 2.8 4 2.9"></path></svg></a>
+        </div>
+      </div>
+    </div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:40px;display:flex;justify-content:center;line-height:0.9;font-size:19.5vw;font-weight:700;letter-spacing:-0.03em;color:#1C1B19;opacity:0.06;filter:blur(6px);user-select:none;pointer-events:none;white-space:nowrap;z-index:0">Web2Print</div>
+    <div style="margin:36px 0 0;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-amex" src="uploads/American%20Express-100.jpg" shape="rect" placeholder="pay-amex"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-applepay" src="uploads/Apple%20Pay-100.jpg" shape="rect" placeholder="pay-applepay"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-gpay" src="uploads/Google%20Pay-100.jpg" shape="rect" placeholder="pay-gpay"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-mastercard" src="uploads/MasterCard-100.jpg" shape="rect" placeholder="pay-mastercard"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-paypal" src="uploads/Paypal-100.jpg" shape="rect" placeholder="pay-paypal"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-shop" src="uploads/Shop-100.jpg" shape="rect" placeholder="pay-shop"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-visa" src="uploads/Visa-100.jpg" shape="rect" placeholder="pay-visa"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-klarna" src="uploads/Klarna-100.jpg" shape="rect" placeholder="pay-klarna"></image-slot></span>
+        <span style="width:38px;height:24px;border:1px solid #E6E2D8;background:#fff;border-radius:3px;overflow:hidden;display:block"><image-slot id="pay-clearpay" src="uploads/After%20Pay-100.jpg" shape="rect" placeholder="pay-clearpay"></image-slot></span>
+      </div>
+    </div>
+    <div style="height:36px"></div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}}">
+class Component extends DCLogic {
+  state = { active: [], sortKey: 'featured', sortOpen: false, openFacets: ['Type'], wished: [], langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', filtersPanelOpen: false, cartOpen: false, cartQty: 1 };
+  static CORE = [
+    { name: 'Black', hex: '#1C1B19' }, { name: 'White', hex: '#F5F3ED' }, { name: 'Beige', hex: '#D9C9AE' },
+    { name: 'Dark Brown', hex: '#4A3427' }, { name: 'Navy', hex: '#1F2A44' },
+  ];
+  static LIMITED = [
+    { name: 'Lilac', hex: '#C9B8E8' }, { name: 'Butter Yellow', hex: '#F5DE8A' }, { name: 'Sky Blue', hex: '#A9D3E6' },
+    { name: 'Baby Pink', hex: '#F3C4D0' }, { name: 'Lime Green', hex: '#C6E86B' },
+  ];
+  static CATALOG = [
+    { name: 'Regular Tee 190', price: 19, weight: '190', fit: 'regular', gender: 'unisex', tags: ['tees'], slot: 'ct-1', img: null },
+    { name: 'Oversized Tee 230', price: 23, weight: '230', fit: 'oversized', gender: 'unisex', tags: ['tees'], slot: 'ct-2', img: null },
+    { name: 'Regular Hoodie 300', price: 39, weight: '300', fit: 'regular', gender: 'unisex', tags: ['hoodies'], slot: 'ct-3', img: 'uploads/regular%20hoodie%20300%20-%201.png', fire: true },
+    { name: 'Oversized Hoodie 330', price: 44, weight: '330', fit: 'oversized', gender: 'unisex', tags: ['hoodies'], slot: 'ct-4', img: 'uploads/oversized%20hoodie%20330%20-%202.png', fire: true },
+    { name: 'Regular Hoodie Zip 300', price: 42, weight: '300', fit: 'regular', gender: 'unisex', tags: ['hoodies'], slot: 'ct-5', img: null },
+    { name: 'Regular Sweat 300', price: 34, weight: '300', fit: 'regular', gender: 'unisex', tags: ['sweats'], slot: 'ct-6', img: null },
+    { name: 'Cap', price: 18, weight: 'na', fit: 'regular', gender: 'unisex', tags: ['accessories'], slot: 'ct-7', img: null },
+    { name: 'Tote', price: 12, weight: 'na', fit: 'regular', gender: 'unisex', tags: ['accessories'], slot: 'ct-8', img: null },
+    { name: 'Sports Tee Woman', price: 22, weight: 'na', fit: 'regular', gender: 'women', tags: ['athleisure'], slot: 'ct-9', img: null },
+    { name: 'Sports Tee Man', price: 22, weight: 'na', fit: 'regular', gender: 'men', tags: ['athleisure'], slot: 'ct-10', img: null },
+    { name: 'Shorts Woman', price: 26, weight: 'na', fit: 'regular', gender: 'women', tags: ['bottoms'], slot: 'ct-11', img: null },
+    { name: 'Shorts Man', price: 26, weight: 'na', fit: 'regular', gender: 'men', tags: ['bottoms'], slot: 'ct-12', img: null },
+    { name: 'Skirt Woman', price: 28, weight: 'na', fit: 'regular', gender: 'women', tags: ['bottoms'], slot: 'ct-13', img: null },
+    { name: 'Joggers Woman', price: 36, weight: 'na', fit: 'regular', gender: 'women', tags: ['bottoms'], slot: 'ct-14', img: null },
+    { name: 'Joggers Man', price: 36, weight: 'na', fit: 'regular', gender: 'men', tags: ['bottoms'], slot: 'ct-15', img: null },
+    { name: "Woman's Tee 190", price: 19, weight: '190', fit: 'regular', gender: 'women', tags: ['tees'], slot: 'ct-16', img: 'uploads/crop%20tee%20190%204-8683a8e7.png' },
+    { name: "Woman's Sports Bra", price: 28, weight: 'na', fit: 'regular', gender: 'women', tags: ['athleisure'], slot: 'ct-18', img: 'uploads/sports%20bra%202.png', href: 'Sports Bra.dc.html' },
+    { name: "Woman's Crop Tee 190", price: 19, weight: '190', fit: 'slim', gender: 'women', tags: ['tees'], slot: 'ct-17', img: 'uploads/crop%20tee%20190%201.png', href: 'Crop Tee 190.dc.html' },
+  ];
+  static CATALOG_FILTERED = Component.CATALOG.filter(p => p.tags.includes('hoodies') || p.tags.includes('sweats'));
+  static SORTS = [
+    { key: 'featured', label: 'Featured' }, { key: 'priceAsc', label: 'Price Low to High' },
+    { key: 'priceDesc', label: 'Price High to Low' }, { key: 'alpha', label: 'Alphabetical' },
+  ];
+  static TYPES = [
+    { label: 'Tees', tag: 'tees' }, { label: 'Hoodies', tag: 'hoodies' }, { label: 'Sweats', tag: 'sweats' },
+    { label: 'Athleisure', tag: 'athleisure' }, { label: 'Bottoms', tag: 'bottoms' }, { label: 'Accessories', tag: 'accessories' },
+  ];
+  static WEIGHTS = [{ label: '190 gsm', tag: '190' }, { label: '230 gsm', tag: '230' }, { label: '300 gsm', tag: '300' }, { label: '330 gsm', tag: '330' }, { label: 'N/A', tag: 'na' }];
+  static FITS = [{ label: 'Regular', tag: 'regular' }, { label: 'Oversized', tag: 'oversized' }, { label: 'Slim', tag: 'slim' }];
+  static GENDERS = [{ label: 'Women', tag: 'women' }, { label: 'Men', tag: 'men' }, { label: 'Unisex', tag: 'unisex' }];
+  static SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  static allColors() { return [...Component.CORE, ...Component.LIMITED]; }
+  getFiltered() {
+    const { active, sortKey } = this.state;
+    const typeTags = Component.TYPES.map(t => t.tag), weightTags = Component.WEIGHTS.map(t => t.tag);
+    const fitTags = Component.FITS.map(t => t.tag), genderTags = Component.GENDERS.map(t => t.tag);
+    const sizeTags = Component.SIZES;
+    const colorTags = Component.allColors().map(c => c.name);
+    let list = Component.CATALOG_FILTERED.filter(p => {
+      const activeTypes = active.filter(a => typeTags.includes(a));
+      const activeWeights = active.filter(a => weightTags.includes(a));
+      const activeFits = active.filter(a => fitTags.includes(a));
+      const activeGenders = active.filter(a => genderTags.includes(a));
+      const activeSizes = active.filter(a => sizeTags.includes(a));
+      const activeColors = active.filter(a => colorTags.includes(a));
+      if (activeTypes.length && !activeTypes.some(t => p.tags.includes(t))) return false;
+      if (activeWeights.length && !activeWeights.includes(p.weight)) return false;
+      if (activeFits.length && !activeFits.includes(p.fit)) return false;
+      if (activeGenders.length && !activeGenders.includes(p.gender)) return false;
+      if (activeSizes.length) { /* all products carry all sizes */ }
+      if (activeColors.length) { /* all products carry all colors */ }
+      return true;
+    });
+    const s = [...list];
+    if (sortKey === 'priceAsc') s.sort((a, b) => a.price - b.price);
+    else if (sortKey === 'priceDesc') s.sort((a, b) => b.price - a.price);
+    else if (sortKey === 'alpha') s.sort((a, b) => a.name.localeCompare(b.name));
+    return s;
+  }
+  toggleTag(tag) { this.setState(st => ({ active: st.active.includes(tag) ? st.active.filter(t => t !== tag) : [...st.active, tag] })); }
+  renderVals() {
+    const { active, sortKey, sortOpen, openFacets, wished, langOpen, lang, searchOpen, searchQ, filtersPanelOpen } = this.state;
+    const filtered = this.getFiltered();
+    const allColors = Component.allColors();
+    const mkOptions = (defs, swatchMap) => defs.map(d => ({
+      label: d.label, boxBorder: active.includes(d.tag) ? '#4A4FE4' : '#C9C4B8', boxBg: active.includes(d.tag) ? '#4A4FE4' : '#fff',
+      check: active.includes(d.tag) ? '✓' : '', swatch: swatchMap ? swatchMap(d) : null, toggle: () => this.toggleTag(d.tag),
+    }));
+    const facetDefs = [
+      { title: 'Type', options: mkOptions(Component.TYPES) },
+      { title: 'Color', options: mkOptions(allColors.map(c => ({ label: c.name, tag: c.name })), d => allColors.find(c => c.name === d.label).hex) },
+      { title: 'Size', options: mkOptions(Component.SIZES.map(s => ({ label: s, tag: s }))) },
+      { title: 'Fit', options: mkOptions(Component.FITS) },
+      { title: 'Weight', options: mkOptions(Component.WEIGHTS) },
+      { title: 'Gender', options: mkOptions(Component.GENDERS) },
+    ];
+    const mkProduct = (p, i) => ({
+      ...p, img: p.img || null, fire: !!p.fire, href: p.href || 'Product Page.dc.html', swatches: allColors.slice(0, 5).map(c => c.hex), more: allColors.length - 5,
+      wish: (e) => { e.preventDefault(); this.setState(st => ({ wished: st.wished.includes(i) ? st.wished.filter(x => x !== i) : [...st.wished, i] })); },
+    });
+    return {
+      toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
+      searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
+      onSearchKey: (e) => { if (e.key === 'Enter') this.setState({}); },
+      openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
+      toggleFiltersPanel: () => this.setState(s => ({ filtersPanelOpen: !s.filtersPanelOpen })),
+      filtersPanelOpen,
+      cartOpen: this.state.cartOpen,
+      toggleCart: () => this.setState(s => ({ cartOpen: !s.cartOpen })), closeCart: () => this.setState({ cartOpen: false }),
+      cartQty: this.state.cartQty,
+      cartQtyInc: () => this.setState(s => ({ cartQty: s.cartQty + 1 })),
+      cartQtyDec: () => this.setState(s => ({ cartQty: Math.max(1, s.cartQty - 1) })),
+      cartSubtotal: '€' + (39 * this.state.cartQty).toFixed(2).replace('.', ','),
+      freeShipMsg: (() => { const rem = 75 - 39 * this.state.cartQty; return rem > 0 ? '€' + rem.toFixed(2) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
+      freeShipPct: Math.min(100, (39 * this.state.cartQty / 75) * 100),
+      upsell: [
+        { slot: 'up-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44,00€', img: 'uploads/oversized%20hoodie%20330%20-%202.png' },
+        { slot: 'up-2', ph: 'Cap', name: 'Cap', price: '18,00€' },
+        { slot: 'up-3', ph: 'Tote', name: 'Tote', price: '12,00€' },
+        { slot: 'up-4', ph: 'Regular Tee 190', name: 'Regular Tee 190', price: '19,00€' },
+      ],
+      facets: facetDefs.map(f => ({
+        title: f.title, options: f.options, open: openFacets.includes(f.title), rot: openFacets.includes(f.title) ? 'rotate(180deg)' : 'none',
+        toggle: () => this.setState(st => ({ openFacets: st.openFacets.includes(f.title) ? st.openFacets.filter(x => x !== f.title) : [...st.openFacets, f.title] })),
+      })),
+      resultCount: filtered.length,
+      sortOpen, toggleSort: () => this.setState(st => ({ sortOpen: !st.sortOpen })),
+      sortLabel: Component.SORTS.find(s => s.key === sortKey).label,
+      sortOptions: Component.SORTS.map(s => ({
+        label: s.label, weight: s.key === sortKey ? 600 : 400, ink: s.key === sortKey ? '#4A4FE4' : '#1C1B19',
+        pick: () => this.setState({ sortKey: s.key, sortOpen: false }),
+      })),
+      products: filtered.map(mkProduct),
+      mostWorn: Component.CATALOG_FILTERED.filter(p => p.fire).map(mkProduct),
+      mostRef: (el) => { this._mostEl = el; },
+      mostPrev: () => { const el = this._mostEl; if (!el) return; const step = (el.firstElementChild ? el.firstElementChild.getBoundingClientRect().width : el.clientWidth / 4) + 20; el.scrollBy({ left: -step, behavior: 'smooth' }); },
+      mostNext: () => { const el = this._mostEl; if (!el) return; const step = (el.firstElementChild ? el.firstElementChild.getBoundingClientRect().width : el.clientWidth / 4) + 20; el.scrollBy({ left: step, behavior: 'smooth' }); },
+    };
+  }
+}
+
+</script>
+</body>
+</html>

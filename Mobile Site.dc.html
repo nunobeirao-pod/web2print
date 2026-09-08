@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FBFAF8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;overscroll-behavior-y:none}
+body{background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+::-webkit-scrollbar{width:0;height:0;display:none}
+img,image-slot{max-width:100%}
+</style>
+</helmet>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Home" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;position:relative;overflow:hidden">
+  <div style="flex:1;overflow:hidden;position:relative">
+    <div style="position:absolute;inset:0"><image-slot id="mob-hero" src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=60&w=1600&auto=format&fit=crop" credit="Photo by Dom Hill on Unsplash" credit-href="https://unsplash.com/@domjewel" shape="rect" placeholder="Fullscreen editorial — model, warm light"></image-slot></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.3) 0%,transparent 35%,rgba(20,20,18,0.06) 62%,rgba(20,20,18,0.62) 100%);pointer-events:none"></div>
+    <div style="position:absolute;top:calc(14px + env(safe-area-inset-top));left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;color:#fff">
+      <span style="font-size:16px;font-weight:600">Web2Print</span>
+      <span onClick="{{ goSearch }}" style="background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:999px;padding:10px 16px;font-size:12.5px;font-weight:500;cursor:pointer">Search</span>
+    </div>
+    <div style="position:absolute;left:20px;right:20px;bottom:120px;color:#fff;pointer-events:none">
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:10px">Autumn / Winter 2026</div>
+      <div style="font-family:inherit;font-weight:700;font-size:44px;line-height:1.02;margin-bottom:18px">Wear what<br>you imagine.</div>
+      <div style="display:flex;gap:8px;pointer-events:auto">
+        <span onClick="{{ goEditor }}" style="background:#FBFAF8;color:#1C1B19;border-radius:999px;padding:14px 22px;font-size:13.5px;font-weight:500;cursor:pointer">Start Designing</span>
+        <span onClick="{{ goDiscover }}" style="background:rgba(255,255,255,0.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;padding:14px 22px;font-size:13.5px;font-weight:500;cursor:pointer">Browse</span>
+      </div>
+    </div>
+    <div style="position:absolute;left:20px;right:20px;bottom:26px;display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <span onClick="{{ goAI }}" style="flex-shrink:0;background:rgba(28,27,25,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:11px 18px;font-size:12px;font-weight:500;cursor:pointer">✦ Create with AI</span>
+      <span onClick="{{ goDiscover }}" style="flex-shrink:0;background:rgba(28,27,25,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:11px 18px;font-size:12px;font-weight:500;cursor:pointer">Collections →</span>
+      <span onClick="{{ goDiscover }}" style="flex-shrink:0;background:rgba(28,27,25,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border-radius:999px;padding:11px 18px;font-size:12px;font-weight:500;cursor:pointer">New in</span>
+    </div>
+  </div>
+  <div style="height:76px;box-sizing:content-box;padding:0 8px env(safe-area-inset-bottom);background:rgba(251,250,248,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #EEEBE3;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;flex-shrink:0">
+    <div onClick="{{ goHome }}" style="text-align:center;cursor:pointer"><div style="font-size:17px">◈</div><div style="font-size:9.5px;font-weight:600;margin-top:2px">Home</div></div>
+    <div onClick="{{ goDiscover }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◌</div><div style="font-size:9.5px;margin-top:2px">Discover</div></div>
+    <div onClick="{{ goEditor }}" style="text-align:center;cursor:pointer"><div style="width:52px;height:52px;border-radius:50%;background:#4A4FE4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin:-18px auto 0;box-shadow:0 8px 20px rgba(74,79,228,0.4)">✦</div><div style="font-size:9.5px;font-weight:600;margin-top:3px;color:#4A4FE4">Create</div></div>
+    <div onClick="{{ goWorkspace }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◷</div><div style="font-size:9.5px;margin-top:2px">Orders</div></div>
+    <div onClick="{{ goAccount }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">○</div><div style="font-size:9.5px;margin-top:2px">Account</div></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Search" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;padding:calc(12px + env(safe-area-inset-top)) 20px 0;overflow:hidden">
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-shrink:0">
+    <div style="flex:1;min-width:0;background:#F1EEE7;border-radius:999px;padding:14px 18px;font-size:14px;color:#1C1B19;display:flex;gap:8px;align-items:center"><span style="color:#8B867B">⌕</span>minimal hoodie<span style="width:2px;height:16px;background:#4A4FE4"></span></div>
+    <span onClick="{{ goBack }}" style="font-size:13.5px;font-weight:500;color:#4A473F;cursor:pointer;flex-shrink:0">Cancel</span>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(24px + env(safe-area-inset-bottom))">
+    <div onClick="{{ goAI }}" style="background:#F4F4FE;border:1px solid #C9CBF5;border-radius:14px;padding:14px 16px;margin-bottom:22px;display:flex;gap:10px;align-items:center;cursor:pointer">
+      <span style="color:#4A4FE4">✦</span>
+      <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:600;color:#4A4FE4">Ask AI instead</div><div style="font-size:11.5px;color:#8B867B">"minimal hoodie" → oversized fits, tonal prints…</div></div>
+      <span style="color:#4A4FE4;font-size:13px">→</span>
+    </div>
+    <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Recent</div>
+    <div style="display:flex;flex-direction:column;margin-bottom:20px">
+      <div onClick="{{ goDiscover }}" style="padding:12px 0;font-size:14px;border-bottom:1px solid #F1EEE7;display:flex;justify-content:space-between;cursor:pointer"><span>oversized tee</span><span style="color:#B8B2A5">↖</span></div>
+      <div onClick="{{ goDiscover }}" style="padding:12px 0;font-size:14px;border-bottom:1px solid #F1EEE7;display:flex;justify-content:space-between;cursor:pointer"><span>embroidered cap</span><span style="color:#B8B2A5">↖</span></div>
+    </div>
+    <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Trending</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      <span onClick="{{ goDiscover }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 15px;font-size:12px;cursor:pointer">Heavyweight</span>
+      <span onClick="{{ goDiscover }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 15px;font-size:12px;cursor:pointer">Eco-friendly</span>
+      <span onClick="{{ goDiscover }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 15px;font-size:12px;cursor:pointer">Luxury embroidery</span>
+      <span onClick="{{ goDiscover }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 15px;font-size:12px;cursor:pointer">Festival</span>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDiscover }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Discover" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;position:relative;overflow:hidden">
+  <div style="padding:calc(10px + env(safe-area-inset-top)) 20px 0;flex-shrink:0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+      <span style="font-family:inherit;font-weight:700;font-size:30px">Discover</span>
+      <span onClick="{{ toggleSheet }}" style="font-size:12.5px;font-weight:500;color:#4A473F;cursor:pointer">Filters ⌥</span>
+    </div>
+    <div style="display:flex;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px">
+      <span style="flex-shrink:0;background:#1C1B19;color:#fff;border-radius:999px;padding:9px 16px;font-size:12px;font-weight:500">Hoodies</span>
+      <span style="flex-shrink:0;border:1px solid #DDD8CC;border-radius:999px;padding:9px 16px;font-size:12px">Oversized</span>
+      <span style="flex-shrink:0;border:1px solid #DDD8CC;border-radius:999px;padding:9px 16px;font-size:12px">Heavyweight</span>
+      <span style="flex-shrink:0;border:1px solid #DDD8CC;border-radius:999px;padding:9px 16px;font-size:12px">Organic</span>
+    </div>
+  </div>
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 260px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 12px">
+      <sc-for list="{{ mobProducts }}" as="p" hint-placeholder-count="4">
+        <div onClick="{{ goProduct }}" style="cursor:pointer">
+          <div style="aspect-ratio:4/5;border-radius:14px;overflow:hidden;position:relative">
+            <image-slot id="{{ p.slot }}" src="{{ p.img }}" credit="{{ p.credit }}" credit-href="{{ p.chref }}" shape="rect" placeholder="{{ p.ph }}"></image-slot>
+            <span style="position:absolute;bottom:10px;right:10px;background:rgba(251,250,248,0.95);border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 2px 10px rgba(28,27,25,0.14)">✦</span>
+          </div>
+          <div style="padding:9px 2px 0"><div style="font-size:13px;font-weight:500">{{ p.name }}</div><div style="font-size:11.5px;color:#8B867B;margin-top:2px">from {{ p.price }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -12px 48px rgba(28,27,25,0.16);padding:10px 24px calc(28px + env(safe-area-inset-bottom));z-index:5">
+    <div onClick="{{ toggleSheet }}" style="width:38px;height:4.5px;background:#DDD8CC;border-radius:999px;margin:0 auto 16px;cursor:pointer"></div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">Sort by</div>
+    <div style="display:flex;flex-direction:column">
+      <div onClick="{{ toggleSheet }}" style="padding:13px 0;font-size:14px;color:#4A4FE4;font-weight:500;display:flex;justify-content:space-between;border-bottom:1px solid #F5F3ED;cursor:pointer">Featured <span>✓</span></div>
+      <div onClick="{{ toggleSheet }}" style="padding:13px 0;font-size:14px;border-bottom:1px solid #F5F3ED;cursor:pointer">Newest</div>
+      <div onClick="{{ toggleSheet }}" style="padding:13px 0;font-size:14px;cursor:pointer">Price low to high</div>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ sheetClosed }}" hint-placeholder-val="{{ false }}">
+  <div style="height:76px;box-sizing:content-box;padding:0 8px env(safe-area-inset-bottom);background:rgba(251,250,248,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #EEEBE3;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;flex-shrink:0">
+    <div onClick="{{ goHome }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◈</div><div style="font-size:9.5px;margin-top:2px">Home</div></div>
+    <div onClick="{{ goDiscover }}" style="text-align:center;cursor:pointer"><div style="font-size:17px">◌</div><div style="font-size:9.5px;font-weight:600;margin-top:2px">Discover</div></div>
+    <div onClick="{{ goEditor }}" style="text-align:center;cursor:pointer"><div style="width:52px;height:52px;border-radius:50%;background:#4A4FE4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin:-18px auto 0;box-shadow:0 8px 20px rgba(74,79,228,0.4)">✦</div><div style="font-size:9.5px;font-weight:600;margin-top:3px;color:#4A4FE4">Create</div></div>
+    <div onClick="{{ goWorkspace }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◷</div><div style="font-size:9.5px;margin-top:2px">Orders</div></div>
+    <div onClick="{{ goAccount }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">○</div><div style="font-size:9.5px;margin-top:2px">Account</div></div>
+  </div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Product" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;position:relative;overflow:hidden">
+  <div style="height:44%;position:relative;flex-shrink:0">
+    <image-slot id="mob-pp" src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=60&w=1600&auto=format&fit=crop" credit="Photo by Jannes Jacobs on Unsplash" credit-href="https://unsplash.com/@jannesjacobs" shape="rect" placeholder="On-body — hoodie, swipeable gallery"></image-slot>
+    <span onClick="{{ goBack }}" style="position:absolute;top:calc(14px + env(safe-area-inset-top));left:16px;background:rgba(251,250,248,0.9);border-radius:999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer">←</span>
+    <span style="position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;background:rgba(251,250,248,0.9);border-radius:999px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:14px">♡</span>
+    <div style="position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:5px">
+      <span style="width:16px;height:4px;border-radius:999px;background:#fff"></span>
+      <span style="width:4px;height:4px;border-radius:999px;background:rgba(255,255,255,0.5)"></span>
+      <span style="width:4px;height:4px;border-radius:999px;background:rgba(255,255,255,0.5)"></span>
+      <span style="width:4px;height:4px;border-radius:999px;background:rgba(255,255,255,0.5)"></span>
+    </div>
+  </div>
+  <div style="flex:1;padding:18px 20px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:12px">
+      <span style="font-family:inherit;font-weight:700;font-size:24px">Oversized Hoodie</span>
+      <span style="font-family:inherit;font-weight:700;font-size:19px;white-space:nowrap">from €54</span>
+    </div>
+    <div style="font-size:12px;color:#8B867B;margin-bottom:16px">420 gsm brushed cotton · ★ 4.9 (212)</div>
+    <div style="font-size:12px;color:#4A473F;margin-bottom:8px">Colour — <strong>Deep Navy</strong></div>
+    <div style="display:flex;gap:9px;margin-bottom:16px">
+      <span style="width:34px;height:34px;border-radius:50%;background:#3E4A5C;box-shadow:0 0 0 2px #FBFAF8,0 0 0 4px #4A4FE4;flex-shrink:0"></span>
+      <span style="width:34px;height:34px;border-radius:50%;background:#26241F;border:1px solid rgba(0,0,0,0.1);flex-shrink:0"></span>
+      <span style="width:34px;height:34px;border-radius:50%;background:#E8E4DA;border:1px solid rgba(0,0,0,0.15);flex-shrink:0"></span>
+      <span style="width:34px;height:34px;border-radius:50%;background:#7A8471;flex-shrink:0"></span>
+      <span style="width:34px;height:34px;border-radius:50%;background:#B0A28E;flex-shrink:0"></span>
+    </div>
+    <div style="font-size:12px;color:#4A473F;margin-bottom:8px">Size</div>
+    <div style="display:flex;gap:7px;margin-bottom:16px">
+      <span style="flex:1;text-align:center;padding:13px 0;border:1px solid #DDD8CC;border-radius:10px;font-size:13px;font-weight:500">S</span>
+      <span style="flex:1;text-align:center;padding:13px 0;border:1px solid #4A4FE4;background:#F4F4FE;color:#4A4FE4;border-radius:10px;font-size:13px;font-weight:600">M</span>
+      <span style="flex:1;text-align:center;padding:13px 0;border:1px solid #DDD8CC;border-radius:10px;font-size:13px;font-weight:500">L</span>
+      <span style="flex:1;text-align:center;padding:13px 0;border:1px solid #DDD8CC;border-radius:10px;font-size:13px;font-weight:500">XL</span>
+    </div>
+    <div style="border-top:1px solid #F1EEE7;padding:13px 2px;display:flex;justify-content:space-between;font-size:13.5px;font-weight:500">Description <span style="color:#8B867B">+</span></div>
+    <div style="border-top:1px solid #F1EEE7;padding:13px 2px;display:flex;justify-content:space-between;font-size:13.5px;font-weight:500">Printing methods <span style="color:#8B867B">+</span></div>
+  </div>
+  <div style="padding:12px 20px calc(26px + env(safe-area-inset-bottom));background:rgba(251,250,248,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid #EEEBE3;flex-shrink:0">
+    <div onClick="{{ goEditor }}" style="background:#3E4A5C;color:#fff;border-radius:999px;padding:17px 0;text-align:center;font-size:15px;font-weight:500;cursor:pointer">Customize Your Design</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Editor" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#EFEDE8;position:relative;overflow:hidden">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 18px 10px;flex-shrink:0">
+    <span onClick="{{ goBack }}" style="font-size:14px;cursor:pointer;padding:8px 6px">←</span>
+    <div style="text-align:center"><div style="font-size:12.5px;font-weight:600">North Run Club</div><div style="font-size:10px;color:#41573B">● Saved</div></div>
+    <span onClick="{{ goCheckout }}" style="background:#4A4FE4;color:#fff;border-radius:999px;padding:9px 16px;font-size:12px;font-weight:500;cursor:pointer">Finish</span>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0">
+    <div style="position:relative;width:250px;height:290px;max-width:calc(100% - 48px)">
+      <div style="position:absolute;top:0;left:72px;width:106px;height:58px;background:#3E4A5C;border-radius:53px 53px 13px 13px;box-shadow:inset 0 -9px 15px rgba(0,0,0,0.12)"></div>
+      <div style="position:absolute;top:53px;left:0;width:53px;height:174px;background:#3E4A5C;border-radius:26px;transform:rotate(9deg)"></div>
+      <div style="position:absolute;top:53px;right:0;width:53px;height:174px;background:#3E4A5C;border-radius:26px;transform:rotate(-9deg)"></div>
+      <div style="position:absolute;top:46px;left:38px;width:175px;height:226px;background:#3E4A5C;border-radius:15px 15px 19px 19px;box-shadow:inset 0 12px 20px rgba(0,0,0,0.08)">
+        <div style="position:absolute;top:30px;left:30px;width:115px;height:145px;border:1.5px dashed rgba(74,79,228,0.55);border-radius:3px">
+          <div style="position:absolute;top:26px;left:8px;outline:1.5px solid #4A4FE4;outline-offset:3px">
+            <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;color:#FBFAF8;white-space:nowrap">NORTH RUN CLUB</div>
+            <span style="position:absolute;left:-6px;top:-6px;width:7px;height:7px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px"></span>
+            <span style="position:absolute;right:-6px;bottom:-6px;width:7px;height:7px;background:#fff;border:1.5px solid #4A4FE4;border-radius:2px"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(28,27,25,0.92);border-radius:999px;padding:8px 6px;display:flex;gap:2px">
+      <span style="color:#fff;font-size:11px;padding:6px 12px">Duplicate</span>
+      <span style="color:#fff;font-size:11px;padding:6px 12px">Lock</span>
+      <span style="color:#F2A08D;font-size:11px;padding:6px 12px">Delete</span>
+    </div>
+    <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:10px;color:#8B867B">Pinch to zoom · double-tap to edit · long-press for menu</div>
+  </div>
+  <div style="background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -12px 48px rgba(28,27,25,0.14);padding:10px 22px calc(14px + env(safe-area-inset-bottom));flex-shrink:0">
+    <div style="width:38px;height:4.5px;background:#DDD8CC;border-radius:999px;margin:0 auto 12px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:13px;font-weight:600">Text</span>
+      <div style="display:flex;gap:7px">
+        <span style="width:26px;height:26px;border-radius:50%;background:#FBFAF8;border:1px solid #DDD8CC;box-shadow:0 0 0 2px #fff,0 0 0 3.5px #4A4FE4"></span>
+        <span style="width:26px;height:26px;border-radius:50%;background:#1C1B19"></span>
+        <span style="width:26px;height:26px;border-radius:50%;background:#B0A28E"></span>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:14px">
+      <span style="flex:1;text-align:center;border:1px solid #4A4FE4;background:#F4F4FE;color:#4A4FE4;border-radius:9px;padding:10px 0;font-size:12px;font-weight:500">Sans</span>
+      <span style="flex:1;text-align:center;border:1px solid #DDD8CC;border-radius:9px;padding:10px 0;font-size:12px;font-family:inherit;font-weight:700">Serif</span>
+      <span style="flex:1;text-align:center;border:1px solid #DDD8CC;border-radius:9px;padding:10px 0;font-size:12px;font-family:monospace">Mono</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;border-top:1px solid #F1EEE7;padding-top:10px">
+      <div style="text-align:center;padding:7px 0"><div style="font-size:15px;color:#4A4FE4">T</div><div style="font-size:9px;font-weight:600;color:#4A4FE4;margin-top:2px">Text</div></div>
+      <div style="text-align:center;padding:7px 0;color:#4A473F"><div style="font-size:15px">⇪</div><div style="font-size:9px;margin-top:2px">Upload</div></div>
+      <div onClick="{{ goAI }}" style="text-align:center;padding:7px 0;color:#4A473F;cursor:pointer"><div style="font-size:15px">✦</div><div style="font-size:9px;margin-top:2px">AI</div></div>
+      <div style="text-align:center;padding:7px 0;color:#4A473F"><div style="font-size:15px">◐</div><div style="font-size:9px;margin-top:2px">Graphics</div></div>
+      <div style="text-align:center;padding:7px 0;color:#4A473F"><div style="font-size:15px">≣</div><div style="font-size:9px;margin-top:2px">Layers</div></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Checkout" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;position:relative;overflow:hidden">
+  <div style="padding:calc(12px + env(safe-area-inset-top)) 20px 20px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <span onClick="{{ goBack }}" style="font-size:15px;cursor:pointer;padding:6px 4px">←</span>
+      <div style="display:flex;gap:6px;align-items:center;font-size:11px">
+        <span style="color:#8B867B">Design</span><span style="width:14px;height:1.5px;background:#41573B"></span>
+        <span style="color:#8B867B">Review</span><span style="width:14px;height:1.5px;background:#41573B"></span>
+        <span style="font-weight:600">Checkout</span>
+      </div>
+      <span style="font-size:11px;color:#8B867B">🔒</span>
+    </div>
+    <div style="background:#1C1B19;color:#fff;border-radius:14px;padding:17px 0;text-align:center;font-size:15px;font-weight:500;margin-bottom:8px"> Pay</div>
+    <div style="background:#fff;border:1px solid #DDD8CC;border-radius:14px;padding:15px 0;text-align:center;font-size:14px;font-weight:500;margin-bottom:18px">G Pay</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><span style="flex:1;height:1px;background:#EEEBE3"></span><span style="font-size:11px;color:#B8B2A5">or pay with card</span><span style="flex:1;height:1px;background:#EEEBE3"></span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="border:1px solid #DDD8CC;border-radius:12px;padding:15px 16px;font-size:13.5px;color:#8B867B">Card number</div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1;border:1px solid #DDD8CC;border-radius:12px;padding:15px 16px;font-size:13.5px;color:#8B867B">MM / YY</div>
+        <div style="flex:1;border:1px solid #DDD8CC;border-radius:12px;padding:15px 16px;font-size:13.5px;color:#8B867B">CVC</div>
+      </div>
+      <div style="border:1.5px solid #4A4FE4;background:#F4F4FE;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div><div style="font-size:13px;font-weight:500">Norte Studio — Office</div><div style="font-size:11.5px;color:#8B867B;margin-top:2px">Rua das Flores 12, Porto</div></div>
+        <span style="font-size:11.5px;color:#4A4FE4;font-weight:500;white-space:nowrap">Change</span>
+      </div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -12px 48px rgba(28,27,25,0.14);padding:10px 22px calc(26px + env(safe-area-inset-bottom));flex-shrink:0">
+    <div style="width:38px;height:4.5px;background:#DDD8CC;border-radius:999px;margin:0 auto 12px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px">
+      <div style="display:flex;gap:10px;align-items:center;min-width:0">
+        <div style="width:34px;height:42px;background:#3E4A5C;border-radius:7px;flex-shrink:0"></div>
+        <div style="min-width:0"><div style="font-size:12.5px;font-weight:500">Oversized Hoodie × 24</div><div style="font-size:11px;color:#8B867B">Deep Navy · DTF · Standard</div></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0"><div style="font-family:inherit;font-weight:700;font-size:19px">€1,742</div><div style="font-size:10.5px;color:#8B867B">incl. VAT</div></div>
+    </div>
+    <div onClick="{{ goWorkspace }}" style="background:#4A4FE4;color:#fff;border-radius:999px;padding:17px 0;text-align:center;font-size:15px;font-weight:500;cursor:pointer">Complete Order</div>
+    <div style="font-size:10.5px;color:#8B867B;text-align:center;margin-top:9px">🔒 Secure · No hidden costs · Delivery Mar 9–11</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWorkspace }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Workspace" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;overflow:hidden">
+  <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(12px + env(safe-area-inset-top)) 20px 24px">
+    <div style="margin-bottom:18px">
+      <div style="font-family:inherit;font-weight:700;font-size:28px;margin-bottom:2px">Welcome back, João.</div>
+      <div style="font-size:12.5px;color:#8B867B">Continue building your brand.</div>
+    </div>
+    <div onClick="{{ goEditor }}" style="background:#1C1B19;color:#FBFAF8;border-radius:16px;padding:18px 20px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+      <div><div style="font-family:inherit;font-weight:700;font-size:18px;margin-bottom:3px">Continue designing</div><div style="font-size:11.5px;color:#8B867B">North Run Club · 2h ago</div></div>
+      <div style="width:40px;height:48px;background:#3E4A5C;border-radius:8px;flex-shrink:0"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <div onClick="{{ goAI }}" style="flex:1;background:#4A4FE4;color:#fff;border-radius:14px;padding:15px 16px;font-size:13px;font-weight:500;cursor:pointer">✦ Start with AI</div>
+      <div onClick="{{ goDiscover }}" style="flex:1;border:1px solid #E6E2D8;background:#fff;border-radius:14px;padding:15px 16px;font-size:13px;font-weight:500;cursor:pointer">Browse products</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+      <span style="font-size:14px;font-weight:600">Orders</span><span onClick="{{ goSupport }}" style="font-size:11.5px;color:#4A4FE4;font-weight:500;cursor:pointer">All</span>
+    </div>
+    <div style="border:1px solid #E6E2D8;background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;gap:10px"><span style="font-size:12.5px;font-weight:500">North Run Club × 24</span><span style="font-size:10.5px;color:#8A5F1E;background:#F7F0E4;border-radius:999px;padding:3px 9px;white-space:nowrap">In production</span></div>
+      <div style="display:flex;gap:4px"><span style="flex:1;height:3.5px;border-radius:999px;background:#4A4FE4"></span><span style="flex:1;height:3.5px;border-radius:999px;background:#4A4FE4"></span><span style="flex:1;height:3.5px;border-radius:999px;background:#EEEBE3"></span><span style="flex:1;height:3.5px;border-radius:999px;background:#EEEBE3"></span></div>
+    </div>
+    <div style="border:1px solid #E6E2D8;background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;gap:10px"><span style="font-size:12.5px;font-weight:500">Velvet Static × 60</span><span style="font-size:10.5px;color:#4A4FE4;background:#F4F4FE;border-radius:999px;padding:3px 9px;white-space:nowrap">Shipped</span></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+      <span style="font-size:14px;font-weight:600">Designs</span><span style="font-size:11.5px;color:#8B867B">swipe →</span>
+    </div>
+    <div style="display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <div onClick="{{ goEditor }}" style="flex-shrink:0;width:120px;cursor:pointer"><div style="height:110px;background:#EFEBE2;border-radius:12px;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:54px;background:#3E4A5C;border-radius:7px"></div></div><div style="font-size:11px;font-weight:500;margin-top:6px">North Run Club</div></div>
+      <div onClick="{{ goEditor }}" style="flex-shrink:0;width:120px;cursor:pointer"><div style="height:110px;background:#F1EEE7;border-radius:12px;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:54px;background:#E8E4DA;border-radius:7px;border:1px solid #DDD8CC"></div></div><div style="font-size:11px;font-weight:500;margin-top:6px">Café crest</div></div>
+      <div onClick="{{ goEditor }}" style="flex-shrink:0;width:120px;cursor:pointer"><div style="height:110px;background:#EFEBE2;border-radius:12px;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:54px;background:#26241F;border-radius:7px"></div></div><div style="font-size:11px;font-weight:500;margin-top:6px">Tour merch</div></div>
+    </div>
+  </div>
+  <div style="height:76px;box-sizing:content-box;padding:0 8px env(safe-area-inset-bottom);background:rgba(251,250,248,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid #EEEBE3;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;flex-shrink:0">
+    <div onClick="{{ goHome }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◈</div><div style="font-size:9.5px;margin-top:2px">Home</div></div>
+    <div onClick="{{ goDiscover }}" style="text-align:center;color:#8B867B;cursor:pointer"><div style="font-size:17px">◌</div><div style="font-size:9.5px;margin-top:2px">Discover</div></div>
+    <div onClick="{{ goEditor }}" style="text-align:center;cursor:pointer"><div style="width:52px;height:52px;border-radius:50%;background:#4A4FE4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;margin:-18px auto 0;box-shadow:0 8px 20px rgba(74,79,228,0.4)">✦</div><div style="font-size:9.5px;font-weight:600;margin-top:3px;color:#4A4FE4">Create</div></div>
+    <div onClick="{{ goWorkspace }}" style="text-align:center;cursor:pointer"><div style="font-size:17px">◷</div><div style="font-size:9.5px;font-weight:600;margin-top:2px">Orders</div></div>
+    <div onClick="{{ goAccount }}" style="text-align:center;cursor:pointer"><div style="font-size:17px">○</div><div style="font-size:9.5px;font-weight:600;margin-top:2px">Account</div></div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPlaceholder }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Placeholder" style="height:100dvh;min-height:100vh;width:100%;display:flex;flex-direction:column;background:#FBFAF8;overflow:hidden">
+  <div style="display:flex;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 20px 10px;flex-shrink:0">
+    <span onClick="{{ goBack }}" style="font-size:15px;cursor:pointer;padding:8px 6px">←</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 20px 60px">
+    <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Not built yet</div>
+    <div style="font-family:inherit;font-weight:700;font-size:34px;line-height:1.05;margin-bottom:10px">{{ phName }}</div>
+    <div style="font-size:13px;color:#5A5749;line-height:1.6;margin-bottom:22px">This screen exists on desktop but has no mobile version yet. It is next in the mobile build queue.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span onClick="{{ goBack }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer">Go back</span>
+      <span onClick="{{ goHome }}" style="background:#4A4FE4;color:#fff;border-radius:999px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer">Home</span>
+    </div>
+  </div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;search&quot;,&quot;discover&quot;,&quot;product&quot;,&quot;editor&quot;,&quot;checkout&quot;,&quot;workspace&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Routing&quot;},&quot;hashRouting&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Routing&quot;}}">
+class Component extends DCLogic {
+  state = { screen: 'home', stack: [], ph: 'Authentication', sheetOpen: true };
+
+  static SCREENS = ['home', 'search', 'discover', 'product', 'editor', 'checkout', 'workspace'];
+
+  componentDidMount() {
+    const start = this.props.startScreen;
+    const fromHash = this.hashScreen();
+    const s = fromHash || (Component.SCREENS.indexOf(start) !== -1 ? start : 'home');
+    if (s !== this.state.screen) this.setState({ screen: s });
+    this._hash = () => {
+      const h = this.hashScreen();
+      if (h && h !== this.state.screen) this.setState({ screen: h, stack: [] });
+    };
+    window.addEventListener('hashchange', this._hash);
+  }
+
+  componentWillUnmount() { window.removeEventListener('hashchange', this._hash); }
+
+  hashScreen() {
+    if (this.props.hashRouting === false) return null;
+    const h = (location.hash || '').slice(1).toLowerCase();
+    return Component.SCREENS.indexOf(h) !== -1 ? h : null;
+  }
+
+  sync(name) {
+    if (this.props.hashRouting === false) return;
+    try { history.replaceState(null, '', '#' + name); } catch (e) {}
+  }
+
+  go(name) {
+    return () => {
+      this.setState(s => (s.screen === name ? null : { screen: name, stack: s.stack.concat([s.screen]), sheetOpen: name === 'discover' ? true : s.sheetOpen }));
+      this.sync(name);
+      window.scrollTo(0, 0);
+    };
+  }
+
+  placeholder(name) {
+    return () => {
+      this.setState(s => ({ screen: 'placeholder', ph: name, stack: s.stack.concat([s.screen]) }));
+      window.scrollTo(0, 0);
+    };
+  }
+
+  back = () => {
+    this.setState(s => {
+      const prev = s.stack.length ? s.stack[s.stack.length - 1] : 'home';
+      this.sync(prev);
+      return { screen: prev, stack: s.stack.slice(0, -1) };
+    });
+    window.scrollTo(0, 0);
+  };
+
+  renderVals() {
+    const r = this.state.screen;
+    return {
+      isHome: r === 'home', isSearch: r === 'search', isDiscover: r === 'discover',
+      isProduct: r === 'product', isEditor: r === 'editor', isCheckout: r === 'checkout',
+      isWorkspace: r === 'workspace', isPlaceholder: r === 'placeholder',
+      phName: this.state.ph,
+      sheetOpen: this.state.sheetOpen,
+      sheetClosed: !this.state.sheetOpen,
+      toggleSheet: () => this.setState(s => ({ sheetOpen: !s.sheetOpen })),
+      goHome: this.go('home'), goSearch: this.go('search'), goDiscover: this.go('discover'),
+      goProduct: this.go('product'), goEditor: this.go('editor'), goCheckout: this.go('checkout'),
+      goWorkspace: this.go('workspace'),
+      goAccount: this.placeholder('Authentication'),
+      goAI: this.placeholder('AI Studio'),
+      goSupport: this.placeholder('Support'),
+      goBack: this.back,
+      mobProducts: [
+        { slot: 'mgrid-1', img: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?q=60&w=1600&auto=format&fit=crop', credit: 'Photo by The Ian on Unsplash', chref: 'https://unsplash.com/@theian20', ph: 'lifestyle — hoodie', name: 'Oversized Hoodie', price: '€54' },
+        { slot: 'mgrid-2', img: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=60&w=1600&auto=format&fit=crop', credit: 'Photo by Faith & Yarn on Unsplash', chref: 'https://unsplash.com/@faithandyarn_', ph: 'lifestyle — tee', name: 'Heavyweight Tee', price: '€24' },
+        { slot: 'mgrid-3', img: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=60&w=1600&auto=format&fit=crop', credit: 'Photo by Mediamodifier on Unsplash', chref: 'https://unsplash.com/@mediamodifier', ph: 'lifestyle — zip hoodie', name: 'Zip Hoodie', price: '€62' },
+        { slot: 'mgrid-4', img: 'https://images.unsplash.com/photo-1578768079052-aa76e52ff62e?q=60&w=1600&auto=format&fit=crop', credit: 'Photo by Ali Saadat on Unsplash', chref: 'https://unsplash.com/@camsaadat', ph: 'lifestyle — sweat', name: 'Boxy Sweat', price: '€48' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+</helmet>
+<div style="max-width:1280px;margin:0 auto;padding:0 56px 140px">
+
+  <header data-screen-label="Cover" style="padding:64px 0;border-bottom:1px solid #1C1B19;display:flex;flex-direction:column;gap:36px">
+    <div style="display:flex;justify-content:space-between;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B">
+      <div>Web2Print</div><div>Doc 02 — Design System</div><div>v2 · 2026</div>
+    </div>
+    <h1 style="margin:0;font-family:inherit;font-weight:700;font-size:88px;line-height:1.02;letter-spacing:-0.02em">One language for<br>every screen</h1>
+    <p style="margin:0;font-size:19px;line-height:1.6;max-width:660px;color:#4A473F">Premium fashion technology — as if Apple designed Canva for fashion brands. Neutral, editorial, mobile-first, and consistent across homepage, catalogue, product, editor, dashboard, checkout, auth, AI workspace and mobile.</p>
+  </header>
+
+  <!-- 01 COLOUR -->
+  <section data-screen-label="Colour" style="padding:80px 0;border-bottom:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">01 — Colour</div>
+    <h2 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:40px">Neutral canvas, one accent</h2>
+    <p style="margin:0 0 40px;font-size:15.5px;color:#4A473F;max-width:660px;line-height:1.6">Photography dominates; the interface recedes. The accent appears only for primary CTAs, selected states, links and notifications — never decoration.</p>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:12px">
+      <sc-for list="{{ neutrals }}" as="c" hint-placeholder-count="6">
+        <div style="border:1px solid #E6E2D8;background:#fff;border-radius:12px;overflow:hidden">
+          <div style="height:96px;background:{{ c.hex }};border-bottom:1px solid #EEEBE3"></div>
+          <div style="padding:12px 14px"><div style="font-size:13px;font-weight:600">{{ c.name }}</div><div style="font-family:monospace;font-size:11px;color:#8B867B;margin-top:2px">{{ c.hex }}</div><div style="font-size:11.5px;color:#8B867B;margin-top:2px">{{ c.use }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <sc-for list="{{ accents }}" as="c" hint-placeholder-count="4">
+        <div style="border:1px solid #E6E2D8;background:#fff;border-radius:12px;overflow:hidden">
+          <div style="height: 64px; background: {{ c.hex }}"></div>
+          <div style="padding:12px 14px"><div style="font-size:13px;font-weight:600">{{ c.name }}</div><div style="font-family:monospace;font-size:11px;color:#8B867B;margin-top:2px">{{ c.hex }}</div><div style="font-size:11.5px;color:#8B867B;margin-top:2px">{{ c.use }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- 02 TYPOGRAPHY -->
+  <section data-screen-label="Typography" style="padding:80px 0;border-bottom:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">02 — Typography</div>
+    <h2 style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:40px">Editorial hierarchy, two weights</h2>
+    <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+      <sc-for list="{{ typeScale }}" as="t" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:190px 1fr 210px;gap:28px;align-items:baseline;padding:18px 32px;border-bottom:1px solid #F1EEE7">
+          <div style="font-family:monospace;font-size:12px;color:#8B867B">{{ t.token }}</div>
+          <div style="font-family:{{ t.family }};font-size:{{ t.size }};font-weight:{{ t.weight }};letter-spacing:{{ t.ls }};text-transform:{{ t.tt }};line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.sample }}</div>
+          <div style="font-size:12px;color:#8B867B">{{ t.spec }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:16px;font-size:13px;color:#4A473F;line-height:1.6;max-width:660px">Instrument Serif for display and prices; Helvetica Neue 400/500/600 for everything else. Generous line-height (1.6 body), paragraphs max 66ch.</div>
+  </section>
+
+  <!-- 03 GRID & SPACING -->
+  <section data-screen-label="Grid and spacing" style="padding:80px 0;border-bottom:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">03 — Grid &amp; spacing</div>
+    <h2 style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:40px">8-point rhythm, three grids</h2>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px">
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px"><span style="font-weight:600;color:#1C1B19">Desktop ≥1120</span><span>12 col · 24px gutter · 80px margins</span></div>
+            <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:6px"><sc-for list="{{ cols12 }}" as="i" hint-placeholder-count="12"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px"><span style="font-weight:600;color:#1C1B19">Tablet 768–1119</span><span>8 col · 20px gutter · 40px margins</span></div>
+            <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-width:70%"><sc-for list="{{ cols8 }}" as="i" hint-placeholder-count="8"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px;max-width:36%"><span style="font-weight:600;color:#1C1B19">Mobile &lt;768</span><span>4 col · 16px</span></div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:36%"><sc-for list="{{ cols4 }}" as="i" hint-placeholder-count="4"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:18px">Spacing tokens</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ spacing }}" as="s" hint-placeholder-count="7">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="font-family:monospace;font-size:11px;color:#8B867B;min-width:58px">{{ s.token }}</div>
+              <div style="height:13px;background:#1C1B19;border-radius:3px;width:{{ s.px }}"></div>
+              <div style="font-size:11px;color:#8B867B">{{ s.px }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;font-size:12.5px;color:#4A473F;line-height:1.55">Sections 96–128px apart. Never dense — when in doubt, add space.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 SHAPE & DEPTH -->
+  <section data-screen-label="Shape and depth" style="padding:80px 0;border-bottom:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">04 — Shape &amp; depth</div>
+    <h2 style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:40px">Soft geometry, subtle depth</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:18px">Radii</div>
+        <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap">
+          <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">8</div>
+          <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:12px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">12</div>
+          <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:16px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">16</div>
+          <div style="width:64px;height:40px;border:1.5px solid #1C1B19;border-radius:999px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px">pill</div>
+        </div>
+        <div style="font-size:12.5px;color:#4A473F;line-height:1.6">8px inputs &amp; chips · 12px cards &amp; imagery · 16px drawers, sheets &amp; modals · pill for buttons. Consistent per component class, everywhere.</div>
+      </div>
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:18px">Elevation</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:18px">
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px 16px;font-size:12.5px;background:#fff">e0 — hairline only (list rows, tables)</div>
+          <div style="border-radius:12px;padding:12px 16px;font-size:12.5px;background:#fff;box-shadow:0 2px 12px rgba(28,27,25,0.06)">e1 — resting card</div>
+          <div style="border-radius:12px;padding:12px 16px;font-size:12.5px;background:#fff;box-shadow:0 12px 40px rgba(28,27,25,0.14)">e2 — drawers, popovers, sheets</div>
+        </div>
+        <div style="font-size:12.5px;color:#4A473F;line-height:1.6">Shadows are soft, wide and barely-there. Depth whispers; it never shouts.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 COMPONENT LIBRARY -->
+  <section data-screen-label="Components" style="padding:80px 0;border-bottom:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">05 — Component library</div>
+    <h2 style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:40px">The full kit, rendered</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+      <!-- Navigation -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px;grid-column:span 2">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Navigation — left links, centred logo, icon-only right cluster</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:linear-gradient(120deg,#C9C0B0,#A99F8D);border-radius:12px;padding:0;overflow:hidden">
+            <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:18px 28px;color:#fff">
+              <div style="display:flex;gap:28px;font-size:14px;font-weight:500"><span>About Us</span><span>Products</span><span>Contacts</span></div>
+              <div style="font-size:17px;font-weight:600;letter-spacing:-0.01em;text-align:center">Web2Print</div>
+              <div style="display:flex;gap:16px;align-items:center;justify-content:flex-end">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
+                <span style="position:relative;display:flex"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-9px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:9px;font-weight:600;padding:1px 5px">2</span></span>
+              </div>
+            </div>
+            <div style="height:52px;display:flex;align-items:center;padding:0 28px;color:rgba(255,255,255,0.85);font-family:monospace;font-size:11px">hero imagery beneath — nav is transparent</div>
+          </div>
+          <div style="background:rgba(251,250,248,0.92);border:1px solid #E6E2D8;border-radius:12px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 28px;box-shadow:0 2px 12px rgba(28,27,25,0.05)">
+            <div style="display:flex;gap:28px;font-size:14px;font-weight:500;color:#4A473F"><span style="color:#1C1B19">About Us</span><span>Products</span><span>Contacts</span></div>
+            <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em;text-align:center">Web2Print</div>
+            <div style="display:flex;gap:16px;align-items:center;justify-content:flex-end;color:#4A473F">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
+              <span style="position:relative;display:flex"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-9px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:9px;font-weight:600;padding:1px 5px">2</span></span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;font-size:12px;color:#8B867B;line-height:1.6">Left: text nav (About Us · Products · Contacts). Centre: logo. Right: icon-only cluster — search, language dropdown (PT · ES · FR · EN), account, wishlist, cart with count badge.</div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Buttons — tactile, pill, ≥44px</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:14px 30px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="background:#3B40C9;transform:translateY(-1px)" style-active="transform:scale(0.98)">Add to cart</button>
+          <button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 30px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="background:#3A3833">Customise</button>
+          <button style="background:transparent;color:#1C1B19;border:1px solid #C9C4B8;border-radius:999px;padding:13px 30px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="border-color:#1C1B19">Secondary</button>
+          <button style="background:transparent;color:#4A473F;border:none;padding:13px 12px;font-size:14.5px;font-weight:500;font-family:inherit;cursor:pointer;border-radius:999px" style-hover="background:#F1EEE7">Ghost</button>
+          <button style="background:transparent;border:1px solid #C9C4B8;border-radius:999px;width:46px;height:46px;font-size:18px;cursor:pointer;color:#1C1B19;font-family:inherit" style-hover="border-color:#1C1B19">＋</button>
+        </div>
+        <div style="margin-top:16px;font-size:12.5px;color:#8B867B">Hover: lift 1px + darken · Press: scale 0.98 · Focus: 2px iris ring offset 2px</div>
+      </div>
+
+      <!-- Inputs -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Inputs — large, minimal, soft focus</div>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:380px">
+          <div>
+            <div style="font-size:12.5px;font-weight:500;margin-bottom:6px;color:#4A473F">Email</div>
+            <input placeholder="you@example.com" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:15px 16px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none;transition:border-color 150ms" style-focus="border-color:#4A4FE4;box-shadow:0 0 0 3px rgba(74,79,228,0.12)">
+          </div>
+          <div>
+            <div style="font-size:12.5px;font-weight:500;margin-bottom:6px;color:#A34B33">Card number</div>
+            <input value="4242 4242" style="width:100%;box-sizing:border-box;border:1px solid #A34B33;border-radius:8px;padding:15px 16px;font-size:14.5px;font-family:inherit;background:#fff;color:#1C1B19;outline:none">
+            <div style="font-size:12px;color:#A34B33;margin-top:5px">Card number looks incomplete</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product card + swatches + sizes -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Product card · swatches · size selector</div>
+        <div style="display:flex;gap:24px">
+          <div style="width:220px;flex-shrink:0">
+            <div style="aspect-ratio:4/5;background:repeating-linear-gradient(45deg,#EFEBE2,#EFEBE2 10px,#E6E1D5 10px,#E6E1D5 20px);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative">
+              <span style="font-family:monospace;font-size:11px;color:#8B867B">lifestyle photo</span>
+              <span style="position:absolute;bottom:12px;right:12px;background:rgba(251,250,248,0.95);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:500;box-shadow:0 2px 12px rgba(28,27,25,0.1)">Customise</span>
+            </div>
+            <div style="padding-top:12px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;font-weight:500">Heavyweight Tee</span><span style="font-family:inherit;font-weight:700;font-size:16px">from €24</span></div>
+              <div style="font-size:12px;color:#8B867B">240 gsm · organic cotton</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;flex:1">
+            <div>
+              <div style="font-size:12.5px;color:#4A473F;margin-bottom:8px">Colour — <strong>Washed Black</strong></div>
+              <div style="display:flex;gap:9px">
+                <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="6">
+                  <div style="width:30px;height:30px;border-radius:50%;background:{{ sw.hex }};border:1px solid rgba(28,27,25,0.12);box-shadow:{{ sw.ring }};cursor:pointer"></div>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:12.5px;color:#4A473F;margin-bottom:8px">Size</div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap">
+                <sc-for list="{{ sizes }}" as="sz" hint-placeholder-count="7">
+                  <div style="min-width:44px;text-align:center;padding:11px 0;border:1px solid {{ sz.border }};background:{{ sz.bg }};color:{{ sz.ink }};font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;text-decoration:{{ sz.deco }}">{{ sz.label }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <span style="border:1px solid #4A4FE4;background:#F4F4FE;color:#4A4FE4;border-radius:999px;padding:7px 15px;font-size:12px;font-weight:500">DTF print ✓</span>
+              <span style="border:1px solid #DDD8CC;border-radius:999px;padding:7px 15px;font-size:12px;font-weight:500;color:#4A473F">Embroidery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs / accordion / chips -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Tabs · accordion · filter chips</div>
+        <div style="display:flex;gap:4px;border-bottom:1px solid #EEEBE3;margin-bottom:18px">
+          <div style="padding:11px 18px;font-size:13.5px;font-weight:500;border-bottom:2px solid #1C1B19;margin-bottom:-1px">Details</div>
+          <div style="padding:11px 18px;font-size:13.5px;color:#8B867B">Fabric</div>
+          <div style="padding:11px 18px;font-size:13.5px;color:#8B867B">Shipping</div>
+        </div>
+        <div style="border:1px solid #EEEBE3;border-radius:12px;overflow:hidden;margin-bottom:18px">
+          <div style="display:flex;justify-content:space-between;padding:14px 18px;font-size:13.5px;font-weight:500;background:#FBFAF8">Fit &amp; sizing <span style="color:#8B867B">−</span></div>
+          <div style="padding:0 18px 14px;font-size:13px;color:#4A473F;line-height:1.6;background:#FBFAF8">Relaxed fit, true to size. Model wears M.</div>
+          <div style="display:flex;justify-content:space-between;padding:14px 18px;font-size:13.5px;font-weight:500;border-top:1px solid #EEEBE3">Care instructions <span style="color:#8B867B">+</span></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="background:#1C1B19;color:#fff;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:500;display:flex;gap:8px;align-items:center">Hoodies <span style="opacity:0.6">✕</span></span>
+          <span style="background:#1C1B19;color:#fff;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:500;display:flex;gap:8px;align-items:center">Black <span style="opacity:0.6">✕</span></span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 16px;font-size:12.5px;color:#4A473F">Under €40</span>
+          <span style="font-size:12.5px;color:#4A4FE4;padding:8px 4px;font-weight:500">Clear all</span>
+        </div>
+      </div>
+
+      <!-- Feedback: toast, badge, progress, skeleton -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Feedback — toast · badges · progress · skeleton</div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:#1C1B19;color:#FBFAF8;border-radius:12px;padding:14px 18px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 40px rgba(28,27,25,0.18);max-width:380px"><span>Added to cart — Heavyweight Tee</span><span style="color:#9FA3F2;font-weight:500;cursor:pointer">View</span></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span style="background:#EDF2EA;color:#41573B;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:500">In production</span>
+            <span style="background:#F4F4FE;color:#4A4FE4;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:500">Shipped</span>
+            <span style="background:#F7EBE7;color:#A34B33;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:500">Action needed</span>
+            <span style="background:#F1EEE7;color:#4A473F;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:500">Draft</span>
+          </div>
+          <div style="max-width:380px"><div style="height:6px;background:#F1EEE7;border-radius:999px;overflow:hidden"><div style="width:64%;height:100%;background:#4A4FE4;border-radius:999px"></div></div><div style="font-size:11.5px;color:#8B867B;margin-top:6px">Generating artwork — 64%</div></div>
+          <div style="display:flex;gap:12px;max-width:380px">
+            <div style="width:72px;height:72px;border-radius:12px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:9px;justify-content:center">
+              <div style="height:13px;width:70%;border-radius:6px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+              <div style="height:13px;width:45%;border-radius:6px;background:linear-gradient(90deg,#F1EEE7 25%,#E8E4D9 50%,#F1EEE7 75%);background-size:200% 100%;animation:shimmer 1.6s infinite"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline + AI prompt + empty state -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Order timeline</div>
+        <div style="display:flex;flex-direction:column;gap:0;max-width:380px">
+          <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+            <div style="display:flex;gap:16px">
+              <div style="display:flex;flex-direction:column;align-items:center">
+                <div style="width:12px;height:12px;border-radius:50%;background:{{ t.dot }};border:2px solid {{ t.dotBorder }};box-sizing:border-box"></div>
+                <div style="width:1.5px;flex:1;background:{{ t.line }};min-height:26px"></div>
+              </div>
+              <div style="padding-bottom:18px">
+                <div style="font-size:13.5px;font-weight:{{ t.weight }};color:{{ t.ink }}">{{ t.label }}</div>
+                <div style="font-size:12px;color:#8B867B;margin-top:2px">{{ t.date }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">AI prompt box · empty state</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="border:1px solid #DDD8CC;border-radius:16px;padding:18px 20px;background:#fff;box-shadow:0 2px 12px rgba(28,27,25,0.05)">
+            <div style="font-size:14.5px;color:#8B867B;margin-bottom:14px">Describe your design — "a minimal mountain line drawing"</div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;gap:7px">
+                <span style="border:1px solid #EEEBE3;border-radius:999px;padding:6px 13px;font-size:12px;color:#4A473F;cursor:pointer" style-hover="border-color:#C9C4B8">Vintage badge</span>
+                <span style="border:1px solid #EEEBE3;border-radius:999px;padding:6px 13px;font-size:12px;color:#4A473F;cursor:pointer" style-hover="border-color:#C9C4B8">Line art</span>
+              </div>
+              <button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:11px 22px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3B40C9">Generate</button>
+            </div>
+          </div>
+          <div style="border:1px dashed #DDD8CC;border-radius:16px;padding:32px;text-align:center">
+            <div style="font-family:inherit;font-weight:700;font-size:20px;margin-bottom:6px">No designs yet</div>
+            <div style="font-size:13px;color:#8B867B;margin-bottom:16px">Your saved work will live here.</div>
+            <button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:11px 22px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer">Start designing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drawer / bottom sheet -->
+      <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px;grid-column:span 2">
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Overlays — side drawer (desktop) · bottom sheet (mobile) · fullscreen only when necessary</div>
+        <div style="display:flex;gap:20px;align-items:flex-end">
+          <div style="flex:1.6;background:#EFEBE2;border-radius:12px;height:190px;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;right:0;bottom:0;width:44%;background:#fff;border-radius:12px 0 0 12px;box-shadow:-12px 0 40px rgba(28,27,25,0.12);padding:20px 22px">
+              <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:12px">Cart (2) <span style="color:#8B867B;font-weight:400">✕</span></div>
+              <div style="display:flex;gap:10px;margin-bottom:10px"><div style="width:44px;height:52px;background:#EFEBE2;border-radius:8px"></div><div style="font-size:12px;line-height:1.5">Heavyweight Tee<br><span style="color:#8B867B">Black · M · €38</span></div></div>
+              <button style="width:100%;background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:11px 0;font-size:12.5px;font-weight:500;font-family:inherit">Checkout · €76</button>
+            </div>
+            <div style="position:absolute;left:20px;top:20px;font-family:monospace;font-size:11px;color:#8B867B">page dims to 40%</div>
+          </div>
+          <div style="width:200px;background:#EFEBE2;border-radius:18px;height:190px;position:relative;overflow:hidden">
+            <div style="position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -8px 30px rgba(28,27,25,0.12);padding:10px 16px 14px;height:55%">
+              <div style="width:36px;height:4px;background:#DDD8CC;border-radius:999px;margin:0 auto 10px"></div>
+              <div style="font-size:12px;font-weight:600;margin-bottom:8px">Filters</div>
+              <div style="display:flex;gap:5px;flex-wrap:wrap"><span style="border:1px solid #DDD8CC;border-radius:999px;padding:4px 10px;font-size:10.5px">Tees</span><span style="background:#1C1B19;color:#fff;border-radius:999px;padding:4px 10px;font-size:10.5px">Hoodies</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 MOTION / ICONS / IMAGERY / A11Y -->
+  <section data-screen-label="Rules" style="padding:80px 0">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">06 — Motion, icons, imagery &amp; accessibility</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+        <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px 32px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:10px">{{ r.t }}</div>
+          <div style="font-size:13.5px;color:#4A473F;line-height:1.7">{{ r.d }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:48px;background:#1C1B19;color:#FBFAF8;border-radius:16px;padding:36px 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="font-family:inherit;font-weight:700;font-size:26px">Consistency over experimentation. Next — the Homepage.</div>
+      <div style="font-family:monospace;font-size:12px;color:#8B867B">WEB2PRINT · DESIGN SYSTEM · v2</div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      neutrals: [
+        { name: 'White', hex: '#FFFFFF', use: 'Cards, surfaces' },
+        { name: 'Paper', hex: '#FBFAF8', use: 'Page background' },
+        { name: 'Beige', hex: '#EFEBE2', use: 'Wells, alt sections' },
+        { name: 'Soft Grey', hex: '#DDD8CC', use: 'Borders, dividers' },
+        { name: 'Slate', hex: '#4A473F', use: 'Secondary text' },
+        { name: 'Charcoal', hex: '#1C1B19', use: 'Text, dark surfaces' },
+      ],
+      accents: [
+        { name: 'Iris', hex: '#4A4FE4', use: 'CTA · selected · links · notifications' },
+        { name: 'Iris Wash', hex: '#F4F4FE', use: 'Selected fills, AI surfaces' },
+        { name: 'Sage', hex: '#41573B', use: 'Success, in stock' },
+        { name: 'Clay', hex: '#A34B33', use: 'Errors, alerts' },
+      ],
+      typeScale: [
+        { token: '--display-xl', sample: 'Wear your ideas', family: 'inherit', size: '54px', weight: 700, ls: '-0.02em', tt: 'none', spec: '72–96px / 1.02 · heroes' },
+        { token: '--display-lg', sample: 'The Essentials Collection', family: 'inherit', size: '36px', weight: 700, ls: '-0.01em', tt: 'none', spec: '40–48px / 1.1 · sections' },
+        { token: '--heading', sample: 'Heavyweight Tee', family: 'inherit', size: '21px', weight: 600, ls: '-0.01em', tt: 'none', spec: '20–24px / 1.25 · cards, panels' },
+        { token: '--body', sample: 'Organic cotton, 240 gsm, garment-dyed and pre-shrunk.', family: 'inherit', size: '15px', weight: 400, ls: '0', tt: 'none', spec: '15–16px / 1.6 · max 66ch' },
+        { token: '--label', sample: 'Colour — Washed Black', family: 'inherit', size: '13px', weight: 500, ls: '0.01em', tt: 'none', spec: '13px / 1.4 · controls' },
+        { token: '--eyebrow', sample: 'New for Autumn', family: 'inherit', size: '12px', weight: 500, ls: '0.14em', tt: 'uppercase', spec: '12px caps · metadata' },
+        { token: '--price', sample: '€38', family: 'inherit', size: '25px', weight: 700, ls: '0', tt: 'none', spec: 'sans bold · prices' },
+      ],
+      cols12: Array.from({length:12}, (_,i)=>i), cols8: Array.from({length:8}, (_,i)=>i), cols4: Array.from({length:4}, (_,i)=>i),
+      spacing: [
+        { token: '--s-1', px: '8px' }, { token: '--s-2', px: '16px' }, { token: '--s-3', px: '24px' },
+        { token: '--s-4', px: '32px' }, { token: '--s-6', px: '48px' }, { token: '--s-8', px: '64px' }, { token: '--s-12', px: '96px' },
+      ],
+      swatches: [
+        { hex: '#1C1B19', ring: '0 0 0 2px #fff, 0 0 0 4px #4A4FE4' },
+        { hex: '#FBFAF8', ring: 'none' }, { hex: '#7A8471', ring: 'none' },
+        { hex: '#B0A28E', ring: 'none' }, { hex: '#3E4A5C', ring: 'none' }, { hex: '#8C3B2E', ring: 'none' },
+      ],
+      sizes: [
+        { label: 'XS', border: '#DDD8CC', bg: '#fff', ink: '#1C1B19', deco: 'none' },
+        { label: 'S', border: '#DDD8CC', bg: '#fff', ink: '#1C1B19', deco: 'none' },
+        { label: 'M', border: '#4A4FE4', bg: '#F4F4FE', ink: '#4A4FE4', deco: 'none' },
+        { label: 'L', border: '#DDD8CC', bg: '#fff', ink: '#1C1B19', deco: 'none' },
+        { label: 'XL', border: '#DDD8CC', bg: '#fff', ink: '#1C1B19', deco: 'none' },
+        { label: '2XL', border: '#DDD8CC', bg: '#fff', ink: '#1C1B19', deco: 'none' },
+        { label: '3XL', border: '#F1EEE7', bg: '#FBFAF8', ink: '#B8B2A5', deco: 'line-through' },
+      ],
+      timeline: [
+        { label: 'Order confirmed', date: 'Mar 3, 14:02', dot: '#4A4FE4', dotBorder: '#4A4FE4', line: '#4A4FE4', ink: '#1C1B19', weight: 600 },
+        { label: 'In production', date: 'Mar 4 — printing now', dot: '#4A4FE4', dotBorder: '#4A4FE4', line: '#DDD8CC', ink: '#1C1B19', weight: 600 },
+        { label: 'Shipped', date: 'Expected Mar 6', dot: '#fff', dotBorder: '#DDD8CC', line: '#DDD8CC', ink: '#8B867B', weight: 400 },
+        { label: 'Delivered', date: 'Expected Mar 9', dot: '#fff', dotBorder: '#DDD8CC', line: 'transparent', ink: '#8B867B', weight: 400 },
+      ],
+      rules: [
+        { t: 'Motion', d: 'Spring-based, fast, subtle: 200–300ms ease-out. Fades and 8–12px slides; crossfade product imagery; shared-element transition from product card into editor. Never exaggerated.' },
+        { t: 'Micro-interactions', d: 'Hover answers in 150ms. Skeletons while loading, animated check on success, contextual tooltips on delay, smooth (animated) filtering, button press scale 0.98.' },
+        { t: 'Icons', d: 'Thin line icons, 1.5px consistent stroke, minimal set (Lucide as reference library). Sized 20–24px, always paired with labels in navigation. No emoji.' },
+        { t: 'Imagery', d: 'Lifestyle first, studio second, detail third; UGC woven through. Warm-neutral grade, people wearing garments — never floating mockups. Galleries never cluttered.' },
+        { t: 'Responsive', d: 'Mobile-first: every component designed at 4 columns before scaling up. Filters become bottom sheets; drawers become sheets; nav becomes tab bar. Desktop is the enhancement.' },
+        { t: 'Accessibility', d: 'WCAG AA contrast throughout (Charcoal on Paper = 15.9:1; Iris on white = 6.3:1). Visible 2px focus rings, full keyboard navigation, ≥44px touch targets, semantic landmarks for screen readers.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

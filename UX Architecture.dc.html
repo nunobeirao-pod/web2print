@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F7F6F3;color:#17181A;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#4A4FE4;text-decoration:none}a:hover{color:#2E33C9;text-decoration:underline}
+</style>
+</helmet>
+<div style="max-width:1180px;margin:0 auto;padding:72px 48px 120px">
+
+  <!-- COVER -->
+  <header data-screen-label="Cover" style="padding-bottom:56px;border-bottom:2px solid #17181A;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#6B6E76">Web2Print · Textile Customisation Platform</div>
+      <div style="font-size:13px;color:#6B6E76;font-family:monospace">DOC 01 / 11 — UX ARCHITECTURE</div>
+    </div>
+    <h1 style="margin:0;font-size:64px;line-height:1.02;letter-spacing:-0.03em;font-weight:600;max-width:900px">UX Architecture &amp; Experience Foundation</h1>
+    <p style="margin:0;font-size:20px;line-height:1.5;color:#3D3F45;max-width:720px">The structural blueprint for a direct-to-consumer textile customisation platform — apparel personalised with DTF and embroidery, designed for consumers and creators. Everything downstream (design system, screens, flows) builds on this document.</p>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;font-size:14px;color:#6B6E76">
+      <div><strong style="color:#17181A">Audience</strong> · Consumers &amp; creators</div>
+      <div><strong style="color:#17181A">Products</strong> · Tees, hoodies, polos, caps</div>
+      <div><strong style="color:#17181A">Methods</strong> · DTF (primary), embroidery</div>
+      <div><strong style="color:#17181A">Model</strong> · Direct storefront — we print &amp; ship</div>
+    </div>
+  </header>
+
+  <!-- PRINCIPLES -->
+  <section data-screen-label="Principles" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">01 — Experience principles</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">Four influences, one synthesis</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:14px;color:#6B6E76">Simplicity of Apple</div>
+        <div style="font-size:18px;font-weight:600;line-height:1.3">One clear action per screen</div>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#3D3F45">Progressive disclosure everywhere. Defaults are excellent; options appear only when asked for. No screen has two competing calls to action.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:14px;color:#6B6E76">Editor of Canva</div>
+        <div style="font-size:18px;font-weight:600;line-height:1.3">Direct manipulation, zero fear</div>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#3D3F45">Everything on the garment is draggable, resizable, undoable. Autosave is constant. The user never loses work and never sees a modal that blocks the canvas.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:14px;color:#6B6E76">Commerce of Shopify</div>
+        <div style="font-size:18px;font-weight:600;line-height:1.3">Price is always live and honest</div>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#3D3F45">Every configuration change updates the price instantly. Checkout is fast, trusted, and never surprises. Order status is transparent from press to doorstep.</p>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:14px;color:#6B6E76">Discovery of Printful</div>
+        <div style="font-size:18px;font-weight:600;line-height:1.3">The product is the hero</div>
+        <p style="margin:0;font-size:14px;line-height:1.55;color:#3D3F45">Catalogue browsing is visual-first: real garment photography, colour/size availability at a glance, print-method guidance built into discovery.</p>
+      </div>
+    </div>
+    <div style="margin-top:24px;background:#17181A;color:#F7F6F3;border-radius:12px;padding:28px 32px;font-size:16px;line-height:1.6">
+      <strong>What makes it unique:</strong> the customiser is the storefront. Every product image site-wide is an entry point into editing — "Customise" is never more than one tap away, and AI can draft the first design from a sentence so no one starts from a blank garment.
+    </div>
+  </section>
+
+  <!-- SITEMAP -->
+  <section data-screen-label="Sitemap" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">02 — Information architecture</div>
+    <h2 style="margin:0 0 12px;font-size:36px;letter-spacing:-0.02em;font-weight:600">Sitemap</h2>
+    <p style="margin:0 0 40px;font-size:16px;color:#3D3F45;max-width:680px">Five top-level territories. The Customizer is deliberately outside the browse hierarchy — it is a full-screen workspace reachable from anywhere.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:start">
+      <sc-for list="{{ sitemap }}" as="col" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="background:#17181A;color:#fff;border-radius:8px;padding:14px 16px;font-size:15px;font-weight:600;text-align:center">{{ col.title }}</div>
+          <div style="width:1px;height:12px;background:#B8B5AC;align-self:center"></div>
+          <sc-for list="{{ col.pages }}" as="p" hint-placeholder-count="4">
+            <div style="background:#fff;border:1px solid #E4E2DB;border-radius:8px;padding:10px 14px;font-size:13.5px;line-height:1.4">{{ p }}</div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap">
+      <div style="background:#EDECFF;border:1px solid #C9CBF5;border-radius:8px;padding:12px 18px;font-size:13.5px;color:#2E33C9"><strong>Customizer</strong> — full-screen workspace, entered from Product Page, Catalogue quick-action, AI prompt, or a saved design. Exits back to origin.</div>
+      <div style="background:#EDECFF;border:1px solid #C9CBF5;border-radius:8px;padding:12px 18px;font-size:13.5px;color:#2E33C9"><strong>Auth</strong> — lazy: browsing and designing never require an account; sign-in is requested only at save or checkout.</div>
+    </div>
+  </section>
+
+  <!-- NAVIGATION MODEL -->
+  <section data-screen-label="Navigation" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">03 — Navigation model</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">Three navigation contexts</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;overflow:hidden">
+        <div style="background:#F1F0EB;padding:16px 24px;font-size:15px;font-weight:600;border-bottom:1px solid #E4E2DB">Storefront chrome</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5;color:#3D3F45">
+          <div><strong style="color:#17181A">Header:</strong> logo · Shop (mega-menu by garment) · Create (AI entry) · search · cart · account</div>
+          <div><strong style="color:#17181A">Persistent:</strong> "Customise" pill on every product surface</div>
+          <div><strong style="color:#17181A">Footer:</strong> help, print guides, shipping, legal</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;overflow:hidden">
+        <div style="background:#F1F0EB;padding:16px 24px;font-size:15px;font-weight:600;border-bottom:1px solid #E4E2DB">Customizer chrome</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5;color:#3D3F45">
+          <div><strong style="color:#17181A">Top bar:</strong> back · design name (autosave state) · undo/redo · live price · Add to cart</div>
+          <div><strong style="color:#17181A">Left rail:</strong> tools — Text, Upload, AI, Clipart, Layers</div>
+          <div><strong style="color:#17181A">Right panel:</strong> contextual properties of selection</div>
+          <div><strong style="color:#17181A">Bottom:</strong> garment view switcher (front/back/sleeve), colour &amp; size</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;overflow:hidden">
+        <div style="background:#F1F0EB;padding:16px 24px;font-size:15px;font-weight:600;border-bottom:1px solid #E4E2DB">Dashboard chrome</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.5;color:#3D3F45">
+          <div><strong style="color:#17181A">Sidebar:</strong> Overview · Orders · My Designs · Uploads library · Addresses · Settings</div>
+          <div><strong style="color:#17181A">Creators see extra:</strong> Published designs · Earnings</div>
+          <div><strong style="color:#17181A">Every design card:</strong> Edit → reopens customizer; Reorder → straight to checkout</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USER FLOWS -->
+  <section data-screen-label="User flows" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">04 — Core user flows</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">Three journeys the architecture must make effortless</h2>
+    <div style="display:flex;flex-direction:column;gap:36px">
+      <sc-for list="{{ flows }}" as="flow" hint-placeholder-count="3">
+        <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px 32px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:16px;flex-wrap:wrap">
+            <div style="font-size:18px;font-weight:600">{{ flow.title }}</div>
+            <div style="font-size:13px;color:#6B6E76;font-family:monospace">{{ flow.meta }}</div>
+          </div>
+          <p style="margin:0 0 20px;font-size:14px;color:#3D3F45;max-width:760px;line-height:1.5">{{ flow.desc }}</p>
+          <div style="display:flex;align-items:stretch;gap:0;flex-wrap:wrap;row-gap:16px">
+            <sc-for list="{{ flow.steps }}" as="step" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center">
+                <div style="border:1.5px solid {{ step.border }};background:{{ step.bg }};color:{{ step.ink }};border-radius:8px;padding:10px 14px;font-size:13px;font-weight:500;min-width:96px;text-align:center;line-height:1.35">{{ step.label }}</div>
+                <sc-if value="{{ step.arrow }}" hint-placeholder-val="{{ true }}">
+                  <div style="color:#B8B5AC;font-size:18px;padding:0 8px">→</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:20px;font-size:13px;color:#6B6E76;align-items:center;flex-wrap:wrap">
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;border:1.5px solid #C9C7BF;background:#fff;display:inline-block"></span> Page / surface</div>
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;border:1.5px solid #4A4FE4;background:#EDECFF;display:inline-block"></span> Customizer workspace</div>
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:14px;height:14px;border-radius:4px;border:1.5px solid #17181A;background:#17181A;display:inline-block"></span> Conversion moment</div>
+    </div>
+  </section>
+
+  <!-- PAGE HIERARCHY -->
+  <section data-screen-label="Page hierarchy" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">05 — Page hierarchy &amp; delivery map</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">The eleven surfaces, in build order</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+      <sc-for list="{{ surfaces }}" as="s" hint-placeholder-count="10">
+        <div style="background:#fff;border:1px solid #E4E2DB;border-radius:10px;padding:18px 22px;display:flex;gap:18px;align-items:baseline">
+          <div style="font-family:monospace;font-size:13px;color:#4A4FE4;min-width:34px">{{ s.num }}</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:600;margin-bottom:4px">{{ s.title }}</div>
+            <div style="font-size:13.5px;color:#3D3F45;line-height:1.5">{{ s.desc }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- COMPONENT INVENTORY -->
+  <section data-screen-label="Components" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">06 — Reusable component inventory</div>
+    <h2 style="margin:0 0 12px;font-size:36px;letter-spacing:-0.02em;font-weight:600">What gets built once, used everywhere</h2>
+    <p style="margin:0 0 40px;font-size:16px;color:#3D3F45;max-width:680px">Grouped by layer. The design system (Doc 02) gives each of these its visual form; this list fixes the contract.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start">
+      <sc-for list="{{ componentGroups }}" as="g" hint-placeholder-count="3">
+        <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;overflow:hidden">
+          <div style="background:#F1F0EB;padding:14px 22px;font-size:14px;font-weight:600;border-bottom:1px solid #E4E2DB;display:flex;justify-content:space-between"><span>{{ g.title }}</span><span style="color:#6B6E76;font-weight:400;font-family:monospace;font-size:12px">{{ g.count }}</span></div>
+          <div style="padding:16px 22px;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="6">
+              <div style="font-size:13.5px;line-height:1.45;display:flex;gap:10px"><span style="color:#4A4FE4">·</span><span><strong>{{ c.name }}</strong> — <span style="color:#3D3F45">{{ c.note }}</span></span></div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- INTERACTION PATTERNS -->
+  <section data-screen-label="Interaction patterns" style="padding:64px 0;border-bottom:1px solid #D9D7D0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">07 — Interaction patterns</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">System-wide behavioural rules</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+      <sc-for list="{{ patterns }}" as="p" hint-placeholder-count="8">
+        <div style="background:#fff;border:1px solid #E4E2DB;border-radius:10px;padding:20px 24px">
+          <div style="font-size:15px;font-weight:600;margin-bottom:6px">{{ p.title }}</div>
+          <div style="font-size:13.5px;color:#3D3F45;line-height:1.55">{{ p.rule }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- RESPONSIVE -->
+  <section data-screen-label="Responsive" style="padding:64px 0">
+    <div style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A4FE4;margin-bottom:16px">08 — Responsive behaviour</div>
+    <h2 style="margin:0 0 40px;font-size:36px;letter-spacing:-0.02em;font-weight:600">One system, three breakpoints</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px"><div style="font-size:16px;font-weight:600">Mobile</div><div style="font-family:monospace;font-size:12px;color:#6B6E76">&lt; 768px</div></div>
+        <div style="font-size:13.5px;line-height:1.6;color:#3D3F45;display:flex;flex-direction:column;gap:10px">
+          <div>· Bottom tab bar: Shop / Create / Cart / Account</div>
+          <div>· Customizer: full-screen canvas, tools as a bottom sheet; properties slide over the sheet, never over the garment</div>
+          <div>· Catalogue: 2-col grid, filters as a full sheet</div>
+          <div>· Hit targets ≥ 44px throughout</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px"><div style="font-size:16px;font-weight:600">Tablet</div><div style="font-family:monospace;font-size:12px;color:#6B6E76">768 – 1119px</div></div>
+        <div style="font-size:13.5px;line-height:1.6;color:#3D3F45;display:flex;flex-direction:column;gap:10px">
+          <div>· Header nav, no tab bar</div>
+          <div>· Customizer: left rail collapses to icons; right panel overlays on selection</div>
+          <div>· Catalogue: 3-col grid, filter rail collapsible</div>
+          <div>· Dashboard sidebar becomes top segmented nav</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E4E2DB;border-radius:12px;padding:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px"><div style="font-size:16px;font-weight:600">Desktop</div><div style="font-family:monospace;font-size:12px;color:#6B6E76">≥ 1120px</div></div>
+        <div style="font-size:13.5px;line-height:1.6;color:#3D3F45;display:flex;flex-direction:column;gap:10px">
+          <div>· Full three-zone customizer (rail + canvas + panel)</div>
+          <div>· Catalogue: 4-col grid, persistent filter rail</div>
+          <div>· Mega-menu on Shop hover</div>
+          <div>· Max content width 1440px, centred</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:48px;background:#17181A;color:#F7F6F3;border-radius:12px;padding:32px 36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:18px;font-weight:600;margin-bottom:6px">Next: Doc 02 — Design System</div>
+        <div style="font-size:14px;color:#B8B5AC;line-height:1.5">Colour, type, spacing, and the visual form of every component in section 06.</div>
+      </div>
+      <div style="font-family:monospace;font-size:13px;color:#B8B5AC">WEB2PRINT · UX FOUNDATION · v1</div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const step = (label, kind, arrow = true) => ({
+      label, arrow,
+      border: kind === 'c' ? '#4A4FE4' : kind === 'k' ? '#17181A' : '#C9C7BF',
+      bg: kind === 'c' ? '#EDECFF' : kind === 'k' ? '#17181A' : '#fff',
+      ink: kind === 'k' ? '#fff' : '#17181A',
+    });
+    return {
+      sitemap: [
+        { title: 'Home', pages: ['Hero + AI prompt bar', 'Featured products', 'How it works', 'Creator showcase'] },
+        { title: 'Shop', pages: ['Catalogue (all)', 'T-shirts', 'Hoodies', 'Polos', 'Caps', 'Product page'] },
+        { title: 'Create', pages: ['Customizer (workspace)', 'AI design generator', 'Start from template', 'Start blank'] },
+        { title: 'Account', pages: ['Dashboard overview', 'Orders & tracking', 'My designs', 'Uploads library', 'Settings'] },
+        { title: 'Support', pages: ['Print method guides', 'Size & fit', 'Shipping & returns', 'FAQ / contact'] },
+      ],
+      flows: [
+        { title: 'A — Consumer: browse → customise → buy', meta: 'PRIMARY · ~4 min', desc: 'The default revenue path. No account needed until checkout; design state persists across the whole flow.',
+          steps: [step('Home / Catalogue'), step('Product page'), step('Customizer', 'c'), step('Add to cart'), step('Checkout', 'k'), step('Order confirmed', 'k', false)] },
+        { title: 'B — AI-first: prompt → garment → buy', meta: 'DIFFERENTIATOR · ~2 min', desc: 'Entry from the homepage prompt bar or Create. AI drafts artwork onto a default tee; the user refines in the customizer instead of starting blank.',
+          steps: [step('AI prompt bar'), step('3 AI drafts', 'c'), step('Pick + refine', 'c'), step('Pick garment/colour', 'c'), step('Checkout', 'k', false)] },
+        { title: 'C — Creator: design → save → publish / reorder', meta: 'RETENTION · returning users', desc: 'Creators keep a library of designs, publish them to the showcase, and reorder in one tap. Sign-in is triggered at first save.',
+          steps: [step('Customizer', 'c'), step('Save design'), step('Sign in (lazy)'), step('My designs'), step('Publish or Reorder', 'k', false)] },
+      ],
+      surfaces: [
+        { num: '03', title: 'Homepage', desc: 'AI prompt bar as hero, product entry points, trust and how-it-works.' },
+        { num: '04', title: 'Product Catalogue', desc: 'Visual-first grid, filter by garment / colour / method, quick-customise.' },
+        { num: '05', title: 'Product Page', desc: 'Photography, colour/size matrix, print-method guidance, one CTA: Customise.' },
+        { num: '06', title: 'Product Customizer', desc: 'Full-screen editor — the heart of the platform. Text, upload, AI, layers, live price.' },
+        { num: '07', title: 'Customer Dashboard', desc: 'Orders, saved designs, uploads library; creator earnings view.' },
+        { num: '08', title: 'Authentication', desc: 'Lazy, minimal-friction sign-in at save/checkout; social + email.' },
+        { num: '09', title: 'AI Experience', desc: 'Prompt-to-print generation and the in-editor smart assistant.' },
+        { num: '10', title: 'Checkout', desc: 'Single-page, express payments, live production + shipping estimates.' },
+        { num: '11', title: 'Mobile Experience', desc: 'Tab bar navigation and the bottom-sheet customizer.' },
+        { num: '02', title: 'Design System', desc: 'Tokens, type, colour, and visual form of every component below. (Next doc.)' },
+      ],
+      componentGroups: [
+        { title: 'Atoms', count: '8', items: [
+          { name: 'Button', note: 'primary / secondary / ghost / destructive; loading state' },
+          { name: 'Input & search field', note: 'inline validation, prefix icons' },
+          { name: 'Price tag', note: 'live-updating, strikethrough for bundles' },
+          { name: 'Colour swatch', note: 'garment colours; ring on selection, slash when unavailable' },
+          { name: 'Size chip', note: 'XS–3XL; disabled when out of stock' },
+          { name: 'Method badge', note: 'DTF / Embroidery, with tooltip explainer' },
+          { name: 'Stepper', note: 'quantity; keyboard accessible' },
+          { name: 'Toast', note: 'autosave, cart add, errors; never blocks canvas' },
+        ]},
+        { title: 'Molecules', count: '7', items: [
+          { name: 'Product card', note: 'photo, price-from, swatch strip, hover Customise pill' },
+          { name: 'Design card', note: 'thumbnail on garment, Edit / Reorder / Publish actions' },
+          { name: 'Filter group', note: 'checkbox lists + colour/size grids; applied-filter chips' },
+          { name: 'Cart line item', note: 'garment thumb with print preview, per-side breakdown' },
+          { name: 'Order status row', note: 'stage tracker: printed → shipped → delivered' },
+          { name: 'AI prompt bar', note: 'textarea + suggestion chips + generate action' },
+          { name: 'Layer row', note: 'thumb, name, lock/hide, drag-reorder' },
+        ]},
+        { title: 'Organisms', count: '7', items: [
+          { name: 'Storefront header', note: 'mega-menu, search, cart drawer trigger' },
+          { name: 'Customizer canvas', note: 'garment render + print-area guides + selection handles' },
+          { name: 'Tool rail', note: 'Text / Upload / AI / Clipart / Layers panels' },
+          { name: 'Properties panel', note: 'contextual to selection; method-aware options' },
+          { name: 'View switcher', note: 'front / back / sleeve thumbnails with edit indicators' },
+          { name: 'Cart drawer', note: 'slide-over, edit-design shortcut, express checkout' },
+          { name: 'Checkout form', note: 'address, shipping speed, payment; single page' },
+        ]},
+      ],
+      patterns: [
+        { title: 'Live price, everywhere', rule: 'Any change that affects cost (garment, colour, print sides, method, quantity) animates the price within 300ms. Price breakdown available on tap, never forced.' },
+        { title: 'Autosave + lazy auth', rule: 'Designs save to local session continuously; account sign-in is requested only when saving permanently or checking out, and the design survives the auth step.' },
+        { title: 'Customise is one tap away', rule: 'Every product image — home, catalogue, product page, cart — carries a Customise affordance that opens the customizer pre-loaded with that garment and colour.' },
+        { title: 'Method-aware editing', rule: 'The editor adapts to print method: embroidery restricts colour count and minimum text size, DTF unlocks full-colour artwork. Constraints explain themselves inline, never as errors after the fact.' },
+        { title: 'Print-area truth', rule: 'The canvas always shows the real printable area to scale. Artwork outside it is visibly dimmed and flagged before add-to-cart — no post-purchase surprises.' },
+        { title: 'Undo over confirm', rule: 'Destructive actions (delete layer, clear side) execute immediately with a 5s undo toast instead of confirmation dialogs.' },
+        { title: 'AI proposes, user disposes', rule: 'AI output always arrives as editable layers, never flattened. Three options per generation; regenerate keeps history.' },
+        { title: 'State-preserving navigation', rule: 'Leaving the customizer to browse another garment keeps the design; switching garments re-fits artwork to the new print area with a diff preview.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
