@@ -22,7 +22,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
       <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap">
-        <a href="Who We Are.dc.html">Who we are</a><a href="Shop%20All.dc.html">Shop All</a><a href="Tees.dc.html">Tees</a><a href="Hoodies and Sweats.dc.html">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html">Athleisure</a><a href="Accessories.dc.html">Accessories</a><a href="Create%20your%20own.dc.html">Create your own</a><a href="Talk%20to%20us.dc.html">Talk to us</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a><a href="Create%20your%20own.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
       </div>
       <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
         <span style="display:flex;align-items:center">
@@ -31,7 +31,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           </sc-if>
           <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
         </span>
-        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
           <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
@@ -106,10 +106,21 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <image-slot id="cat-banner" src="uploads/shop%20all%20banner.png" shape="rect" placeholder="Campaign banner"></image-slot>
     <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,20,18,0.45),transparent 60%);pointer-events:none"></div>
     <div style="position:absolute;left:48px;bottom:36px;color:#fff;pointer-events:none;max-width:600px">
-      <h1 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:48px;letter-spacing:-0.01em">Shop all</h1>
-      <p style="margin:0;font-size:15px;color:rgba(255,255,255,0.85)">Everything we print, one place.</p>
+      <h1 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:48px;letter-spacing:-0.01em">Shop All</h1>
+      <p style="margin:0;font-size:15px;color:rgba(255,255,255,0.85)">Everything you can make your own.</p>
     </div>
   </div>
+
+  <!-- CATEGORY QUICKLINKS -->
+  <section style="max-width:1440px;margin:0 auto;padding:32px 48px 0">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="Tees.dc.html" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 22px;font-size:13.5px;font-weight:500;color:#1C1B19" style-hover="border-color:#1C1B19;background:#F3F0E9">Tees</a>
+      <a href="Hoodies and Sweats.dc.html" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 22px;font-size:13.5px;font-weight:500;color:#1C1B19" style-hover="border-color:#1C1B19;background:#F3F0E9">Hoodies</a>
+      <a href="Hoodies and Sweats.dc.html" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 22px;font-size:13.5px;font-weight:500;color:#1C1B19" style-hover="border-color:#1C1B19;background:#F3F0E9">Sweats</a>
+      <a href="Athleisure.dc.html" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 22px;font-size:13.5px;font-weight:500;color:#1C1B19" style-hover="border-color:#1C1B19;background:#F3F0E9">Athleisure</a>
+      <a href="Accessories.dc.html" style="border:1px solid #DDD8CC;border-radius:999px;padding:10px 22px;font-size:13.5px;font-weight:500;color:#1C1B19" style-hover="border-color:#1C1B19;background:#F3F0E9">Accessories</a>
+    </div>
+  </section>
 
   <!-- MOST WORN -->
   <section style="max-width:1440px;margin:0 auto;padding:56px 48px 0">
@@ -132,10 +143,13 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
                 <span style="font-size:13px;font-weight:500">{{ p.name }}</span>
                 <span style="font-size:13.5px;font-weight:600">€{{ p.price }}</span>
               </div>
+              <div style="font-size:11px;color:#8B867B">{{ p.bestFor }}</div>
+              <div style="font-size:11px;color:#8B867B">{{ p.meta }}</div>
               <div style="display:flex;align-items:center;gap:5px">
                 <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="5"><span style="width:11px;height:11px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
                 <span style="font-size:10.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
               </div>
+              <span style="font-size:11.5px;font-weight:600;color:#4A4FE4;margin-top:1px">Make this yours →</span>
             </div>
           </a>
         </sc-for>
@@ -204,10 +218,13 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
                 <span style="font-size:14.5px;font-weight:500">{{ p.name }}</span>
                 <span style="font-size:15px;font-weight:600">€{{ p.price }}</span>
               </div>
+              <div style="font-size:12px;color:#8B867B">{{ p.bestFor }}</div>
+              <div style="font-size:12px;color:#8B867B">{{ p.meta }}</div>
               <div style="display:flex;align-items:center;gap:6px">
                 <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
                 <span style="font-size:11.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
               </div>
+              <span style="font-size:12.5px;font-weight:600;color:#4A4FE4;margin-top:2px">Make this yours →</span>
             </div>
           </a>
         </sc-for>
@@ -363,6 +380,8 @@ class Component extends DCLogic {
     ];
     const mkProduct = (p, i) => ({
       ...p, img: p.img || null, fire: !!p.fire, href: p.href || 'Product Page.dc.html', swatches: allColors.slice(0, 5).map(c => c.hex), more: allColors.length - 5,
+      bestFor: ({tees:'Best for everyday designs',hoodies:'Best for cold days and prints',sweats:'Best for casual layering',accessories:'Best for finishing the look',athleisure:'Best for training days',bottoms:'Best for everyday movement'})[p.tags[0]] || 'Best for everyday wear',
+      meta: (p.weight && p.weight !== 'na' ? p.weight + ' gsm · ' : '') + (p.fit ? p.fit.charAt(0).toUpperCase() + p.fit.slice(1) + ' fit' : ''),
       wish: (e) => { e.preventDefault(); this.setState(st => ({ wished: st.wished.includes(i) ? st.wished.filter(x => x !== i) : [...st.wished, i] })); },
     });
     return {
@@ -370,6 +389,7 @@ class Component extends DCLogic {
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
       onSearchKey: (e) => { if (e.key === 'Enter') this.setState({}); },
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
       langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       toggleFiltersPanel: () => this.setState(s => ({ filtersPanelOpen: !s.filtersPanelOpen })),
       filtersPanelOpen,

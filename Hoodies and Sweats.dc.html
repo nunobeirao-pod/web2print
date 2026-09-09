@@ -22,7 +22,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
       <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap">
-        <a href="Who We Are.dc.html">Who we are</a><a href="Shop%20All.dc.html">Shop All</a><a href="Tees.dc.html">Tees</a><a href="Hoodies and Sweats.dc.html">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html">Athleisure</a><a href="Accessories.dc.html">Accessories</a><a href="Create%20your%20own.dc.html">Create your own</a><a href="Talk%20to%20us.dc.html">Talk to us</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a><a href="Create%20your%20own.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
       </div>
       <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
         <span style="display:flex;align-items:center">
@@ -31,7 +31,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           </sc-if>
           <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
         </span>
-        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
           <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
@@ -111,10 +111,21 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     </div>
   </div>
 
-
+  <!-- FIT GUIDE -->
+  <div style="max-width:1440px;margin:0 auto;padding:0 48px">
+    <div style="padding-top:56px">
+      <h2 style="margin:0 0 4px;font-family:inherit;font-weight:700;font-size:22px">Not sure which one to choose?</h2>
+      <p style="margin:0 0 24px;font-size:14px;color:#4A473F">A quick guide to fit before you dive into the grid.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:22px"><div style="font-size:15px;font-weight:700;margin-bottom:6px">Regular</div><p style="margin:0;font-size:13px;color:#4A473F;line-height:1.55">True to size, a clean everyday cut. 300 gsm.</p></div>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:22px"><div style="font-size:15px;font-weight:700;margin-bottom:6px">Oversized</div><p style="margin:0;font-size:13px;color:#4A473F;line-height:1.55">Dropped shoulders, roomier body for a relaxed look. 330 gsm.</p></div>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:22px"><div style="font-size:15px;font-weight:700;margin-bottom:6px">Heavyweight</div><p style="margin:0;font-size:13px;color:#4A473F;line-height:1.55">Thicker fabric, sturdier structure — built to hold bigger prints. 400 gsm.</p></div>
+      </div>
+    </div>
+  </div>
 
   <div style="max-width:1440px;margin:0 auto;padding:0 48px">
-    <div style="padding-top:72px">
+    <div style="padding-top:56px">
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;position:relative">
         <span onClick="{{ toggleFiltersPanel }}" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #1C1B19;border-radius:999px;padding:11px 22px;font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer" style-hover="background:#1C1B19;color:#fff">
@@ -168,10 +179,13 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
                 <span style="font-size:14.5px;font-weight:500">{{ p.name }}</span>
                 <span style="font-size:15px;font-weight:600">€{{ p.price }}</span>
               </div>
+              <div style="font-size:12px;color:#8B867B">{{ p.bestFor }}</div>
+              <div style="font-size:12px;color:#8B867B">{{ p.meta }}</div>
               <div style="display:flex;align-items:center;gap:6px">
                 <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
                 <span style="font-size:11.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
               </div>
+              <span style="font-size:12.5px;font-weight:600;color:#4A4FE4;margin-top:2px">Make this yours →</span>
             </div>
           </a>
         </sc-for>
@@ -281,26 +295,35 @@ class Component extends DCLogic {
   static FITS = [{ label: 'Regular', tag: 'regular' }, { label: 'Oversized', tag: 'oversized' }, { label: 'Slim', tag: 'slim' }];
   static GENDERS = [{ label: 'Women', tag: 'women' }, { label: 'Men', tag: 'men' }, { label: 'Unisex', tag: 'unisex' }];
   static SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  static PRICE_RANGES = [
+    { label: 'Under €25', tag: 'priceUnder25', test: p => p.price < 25 },
+    { label: '€25–€40', tag: 'price25to40', test: p => p.price >= 25 && p.price < 40 },
+    { label: '€40+', tag: 'price40plus', test: p => p.price >= 40 },
+  ];
+  static AVAILABILITY = [{ label: 'In stock', tag: 'instock' }, { label: 'Made to order', tag: 'preorder' }];
   static allColors() { return [...Component.CORE, ...Component.LIMITED]; }
   getFiltered() {
     const { active, sortKey } = this.state;
-    const typeTags = Component.TYPES.map(t => t.tag), weightTags = Component.WEIGHTS.map(t => t.tag);
-    const fitTags = Component.FITS.map(t => t.tag), genderTags = Component.GENDERS.map(t => t.tag);
+    const weightTags = Component.WEIGHTS.map(t => t.tag);
+    const fitTags = Component.FITS.map(t => t.tag);
     const sizeTags = Component.SIZES;
     const colorTags = Component.allColors().map(c => c.name);
+    const priceTags = Component.PRICE_RANGES.map(r => r.tag);
+    const availTags = Component.AVAILABILITY.map(a => a.tag);
     let list = Component.CATALOG_FILTERED.filter(p => {
-      const activeTypes = active.filter(a => typeTags.includes(a));
       const activeWeights = active.filter(a => weightTags.includes(a));
       const activeFits = active.filter(a => fitTags.includes(a));
-      const activeGenders = active.filter(a => genderTags.includes(a));
       const activeSizes = active.filter(a => sizeTags.includes(a));
       const activeColors = active.filter(a => colorTags.includes(a));
-      if (activeTypes.length && !activeTypes.some(t => p.tags.includes(t))) return false;
+      const activePrices = active.filter(a => priceTags.includes(a));
+      const activeAvail = active.filter(a => availTags.includes(a));
+      const availability = p.name.includes('Oversized') ? 'preorder' : 'instock';
       if (activeWeights.length && !activeWeights.includes(p.weight)) return false;
       if (activeFits.length && !activeFits.includes(p.fit)) return false;
-      if (activeGenders.length && !activeGenders.includes(p.gender)) return false;
       if (activeSizes.length) { /* all products carry all sizes */ }
       if (activeColors.length) { /* all products carry all colors */ }
+      if (activePrices.length && !activePrices.some(t => Component.PRICE_RANGES.find(r => r.tag === t).test(p))) return false;
+      if (activeAvail.length && !activeAvail.includes(availability)) return false;
       return true;
     });
     const s = [...list];
@@ -319,15 +342,17 @@ class Component extends DCLogic {
       check: active.includes(d.tag) ? '✓' : '', swatch: swatchMap ? swatchMap(d) : null, toggle: () => this.toggleTag(d.tag),
     }));
     const facetDefs = [
-      { title: 'Type', options: mkOptions(Component.TYPES) },
-      { title: 'Color', options: mkOptions(allColors.map(c => ({ label: c.name, tag: c.name })), d => allColors.find(c => c.name === d.label).hex) },
-      { title: 'Size', options: mkOptions(Component.SIZES.map(s => ({ label: s, tag: s }))) },
       { title: 'Fit', options: mkOptions(Component.FITS) },
-      { title: 'Weight', options: mkOptions(Component.WEIGHTS) },
-      { title: 'Gender', options: mkOptions(Component.GENDERS) },
+      { title: 'Colour', options: mkOptions(allColors.map(c => ({ label: c.name, tag: c.name })), d => allColors.find(c => c.name === d.label).hex) },
+      { title: 'Size', options: mkOptions(Component.SIZES.map(s => ({ label: s, tag: s }))) },
+      { title: 'Weight/Thickness', options: mkOptions(Component.WEIGHTS) },
+      { title: 'Price', options: mkOptions(Component.PRICE_RANGES) },
+      { title: 'Availability', options: mkOptions(Component.AVAILABILITY) },
     ];
     const mkProduct = (p, i) => ({
       ...p, img: p.img || null, fire: !!p.fire, href: p.href || 'Product Page.dc.html', swatches: allColors.slice(0, 5).map(c => c.hex), more: allColors.length - 5,
+      bestFor: ({tees:'Best for everyday designs',hoodies:'Best for cold days and prints',sweats:'Best for casual layering',accessories:'Best for finishing the look',athleisure:'Best for training days',bottoms:'Best for everyday movement'})[p.tags[0]] || 'Best for everyday wear',
+      meta: (p.weight && p.weight !== 'na' ? p.weight + ' gsm · ' : '') + (p.fit ? p.fit.charAt(0).toUpperCase() + p.fit.slice(1) + ' fit' : ''),
       wish: (e) => { e.preventDefault(); this.setState(st => ({ wished: st.wished.includes(i) ? st.wished.filter(x => x !== i) : [...st.wished, i] })); },
     });
     return {
@@ -335,6 +360,7 @@ class Component extends DCLogic {
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
       onSearchKey: (e) => { if (e.key === 'Enter') this.setState({}); },
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
       langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       toggleFiltersPanel: () => this.setState(s => ({ filtersPanelOpen: !s.filtersPanelOpen })),
       filtersPanelOpen,

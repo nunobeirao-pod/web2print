@@ -81,7 +81,7 @@ html{scroll-behavior:smooth}
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:{{ navInk }};flex:none">Web2Print</div>
       <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:{{ navInk }};white-space:nowrap">
-        <a href="Who We Are.dc.html" style="color:inherit">Who we are</a><a href="Shop%20All.dc.html" style="color:inherit">Shop All</a><a href="Tees.dc.html" style="color:inherit">Tees</a><a href="Hoodies and Sweats.dc.html" style="color:inherit">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="color:inherit">Athleisure</a><a href="Accessories.dc.html" style="color:inherit">Accessories</a><a href="Create%20your%20own.dc.html" style="color:inherit">Create your own</a><a href="Talk%20to%20us.dc.html" style="color:inherit">Talk to us</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html" style="color:inherit">Inspiration</a><a href="For%20Teams.dc.html" style="color:inherit">For Teams</a><a href="Who We Are.dc.html" style="color:inherit">Who we are</a><a href="Create%20your%20own.dc.html" style="color:{{ navAccent }};font-weight:700">Start Creating</a>
       </div>
       <div style="display:flex;gap:18px;justify-content:flex-end;color:{{ navInk }};align-items:center;margin-left:auto">
         <span style="display:flex;align-items:center">
@@ -92,7 +92,7 @@ html{scroll-behavior:smooth}
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg>
           </span>
         </span>
-        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
           <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
@@ -180,12 +180,12 @@ html{scroll-behavior:smooth}
     <div style="position:absolute;left:0;right:0;top:0;bottom:0;padding:0 48px;pointer-events:none;display:flex;align-items:center">
       <div style="max-width:1440px;margin:0 auto;width:100%;display:flex;justify-content:flex-end">
         <div style="max-width:560px;text-align:right">
-          <div style="font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.9);margin-bottom:18px">Create something that doesn’t exist yet</div>
+          <div style="font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.9);margin-bottom:18px">Create custom clothing in minutes</div>
           <h1 style="margin:0 0 18px;font-family:inherit;font-weight:700;font-size:clamp(52px,6vw,84px);line-height:1.0;letter-spacing:-0.02em;color:#fff">Make it yours.</h1>
           <div style="font-size:16px;line-height:1.5;color:rgba(255,255,255,0.88);margin-bottom:34px">Quality garments. Ideas without limits. Imagined by you, produced by us.</div>
           <div style="display:flex;gap:14px;justify-content:flex-end;pointer-events:auto">
-            <span onClick="{{ goAI }}"><button style="background:#FBFAF8;color:#1C1B19;border:none;border-radius:999px;padding:16px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="transform:translateY(-1px);background:#fff">Start creating</button></span>
-            <span onClick="{{ goCatalogue }}"><button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.6);border-radius:999px;padding:15px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="border-color:#fff;background:rgba(255,255,255,0.1)">View products</button></span>
+            <span onClick="{{ goAI }}"><button style="background:#FBFAF8;color:#1C1B19;border:none;border-radius:999px;padding:16px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="transform:translateY(-1px);background:#fff">Start Creating</button></span>
+            <span onClick="{{ goCatalogue }}"><button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.6);border-radius:999px;padding:15px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;transition:all 150ms ease-out" style-hover="border-color:#fff;background:rgba(255,255,255,0.1)">Shop Products</button></span>
           </div>
         </div>
       </div>
@@ -209,27 +209,27 @@ html{scroll-behavior:smooth}
             <span style="font-size:30px;font-weight:700;color:#4A4FE4;flex:none;width:52px">01</span>
             <div>
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-                <span style="font-size:20px;font-weight:700">Pick your garment</span>
+                <span style="font-size:20px;font-weight:700">Pick your piece</span>
               </div>
-              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">Colour, size and weight. Watch the unit price drop as quantity goes up.</p>
+              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">Choose the style, colour and fit you want.</p>
             </div>
           </div>
           <div style="display:flex;gap:20px;align-items:center;padding:26px 0;border-top:1px solid #DDD8CC">
             <span style="font-size:30px;font-weight:700;color:#4A4FE4;flex:none;width:52px">02</span>
             <div>
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-                <span style="font-size:20px;font-weight:700">Design in the studio</span>
+                <span style="font-size:20px;font-weight:700">Make it yours</span>
               </div>
-              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">Upload your logo, curve some text, add graphics. Front, back and sleeves.</p>
+              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">Upload something, add text or create from an idea.</p>
             </div>
           </div>
           <div style="display:flex;gap:20px;align-items:center;padding:26px 0;border-top:1px solid #DDD8CC;border-bottom:1px solid #DDD8CC">
             <span style="font-size:30px;font-weight:700;color:#4A4FE4;flex:none;width:52px">03</span>
             <div>
               <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-                <span style="font-size:20px;font-weight:700">Get it delivered</span>
+                <span style="font-size:20px;font-weight:700">We take it from here</span>
               </div>
-              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">We print with water-based inks and ship across Europe.</p>
+              <p style="margin:0;font-size:14px;color:#4A473F;line-height:1.5">We produce, check and ship your piece.</p>
             </div>
           </div>
         </div>
@@ -259,10 +259,13 @@ html{scroll-behavior:smooth}
               <span style="font-size:14.5px;font-weight:500">{{ p.name }}</span>
               <span style="font-size:15px;font-weight:600">€{{ p.price }}</span>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:10px">
+            <div style="font-size:12px;color:#8B867B;margin-top:6px">{{ p.bestFor }}</div>
+            <div style="font-size:12px;color:#8B867B">{{ p.meta }}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
               <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="5"><span style="width:14px;height:14px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
               <span style="font-size:11.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
             </div>
+            <span style="display:block;font-size:12.5px;font-weight:600;color:#4A4FE4;margin-top:4px">Make this yours →</span>
           </a>
         </sc-for>
       </div>
@@ -291,20 +294,24 @@ html{scroll-behavior:smooth}
   </section>
 
   <!-- MADE BY YOU -->
-  <section style="padding:56px 24px 0">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-      <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:44px;letter-spacing:-0.01em">Made by you</h2>
+  <section style="background:#F3F0E9;padding:72px 24px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+      <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:48px;letter-spacing:-0.01em">Made by you</h2>
       <a href="https://instagram.com/web2print" target="_blank" rel="noopener" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#1C1B19;border-bottom:1px solid #1C1B19;padding-bottom:2px">Follow us</a>
     </div>
+    <p style="margin:0 0 32px;font-size:15px;color:#4A473F;max-width:520px">Real people, real prints. See what they made — then make yours.</p>
     <div style="position:relative">
       <div ref="{{ ugcRef }}" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px">
         <sc-for list="{{ ugc }}" as="u" hint-placeholder-count="5">
           <div style="flex:0 0 calc((100% - 64px) / 5);scroll-snap-align:start">
-            <div style="position:relative;aspect-ratio:9/16;background:#1C1B19;overflow:hidden">
+            <div style="position:relative;aspect-ratio:9/16;background:#1C1B19;overflow:hidden;border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12)">
               <video ref="{{ u.ref }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>
               <div style="position:absolute;top:10px;left:10px;background:rgba(28,27,25,0.5);backdrop-filter:blur(4px);border-radius:999px;padding:4px 10px;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;pointer-events:none">{{ u.source }}</div>
             </div>
-            <div style="margin-top:10px;font-size:13.5px;color:#1C1B19">{{ u.handle }}</div>
+            <div style="margin-top:12px;font-size:13.5px;font-weight:500;color:#1C1B19">{{ u.handle }}</div>
+            <div style="margin-top:4px;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;color:#8B867B">{{ u.occasion }}</div>
+            <div style="font-size:12.5px;color:#4A473F">{{ u.product }}</div>
+            <a href="Create%20your%20own.dc.html" style="display:inline-block;margin-top:6px;font-size:12.5px;font-weight:600;color:#4A4FE4">Create something like this →</a>
           </div>
         </sc-for>
       </div>
@@ -485,10 +492,11 @@ class Component extends DCLogic {
       homeProducts: (() => {
         const CORE = ['#1C1B19', '#F5F3ED', '#D9C9AE', '#4A3427', '#1F2A44'];
         const items = [
-          { slot: 'hp-p3', img: this.res('RHOODIE1'), ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39' },
-          { slot: 'hp-p4', img: this.res('OHOODIE2'), ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44' },
+          { slot: 'hp-p3', img: this.res('RHOODIE1'), ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39', weight: '300', fit: 'regular', tag: 'hoodies' },
+          { slot: 'hp-p4', img: this.res('OHOODIE2'), ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', weight: '330', fit: 'oversized', tag: 'hoodies' },
         ];
-        return items.map(it => ({ ...it, swatches: CORE, more: 5 }));
+        const bestForMap = { tees: 'Best for everyday designs', hoodies: 'Best for cold days and prints', sweats: 'Best for casual layering', accessories: 'Best for finishing the look', athleisure: 'Best for training days', bottoms: 'Best for everyday movement' };
+        return items.map(it => ({ ...it, swatches: CORE, more: 5, bestFor: bestForMap[it.tag] || 'Best for everyday wear', meta: it.weight + ' gsm · ' + it.fit.charAt(0).toUpperCase() + it.fit.slice(1) + ' fit' }));
       })(),
       bestRef: (el) => { this._bestEl = el; },
       bestPrev: () => { const el = this._bestEl; if (!el) return; const step = (el.firstElementChild ? el.firstElementChild.getBoundingClientRect().width : el.clientWidth / 4) + 20; el.scrollBy({ left: -step, behavior: 'smooth' }); },
@@ -505,8 +513,19 @@ class Component extends DCLogic {
         pick: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ lang: c, langOpen: false }); }
       })),
       toggleLang: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ langOpen: !this.state.langOpen }); },
-      ugc: ['@marta.k', '@studio.rui', '@lenaonline', '@theo.wears', '@casa.nova', '@joana.fit', '@bruno.tt', '@nina.prints', '@vasco.wear', '@sofia.loops'].map((h, i) => ({
-        handle: h,
+      ugc: [
+        { h: '@marta.k', occasion: 'Birthday gift', product: 'Regular Hoodie 300' },
+        { h: '@studio.rui', occasion: 'Company merch', product: 'Heavyweight Tee 240' },
+        { h: '@lenaonline', occasion: 'Festival', product: 'Oversized Hoodie 330' },
+        { h: '@theo.wears', occasion: 'Team event', product: 'Regular Tee 190' },
+        { h: '@casa.nova', occasion: 'Housewarming gift', product: 'Tote Bag' },
+        { h: '@joana.fit', occasion: 'Gym crew', product: 'Sports Bra' },
+        { h: '@bruno.tt', occasion: 'Bachelor party', product: 'Regular Hoodie 300' },
+        { h: '@nina.prints', occasion: 'Launch drop', product: 'Oversized Tee 230' },
+        { h: '@vasco.wear', occasion: 'Reunion', product: 'Regular Sweat 300' },
+        { h: '@sofia.loops', occasion: 'Wedding favor', product: 'Structured Cap' },
+      ].map((d, i) => ({
+        handle: d.h, occasion: d.occasion, product: d.product,
         source: i % 2 ? 'TikTok' : 'Instagram',
         ref: (el) => { if (!el) return; const u = ((window.__resources || {}).VID) || 'https://assets.mixkit.co/videos/1163/1163-720.mp4'; if (el.getAttribute('src') !== u) { el.src = u; el.addEventListener('loadedmetadata', () => { try { el.currentTime = (el.duration || 8) * (i / 10); } catch (e) {} }, { once: true }); el.play && el.play().catch(() => {}); } }
       })),
@@ -522,14 +541,15 @@ class Component extends DCLogic {
       onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
       onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
       goCatalogue: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
       goEditor: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
       goCheckout: () => { if (window.__navigate) window.__navigate('Checkout.dc.html'); else location.href = 'Checkout.dc.html'; },
       categoryTiles: [
-        { slot: 'cat-tees', img: this.res('TSHIRT'), ph: 'Tees', label: 'Tees', href: 'Tees.dc.html' },
-        { slot: 'cat-hoodiessweats', img: this.res('RHOODIE1'), ph: 'Hoodies & Sweats', label: 'Hoodies & Sweats', href: 'Hoodies and Sweats.dc.html' },
-        { slot: 'cat-athleisure', img: this.res('SB2'), ph: 'Athleisure garments', label: 'Athleisure', href: 'Athleisure.dc.html' },
-        { slot: 'cat-accessories', img: this.res('CAP1'), ph: 'Accessories', label: 'Accessories', href: 'Accessories.dc.html' },
+        { slot: 'cat-tees', img: 'uploads/tees%20banner%20.png', ph: 'Tees', label: 'Tees', href: 'Tees.dc.html' },
+        { slot: 'cat-hoodiessweats', img: 'uploads/hoodies%20banner.png', ph: 'Hoodies & Sweats', label: 'Hoodies & Sweats', href: 'Hoodies and Sweats.dc.html' },
+        { slot: 'cat-athleisure', img: 'uploads/athleisure%20banner.png', ph: 'Athleisure garments', label: 'Athleisure', href: 'Athleisure.dc.html' },
+        { slot: 'cat-accessories', img: 'uploads/accessories%20banner.png', ph: 'Accessories', label: 'Accessories', href: 'Accessories.dc.html' },
       ],
       cartOpen: this.state.cartOpen,
       toggleCart: () => this.setState(s => ({ cartOpen: !s.cartOpen })), closeCart: () => this.setState({ cartOpen: false }),
@@ -552,6 +572,7 @@ class Component extends DCLogic {
       navBorder: scrolled ? '#E6E2D8' : 'transparent',
       navBlur: scrolled ? 'blur(12px)' : 'none',
       navInk: scrolled ? '#1C1B19' : '#FFFFFF',
+      navAccent: scrolled ? '#4A4FE4' : '#FFFFFF',
       heroOverlayTop: heroOverlay * 0.8, heroOverlayBottom: heroOverlay + 0.2,
       inspirationOpen,
       openInspiration: () => this.setState({ inspirationOpen: true }),

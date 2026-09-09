@@ -26,6 +26,7 @@
 body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 .pp-gallery::-webkit-scrollbar{display:none}
+@media (max-width:768px){.pdp-sticky-cta{display:flex !important}}
 </style>
 </helmet>
 <div data-screen-label="Product Page" style="min-height:100vh">
@@ -35,7 +36,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
       <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap">
-        <a href="Who We Are.dc.html">Who we are</a><a href="Shop%20All.dc.html">Shop All</a><a href="Tees.dc.html">Tees</a><a href="Hoodies and Sweats.dc.html">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html">Athleisure</a><a href="Accessories.dc.html">Accessories</a><a href="Create%20your%20own.dc.html">Create your own</a><a href="Talk%20to%20us.dc.html">Talk to us</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a><a href="Create%20your%20own.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
       </div>
       <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
         <span style="display:flex;align-items:center">
@@ -44,7 +45,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           </sc-if>
           <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
         </span>
-        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative">
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
           <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
@@ -144,6 +145,15 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
         <div style="font-family:inherit;font-weight:700;font-size:24px">€39.00 <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
       </div>
 
+      <!-- SPECS -->
+      <div style="border-top:1px solid #EEEBE3;padding-top:18px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Composition</span><span>100% combed cotton</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Weight</span><span>300 g/m²</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Fit</span><span>Regular</span></div>
+      </div>
+
+
+
       <!-- COLOUR -->
       <div>
         <span style="font-size:13px;color:#4A473F">Colour</span>
@@ -189,6 +199,22 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           </sc-for>
           <span onClick="{{ openSizeGuide }}" style="font-size:12.5px;font-weight:500;color:#4A4FE4;cursor:pointer;margin-left:6px">Size guide</span>
         </div>
+        <div style="font-size:12px;color:#8B867B;margin-top:8px">{{ fitHelp }}</div>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:18px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%" style-hover="filter:brightness(0.94)">Start Creating</button></a>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+          <span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#4A473F">Prefer it blank? <span style="text-decoration:underline">Order without customisation</span></span>
+          <button title="Add to wishlist" style="width:40px;height:40px;flex:none;background:transparent;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B867B" style-hover="color:#1C1B19">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4A473F;padding-top:2px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"></rect><path d="M15 10h3.5L21 13v4h-6"></path><circle cx="6" cy="19" r="1.6"></circle><circle cx="17.5" cy="19" r="1.6"></circle></svg>
+          <span>24/48h delivery to Portugal, Spain and France. Rest of Europe: until 5 business days.</span>
+        </div>
       </div>
 
       <!-- QUANTITY -->
@@ -201,35 +227,23 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
         </div>
       </div>
 
-      <!-- CTA -->
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:18px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%" style-hover="filter:brightness(0.94)">Create your design now</button></a>
-        <div style="display:flex;gap:10px">
-          <button style="flex:1;background:transparent;border:1px solid #DDD8CC;border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Order blank</button>
-          <button title="Add to wishlist" style="width:48px;flex:none;background:transparent;border:1px solid #DDD8CC;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#1C1B19">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
-          </button>
-        </div>
-      </div>
-
       <!-- VOLUME PRICING -->
-      <div style="border-top:1px solid #EEEBE3;padding-top:20px">
-        <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">Volume pricing — unit price</div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px">
-          <sc-for list="{{ volume }}" as="v" hint-placeholder-count="5">
-            <div style="text-align:center;padding:6px 2px;border-right:1px solid #EEEBE3">
-              <div style="font-size:12px;color:#8B867B;margin-bottom:4px">{{ v.qty }}</div>
-              <div style="font-size:14px;font-weight:700">{{ v.price }}</div>
-            </div>
-          </sc-for>
+      <div style="border-top:1px solid #EEEBE3;padding-top:16px">
+        <div onClick="{{ toggleVolume }}" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+          <span style="font-size:13px;color:#4A473F">Ordering more? Save with quantity pricing.</span>
+          <span style="color:#8B867B;font-size:13px;transform:{{ volumeRot }};transition:transform 150ms">⌄</span>
         </div>
-      </div>
-
-      <!-- SPECS -->
-      <div style="border-top:1px solid #EEEBE3;padding-top:18px;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Composition</span><span>100% combed cotton</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Weight</span><span>300 g/m²</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Fit</span><span>Regular</span></div>
+        <sc-if value="{{ volumeOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:14px">
+            <sc-for list="{{ volume }}" as="v" hint-placeholder-count="5">
+              <div style="text-align:center;padding:6px 2px;border-right:1px solid #EEEBE3">
+                <div style="font-size:12px;color:#8B867B;margin-bottom:4px">{{ v.qty }}</div>
+                <div style="font-size:14px;font-weight:700">{{ v.price }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <a href="For%20Teams.dc.html" style="display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;color:#4A4FE4">See full volume pricing for teams →</a>
+        </sc-if>
       </div>
 
       <!-- ACCORDIONS -->
@@ -255,6 +269,20 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
                 </sc-if>
                 <sc-if value="{{ a.isText }}" hint-placeholder-val="{{ true }}">
                   <p style="margin:0;font-size:13.5px;line-height:1.65;color:#4A473F">{{ a.body }}</p>
+                </sc-if>
+                <sc-if value="{{ a.isVisual }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap">
+                    <svg width="80" height="98" viewBox="0 0 90 110" fill="none" style="flex:none">
+                      <path d="M20 8 L34 2 L45 10 L56 2 L70 8 L78 24 L66 30 L66 108 L24 108 L24 30 L12 24 Z" stroke="#1C1B19" stroke-width="1.5" fill="#F3F0E9"></path>
+                      <rect x="34" y="20" width="22" height="18" fill="rgba(74,79,228,0.18)" stroke="#4A4FE4" stroke-width="1"></rect>
+                    </svg>
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <sc-for list="{{ a.areas }}" as="ar" hint-placeholder-count="3">
+                        <div style="display:flex;align-items:center;gap:8px;font-size:13px"><span style="width:8px;height:8px;border-radius:50%;background:#4A4FE4"></span>{{ ar }}</div>
+                      </sc-for>
+                      <p style="margin:6px 0 0;font-size:12px;color:#8B867B;max-width:260px">Available personalisation areas for this piece. Same zones you'll see in the Studio.</p>
+                    </div>
+                  </div>
                 </sc-if>
               </div>
             </sc-if>
@@ -310,16 +338,18 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </section>
 
   <!-- MADE BY YOU -->
-  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
+  <section style="background:#F3F0E9;margin-top:96px;padding:72px 48px">
+    <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
       <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:40px;letter-spacing:-0.01em">Made by you</h2>
       <a href="https://instagram.com/web2print" target="_blank" rel="noopener" style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#1C1B19;border-bottom:1px solid #1C1B19;padding-bottom:2px">Follow us</a>
     </div>
+    <p style="margin:0 0 28px;font-size:14px;color:#4A473F;max-width:480px">Real people, real prints. See what they made — then make yours.</p>
     <div style="position:relative">
       <div ref="{{ ugcRef }}" style="display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px">
         <sc-for list="{{ ugc }}" as="u" hint-placeholder-count="5">
           <div style="flex:0 0 calc((100% - 64px) / 5);scroll-snap-align:start">
-            <div style="position:relative;aspect-ratio:9/16;background:#1C1B19;overflow:hidden">
+            <div style="position:relative;aspect-ratio:9/16;background:#1C1B19;overflow:hidden;border-radius:8px;box-shadow:0 8px 24px rgba(28,27,25,0.12)">
               <sc-if value="{{ u.isPhoto }}" hint-placeholder-val="{{ false }}">
                 <image-slot id="{{ u.slot }}" src="{{ u.img }}" shape="rect" placeholder="{{ u.ph }}"></image-slot>
               </sc-if>
@@ -328,7 +358,10 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
               </sc-if>
               <div style="position:absolute;top:10px;left:10px;background:rgba(28,27,25,0.5);backdrop-filter:blur(4px);border-radius:999px;padding:4px 10px;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;pointer-events:none">{{ u.source }}</div>
             </div>
-            <div style="margin-top:10px;font-size:13.5px;color:#1C1B19">{{ u.handle }}</div>
+            <div style="margin-top:12px;font-size:13.5px;font-weight:500;color:#1C1B19">{{ u.handle }}</div>
+            <div style="margin-top:4px;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;color:#8B867B">{{ u.occasion }}</div>
+            <div style="font-size:12.5px;color:#4A473F">{{ u.product }}</div>
+            <a href="Create%20your%20own.dc.html" style="display:inline-block;margin-top:6px;font-size:12.5px;font-weight:600;color:#4A4FE4">Create something like this →</a>
           </div>
         </sc-for>
       </div>
@@ -339,7 +372,32 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
         <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M7 3.5L12.5 9L7 14.5" stroke="#1C1B19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </div>
     </div>
+    </div>
   </section>
+
+  <!-- YOU MAY ALSO LIKE -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 120px">
+    <h2 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:36px;letter-spacing:-0.01em">You may also like</h2>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:20px">
+      <sc-for list="{{ relatedProducts }}" as="p" hint-placeholder-count="5">
+        <a href="{{ p.href }}" style="color:#1C1B19;display:block">
+          <div style="position:relative;aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden">
+            <image-slot id="{{ p.slot }}" src="{{ p.img }}" shape="rect" placeholder="{{ p.ph }}"></image-slot>
+          </div>
+          <div style="padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+            <span style="font-size:13.5px;font-weight:500">{{ p.name }}</span>
+            <span style="font-size:14px;font-weight:600">€{{ p.price }}</span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- STICKY MOBILE CTA -->
+  <div class="pdp-sticky-cta" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
+    <span style="font-family:inherit;font-weight:700;font-size:16px">€{{ price2dp }}</span>
+    <a href="Create%20your%20own.dc.html" style="flex:1;max-width:220px"><button style="width:100%;background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer">Start Creating</button></a>
+  </div>
 
   <!-- FOOTER -->
   <footer style="background:#FBFAF8;color:#1C1B19;padding:56px 0 0;position:relative;overflow:hidden;border-top:1px solid #E6E2D8;margin-top:96px">
@@ -413,15 +471,16 @@ class Component extends DCLogic {
     const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
     return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#1C1B19' : '#FBFAF8';
   }
-  state = { colour: 0, hoverColour: null, size: 2, qty: 1, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', openAcc: ['Description'], cartOpen: false, cartQty: 1 };
+  state = { colour: 0, hoverColour: null, size: 2, qty: 1, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', openAcc: ['Description'], cartOpen: false, cartQty: 1, volumeOpen: false };
   qtyDec = () => this.setState(s => ({ qty: Math.max(1, s.qty - 1) }));
   qtyInc = () => this.setState(s => ({ qty: s.qty + 1 }));
+  toggleVolume = () => this.setState(s => ({ volumeOpen: !s.volumeOpen }));
   openSizeGuide = () => {
     this.setState(s => ({ openAcc: s.openAcc.includes('Size guide') ? s.openAcc : [...s.openAcc, 'Size guide'] }));
     setTimeout(() => { const el = document.getElementById('acc-size-guide'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 50);
   };
   renderVals() {
-    const { colour, hoverColour, size, qty, langOpen, lang, searchOpen, searchQ, openAcc } = this.state;
+    const { colour, hoverColour, size, qty, langOpen, lang, searchOpen, searchQ, openAcc, volumeOpen } = this.state;
     const all = [...Component.CORE, ...Component.LIMITED];
     const cur = all[colour];
     const mkSwatch = (c, idx) => ({
@@ -447,6 +506,7 @@ class Component extends DCLogic {
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
       onSearchKey: (e) => { if (e.key === 'Enter') { const q = this.state.searchQ; if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
       langOpen,
       langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       cartOpen: this.state.cartOpen,
@@ -483,11 +543,22 @@ class Component extends DCLogic {
         pick: () => this.setState({ size: i }),
       })),
       qty,
+      price2dp: base.toFixed(2),
+      fitHelp: 'Regular fit — true to size. Order one size larger for a looser fit.',
+      volumeOpen, volumeRot: volumeOpen ? 'rotate(180deg)' : 'none', toggleVolume: this.toggleVolume,
+      relatedProducts: [
+        { slot: 'ymal-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', img: res('OHOODIE2'), href: 'Product Page.dc.html' },
+        { slot: 'ymal-2', ph: 'Regular Sweat 300', name: 'Regular Sweat 300', price: '35', img: null, href: 'Product Page.dc.html' },
+        { slot: 'ymal-3', ph: 'Structured Cap', name: 'Structured Cap', price: '18', img: null, href: 'Product Page.dc.html' },
+        { slot: 'ymal-4', ph: 'Regular Tee 190', name: 'Regular Tee 190', price: '19', img: null, href: 'Product Page.dc.html' },
+        { slot: 'ymal-5', ph: 'Tote Bag', name: 'Tote Bag', price: '12', img: null, href: 'Product Page.dc.html' },
+      ],
       ctaBg: cur.hex, ctaInk: Component.contrast(cur.hex),
       volume: tiers,
       accordions: [
         { title: 'Description', isText: true, isTable: false, body: 'A heavyweight hoodie built for everyday layering. 300 gsm brushed cotton, dropped shoulders, double-layer hood, kangaroo pocket. Garment-dyed for a lived-in feel from day one.' },
         { title: 'Fabric & Care', isText: true, isTable: false, body: '100% combed cotton, 300 g/m². Ribbed cuffs and hem. Wash inside-out at 30°C. No tumble dry. Iron on reverse, never on the print.' },
+        { title: 'Print areas', isVisual: true, isText: false, isTable: false, areas: ['Front', 'Back', 'Sleeves'] },
         { title: 'Size guide', isTable: true, isText: false, anchor: 'acc-size-guide',
           head: ['Size', 'Chest (cm)', 'Length (cm)', 'Sleeve (cm)'],
           rows: [['XS', '96', '65', '58'], ['S', '102', '67', '60'], ['M', '108', '69', '62'], ['L', '114', '71', '64'], ['XL', '120', '73', '66'], ['XXL', '126', '75', '68']] },
@@ -504,9 +575,9 @@ class Component extends DCLogic {
         { name: 'Diogo Peixoto', meta: 'Verified buyer', quote: 'Ordered for the whole team, sizing was consistent across the batch. Would order again.' },
       ],
       ugc: [1, 2, 3, 4, 5].map(n => ({
-        isPhoto: true, isVideo: false, slot: 'pp-mby-' + n, img: mk(n).img, ph: mk(n).ph, handle: '@web2print.mbu' + n, source: 'Instagram',
+        isPhoto: true, isVideo: false, slot: 'pp-mby-' + n, img: mk(n).img, ph: mk(n).ph, handle: '@web2print.mbu' + n, source: 'Instagram', occasion: ([["Team event","Regular Hoodie 300"],["Birthday gift","Regular Hoodie 300"],["Company merch","Regular Hoodie 300"],["Reunion","Regular Hoodie 300"],["Launch drop","Regular Hoodie 300"]])[n - 1][0], product: ([["Team event","Regular Hoodie 300"],["Birthday gift","Regular Hoodie 300"],["Company merch","Regular Hoodie 300"],["Reunion","Regular Hoodie 300"],["Launch drop","Regular Hoodie 300"]])[n - 1][1],
       })).concat(['@marta.k', '@studio.rui', '@lenaonline', '@theo.wears', '@casa.nova'].map((h, i) => ({
-        isPhoto: false, isVideo: true, handle: h, source: i % 2 ? 'TikTok' : 'Instagram',
+        isPhoto: false, isVideo: true, handle: h, source: i % 2 ? 'TikTok' : 'Instagram', occasion: ([["Bachelor party","Regular Hoodie 300"],["Festival","Regular Hoodie 300"],["Housewarming gift","Regular Hoodie 300"],["Gym crew","Regular Hoodie 300"],["Wedding favor","Regular Hoodie 300"]])[i][0], product: ([["Bachelor party","Regular Hoodie 300"],["Festival","Regular Hoodie 300"],["Housewarming gift","Regular Hoodie 300"],["Gym crew","Regular Hoodie 300"],["Wedding favor","Regular Hoodie 300"]])[i][1],
         ref: (el) => { if (!el) return; const u = res('STUDIODEMO'); if (el.getAttribute('src') !== u) { el.src = u; el.play && el.play().catch(() => {}); } },
       }))),
       ugcRef: (el) => { this._ugcEl = el; },

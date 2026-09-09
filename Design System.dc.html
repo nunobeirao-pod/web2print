@@ -62,7 +62,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
         </div>
       </sc-for>
     </div>
-    <div style="margin-top:16px;font-size:13px;color:#4A473F;line-height:1.6;max-width:660px">Instrument Serif for display and prices; Helvetica Neue 400/500/600 for everything else. Generous line-height (1.6 body), paragraphs max 66ch.</div>
+    <div style="margin-top:16px;font-size:13px;color:#4A473F;line-height:1.6;max-width:660px">Helvetica Neue 400/500/600 for all interface type — display, headings, body and prices. Instrument Serif is loaded as one of the serif choices inside the design editor's font picker only, never for site UI. Generous line-height (1.6 body), paragraphs max 66ch.</div>
   </section>
 
   <!-- 03 GRID & SPACING -->
@@ -73,7 +73,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
       <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
         <div style="display:flex;flex-direction:column;gap:24px">
           <div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px"><span style="font-weight:600;color:#1C1B19">Desktop ≥1120</span><span>12 col · 24px gutter · 80px margins</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px"><span style="font-weight:600;color:#1C1B19">Desktop ≥1120</span><span>12 col · 24px gutter · 48px margins · content caps at 1440px</span></div>
             <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:6px"><sc-for list="{{ cols12 }}" as="i" hint-placeholder-count="12"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
           </div>
           <div>
@@ -81,7 +81,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
             <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-width:70%"><sc-for list="{{ cols8 }}" as="i" hint-placeholder-count="8"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
           </div>
           <div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px;max-width:36%"><span style="font-weight:600;color:#1C1B19">Mobile &lt;768</span><span>4 col · 16px</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-bottom:8px;max-width:36%"><span style="font-weight:600;color:#1C1B19">Mobile &lt;768</span><span>4 col · 20px</span></div>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:36%"><sc-for list="{{ cols4 }}" as="i" hint-placeholder-count="4"><div style="height:36px;background:#EFEBE2;border-radius:4px"></div></sc-for></div>
           </div>
         </div>
@@ -112,10 +112,11 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
         <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap">
           <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">8</div>
           <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:12px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">12</div>
+          <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:14px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">14</div>
           <div style="width:64px;height:64px;border:1.5px solid #1C1B19;border-radius:16px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-family:monospace;font-size:11px">16</div>
           <div style="width:64px;height:40px;border:1.5px solid #1C1B19;border-radius:999px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px">pill</div>
         </div>
-        <div style="font-size:12.5px;color:#4A473F;line-height:1.6">8px inputs &amp; chips · 12px cards &amp; imagery · 16px drawers, sheets &amp; modals · pill for buttons. Consistent per component class, everywhere.</div>
+        <div style="font-size:12.5px;color:#4A473F;line-height:1.6">8px inputs, chips &amp; product imagery · 12–14px cards &amp; overlay panels · 16px drawers, sheets &amp; modals · pill for buttons. Consistent per component class, everywhere.</div>
       </div>
       <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:32px">
         <div style="font-size:14px;font-weight:600;margin-bottom:18px">Elevation</div>
@@ -137,11 +138,11 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
 
       <!-- Navigation -->
       <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px;grid-column:span 2">
-        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Navigation — left links, centred logo, icon-only right cluster</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Navigation — left links (Shop dropdown first), centred logo, icon-only right cluster</div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div style="background:linear-gradient(120deg,#C9C0B0,#A99F8D);border-radius:12px;padding:0;overflow:hidden">
             <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:18px 28px;color:#fff">
-              <div style="display:flex;gap:28px;font-size:14px;font-weight:500"><span>About Us</span><span>Products</span><span>Contacts</span></div>
+              <div style="display:flex;gap:24px;font-size:14px;font-weight:500;align-items:center"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><span>Inspiration</span><span>For Teams</span><span>Who we are</span><span style="font-weight:700">Start Creating</span></div>
               <div style="font-size:17px;font-weight:600;letter-spacing:-0.01em;text-align:center">Web2Print</div>
               <div style="display:flex;gap:16px;align-items:center;justify-content:flex-end">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg>
@@ -154,7 +155,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
             <div style="height:52px;display:flex;align-items:center;padding:0 28px;color:rgba(255,255,255,0.85);font-family:monospace;font-size:11px">hero imagery beneath — nav is transparent</div>
           </div>
           <div style="background:rgba(251,250,248,0.92);border:1px solid #E6E2D8;border-radius:12px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 28px;box-shadow:0 2px 12px rgba(28,27,25,0.05)">
-            <div style="display:flex;gap:28px;font-size:14px;font-weight:500;color:#4A473F"><span style="color:#1C1B19">About Us</span><span>Products</span><span>Contacts</span></div>
+            <div style="display:flex;gap:24px;font-size:14px;font-weight:500;color:#4A473F;align-items:center"><span style="display:flex;align-items:center;gap:4px;color:#1C1B19">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><span>Inspiration</span><span>For Teams</span><span>Who we are</span><span style="color:#4A4FE4;font-weight:700">Start Creating</span></div>
             <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em;text-align:center">Web2Print</div>
             <div style="display:flex;gap:16px;align-items:center;justify-content:flex-end;color:#4A473F">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg>
@@ -165,7 +166,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
             </div>
           </div>
         </div>
-        <div style="margin-top:14px;font-size:12px;color:#8B867B;line-height:1.6">Left: text nav (About Us · Products · Contacts). Centre: logo. Right: icon-only cluster — search, language dropdown (PT · ES · FR · EN), account, wishlist, cart with count badge.</div>
+        <div style="margin-top:14px;font-size:12px;color:#8B867B;line-height:1.6">Left: Shop (hover dropdown → Shop All, Tees, Hoodies &amp; Sweats, Athleisure, Accessories) · Inspiration · For Teams · Who we are · Start Creating (bold, iris — the Studio CTA, last item, same weight/colour everywhere). Talk to Us moved out of the header into the footer's Contact us column, as a support utility rather than a primary nav item. Centre: logo. Right: icon-only cluster — search, language dropdown (PT · ES · FR · EN), account, wishlist, cart with count badge.</div>
       </div>
 
       <!-- Buttons -->
@@ -200,6 +201,17 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
       <!-- Product card + swatches + sizes -->
       <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
         <div style="font-size:13px;font-weight:600;margin-bottom:18px;color:#8B867B">Product card · swatches · size selector</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:12.5px;font-weight:500">Tees</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:12.5px;font-weight:500">Hoodies</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:12.5px;font-weight:500">Sweats</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:12.5px;font-weight:500">Athleisure</span>
+          <span style="border:1px solid #DDD8CC;border-radius:999px;padding:8px 18px;font-size:12.5px;font-weight:500">Accessories</span>
+        </div>
+        <div style="font-size:12px;color:#8B867B;margin-bottom:18px">Category quicklink pills — name only, sit above "Most worn" on Shop All.</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:#8B867B">PLP template (Tees, Hoodies &amp; Sweats, Athleisure, Accessories)</div>
+        <div style="font-size:12px;color:#8B867B;margin-bottom:18px;line-height:1.6">Banner (title + subtitle) → "Not sure which one to choose?" fit guide (Regular / Oversized / Heavyweight, 3-card row, copy adapted per category) → filters + sort + grid. Same structure across all four category pages.</div>
+        <div style="font-size:12px;color:#8B867B;margin-bottom:18px;line-height:1.6">Every card: name + price, a "Best for…" use-case line, weight · fit, colour swatches, then a "Make this yours →" prompt — the product is framed as the base for the customer's own design.</div>
         <div style="display:flex;gap:24px">
           <div style="width:220px;flex-shrink:0">
             <div style="aspect-ratio:4/5;background:repeating-linear-gradient(45deg,#EFEBE2,#EFEBE2 10px,#E6E1D5 10px,#E6E1D5 20px);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative">
@@ -208,7 +220,9 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
             </div>
             <div style="padding-top:12px;display:flex;flex-direction:column;gap:4px">
               <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;font-weight:500">Heavyweight Tee</span><span style="font-family:inherit;font-weight:700;font-size:16px">from €24</span></div>
-              <div style="font-size:12px;color:#8B867B">240 gsm · organic cotton</div>
+              <div style="font-size:12px;color:#8B867B">Best for everyday designs</div>
+              <div style="font-size:12px;color:#8B867B">240 gsm · Regular fit</div>
+              <span style="font-size:12.5px;font-weight:600;color:#4A4FE4;margin-top:2px">Make this yours →</span>
             </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:18px;flex:1">
