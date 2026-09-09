@@ -16,6 +16,7 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
+<script src="./image-slot.js"></script>
 </helmet>
 <div data-screen-label="Checkout" style="position:relative">
 <span onClick="{{ goBack }}" title="Back" style="position:fixed;top:24px;left:24px;z-index:20;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #E6E2D8;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="border-color:#1C1B19">
@@ -29,12 +30,33 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
       <span style="color:#fff;font-size:40px;line-height:1">✓</span>
     </div>
     <h1 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:52px;letter-spacing:-0.01em;animation:fadeUp 500ms 150ms ease-out both">Your design is on its way.</h1>
-    <div style="font-size:16px;color:#8B867B;margin-bottom:36px;animation:fadeUp 500ms 250ms ease-out both">Order <strong style="color:#1C1B19">#W2P-1858</strong></div>
+    <div style="font-size:16px;color:#8B867B;margin-bottom:32px;animation:fadeUp 500ms 250ms ease-out both">Order <strong style="color:#1C1B19">#W2P-1858</strong></div>
+
+    <div style="width:100%;max-width:460px;background:#fff;border:1px solid #E6E2D8;border-radius:16px;padding:24px;display:flex;gap:16px;align-items:center;text-align:left;animation:fadeUp 500ms 300ms ease-out both;margin-bottom:24px">
+      <div style="width:72px;height:72px;border-radius:10px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="checkout-success-preview" shape="rect" placeholder="Your design preview"></image-slot></div>
+      <div style="flex:1">
+        <div style="font-size:14.5px;font-weight:600">Regular Hoodie 300 — your design</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+          <span style="background:#EDF2EA;color:#41573B;border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:600">In production</span>
+        </div>
+        <div style="font-size:12.5px;color:#8B867B;margin-top:8px">Estimated delivery: <strong style="color:#1C1B19">Sep 12–14</strong></div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;animation:fadeUp 500ms 350ms ease-out both">
-      <button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Track order</button>
+      <a href="Dashboard.dc.html#track"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Track Order</button></a>
       <a href="Shop%20All.dc.html"><button style="background:transparent;border:1px solid #DDD8CC;border-radius:999px;padding:13px 28px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Continue shopping</button></a>
     </div>
-    <div onClick="{{ resetDemo }}" style="margin-top:56px;font-size:11.5px;color:#B8B2A5;cursor:pointer">← back to checkout (demo)</div>
+
+    <sc-if value="{{ isGuest }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:32px;width:100%;max-width:460px;background:#F3F0E9;border-radius:14px;padding:20px 24px;text-align:left;animation:fadeUp 500ms 400ms ease-out both">
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px">Save this order to an account</div>
+        <p style="margin:0 0 12px;font-size:13px;color:#4A473F;line-height:1.5">You checked out as a guest. Create an account to track this order and save your design for later — no need to redo anything.</p>
+        <a href="Authentication.dc.html" style="font-size:13px;font-weight:600;color:#4A4FE4">Create account →</a>
+      </div>
+    </sc-if>
+
+    <div onClick="{{ resetDemo }}" style="margin-top:40px;font-size:11.5px;color:#B8B2A5;cursor:pointer">← back to checkout (demo)</div>
   </div>
 </sc-if>
 
@@ -186,6 +208,7 @@ class Component extends DCLogic {
     return {
       goBack: this.goBack,
       isSuccess: st.phase === 'success', isCheckout: st.phase !== 'success',
+      isGuest: !st.signedIn,
       resetDemo: () => this.setState({ phase: 'checkout' }),
       toggleNews: () => this.setState(s => ({ news: !s.news })), newsBg: st.news ? '#1C1B19' : '#fff', newsCheck: st.news ? '✓' : '',
       pickCard: () => this.setState({ pay: 'card' }), pickApple: () => this.setState({ pay: 'apple' }), pickPaypal: () => this.setState({ pay: 'paypal' }), pickKlarna: () => this.setState({ pay: 'klarna' }),

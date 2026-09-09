@@ -4,12 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
-<meta name="ext-resource-dependency" content="uploads/sports bra 1 .png" data-resource-id="SB1" />
-<meta name="ext-resource-dependency" content="uploads/sports bra 2.png" data-resource-id="SB2" />
-<meta name="ext-resource-dependency" content="uploads/sports bra 3.png" data-resource-id="SB3" />
-<meta name="ext-resource-dependency" content="uploads/sports bra 4.png" data-resource-id="SB4" />
+<meta name="ext-resource-dependency" content="uploads/oversized hoodie 330 - 1 .png" data-resource-id="RH1" />
+<meta name="ext-resource-dependency" content="uploads/oversized hoodie 330 - 2.png" data-resource-id="RH2" />
+<meta name="ext-resource-dependency" content="uploads/oversized hoodie 330 - 3.png" data-resource-id="RH3" />
+<meta name="ext-resource-dependency" content="uploads/oversized hoodie 330 - 4.png" data-resource-id="RH4" />
+<meta name="ext-resource-dependency" content="uploads/oversized hoodie 330 - 5.png" data-resource-id="RH5" />
+<meta name="ext-resource-dependency" content="uploads/made by you - hoodie - 1.jpg" data-resource-id="MBY1" />
+<meta name="ext-resource-dependency" content="uploads/made by you - hoodie - 2.jpg" data-resource-id="MBY2" />
+<meta name="ext-resource-dependency" content="uploads/made by you - hoodie - 3.jpg" data-resource-id="MBY3" />
+<meta name="ext-resource-dependency" content="uploads/made by you - hoodie - 4.jpg" data-resource-id="MBY4" />
+<meta name="ext-resource-dependency" content="uploads/made by you - hoodie - 5.jpg" data-resource-id="MBY5" />
 <meta name="ext-resource-dependency" content="uploads/studio demo.mp4" data-resource-id="STUDIODEMO" />
-<meta name="ext-resource-dependency" content="uploads/regular hoodie 300 - 1.png" data-resource-id="RH1" />
+<meta name="ext-resource-dependency" content="uploads/regular hoodie 300 - 1.png" data-resource-id="OHOODIE2" />
 </head>
 <body>
 <x-dc>
@@ -75,10 +81,10 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           <div style="height:5px;background:rgba(28,27,25,0.15);border-radius:999px;margin-top:10px;overflow:hidden"><div style="height:100%;width:{{ freeShipPct }}%;background:#1C1B19"></div></div>
         </div>
         <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:16px;display:flex;gap:14px;margin-bottom:18px">
-          <div style="width:70px;height:70px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="cart-item-1" data-src="{{ cartItemImg }}" shape="rect" placeholder="Regular Hoodie 300"></image-slot></div>
+          <div style="width:70px;height:70px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="oh-cart-item-1" data-src="{{ cartItemImg }}" shape="rect" placeholder="Oversized Hoodie 330"></image-slot></div>
           <div style="flex:1">
-            <div style="font-size:14.5px;font-weight:600">Woman's Sports Bra</div>
-            <div style="font-size:13px;color:#4A473F;margin-top:2px">28,00€</div>
+            <div style="font-size:14.5px;font-weight:600">Oversized Hoodie 330</div>
+            <div style="font-size:13px;color:#4A473F;margin-top:2px">44,00€</div>
             <div style="font-size:12px;color:#8B867B">Navy / M</div>
             <div style="display:flex;align-items:center;gap:12px;margin-top:10px">
               <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.6);border-radius:999px;padding:5px 12px">
@@ -121,7 +127,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 
   <!-- BREADCRUMB -->
   <div style="max-width:1440px;margin:0 auto;padding:22px 48px 0;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#8B867B">
-    <a href="Shop%20All.dc.html" style="color:#8B867B">Shop</a> / <a href="Athleisure.dc.html" style="color:#8B867B">Athleisure</a> / <span style="color:#1C1B19">Woman's Sports Bra</span>
+    <a href="Shop%20All.dc.html" style="color:#8B867B">Shop</a> / <a href="Hoodies and Sweats.dc.html" style="color:#8B867B">Hoodies</a> / <span style="color:#1C1B19">Oversized Hoodie 330</span>
   </div>
 
   <!-- MAIN -->
@@ -134,7 +140,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
           <sc-for list="{{ row.items }}" as="m" hint-placeholder-count="2">
             <div style="position:relative;width:100%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;background:#EFEBE2">
               <image-slot id="{{ m.slot }}" src="{{ m.img }}" shape="rect" placeholder="{{ m.ph }}"></image-slot>
-              
+              <span style="position:absolute;left:10px;bottom:10px;background:rgba(28,27,25,0.6);backdrop-filter:blur(4px);color:#fff;font-size:11px;padding:5px 10px;border-radius:999px">{{ m.caption }}</span>
             </div>
           </sc-for>
         </div>
@@ -144,16 +150,16 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <!-- RIGHT: STICKY INFO -->
     <div style="position:sticky;top:88px;display:flex;flex-direction:column;gap:24px;padding-bottom:40px">
       <div>
-        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:34px;line-height:1.05;letter-spacing:-0.01em;text-transform:uppercase">Woman's Sports Bra</h1>
-        <p style="margin:0 0 14px;font-size:14.5px;line-height:1.5;color:#4A473F">A medium-support sports bra in soft, four-way stretch fabric, made to hold your print.</p>
-        <div style="font-family:inherit;font-weight:700;font-size:24px">€28.00 <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
+        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:34px;line-height:1.05;letter-spacing:-0.01em;text-transform:uppercase">Oversized Hoodie 330</h1>
+        <p style="margin:0 0 14px;font-size:14.5px;line-height:1.5;color:#4A473F">A roomier, heavier hoodie with dropped shoulders — made to hold a bigger print.</p>
+        <div style="font-family:inherit;font-weight:700;font-size:24px">€44.00 <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
       </div>
 
       <!-- SPECS -->
       <div style="border-top:1px solid #EEEBE3;padding-top:18px;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Composition</span><span>88% nylon, 12% elastane</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Weight</span><span>N/A</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Fit</span><span>Regular</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Composition</span><span>100% combed cotton</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Weight</span><span>330 g/m²</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Fit</span><span>Oversized</span></div>
       </div>
 
 
@@ -497,14 +503,16 @@ class Component extends DCLogic {
       leave: () => this.setState({ hoverColour: null }),
     });
     const sizeNames = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-    const base = 28;
+    const base = 44;
     let running = base;
     const tiers = ['5+', '10+', '25+', '50+', '100+'].map(label => { running = running * 0.9; return { qty: label, price: '€' + running.toFixed(2) }; });
     const FALLBACK = {
-      SB1: 'uploads/sports%20bra%201%20.png', SB2: 'uploads/sports%20bra%202.png', SB3: 'uploads/sports%20bra%203.png', SB4: 'uploads/sports%20bra%204.png',
-      STUDIODEMO: 'uploads/studio%20demo.mp4', RH1: 'uploads/regular%20hoodie%20300%20-%201.png',
+      RH1: 'uploads/regular%20hoodie%20300%20-%201.png', RH2: 'uploads/regular%20hoodie%20300%20-%202.png', RH3: 'uploads/regular%20hoodie%20300%20-%203.png', RH4: 'uploads/regular%20hoodie%20300%20-%204.png', RH5: 'uploads/regular%20hoodie%20300%20-%205.png',
+      MBY1: 'uploads/made%20by%20you%20-%20hoodie%20-%201.jpg', MBY2: 'uploads/made%20by%20you%20-%20hoodie%20-%202.jpg', MBY3: 'uploads/made%20by%20you%20-%20hoodie%20-%203.jpg', MBY4: 'uploads/made%20by%20you%20-%20hoodie%20-%204.jpg', MBY5: 'uploads/made%20by%20you%20-%20hoodie%20-%205.jpg',
+      STUDIODEMO: 'uploads/studio%20demo.mp4',
     };
     const res = (k) => (window.__resources && window.__resources[k]) || FALLBACK[k] || '';
+    const mk = (n, i) => ({ img: res('MBY' + n), ph: 'Customer photo — oversized hoodie, submission ' + n });
     return {
       toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
@@ -523,21 +531,23 @@ class Component extends DCLogic {
       closeAcctMenu: () => { this._acctOpen = false; this.forceUpdate(); },
       goDashboard: () => { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; },
       logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
-      cartItemImg: res('SB2'),
+      cartItemImg: (window.__resources && window.__resources['RH1']) || 'uploads/oversized%20hoodie%20330%20-%201%20.png',
       cartQty: this.state.cartQty,
       cartQtyInc: () => this.setState(s => ({ cartQty: s.cartQty + 1 })),
       cartQtyDec: () => this.setState(s => ({ cartQty: Math.max(1, s.cartQty - 1) })),
-      cartSubtotal: '€' + (28 * this.state.cartQty).toFixed(2).replace('.', ','),
-      freeShipMsg: (() => { const rem = 75 - 28 * this.state.cartQty; return rem > 0 ? '€' + rem.toFixed(2) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
-      freeShipPct: Math.min(100, (28 * this.state.cartQty / 75) * 100),
+      cartSubtotal: '€' + (39 * this.state.cartQty).toFixed(2).replace('.', ','),
+      freeShipMsg: (() => { const rem = 75 - 39 * this.state.cartQty; return rem > 0 ? '€' + rem.toFixed(2) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
+      freeShipPct: Math.min(100, (39 * this.state.cartQty / 75) * 100),
       upsell: [
-        { slot: 'up-1', ph: 'Sports Tee Woman', name: 'Sports Tee Woman', price: '22,00€' },
-        { slot: 'up-2', ph: 'Shorts Woman', name: 'Shorts Woman', price: '26,00€' },
-        { slot: 'up-3', ph: 'Joggers Woman', name: 'Joggers Woman', price: '36,00€' },
-        { slot: 'up-4', ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39,00€', img: res('RH1') },
+        { slot: 'oh-up-1', ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39,00€', img: res('OHOODIE2') },
+        { slot: 'oh-up-2', ph: 'Cap', name: 'Cap', price: '18,00€' },
+        { slot: 'oh-up-3', ph: 'Tote', name: 'Tote', price: '12,00€' },
+        { slot: 'oh-up-4', ph: 'Regular Tee 190', name: 'Regular Tee 190', price: '19,00€' },
       ],
       mediaRows: (() => {
-        const items = [1, 2, 3, 4].map(n => ({ slot: 'pp-media-' + n, img: res('SB' + n), ph: "Woman's Sports Bra — photo " + n }));
+        const genders = { 1: 'F', 2: 'M', 3: 'F', 4: 'M', 5: 'M' };
+        const caption = g => g === 'F' ? 'Abby is 170cm tall and wears S' : 'John is 190cm tall and wears a L';
+        const items = [1, 2, 3, 4, 5].map(n => ({ slot: 'oh-media-' + n, img: res('RH' + n), ph: 'Oversized Hoodie 330 — photo ' + n, caption: caption(genders[n]) }));
         const rows = [];
         for (let i = 0; i < items.length; i += 2) {
           const pair = items.slice(i, i + 2);
@@ -555,24 +565,24 @@ class Component extends DCLogic {
       qty,
       price2dp: base.toFixed(2),
       openSizeGuide: this.openSizeGuide,
-      fitHelp: 'Regular fit — true to size. Size down for extra compression, size up for a looser feel.',
+      fitHelp: 'Oversized fit — roomy through the body and sleeves. Size down for a closer-to-regular feel.',
       volumeOpen, volumeRot: volumeOpen ? 'rotate(180deg)' : 'none', toggleVolume: this.toggleVolume,
       relatedProducts: [
-        { slot: 'ymal-1', ph: 'Leggings', name: 'Leggings', price: '32', img: null, href: 'Product Page.dc.html' },
-        { slot: 'ymal-2', ph: 'Cropped Training Tee', name: 'Cropped Training Tee', price: '22', img: null, href: 'Product Page.dc.html' },
-        { slot: 'ymal-3', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', img: res('OHOODIE2'), href: 'Oversized%20Hoodie%20330.dc.html' },
-        { slot: 'ymal-4', ph: 'Structured Cap', name: 'Structured Cap', price: '18', img: null, href: 'Product Page.dc.html' },
-        { slot: 'ymal-5', ph: 'Tote Bag', name: 'Tote Bag', price: '12', img: null, href: 'Product Page.dc.html' },
+        { slot: 'oh-ymal-1', ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39', img: res('OHOODIE2'), href: 'Product Page.dc.html' },
+        { slot: 'oh-ymal-2', ph: 'Regular Sweat 300', name: 'Regular Sweat 300', price: '35', img: null, href: 'Product Page.dc.html' },
+        { slot: 'oh-ymal-3', ph: 'Structured Cap', name: 'Structured Cap', price: '18', img: null, href: 'Product Page.dc.html' },
+        { slot: 'oh-ymal-4', ph: 'Regular Tee 190', name: 'Regular Tee 190', price: '19', img: null, href: 'Product Page.dc.html' },
+        { slot: 'oh-ymal-5', ph: 'Tote Bag', name: 'Tote Bag', price: '12', img: null, href: 'Product Page.dc.html' },
       ],
       ctaBg: cur.hex, ctaInk: Component.contrast(cur.hex),
       volume: tiers,
       accordions: [
-        { title: 'Description', isText: true, isTable: false, body: 'A medium-support sports bra in four-way stretch fabric. Racerback, removable padding, wide underband for stability. Holds a clean, crisp print.' },
-        { title: 'Fabric & Care', isText: true, isTable: false, body: '88% nylon, 12% elastane. Machine wash cold, inside-out. No tumble dry. Iron on reverse, never on the print.' },
+        { title: 'Description', isText: true, isTable: false, body: 'A roomier hoodie with dropped shoulders and an oversized body, built to hold a bigger print. 330 gsm brushed cotton, double-layer hood, kangaroo pocket. Garment-dyed for a lived-in feel from day one.' },
+        { title: 'Fabric & Care', isText: true, isTable: false, body: '100% combed cotton, 330 g/m². Ribbed cuffs and hem. Wash inside-out at 30°C. No tumble dry. Iron on reverse, never on the print.' },
         { title: 'Print areas', isVisual: true, isText: false, isTable: false, areas: ['Front', 'Back', 'Sleeves'] },
         { title: 'Size guide', isTable: true, isText: false, anchor: 'acc-size-guide',
-          head: ['Size', 'Chest (cm)', 'Underbust (cm)'],
-          rows: [['XS', '80', '64'], ['S', '84', '68'], ['M', '88', '72'], ['L', '92', '76'], ['XL', '96', '80'], ['XXL', '100', '84']] },
+          head: ['Size', 'Chest (cm)', 'Length (cm)', 'Sleeve (cm)'],
+          rows: [['XS', '96', '65', '58'], ['S', '102', '67', '60'], ['M', '108', '69', '62'], ['L', '114', '71', '64'], ['XL', '120', '73', '66'], ['XXL', '126', '75', '68']] },
         { title: 'Shipping Policy', isText: true, isTable: false, body: '24–48h delivery to Portugal & Spain. Up to 5 days across the rest of Europe. Free shipping over €75.' },
       ].map(a => ({
         ...a,
@@ -581,14 +591,14 @@ class Component extends DCLogic {
       })),
       reviewAvg: '4.8',
       productReviews: [
-        { name: 'Elly Marques', meta: 'Verified buyer', quote: 'Good support for lower-impact workouts. The fabric holds the print well through washes.' },
-        { name: 'Ines Cardoso', meta: 'Verified buyer', quote: 'Comfortable racerback, doesn\u2019t dig in. Runs true to size.' },
-        { name: 'Sara Teixeira', meta: 'Verified buyer', quote: 'Ordered two colors. Fits snug but not restrictive, would recommend.' },
+        { name: 'Rui Almeida', meta: 'Verified buyer', quote: 'Heavier than I expected in a good way. Holds the print really well after washing.' },
+        { name: 'Sofia Nunes', meta: 'Verified buyer', quote: 'Fits oversized as described. The fabric feels premium, not like a basic blank.' },
+        { name: 'Diogo Peixoto', meta: 'Verified buyer', quote: 'Ordered for the whole team, sizing was consistent across the batch. Would order again.' },
       ],
-      ugc: [2, 3, 4, 1].map(n => ({
-        isPhoto: true, isVideo: false, slot: 'pp-mby-' + n, img: res('SB' + n), ph: "Customer photo — sports bra, submission " + n, handle: '@web2print.mbu' + n, source: 'Instagram', occasion: ([["Gym crew","Sports Bra"],["Team event","Sports Bra"],["Birthday gift","Sports Bra"],["Running club","Sports Bra"],["Festival","Sports Bra"]])[n - 1][0], product: ([["Gym crew","Sports Bra"],["Team event","Sports Bra"],["Birthday gift","Sports Bra"],["Running club","Sports Bra"],["Festival","Sports Bra"]])[n - 1][1],
+      ugc: [1, 2, 3, 4, 5].map(n => ({
+        isPhoto: true, isVideo: false, slot: 'oh-mby-' + n, img: mk(n).img, ph: mk(n).ph, handle: '@web2print.mbu' + n, source: 'Instagram', occasion: ([["Team event","Oversized Hoodie 330"],["Birthday gift","Oversized Hoodie 330"],["Company merch","Oversized Hoodie 330"],["Reunion","Oversized Hoodie 330"],["Launch drop","Oversized Hoodie 330"]])[n - 1][0], product: ([["Team event","Oversized Hoodie 330"],["Birthday gift","Oversized Hoodie 330"],["Company merch","Oversized Hoodie 330"],["Reunion","Oversized Hoodie 330"],["Launch drop","Oversized Hoodie 330"]])[n - 1][1],
       })).concat(['@marta.k', '@studio.rui', '@lenaonline', '@theo.wears', '@casa.nova'].map((h, i) => ({
-        isPhoto: false, isVideo: true, handle: h, source: i % 2 ? 'TikTok' : 'Instagram', occasion: ([["Company merch","Sports Bra"],["Reunion","Sports Bra"],["Launch drop","Sports Bra"],["Bachelor party","Sports Bra"],["Wedding favor","Sports Bra"]])[i][0], product: ([["Company merch","Sports Bra"],["Reunion","Sports Bra"],["Launch drop","Sports Bra"],["Bachelor party","Sports Bra"],["Wedding favor","Sports Bra"]])[i][1],
+        isPhoto: false, isVideo: true, handle: h, source: i % 2 ? 'TikTok' : 'Instagram', occasion: ([["Bachelor party","Oversized Hoodie 330"],["Festival","Oversized Hoodie 330"],["Housewarming gift","Oversized Hoodie 330"],["Gym crew","Oversized Hoodie 330"],["Wedding favor","Oversized Hoodie 330"]])[i][0], product: ([["Bachelor party","Oversized Hoodie 330"],["Festival","Oversized Hoodie 330"],["Housewarming gift","Oversized Hoodie 330"],["Gym crew","Oversized Hoodie 330"],["Wedding favor","Oversized Hoodie 330"]])[i][1],
         ref: (el) => { if (!el) return; const u = res('STUDIODEMO'); if (el.getAttribute('src') !== u) { el.src = u; el.play && el.play().catch(() => {}); } },
       }))),
       ugcRef: (el) => { this._ugcEl = el; },

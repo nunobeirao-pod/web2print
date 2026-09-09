@@ -105,8 +105,10 @@ html{scroll-behavior:smooth}
             </div>
           </sc-if>
         </span>
-        <span onClick="{{ goAuth }}" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center">
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg>
+        <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
+          <sc-if value="{{ isGuestAcct }}" hint-placeholder-val="{{ true }}"><span onClick="{{ goAccount }}" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></span></sc-if>
+          <sc-if value="{{ isSignedIn }}" hint-placeholder-val="{{ false }}"><span onClick="{{ goDashboard }}" title="Account" style="cursor:pointer;width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initials }}</span></sc-if>
+          <sc-if value="{{ showAcctMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70"><a href="Dashboard.dc.html" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#1C1B19" style-hover="background:#F3F0E9">Dashboard</a><span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span></div></sc-if>
         </span>
         <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
@@ -142,7 +144,10 @@ html{scroll-behavior:smooth}
               <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.6);border-radius:999px;padding:5px 12px">
                 <span onClick="{{ cartQtyDec }}" style="cursor:pointer">−</span><span style="font-size:13px;font-weight:600">{{ cartQty }}</span><span onClick="{{ cartQtyInc }}" style="cursor:pointer">+</span>
               </div>
-              <span style="cursor:pointer;color:#8B867B" title="Remove">🗑</span>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:10px">
+              <a href="Create%20your%20own.dc.html" style="font-size:12px;font-weight:600;color:#4A4FE4">Edit Design</a>
+              <span style="cursor:pointer;font-size:12px;font-weight:500;color:#8B867B" title="Remove">Remove</span>
             </div>
           </div>
         </div>
@@ -496,7 +501,7 @@ class Component extends DCLogic {
         const CORE = ['#1C1B19', '#F5F3ED', '#D9C9AE', '#4A3427', '#1F2A44'];
         const items = [
           { slot: 'hp-p3', img: this.res('RHOODIE1'), ph: 'Regular Hoodie 300', name: 'Regular Hoodie 300', price: '39', weight: '300', fit: 'regular', tag: 'hoodies' },
-          { slot: 'hp-p4', img: this.res('OHOODIE2'), ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', weight: '330', fit: 'oversized', tag: 'hoodies' },
+          { slot: 'hp-p4', img: this.res('OHOODIE2'), ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', weight: '330', fit: 'oversized', tag: 'hoodies', href: 'Oversized%20Hoodie%20330.dc.html' },
         ];
         const bestForMap = { tees: 'Best for everyday designs', hoodies: 'Best for cold days and prints', sweats: 'Best for casual layering', accessories: 'Best for finishing the look', athleisure: 'Best for training days', bottoms: 'Best for everyday movement' };
         return items.map(it => ({ ...it, swatches: CORE, more: 5, bestFor: bestForMap[it.tag] || 'Best for everyday wear', meta: it.weight + ' gsm · ' + it.fit.charAt(0).toUpperCase() + it.fit.slice(1) + ' fit' }));
@@ -563,12 +568,20 @@ class Component extends DCLogic {
       freeShipMsg: (() => { const rem = 75 - 39 * this.state.cartQty; return rem > 0 ? '€' + rem.toFixed(2) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
       freeShipPct: Math.min(100, (39 * this.state.cartQty / 75) * 100),
       upsell: [
-        { slot: 'up-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44,00€', img: this.res('OHOODIE2') },
+        { slot: 'up-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44,00€', img: this.res('OHOODIE2'), href: 'Oversized%20Hoodie%20330.dc.html' },
         { slot: 'up-2', ph: 'Cap', name: 'Cap', price: '18,00€' },
         { slot: 'up-3', ph: 'Tote', name: 'Tote', price: '12,00€' },
         { slot: 'up-4', ph: 'Regular Tee 190', name: 'Regular Tee 190', price: '19,00€' },
       ],
       goAuth: () => { if (window.__navigate) window.__navigate('Authentication.dc.html'); else location.href = 'Authentication.dc.html'; },
+      goAccount: () => { const dest = (window.localStorage && window.localStorage.getItem('w2p_signed_in')) ? 'Dashboard.dc.html' : 'Authentication.dc.html'; if (window.__navigate) window.__navigate(dest); else location.href = dest; },
+      isSignedIn: !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')), isGuestAcct: !(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      initials: (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT',
+      acctMenuOpen: !!this._acctOpen, showAcctMenu: !!this._acctOpen && !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      openAcctMenu: () => { this._acctOpen = true; this.forceUpdate(); },
+      closeAcctMenu: () => { this._acctOpen = false; this.forceUpdate(); },
+      goDashboard: () => { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; },
+      logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
       goAI: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
       goProduct: () => { if (window.__navigate) window.__navigate('Product%20Page.dc.html'); else location.href = 'Product%20Page.dc.html'; },
       navBg: scrolled ? 'rgba(251,250,248,0.92)' : 'transparent',

@@ -147,8 +147,8 @@ a{color:#1C1B19;text-decoration:underline;text-underline-offset:3px}a:hover{colo
           <h1 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:42px;line-height:1.1">Welcome, João.</h1>
           <p style="margin:0 0 32px;font-size:15px;color:#8B867B">Your creative workspace is ready.</p>
           <div style="display:flex;flex-direction:column;gap:10px">
-            <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:17px 0;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start designing</button></a>
-            <a href="Shop%20All.dc.html" style="text-decoration:none;display:block"><button style="width:100%;background:transparent;border:1px solid #DDD8CC;border-radius:999px;padding:15px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Browse products</button></a>
+            <span onClick="{{ markSignedInDesign }}" style="text-decoration:none;display:block"><button style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:17px 0;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start designing</button></span>
+            <span onClick="{{ markSignedInShop }}" style="text-decoration:none;display:block"><button style="width:100%;background:transparent;border:1px solid #DDD8CC;border-radius:999px;padding:15px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Browse products</button></span>
           </div>
           <div style="border:1px dashed #DDD8CC;border-radius:14px;padding:26px;margin-top:32px;text-align:center">
             <div style="font-family:inherit;font-weight:700;font-size:19px;margin-bottom:5px">No designs yet.</div>
@@ -205,6 +205,8 @@ class Component extends DCLogic {
       goSignin: go('signin'), goSignup: go('signup'), goForgot: go('forgot'), goSent: go('sent'),
       goOnboard1: go('onboard1'), goOnboard2: go('onboard2'), goWelcome: go('welcome'), goGuest: go('guest'),
       signIn: go('welcome'),
+      markSignedInDesign: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
+      markSignedInShop: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
       email: st.email, setEmail: e => this.setState({ email: e.target.value }),
       emailBorder: emailValid ? (st.email ? '#41573B' : '#DDD8CC') : '#A34B33',
       emailError: !emailValid,

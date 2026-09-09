@@ -7,179 +7,188 @@
 </head>
 <body>
 <x-dc>
+
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="./image-slot.js"></script>
 <style>
 body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
-.dash-row::-webkit-scrollbar{height:6px}.dash-row::-webkit-scrollbar-thumb{background:#DDD8CC;border-radius:999px}.dash-row::-webkit-scrollbar-track{background:transparent}
+input,select{font-family:inherit}
 </style>
 </helmet>
-<div data-screen-label="Dashboard" style="height:100vh;min-width:1240px;display:flex;flex-direction:column;overflow:hidden">
+<div data-screen-label="Dashboard" style="min-height:100vh;display:flex;flex-direction:column">
 
   <!-- TOP NAV -->
   <nav style="height:60px;background:rgba(251,250,248,0.94);border-bottom:1px solid #E6E2D8;display:flex;align-items:center;padding:0 24px;gap:20px;flex-shrink:0;z-index:20">
     <a href="Homepage.dc.html" style="font-size:16px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;text-decoration:none">Web2Print</a>
-    <div style="font-size:12px;color:#8B867B;border-left:1px solid #E6E2D8;padding-left:16px">Workspace</div>
-    <div style="flex:1;display:flex;justify-content:center">
-      <input placeholder="Search designs, orders, assets…" style="width:380px;border:1px solid #E6E2D8;border-radius:999px;padding:10px 20px;font-size:13px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
+    <div style="flex:1;display:flex;justify-content:center;min-width:0;padding:0 10px">
+      <input placeholder="Search orders, designs…" style="width:100%;max-width:340px;min-width:0;box-sizing:border-box;border:1px solid #E6E2D8;border-radius:999px;padding:10px 20px;font-size:13px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
     </div>
     <div style="display:flex;gap:16px;align-items:center">
       <a href="Create%20your%20own.dc.html" style="text-decoration:none"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:10px 22px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">+ New design</button></a>
       <a href="Shop%20All.dc.html" style="font-size:13px;color:#4A473F;text-decoration:none">Shop</a>
-      <span style="width:32px;height:32px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center">JT</span>
+      <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:38px;margin-bottom:-38px">
+        <span onClick="{{ goHome }}" style="width:32px;height:32px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ initials }}</span>
+        <sc-if value="{{ acctMenuOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:38px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70">
+            <span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span>
+          </div>
+        </sc-if>
+      </span>
     </div>
   </nav>
 
-  <div style="flex:1;display:flex;overflow:hidden">
+  <div style="flex:1;display:flex">
 
     <!-- LEFT NAV -->
-    <aside style="width:216px;border-right:1px solid #EEEBE3;padding:20px 12px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;overflow-y:auto">
-      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+    <aside style="width:180px;min-width:180px;border-right:1px solid #EEEBE3;padding:24px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
         <div onClick="{{ n.pick }}" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;cursor:pointer;background:{{ n.bg }};color:{{ n.ink }};font-size:13.5px;font-weight:{{ n.weight }};transition:background 150ms" style-hover="background:{{ n.hoverBg }}">
           <span style="font-size:14px;width:18px;text-align:center">{{ n.icon }}</span>{{ n.label }}
         </div>
       </sc-for>
-      <div style="margin-top:auto;border:1px solid #E6E2D8;border-radius:12px;padding:14px;background:#fff">
-        <div style="font-size:12px;font-weight:600;margin-bottom:4px">Studio Pro</div>
-        <div style="font-size:11.5px;color:#8B867B;line-height:1.5;margin-bottom:10px">Team seats, brand locking and priority production.</div>
-        <span style="font-size:12px;font-weight:500;color:#4A4FE4;cursor:pointer">Upgrade →</span>
-      </div>
     </aside>
 
     <!-- MAIN -->
-    <main style="flex:1;overflow-y:auto;padding:36px 40px 64px">
+    <main style="flex:1;min-width:0;padding:36px 32px 64px;max-width:1080px;box-sizing:border-box;overflow-x:auto">
 
-      <!-- OVERVIEW -->
-      <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px">
-          <div>
-            <h1 style="margin:0 0 6px;font-family:inherit;font-weight:700;font-size:42px;letter-spacing:-0.01em">Welcome back, João.</h1>
-            <div style="font-size:15px;color:#8B867B">Continue building your brand.</div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
-              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:14px;padding:14px 20px;min-width:96px">
-                <div style="font-family:inherit;font-weight:700;font-size:26px;line-height:1">{{ s.v }}</div>
-                <div style="font-size:11.5px;color:#8B867B;margin-top:5px">{{ s.l }}</div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-
-        <!-- QUICK ACTIONS -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:48px">
-          <div style="grid-column:span 1;background:#1C1B19;color:#FBFAF8;border-radius:16px;padding:26px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:150px;transition:transform 200ms ease-out" style-hover="transform:translateY(-3px)">
-            <a href="Create%20your%20own.dc.html" style="font-family:inherit;font-weight:700;font-size:24px;color:inherit;text-decoration:none">Continue last design</a>
-            <div style="display:flex;justify-content:space-between;align-items:flex-end"><span style="font-size:12.5px;color:#8B867B">North Run Club — edited 2h ago</span><span style="font-size:16px">→</span></div>
-          </div>
-          <div style="background:#4A4FE4;color:#fff;border-radius:16px;padding:26px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:150px;transition:transform 200ms ease-out" style-hover="transform:translateY(-3px)">
-            <a href="AI%20Studio.dc.html" style="font-family:inherit;font-weight:700;font-size:24px;color:inherit;text-decoration:none">Start with AI</a>
-            <div style="display:flex;justify-content:space-between;align-items:flex-end"><span style="font-size:12.5px;color:rgba(255,255,255,0.75)">A sentence becomes a garment</span><span style="font-size:16px">✦</span></div>
-          </div>
-          <div style="display:grid;grid-template-rows:1fr 1fr;gap:14px">
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 150ms" style-hover="border-color:#1C1B19">
-              <a href="Shop%20All.dc.html" style="font-size:14px;font-weight:500;color:inherit;text-decoration:none">Browse products</a><span style="color:#8B867B">→</span>
-            </div>
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 150ms" style-hover="border-color:#1C1B19">
-              <span style="font-size:14px;font-weight:500">Order again</span><span style="color:#8B867B">↺</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- RECENT DESIGNS -->
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-          <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:28px">Recent designs</h2>
-          <span style="font-size:13px;font-weight:500;color:#4A4FE4;cursor:pointer">All designs</span>
-        </div>
-        <div class="dash-row" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;margin-bottom:44px">
-          <sc-for list="{{ designs }}" as="d" hint-placeholder-count="4">
-            <div style="flex:0 0 250px;border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden;transition:all 200ms ease-out;position:relative" style-hover="transform:translateY(-3px);box-shadow:0 12px 32px rgba(28,27,25,0.08)">
-              <div style="aspect-ratio:5/4;background:{{ d.bg }};display:flex;align-items:center;justify-content:center;position:relative">
-                <div style="width:110px;height:130px;background:{{ d.garment }};border-radius:14px 14px 18px 18px;display:flex;align-items:center;justify-content:center">
-                  <span style="font-size:9px;letter-spacing:0.1em;color:{{ d.printInk }};font-weight:600;text-align:center;line-height:1.5">{{ d.print }}</span>
-                </div>
-                <span onClick="{{ d.menu }}" style="position:absolute;top:12px;right:12px;background:rgba(251,250,248,0.94);border-radius:999px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(28,27,25,0.1)" style-hover="background:#fff">⋯</span>
-                <sc-if value="{{ d.menuOpen }}" hint-placeholder-val="{{ false }}">
-                  <div style="position:absolute;top:48px;right:12px;background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(28,27,25,0.16);border:1px solid #EEEBE3;padding:6px;z-index:10;min-width:150px">
-                    <div style="padding:8px 12px;font-size:12.5px;border-radius:8px;cursor:pointer" style-hover="background:#F5F3ED">Continue editing</div>
-                    <div onClick="{{ d.duplicate }}" style="padding:8px 12px;font-size:12.5px;border-radius:8px;cursor:pointer" style-hover="background:#F5F3ED">Duplicate</div>
-                    <div style="padding:8px 12px;font-size:12.5px;border-radius:8px;cursor:pointer" style-hover="background:#F5F3ED">Rename</div>
-                    <div style="padding:8px 12px;font-size:12.5px;border-radius:8px;cursor:pointer" style-hover="background:#F5F3ED">Share</div>
-                    <div onClick="{{ d.remove }}" style="padding:8px 12px;font-size:12.5px;border-radius:8px;cursor:pointer;color:#A34B33" style-hover="background:#F7EBE7">Delete</div>
-                  </div>
-                </sc-if>
-              </div>
-              <div style="padding:16px 18px">
-                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
-                  <span style="font-size:14px;font-weight:600">{{ d.name }}</span>
-                  <span style="background:{{ d.statusBg }};color:{{ d.statusInk }};border-radius:999px;padding:4px 11px;font-size:10.5px;font-weight:500">{{ d.status }}</span>
-                </div>
-                <div style="font-size:12px;color:#8B867B">{{ d.product }} · {{ d.edited }}</div>
-              </div>
-            </div>
+      <!-- ORDERS LIST -->
+      <sc-if value="{{ isOrdersList }}" hint-placeholder-val="{{ true }}">
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Orders</h1>
+        <div style="display:flex;gap:8px;margin-bottom:24px">
+          <sc-for list="{{ orderTabs }}" as="ot" hint-placeholder-count="3">
+            <span onClick="{{ ot.pick }}" style="background:{{ ot.bg }};color:{{ ot.ink }};border:1px solid {{ ot.border }};border-radius:999px;padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer">{{ ot.label }}</span>
           </sc-for>
         </div>
-
-        <!-- ORDERS PREVIEW -->
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-          <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:28px">In production</h2>
-          <span onClick="{{ goOrders }}" style="font-size:13px;font-weight:500;color:#4A4FE4;cursor:pointer">All orders</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:44px">
-          <sc-for list="{{ ordersPreview }}" as="o" hint-placeholder-count="2">
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px;display:flex;gap:18px;transition:all 200ms" style-hover="box-shadow:0 12px 32px rgba(28,27,25,0.07)">
-              <div style="width:84px;height:100px;border-radius:12px;overflow:hidden;flex-shrink:0"><image-slot id="{{ o.slot }}" src="{{ o.img }}" credit="{{ o.credit }}" credit-href="{{ o.chref }}" shape="rect" placeholder="{{ o.ph }}"></image-slot></div>
-              <div style="flex:1;display:flex;flex-direction:column;gap:6px">
-                <div style="display:flex;justify-content:space-between"><span style="font-size:14px;font-weight:600">{{ o.name }}</span><span style="font-size:12px;color:#8B867B">{{ o.num }}</span></div>
-                <div style="display:flex;align-items:center;gap:8px"><span style="width:7px;height:7px;border-radius:50%;background:{{ o.dot }}"></span><span style="font-size:12.5px;color:{{ o.statusInk }};font-weight:500">{{ o.status }}</span></div>
-                <div style="font-size:12px;color:#8B867B">{{ o.delivery }}</div>
-                <div style="display:flex;gap:8px;margin-top:auto">
-                  <span style="font-size:12px;font-weight:500;color:#4A4FE4;cursor:pointer">View</span>
-                  <span style="font-size:12px;font-weight:500;color:#4A473F;cursor:pointer">Reorder</span>
-                  <span style="font-size:12px;font-weight:500;color:#4A473F;cursor:pointer">Invoice</span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ orderCards }}" as="o" hint-placeholder-count="3">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px 22px;display:flex;gap:18px;align-items:center" style-hover="box-shadow:0 8px 24px rgba(28,27,25,0.06)">
+              <div style="width:64px;height:76px;border-radius:10px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="{{ o.slot }}" src="{{ o.img }}" shape="rect" placeholder="{{ o.ph }}"></image-slot></div>
+              <div style="flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) minmax(70px,1fr);align-items:center;gap:10px">
+                <div>
+                  <div style="font-size:14px;font-weight:600">{{ o.num }}</div>
+                  <div style="font-size:12px;color:#8B867B;margin-top:2px">{{ o.date }}</div>
                 </div>
+                <div style="font-size:13.5px;font-weight:600">{{ o.total }}</div>
+                <div><span style="background:{{ o.statusBg }};color:{{ o.statusInk }};border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:500">{{ o.status }}</span></div>
+                <div style="text-align:right"><span onClick="{{ o.view }}" style="font-size:13px;font-weight:600;color:#4A4FE4;cursor:pointer">View Order →</span></div>
               </div>
-            </div>
-          </sc-for>
-        </div>
-
-        <!-- ANALYTICS -->
-        <h2 style="margin:0 0 18px;font-family:inherit;font-weight:700;font-size:28px">This month</h2>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px">
-          <sc-for list="{{ analytics }}" as="a" hint-placeholder-count="5">
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px">
-              <div style="font-family:inherit;font-weight:700;font-size:28px;line-height:1;margin-bottom:8px">{{ a.v }}</div>
-              <div style="font-size:12px;color:#8B867B">{{ a.l }}</div>
             </div>
           </sc-for>
         </div>
       </sc-if>
 
-      <!-- ORDERS -->
-      <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Orders</h1>
-        <div style="display:flex;flex-direction:column;gap:14px;max-width:860px">
-          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="3">
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px;display:flex;gap:22px;align-items:center" style-hover="box-shadow:0 12px 32px rgba(28,27,25,0.07)">
-              <div style="width:96px;height:112px;border-radius:12px;overflow:hidden;flex-shrink:0"><image-slot id="{{ o.slot }}" src="{{ o.img }}" credit="{{ o.credit }}" credit-href="{{ o.chref }}" shape="rect" placeholder="{{ o.ph }}"></image-slot></div>
-              <div style="flex:1">
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px"><span style="font-size:16px;font-weight:600">{{ o.name }}</span><span style="font-size:12.5px;color:#8B867B">{{ o.num }} · {{ o.total }}</span></div>
-                <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
-                  <sc-for list="{{ o.steps }}" as="s" hint-placeholder-count="4">
-                    <div style="flex:1;height:4px;border-radius:999px;background:{{ s }}"></div>
+      <!-- ORDER DETAILS -->
+      <sc-if value="{{ isOrderDetails }}" hint-placeholder-val="{{ false }}">
+        <span onClick="{{ backToOrders }}" style="font-size:12.5px;color:#8B867B;cursor:pointer;display:inline-block;margin-bottom:18px">← Back to orders</span>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;flex-wrap:wrap;gap:14px">
+          <div>
+            <h1 style="margin:0 0 6px;font-family:inherit;font-weight:700;font-size:32px">Order {{ od.num }}</h1>
+            <div style="font-size:13.5px;color:#8B867B">{{ od.date }} · {{ od.time }}</div>
+          </div>
+          <div style="text-align:right">
+            <span style="background:{{ od.statusBg }};color:{{ od.statusInk }};border-radius:999px;padding:7px 16px;font-size:12.5px;font-weight:500">{{ od.status }}</span>
+            <sc-if value="{{ od.showTrackCta }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px"><span onClick="{{ toggleTrack }}" style="font-size:13px;font-weight:600;color:#4A4FE4;cursor:pointer">{{ trackLabel }}</span></div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{ trackOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:26px;margin-bottom:28px">
+            <div style="display:flex;gap:0;margin-bottom:22px">
+              <sc-for list="{{ od.stages }}" as="stg" hint-placeholder-count="5">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
+                  <div style="position:absolute;top:10px;left:50%;right:-50%;height:2px;background:{{ stg.lineBg }}"></div>
+                  <span style="width:22px;height:22px;border-radius:999px;background:{{ stg.dotBg }};border:2px solid {{ stg.dotBorder }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-sizing:border-box">{{ stg.mark }}</span>
+                  <span style="font-size:11px;font-weight:{{ stg.weight }};color:{{ stg.ink }};text-align:center">{{ stg.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;color:#4A473F">Estimated delivery: <strong style="color:#1C1B19">{{ od.eta }}</strong> · Carrier: {{ od.carrier }}</div>
+          </div>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,280px);gap:20px;align-items:start">
+          <div>
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden;margin-bottom:24px">
+              <div style="overflow-x:auto">
+              <table style="width:100%;min-width:520px;border-collapse:collapse;font-size:13.5px">
+                <thead><tr style="background:#F5F3ED">
+                  <th style="text-align:left;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Product</th>
+                  <th style="text-align:left;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Description</th>
+                  <th style="text-align:left;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Size</th>
+                  <th style="text-align:center;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Qty</th>
+                  <th style="text-align:right;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Price</th>
+                  <th style="text-align:right;padding:12px 16px;font-weight:600;font-size:12px;color:#8B867B">Total</th>
+                </tr></thead>
+                <tbody>
+                  <sc-for list="{{ od.items }}" as="it" hint-placeholder-count="2">
+                    <tr style="border-top:1px solid #F1EEE7">
+                      <td style="padding:14px 16px"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:52px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="{{ it.slot }}" src="{{ it.img }}" shape="rect" placeholder="{{ it.ph }}"></image-slot></div><span style="font-weight:500">{{ it.product }}</span></div></td>
+                      <td style="padding:14px 16px;color:#4A473F">{{ it.desc }}</td>
+                      <td style="padding:14px 16px;color:#4A473F">{{ it.size }}</td>
+                      <td style="padding:14px 16px;text-align:center;color:#4A473F">{{ it.qty }}</td>
+                      <td style="padding:14px 16px;text-align:right;color:#4A473F">{{ it.price }}</td>
+                      <td style="padding:14px 16px;text-align:right;font-weight:600">{{ it.total }}</td>
+                    </tr>
                   </sc-for>
+                </tbody>
+              </table>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px">
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px">
+                <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Shipping address</div>
+                <div style="font-size:13.5px;line-height:1.6">{{ od.shipName }}<br>{{ od.shipLine1 }}<br>{{ od.shipCity }}</div>
+              </div>
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px">
+                <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#8B867B;margin-bottom:10px">Billing address</div>
+                <sc-if value="{{ od.billingSame }}" hint-placeholder-val="{{ true }}"><div style="font-size:13.5px;color:#4A473F">Billing address: Same as shipping address</div></sc-if>
+                <sc-if value="{{ od.billingDifferent }}" hint-placeholder-val="{{ false }}"><div style="font-size:13.5px;line-height:1.6">{{ od.billName }}<br>{{ od.billLine1 }}<br>{{ od.billCity }}</div></sc-if>
+              </div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:22px;position:sticky;top:20px">
+            <div style="font-size:14px;font-weight:600;margin-bottom:16px">Summary</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:#4A473F">
+              <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>{{ od.subtotal }}</span></div>
+              <div style="display:flex;justify-content:space-between"><span>Shipping</span><span>{{ od.shippingCost }}</span></div>
+              <div style="display:flex;justify-content:space-between"><span>Tax / VAT</span><span>{{ od.tax }}</span></div>
+            </div>
+            <div style="border-top:1px solid #EEEBE3;margin-top:14px;padding-top:14px;display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-size:15px;font-weight:700">TOTAL</span>
+              <span style="font-family:inherit;font-weight:700;font-size:22px">{{ od.total }}</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- WISHLIST -->
+      <sc-if value="{{ isWishlist }}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Wishlist</h1>
+        <sc-if value="{{ wishlistEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:80px 24px;max-width:420px;margin:0 auto">
+            <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:22px">Your wishlist is empty.</h2>
+            <p style="margin:0 0 24px;font-size:14px;color:#8B867B;line-height:1.6">Save the things you love and find them here later.</p>
+            <a href="Shop%20All.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer">Explore products</button></a>
+          </div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+          <sc-for list="{{ wishlist }}" as="w" hint-placeholder-count="3">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+              <a href="{{ w.href }}" style="display:block"><div style="aspect-ratio:4/5;background:#EFEBE2"><image-slot id="{{ w.slot }}" src="{{ w.img }}" shape="rect" placeholder="{{ w.ph }}"></image-slot></div></a>
+              <div style="padding:16px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+                  <a href="{{ w.href }}" style="font-size:14px;font-weight:600;color:#1C1B19">{{ w.name }}</a>
+                  <span style="font-size:14px;font-weight:600">€{{ w.price }}</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center">
-                  <span style="font-size:12.5px;color:{{ o.statusInk }};font-weight:500">{{ o.status }} — {{ o.delivery }}</span>
-                  <div style="display:flex;gap:14px">
-                    <span onClick="{{ o.track }}" style="font-size:12.5px;font-weight:500;color:#4A4FE4;cursor:pointer">Track</span>
-                    <span onClick="{{ o.startReturn }}" style="font-size:12.5px;font-weight:500;cursor:pointer">Return</span>
-                    <span style="font-size:12.5px;font-weight:500;cursor:pointer">Reorder</span>
-                    <span style="font-size:12.5px;font-weight:500;cursor:pointer">Download invoice</span>
-                  </div>
+                  <div style="display:flex;gap:5px"><sc-for list="{{ w.swatches }}" as="sw" hint-placeholder-count="4"><span style="width:13px;height:13px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15)"></span></sc-for></div>
+                  <span onClick="{{ w.remove }}" style="font-size:12px;color:#8B867B;cursor:pointer" style-hover="color:#A34B33">Remove</span>
                 </div>
               </div>
             </div>
@@ -187,423 +196,309 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
         </div>
       </sc-if>
 
-      <!-- TRACK ORDER -->
-      <sc-if value="{{ isTrack }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:42px">Track your order</h1>
-        <p style="margin:0 0 28px;font-size:14px;color:#8B867B">Live production and delivery status for every order.</p>
-        <div style="display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap">
-          <sc-for list="{{ trackTabs }}" as="tt" hint-placeholder-count="3">
-            <button onClick="{{ tt.pick }}" style="background:{{ tt.bg }};color:{{ tt.ink }};border:1px solid {{ tt.border }};border-radius:999px;padding:10px 20px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer">{{ tt.label }}</button>
+      <!-- SAVED DESIGNS -->
+      <sc-if value="{{ isSavedDesigns }}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Saved Designs</h1>
+        <sc-if value="{{ designsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:80px 24px;max-width:420px;margin:0 auto">
+            <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:22px">No saved designs yet.</h2>
+            <p style="margin:0 0 24px;font-size:14px;color:#8B867B;line-height:1.6">Create something and save it here to continue later.</p>
+            <a href="Create%20your%20own.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer">Start creating</button></a>
+          </div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+          <sc-for list="{{ savedDesigns }}" as="d" hint-placeholder-count="3">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+              <div style="aspect-ratio:5/4;background:{{ d.bg }};display:flex;align-items:center;justify-content:center">
+                <div style="width:100px;height:118px;background:{{ d.garment }};border-radius:12px 12px 16px 16px;display:flex;align-items:center;justify-content:center">
+                  <span style="font-size:9px;letter-spacing:0.1em;color:{{ d.printInk }};font-weight:600;text-align:center;line-height:1.5">{{ d.print }}</span>
+                </div>
+              </div>
+              <div style="padding:16px">
+                <sc-if value="{{ d.editing }}" hint-placeholder-val="{{ false }}">
+                  <input value="{{ d.nameInput }}" onChange="{{ d.setName }}" onBlur="{{ d.commitName }}" autoFocus="{{ true }}" style="width:100%;box-sizing:border-box;border:1px solid #4A4FE4;border-radius:6px;padding:5px 8px;font-size:14px;font-weight:600;font-family:inherit;margin-bottom:4px;outline:none">
+                </sc-if>
+                <sc-if value="{{ d.notEditing }}" hint-placeholder-val="{{ true }}">
+                  <div onClick="{{ d.startEdit }}" style="font-size:14px;font-weight:600;margin-bottom:4px;cursor:text" title="Click to rename">{{ d.name }}</div>
+                </sc-if>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+                  <span style="font-size:12px;color:#8B867B">{{ d.product }} · {{ d.edited }}</span>
+                  <span style="background:{{ d.statusBg }};color:{{ d.statusInk }};border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:500">{{ d.status }}</span>
+                </div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                  <a href="Create%20your%20own.dc.html" style="font-size:12.5px;font-weight:600;color:#4A4FE4">Edit</a>
+                  <span onClick="{{ d.duplicate }}" style="font-size:12.5px;font-weight:500;color:#4A473F;cursor:pointer">Duplicate</span>
+                  <span onClick="{{ d.orderAgain }}" style="font-size:12.5px;font-weight:500;color:#4A473F;cursor:pointer">Order Again</span>
+                  <span onClick="{{ d.remove }}" style="font-size:12.5px;font-weight:500;color:#A34B33;cursor:pointer">Delete</span>
+                </div>
+                <sc-if value="{{ d.showReorderNote }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:10px;font-size:11.5px;color:#8B867B;line-height:1.5;background:#F5F3ED;border-radius:8px;padding:8px 10px">Review availability, colour, size, price and lead time before reordering.</div>
+                </sc-if>
+              </div>
+            </div>
           </sc-for>
         </div>
-        <div style="max-width:860px;border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
-            <span style="font-size:18px;font-weight:600">{{ trk.name }}</span>
-            <span style="font-size:12.5px;color:#8B867B">{{ trk.num }} · {{ trk.total }}</span>
+      </sc-if>
+
+      <!-- MY DETAILS -->
+      <sc-if value="{{ isMyDetails }}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">My Details</h1>
+
+        <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:28px;max-width:640px;margin-bottom:32px">
+          <div style="font-size:15px;font-weight:600;margin-bottom:18px">Personal information</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+            <div><div style="font-size:12px;color:#8B867B;margin-bottom:6px">First Name</div><input value="{{ details.firstName }}" onChange="{{ details.setFirstName }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none" style-focus="border-color:#4A4FE4"></div>
+            <div><div style="font-size:12px;color:#8B867B;margin-bottom:6px">Last Name</div><input value="{{ details.lastName }}" onChange="{{ details.setLastName }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none" style-focus="border-color:#4A4FE4"></div>
           </div>
-          <div style="font-size:13px;color:{{ trk.statusInk }};font-weight:500;margin-bottom:26px">{{ trk.headline }}</div>
-          <div style="display:flex;gap:0;margin-bottom:30px">
-            <sc-for list="{{ trk.stages }}" as="stg" hint-placeholder-count="5">
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative">
-                <div style="position:absolute;top:10px;left:{{ stg.lineL }};right:{{ stg.lineR }};height:2px;background:{{ stg.lineBg }}"></div>
-                <span style="width:22px;height:22px;border-radius:999px;background:{{ stg.dotBg }};border:2px solid {{ stg.dotBorder }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-sizing:border-box">{{ stg.mark }}</span>
-                <span style="font-size:11.5px;font-weight:{{ stg.weight }};color:{{ stg.ink }};text-align:center">{{ stg.label }}</span>
+          <div style="margin-bottom:14px"><div style="font-size:12px;color:#8B867B;margin-bottom:6px">Email</div><input value="{{ details.email }}" onChange="{{ details.setEmail }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none" style-focus="border-color:#4A4FE4"></div>
+          <div style="margin-bottom:22px"><div style="font-size:12px;color:#8B867B;margin-bottom:6px">Phone Number</div><input value="{{ details.phone }}" onChange="{{ details.setPhone }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none" style-focus="border-color:#4A4FE4"></div>
+          <button onClick="{{ details.save }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:13px 28px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Save Changes</button>
+          <sc-if value="{{ details.saved }}" hint-placeholder-val="{{ false }}"><span style="margin-left:14px;font-size:12.5px;color:#41573B">Saved.</span></sc-if>
+        </div>
+
+        <div style="max-width:640px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+            <div style="font-size:15px;font-weight:600">Addresses</div>
+            <span onClick="{{ startAddAddress }}" style="font-size:13px;font-weight:600;color:#4A4FE4;cursor:pointer">+ Add New Address</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+            <sc-for list="{{ addresses }}" as="ad" hint-placeholder-count="2">
+              <div style="border:1px solid #E6E2D8;background:#fff;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:14px;font-weight:600">{{ ad.label }}</span><sc-if value="{{ ad.isDefault }}" hint-placeholder-val="{{ false }}"><span style="background:#EDF2EA;color:#41573B;border-radius:999px;padding:2px 9px;font-size:10.5px;font-weight:500">Default</span></sc-if></div>
+                  <div style="font-size:13px;color:#4A473F;line-height:1.6">{{ ad.name }}<br>{{ ad.line1 }}<br>{{ ad.cityLine }}<br>{{ ad.country }}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                  <span onClick="{{ ad.edit }}" style="font-size:12.5px;font-weight:600;color:#4A4FE4;cursor:pointer">Edit</span>
+                  <sc-if value="{{ ad.canSetDefault }}" hint-placeholder-val="{{ true }}"><span onClick="{{ ad.setDefault }}" style="font-size:12.5px;color:#8B867B;cursor:pointer">Set as default</span></sc-if>
+                </div>
               </div>
             </sc-for>
           </div>
-          <div style="border-top:1px solid #F1EEE7;padding-top:22px;display:grid;grid-template-columns:1fr 240px;gap:32px">
-            <div style="display:flex;flex-direction:column">
-              <sc-for list="{{ trk.events }}" as="ev" hint-placeholder-count="3">
-                <div style="display:flex;gap:12px">
-                  <div style="display:flex;flex-direction:column;align-items:center">
-                    <span style="width:8px;height:8px;border-radius:50%;background:{{ ev.dot }};margin-top:5px"></span>
-                    <span style="width:1.5px;flex:1;background:#EEEBE3;min-height:18px"></span>
-                  </div>
-                  <div style="padding-bottom:16px">
-                    <div style="font-size:13px;font-weight:500">{{ ev.msg }}</div>
-                    <div style="font-size:11.5px;color:#8B867B;margin-top:2px">{{ ev.time }}</div>
-                  </div>
-                </div>
-              </sc-for>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:18px;font-size:13px;color:#4A473F">
-              <div>
-                <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8B867B;margin-bottom:5px">Estimated delivery</div>
-                {{ trk.eta }}
-              </div>
-              <div>
-                <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8B867B;margin-bottom:5px">Carrier</div>
-                {{ trk.carrier }}
-              </div>
-              <div>
-                <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8B867B;margin-bottom:5px">Ship to</div>
-                Rua das Flores 12<br>4050-262 Porto
-              </div>
-            </div>
-          </div>
-        </div>
-      </sc-if>
 
-      <!-- MAKE A RETURN -->
-      <sc-if value="{{ isReturn }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:42px">Make a return</h1>
-        <p style="margin:0 0 28px;font-size:14px;color:#8B867B;max-width:560px">Returns and exchanges within 14 days of delivery. First size exchange is free — custom pieces qualify for print defects and sizing issues.</p>
-        <sc-if value="{{ retDone }}" hint-placeholder-val="{{ false }}">
-          <div style="max-width:640px;border:1px solid #CFE0CC;background:#F2F7F0;border-radius:16px;padding:32px;text-align:center">
-            <div style="font-size:34px;margin-bottom:10px">✓</div>
-            <div style="font-size:18px;font-weight:600;margin-bottom:8px">Return requested</div>
-            <p style="margin:0 0 20px;font-size:13.5px;color:#4A473F;line-height:1.6">We emailed you a prepaid label for order {{ retOrderNum }}. Drop the parcel at any pickup point — refunds land 5–10 business days after we receive it.</p>
-            <button onClick="{{ retReset }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:12px 26px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer">Done</button>
-          </div>
-        </sc-if>
-        <sc-if value="{{ retForm }}" hint-placeholder-val="{{ true }}">
-          <div style="max-width:640px;display:flex;flex-direction:column;gap:22px">
-            <div>
-              <div style="font-size:13px;font-weight:600;margin-bottom:10px">1 · Which order?</div>
-              <div style="display:flex;flex-direction:column;gap:8px">
-                <sc-for list="{{ retOrders }}" as="ro" hint-placeholder-count="2">
-                  <div onClick="{{ ro.pick }}" style="border:1px solid {{ ro.border }};background:#fff;border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;cursor:{{ ro.cursor }};opacity:{{ ro.opacity }}">
-                    <div><span style="font-size:13.5px;font-weight:500">{{ ro.name }}</span><span style="font-size:12px;color:#8B867B;margin-left:10px">{{ ro.num }}</span></div>
-                    <span style="font-size:12px;color:{{ ro.noteInk }}">{{ ro.note }}</span>
-                  </div>
-                </sc-for>
+          <sc-if value="{{ addrFormOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
+              <div style="font-size:14.5px;font-weight:600;margin-bottom:16px">{{ addrForm.heading }}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                <input placeholder="First Name" value="{{ addrForm.firstName }}" onChange="{{ addrForm.setFirstName }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="Last Name" value="{{ addrForm.lastName }}" onChange="{{ addrForm.setLastName }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+              </div>
+              <input placeholder="Address Line 1" value="{{ addrForm.line1 }}" onChange="{{ addrForm.setLine1 }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none;margin-bottom:12px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                <input placeholder="House / Apartment / Building Number" value="{{ addrForm.houseNum }}" onChange="{{ addrForm.setHouseNum }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="Address Line 2 (optional)" value="{{ addrForm.line2 }}" onChange="{{ addrForm.setLine2 }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                <input placeholder="City" value="{{ addrForm.city }}" onChange="{{ addrForm.setCity }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="ZIP / Postal Code" value="{{ addrForm.zip }}" onChange="{{ addrForm.setZip }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+              </div>
+              <div style="display:grid;grid-template-columns:{{ addrForm.stateColsSpec }};gap:12px;margin-bottom:16px">
+                <select value="{{ addrForm.country }}" onChange="{{ addrForm.setCountry }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;background:#fff;outline:none">
+                  <sc-for list="{{ addrForm.countries }}" as="c" hint-placeholder-count="4"><option value="{{ c }}">{{ c }}</option></sc-for>
+                </select>
+                <sc-if value="{{ addrForm.showState }}" hint-placeholder-val="{{ false }}">
+                  <input placeholder="State / Province" value="{{ addrForm.state }}" onChange="{{ addrForm.setState }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+                <span onClick="{{ addrForm.toggleDefault }}" style="width:18px;height:18px;border-radius:4px;border:1.5px solid #1C1B19;background:{{ addrForm.defaultBg }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">{{ addrForm.defaultCheck }}</span>
+                <span style="font-size:13px;color:#4A473F">Set as default address</span>
+              </div>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ addrForm.submit }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:12px 26px;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer">Save address</button>
+                <span onClick="{{ addrForm.cancel }}" style="font-size:13px;color:#8B867B;cursor:pointer;align-self:center">Cancel</span>
               </div>
             </div>
-            <div>
-              <div style="font-size:13px;font-weight:600;margin-bottom:10px">2 · Reason</div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px">
-                <sc-for list="{{ retReasons }}" as="rr" hint-placeholder-count="4">
-                  <button onClick="{{ rr.pick }}" style="background:{{ rr.bg }};color:{{ rr.ink }};border:none;border-radius:999px;padding:9px 18px;font-size:12.5px;font-weight:500;font-family:inherit;cursor:pointer">{{ rr.label }}</button>
-                </sc-for>
-              </div>
-            </div>
-            <div>
-              <div style="font-size:13px;font-weight:600;margin-bottom:10px">3 · Refund or exchange?</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                <sc-for list="{{ retMethods }}" as="rm" hint-placeholder-count="2">
-                  <div onClick="{{ rm.pick }}" style="border:1.5px solid {{ rm.border }};background:#fff;border-radius:12px;padding:16px 18px;cursor:pointer">
-                    <div style="font-size:13.5px;font-weight:600;margin-bottom:4px">{{ rm.title }}</div>
-                    <div style="font-size:12px;color:#8B867B;line-height:1.5">{{ rm.desc }}</div>
-                  </div>
-                </sc-for>
-              </div>
-            </div>
-            <div>
-              <button onClick="{{ retSubmit }}" style="background:{{ retBtnBg }};color:#fff;border:none;border-radius:999px;padding:14px 30px;font-size:14px;font-weight:500;font-family:inherit;cursor:{{ retBtnCursor }}" style-hover="background:#3A3833">Request return</button>
-              <div style="font-size:12px;color:#8B867B;margin-top:10px">Prepaid label included · Full policy on the <a href="Company.dc.html#returns" style="color:#4A4FE4">Returns &amp; exchanges</a> page.</div>
-            </div>
-          </div>
-        </sc-if>
-      </sc-if>
-
-      <!-- FAVOURITES -->
-      <sc-if value="{{ isFavourites }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Favourites</h1>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px">
-          <sc-for list="{{ favourites }}" as="f" hint-placeholder-count="6">
-            <div style="cursor:pointer">
-              <div style="aspect-ratio:4/4.6;border-radius:14px;overflow:hidden;position:relative">
-                <div style="position:absolute;inset:0;transition:transform 400ms ease-out" style-hover="transform:scale(1.03)"><image-slot id="{{ f.slot }}" src="{{ f.img }}" credit="{{ f.credit }}" credit-href="{{ f.chref }}" shape="rect" placeholder="{{ f.ph }}"></image-slot></div>
-                <span style="position:absolute;top:12px;left:12px;background:rgba(251,250,248,0.94);border-radius:999px;padding:5px 13px;font-size:11px;font-weight:500;pointer-events:none">{{ f.kind }}</span>
-              </div>
-              <div style="padding:12px 4px 0;display:flex;justify-content:space-between;align-items:baseline">
-                <span style="font-size:14px;font-weight:500">{{ f.name }}</span><span style="font-size:12.5px;color:#8B867B">{{ f.meta }}</span>
-              </div>
-            </div>
-          </sc-for>
-        </div>
-      </sc-if>
-
-      <!-- BRAND ASSETS -->
-      <sc-if value="{{ isBrand }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Brand assets</h1>
-        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;max-width:1000px">
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
-            <div style="display:flex;justify-content:space-between;margin-bottom:16px"><span style="font-size:14px;font-weight:600">Logos</span><span style="font-size:12.5px;color:#4A4FE4;font-weight:500;cursor:pointer">Upload</span></div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-              <div style="aspect-ratio:1;border-radius:10px;overflow:hidden"><image-slot id="ba-logo1" shape="rect" placeholder="logo primary"></image-slot></div>
-              <div style="aspect-ratio:1;border-radius:10px;overflow:hidden"><image-slot id="ba-logo2" shape="rect" placeholder="logo mono"></image-slot></div>
-              <div style="aspect-ratio:1;border:1px dashed #DDD8CC;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#8B867B;cursor:pointer" style-hover="border-color:#4A4FE4;color:#4A4FE4">+</div>
-            </div>
-          </div>
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:16px">Brand colours</div>
-            <div style="display:flex;gap:10px;margin-bottom:20px">
-              <sc-for list="{{ brandColours }}" as="bc" hint-placeholder-count="5">
-                <div style="flex:1"><div style="height:52px;border-radius:10px;background:{{ bc.hex }};border:1px solid rgba(28,27,25,0.08)"></div><div style="font-family:monospace;font-size:10px;color:#8B867B;margin-top:5px;text-align:center">{{ bc.hex }}</div></div>
-              </sc-for>
-            </div>
-            <div style="font-size:14px;font-weight:600;margin-bottom:10px">Fonts</div>
-            <div style="display:flex;gap:8px">
-              <span style="border:1px solid #E6E2D8;border-radius:999px;padding:8px 16px;font-size:12.5px;font-family:inherit;font-weight:700">Instrument Serif</span>
-              <span style="border:1px solid #E6E2D8;border-radius:999px;padding:8px 16px;font-size:12.5px">Helvetica Neue</span>
-            </div>
-          </div>
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px;grid-column:span 2">
-            <div style="display:flex;justify-content:space-between;margin-bottom:16px"><span style="font-size:14px;font-weight:600">Recent uploads & templates</span><span style="font-size:12.5px;color:#4A4FE4;font-weight:500;cursor:pointer">Manage</span></div>
-            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
-              <sc-for list="{{ uploads }}" as="u" hint-placeholder-count="6">
-                <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer" style-hover="opacity:0.9"><image-slot id="{{ u }}" shape="rect" placeholder="file"></image-slot></div>
-              </sc-for>
-            </div>
-          </div>
-        </div>
-      </sc-if>
-
-      <!-- INSPIRATION -->
-      <sc-if value="{{ isInspiration }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Inspiration</h1>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:14px;max-width:1080px">
-          <sc-for list="{{ inspiration }}" as="i" hint-placeholder-count="7">
-            <div style="grid-column:span {{ i.cs }};grid-row:span {{ i.rs }};border-radius:14px;overflow:hidden;position:relative;cursor:pointer" style-hover="opacity:0.92">
-              <image-slot id="{{ i.slot }}" src="{{ i.img }}" credit="{{ i.credit }}" credit-href="{{ i.chref }}" shape="rect" placeholder="{{ i.ph }}"></image-slot>
-              <span style="position:absolute;left:12px;bottom:52px;background:rgba(28,27,25,0.6);color:#fff;border-radius:999px;padding:5px 12px;font-size:10.5px;backdrop-filter:blur(4px);pointer-events:none">{{ i.tag }}</span>
-            </div>
-          </sc-for>
-        </div>
-      </sc-if>
-
-      <!-- TEAM -->
-      <sc-if value="{{ isTeam }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Team workspace</h1>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1000px">
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
-            <div style="display:flex;justify-content:space-between;margin-bottom:18px"><span style="font-size:14px;font-weight:600">Members</span><span style="font-size:12.5px;color:#4A4FE4;font-weight:500;cursor:pointer">Invite</span></div>
-            <div style="display:flex;flex-direction:column;gap:14px">
-              <sc-for list="{{ team }}" as="t" hint-placeholder-count="3">
-                <div style="display:flex;align-items:center;gap:12px">
-                  <span style="width:34px;height:34px;border-radius:50%;background:{{ t.color }};color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ t.initials }}</span>
-                  <div style="flex:1"><div style="font-size:13.5px;font-weight:500">{{ t.name }}</div><div style="font-size:11.5px;color:#8B867B">{{ t.role }}</div></div>
-                  <span style="font-size:11.5px;color:#8B867B">{{ t.perm }}</span>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
-            <div style="font-size:14px;font-weight:600;margin-bottom:18px">Pending approvals</div>
-            <div style="display:flex;flex-direction:column;gap:12px">
-              <sc-for list="{{ approvals }}" as="ap" hint-placeholder-count="2">
-                <div style="border:1px solid #F1EEE7;border-radius:12px;padding:14px 16px">
-                  <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;font-weight:500">{{ ap.name }}</span><span style="font-size:11.5px;color:#8B867B">{{ ap.by }}</span></div>
-                  <div style="display:flex;gap:8px">
-                    <span style="background:#1C1B19;color:#fff;border-radius:999px;padding:7px 16px;font-size:11.5px;font-weight:500;cursor:pointer">Approve</span>
-                    <span style="border:1px solid #DDD8CC;border-radius:999px;padding:7px 16px;font-size:11.5px;font-weight:500;cursor:pointer">Comment</span>
-                  </div>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-          <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px;grid-column:span 2">
-            <div style="font-size:14px;font-weight:600;margin-bottom:16px">Shared designs</div>
-            <div style="display:flex;gap:12px">
-              <sc-for list="{{ shared }}" as="sh" hint-placeholder-count="4">
-                <div style="flex:1;border:1px solid #F1EEE7;border-radius:12px;padding:14px;display:flex;gap:10px;align-items:center">
-                  <div style="width:36px;height:44px;border-radius:8px;background:{{ sh.color }}"></div>
-                  <div><div style="font-size:12.5px;font-weight:500">{{ sh.name }}</div><div style="font-size:11px;color:#8B867B">{{ sh.meta }}</div></div>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-        </div>
-      </sc-if>
-
-      <!-- ACCOUNT -->
-      <sc-if value="{{ isAccount }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:42px">Account</h1>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1000px">
-          <sc-for list="{{ account }}" as="ac" hint-placeholder-count="6">
-            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:22px;cursor:pointer;transition:all 150ms" style-hover="border-color:#1C1B19">
-              <div style="font-size:14px;font-weight:600;margin-bottom:6px">{{ ac.t }}</div>
-              <div style="font-size:12.5px;color:#8B867B;line-height:1.55">{{ ac.d }}</div>
-            </div>
-          </sc-for>
+          </sc-if>
         </div>
       </sc-if>
     </main>
-
-    <!-- RIGHT ACTIVITY PANEL -->
-    <aside style="width:264px;border-left:1px solid #EEEBE3;padding:28px 22px;flex-shrink:0;overflow-y:auto;display:{{ activityDisplay }}">
-      <div style="font-size:13px;font-weight:600;margin-bottom:20px">Activity</div>
-      <div style="display:flex;flex-direction:column">
-        <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="5">
-          <div style="display:flex;gap:12px">
-            <div style="display:flex;flex-direction:column;align-items:center">
-              <span style="width:9px;height:9px;border-radius:50%;background:{{ n.dot }};margin-top:4px"></span>
-              <span style="width:1.5px;flex:1;background:#EEEBE3;min-height:22px"></span>
-            </div>
-            <div style="padding-bottom:20px">
-              <div style="font-size:12.5px;font-weight:500;line-height:1.4">{{ n.msg }}</div>
-              <div style="font-size:11px;color:#8B867B;margin-top:3px">{{ n.time }}</div>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-    </aside>
   </div>
 </div>
+
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
 class Component extends DCLogic {
-  state = { section: ({ track: 'Track order', return: 'Returns' }[window.__sectionHint || (location.hash || '').slice(1)] || 'Overview'), menuFor: null, trackFor: '#W2P-1842', retOrder: '#W2P-1791', retReason: -1, retMethod: 0, retDone: false, designs: [
-    { id: 1, name: 'North Run Club', product: 'Oversized Hoodie', edited: '2h ago', status: 'In review', bg: '#EFEBE2', garment: '#3E4A5C', print: 'NORTH\nRUN\nCLUB', printInk: '#FBFAF8' },
-    { id: 2, name: 'Sunday Café crest', product: 'Classic Polo', edited: 'Yesterday', status: 'Draft', bg: '#F1EEE7', garment: '#E8E4DA', print: 'SC', printInk: '#41573B' },
-    { id: 3, name: 'Velvet Static merch', product: 'Heavyweight Tee', edited: '3 days ago', status: 'Ordered', bg: '#EFEBE2', garment: '#26241F', print: 'VELVET\nSTATIC', printInk: '#B0A28E' },
-    { id: 4, name: 'Team kit v2', product: 'Crewneck Sweat', edited: 'Last week', status: 'Draft', bg: '#F1EEE7', garment: '#7A8471', print: 'TK', printInk: '#FBFAF8' },
-  ]};
-  componentDidMount() { if (window.__sectionHint) delete window.__sectionHint; }
+  static COUNTRIES = ['Portugal', 'Spain', 'France', 'Germany', 'Italy'];
+  state = {
+    section: ({ track: 'Orders', return: 'Orders' }[window.__sectionHint || (location.hash || '').slice(1)] || 'Orders'),
+    orderTab: 'All', viewOrderId: null, trackOpen: false,
+    wishlist: [
+      { id: 1, name: 'Heavyweight Tee', price: '24', href: 'Product Page.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#D9C9AE'], ph: 'Heavyweight Tee' },
+      { id: 2, name: 'Structured Cap', price: '19', href: 'Accessories.dc.html', swatches: ['#1C1B19', '#4A3427'], ph: 'Structured Cap' },
+      { id: 3, name: 'Oversized Hoodie 330', price: '44', href: 'Oversized%20Hoodie%20330.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#1F2A44'], ph: 'Oversized Hoodie 330' },
+    ],
+    savedDesigns: [
+      { id: 1, name: 'Birthday Mum 2027', product: 'Regular Hoodie 300', edited: '2 days ago', status: 'Ready', bg: '#EFEBE2', garment: '#D9C9AE', print: 'MUM', printInk: '#1C1B19', editing: false, nameInput: '' },
+      { id: 2, name: 'Weekend Madrid', product: 'Oversized Hoodie 330', edited: '5h ago', status: 'Draft', bg: '#F1EEE7', garment: '#F3C4D0', print: 'MADRID', printInk: '#1C1B19', editing: false, nameInput: '' },
+      { id: 3, name: "João's Bachelor Party", product: 'Heavyweight Tee', edited: 'Last week', status: 'Ordered', bg: '#EFEBE2', garment: '#26241F', print: "JOÃO'S\nPARTY", printInk: '#B0A28E', editing: false, nameInput: '' },
+    ],
+    reorderNoteFor: null,
+    details: { firstName: 'João', lastName: 'Teixeira', email: 'joao@nortestudio.pt', phone: '+351 912 345 678', saved: false },
+    addresses: [
+      { id: 1, label: 'Home', isDefault: true, firstName: 'João', lastName: 'Teixeira', line1: 'Rua das Flores 12', houseNum: '', line2: '', city: 'Porto', zip: '4050-262', country: 'Portugal', state: '' },
+      { id: 2, label: 'Work', isDefault: false, firstName: 'João', lastName: 'Teixeira', line1: 'Av. da Liberdade 110', houseNum: '', line2: '', city: 'Lisboa', zip: '1250-146', country: 'Portugal', state: '' },
+    ],
+    addrFormOpen: false, addrEditingId: null,
+    addrForm: { firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false },
+  };
+  static ORDERS = [
+    { num: '#W2P-1858', date: 'Sep 2, 2026', time: '14:20', total: '€44.00', status: 'In Production', kind: 'active',
+      slot: 'ord-1858', ph: 'Oversized Hoodie 330', img: null,
+      items: [{ slot: 'it-1858-1', product: 'Oversized Hoodie 330', desc: 'Custom print — front chest', size: 'M', qty: 1, price: '€44.00', total: '€44.00', ph: 'Custom print preview' }],
+      shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
+      subtotal: '€44.00', shippingCost: 'Free', tax: '€0.00', total: '€44.00',
+      stage: 1, eta: 'Sep 5–7', carrier: 'CTT Expresso' },
+    { num: '#W2P-1842', date: 'Aug 28, 2026', time: '09:12', total: '€1,392.00', status: 'Shipped', kind: 'active',
+      slot: 'ord-1842', ph: 'North Run Club order', img: ((window.__resources || {})['u1556821840']) || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop',
+      items: [{ slot: 'it-1842-1', product: 'Oversized Hoodie 330', desc: 'North Run Club — front + back print', size: 'L', qty: 24, price: '€44.00', total: '€1,056.00', ph: 'Custom print preview' },
+              { slot: 'it-1842-2', product: 'Structured Cap', desc: 'North Run Club — embroidered logo', size: 'One size', qty: 24, price: '€14.00', total: '€336.00', ph: 'Custom print preview' }],
+      shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
+      subtotal: '€1,392.00', shippingCost: 'Free', tax: '€0.00', total: '€1,392.00',
+      stage: 3, eta: 'Tomorrow, by 18:00', carrier: 'DHL Express · JD0148 8821 3406' },
+    { num: '#W2P-1836', date: 'Aug 20, 2026', time: '15:30', total: '€1,680.00', status: 'Quality Check', kind: 'active',
+      slot: 'ord-1836', ph: 'Velvet Static merch order', img: ((window.__resources || {})['u1583743814966']) || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop',
+      items: [{ slot: 'it-1836-1', product: 'Heavyweight Tee', desc: 'Velvet Static merch — front print', size: 'Mixed', qty: 60, price: '€24.00', total: '€1,440.00', ph: 'Custom print preview' }],
+      shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: false,
+      billName: 'Norte Studio Lda', billLine1: 'Av. da Liberdade 110', billCity: '1250-146 Lisboa, Portugal',
+      subtotal: '€1,440.00', shippingCost: '€40.00', tax: '€200.00', total: '€1,680.00',
+      stage: 2, eta: 'Sep 8–10', carrier: 'DHL Express' },
+    { num: '#W2P-1791', date: 'Feb 16, 2026', time: '17:44', total: '€516.00', status: 'Delivered', kind: 'delivered',
+      slot: 'ord-1791', ph: 'Sunday Café uniforms order', img: ((window.__resources || {})['u1527719327859']) || 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop',
+      items: [{ slot: 'it-1791-1', product: 'Classic Polo', desc: 'Sunday Café — embroidered crest', size: 'Mixed', qty: 12, price: '€43.00', total: '€516.00', ph: 'Custom print preview' }],
+      shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
+      subtotal: '€516.00', shippingCost: '€0.00', tax: '€0.00', total: '€516.00',
+      stage: 4, eta: 'Delivered Feb 18', carrier: 'CTT Expresso' },
+  ];
+  static STATUS_STYLE = {
+    'Order Confirmed': { bg: '#F1EEE7', ink: '#4A473F' }, 'In Production': { bg: '#FBF0DC', ink: '#8A5F1E' },
+    'Quality Check': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Shipped': { bg: '#F4F4FE', ink: '#4A4FE4' },
+    'Out for Delivery': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Delivered': { bg: '#EDF2EA', ink: '#41573B' },
+  };
+  static DESIGN_STATUS_STYLE = { 'Draft': { bg: '#F1EEE7', ink: '#4A473F' }, 'Ready': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Ordered': { bg: '#EDF2EA', ink: '#41573B' } };
   renderVals() {
     const st = this.state;
-    const statusStyles = { 'Draft': { bg: '#F1EEE7', ink: '#4A473F' }, 'In review': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Ordered': { bg: '#EDF2EA', ink: '#41573B' } };
+    const initials = (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT';
+    const acctMenuOpen = !!this._acctOpen;
+    const openAcctMenu = () => { this._acctOpen = true; this.forceUpdate(); };
+    const closeAcctMenu = () => { this._acctOpen = false; this.forceUpdate(); };
+    const goHome = () => { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
+    const logout = () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const navDefs = [
-      { icon: '◈', label: 'Overview' }, { icon: '▦', label: 'Designs' }, { icon: '◷', label: 'Orders' },
-      { icon: '➤', label: 'Track order' }, { icon: '⇄', label: 'Returns' },
-      { icon: '♡', label: 'Favourites' }, { icon: '▣', label: 'Brand assets' }, { icon: '✧', label: 'Inspiration' },
-      { icon: '◎', label: 'Team' }, { icon: '○', label: 'Account' },
+      { icon: '◷', label: 'Orders' }, { icon: '♡', label: 'Wishlist' },
+      { icon: '▦', label: 'Saved Designs' }, { icon: '○', label: 'My Details' },
     ];
-    const TRACKS = {
-      '#W2P-1842': { name: 'North Run Club × 24', num: '#W2P-1842', total: '€1,392', stage: 1, statusInk: '#8A5F1E',
-        headline: 'In production — printing now', eta: 'March 9–11', carrier: 'DHL Express (assigned at dispatch)',
-        events: [
-          { msg: 'Print run started — DTG line 2', time: 'Today, 09:12', dot: '#B07A2A' },
-          { msg: 'Digital proof approved by Marta', time: 'Yesterday, 16:40', dot: '#41573B' },
-          { msg: 'Order confirmed & paid', time: 'Mar 2, 11:03', dot: '#8B867B' },
-        ] },
-      '#W2P-1836': { name: 'Velvet Static merch × 60', num: '#W2P-1836', total: '€1,680', stage: 3, statusInk: '#4A4FE4',
-        headline: 'Shipped — arriving tomorrow', eta: 'Tomorrow, by 18:00', carrier: 'DHL · JD0148 8821 3406',
-        events: [
-          { msg: 'Out for linehaul — Lisbon hub', time: 'Today, 06:47', dot: '#4A4FE4' },
-          { msg: 'Picked up by DHL', time: 'Yesterday, 18:20', dot: '#4A4FE4' },
-          { msg: 'Quality check passed — 60/60 pieces', time: 'Yesterday, 12:05', dot: '#41573B' },
-          { msg: 'Print run completed', time: 'Mar 3, 15:30', dot: '#8B867B' },
-        ] },
-      '#W2P-1791': { name: 'Sunday Café uniforms × 12', num: '#W2P-1791', total: '€516', stage: 4, statusInk: '#41573B',
-        headline: 'Delivered — Feb 18, signed by J. Teixeira', eta: 'Delivered Feb 18', carrier: 'CTT Expresso · RT4492817PT',
-        events: [
-          { msg: 'Delivered — signed by J. Teixeira', time: 'Feb 18, 14:22', dot: '#41573B' },
-          { msg: 'Out for delivery — Porto', time: 'Feb 18, 08:10', dot: '#4A4FE4' },
-          { msg: 'Shipped from studio', time: 'Feb 16, 17:44', dot: '#8B867B' },
-        ] },
-    };
-    const section = st.section === 'Designs' ? 'Overview' : st.section;
+    const section = st.section;
+    const viewOrder = st.viewOrderId ? Component.ORDERS.find(o => o.num === st.viewOrderId) : null;
     return {
+      initials, acctMenuOpen, openAcctMenu, closeAcctMenu, goHome, logout,
       navItems: navDefs.map(n => ({
         ...n,
-        bg: section === n.label || (n.label === 'Overview' && section === 'Overview' && st.section === 'Designs') ? '#1C1B19' : 'transparent',
-        ink: section === n.label ? '#FBFAF8' : '#4A473F',
-        hoverBg: section === n.label ? '#1C1B19' : '#F1EEE7',
-        weight: section === n.label ? 600 : 400,
-        pick: () => this.setState({ section: n.label === 'Designs' ? 'Overview' : n.label, menuFor: null }),
+        bg: section === n.label ? '#1C1B19' : 'transparent', ink: section === n.label ? '#FBFAF8' : '#4A473F',
+        hoverBg: section === n.label ? '#1C1B19' : '#F1EEE7', weight: section === n.label ? 600 : 400,
+        pick: () => this.setState({ section: n.label, viewOrderId: null }),
       })),
-      isTrack: section === 'Track order', isReturn: section === 'Returns',
-      trackTabs: Object.keys(TRACKS).map(k => ({ label: TRACKS[k].num + ' — ' + TRACKS[k].name.split(' × ')[0],
-        pick: () => this.setState({ trackFor: k }),
-        bg: st.trackFor === k ? '#1C1B19' : 'transparent', ink: st.trackFor === k ? '#fff' : '#1C1B19', border: st.trackFor === k ? '#1C1B19' : '#DDD8CC' })),
-      trk: (() => {
-        const t = TRACKS[st.trackFor];
+      isOrdersList: section === 'Orders' && !viewOrder, isOrderDetails: section === 'Orders' && !!viewOrder,
+      isWishlist: section === 'Wishlist', isSavedDesigns: section === 'Saved Designs', isMyDetails: section === 'My Details',
+      orderTabs: ['All', 'Active Shipments', 'Delivered'].map(l => ({
+        label: l, pick: () => this.setState({ orderTab: l }),
+        bg: st.orderTab === l ? '#1C1B19' : 'transparent', ink: st.orderTab === l ? '#fff' : '#1C1B19', border: st.orderTab === l ? '#1C1B19' : '#DDD8CC',
+      })),
+      orderCards: Component.ORDERS.filter(o => st.orderTab === 'All' || (st.orderTab === 'Active Shipments' && o.kind === 'active') || (st.orderTab === 'Delivered' && o.kind === 'delivered')).map(o => ({
+        slot: o.slot, img: o.img, ph: o.ph, num: o.num, date: o.date, total: o.total, status: o.status,
+        statusBg: Component.STATUS_STYLE[o.status].bg, statusInk: Component.STATUS_STYLE[o.status].ink,
+        view: () => this.setState({ viewOrderId: o.num, trackOpen: false }),
+      })),
+      backToOrders: () => this.setState({ viewOrderId: null }),
+      toggleTrack: () => this.setState(s => ({ trackOpen: !s.trackOpen })),
+      trackLabel: st.trackOpen ? 'Hide shipment status' : 'Track Shipment',
+      trackOpen: st.trackOpen,
+      od: viewOrder ? (() => {
         const labels = ['Confirmed', 'Printing', 'Quality check', 'Shipped', 'Delivered'];
-        return { ...t, stages: labels.map((l, i) => ({ label: l,
-          mark: i < t.stage ? '✓' : (i === t.stage ? '•' : ''),
-          dotBg: i < t.stage ? '#41573B' : (i === t.stage ? '#4A4FE4' : '#FBFAF8'),
-          dotBorder: i <= t.stage ? 'transparent' : '#DDD8CC',
-          weight: i === t.stage ? 600 : 400, ink: i <= t.stage ? '#1C1B19' : '#8B867B',
-          lineL: i === 0 ? '50%' : '-50%', lineR: i === labels.length - 1 ? '50%' : '50%',
-          lineBg: i === 0 ? 'transparent' : (i <= t.stage ? '#41573B' : '#EEEBE3') })) };
-      })(),
-      retDone: st.retDone, retForm: !st.retDone, retOrderNum: st.retOrder,
-      retOrders: [
-        { name: 'Sunday Café uniforms × 12', num: '#W2P-1791', ok: true, note: 'Delivered Feb 18 · eligible' },
-        { name: 'Velvet Static merch × 60', num: '#W2P-1836', ok: false, note: 'Not delivered yet' },
-      ].map(o => ({ ...o,
-        pick: o.ok ? () => this.setState({ retOrder: o.num }) : () => {},
-        border: st.retOrder === o.num ? '#1C1B19' : '#E6E2D8',
-        cursor: o.ok ? 'pointer' : 'default', opacity: o.ok ? 1 : 0.5,
-        noteInk: o.ok ? '#41573B' : '#8B867B' })),
-      retReasons: ['Wrong size', 'Print defect', 'Damaged in transit', 'Changed my mind', 'Other'].map((r, i) => ({ label: r,
-        pick: () => this.setState({ retReason: i }),
-        bg: st.retReason === i ? '#1C1B19' : '#F1EEE7', ink: st.retReason === i ? '#fff' : '#1C1B19' })),
-      retMethods: [
-        { title: 'Exchange', desc: 'New size or piece — first exchange free.' },
-        { title: 'Refund', desc: 'Back to Visa ···· 4242 in 5–10 business days.' },
-      ].map((m, i) => ({ ...m, pick: () => this.setState({ retMethod: i }), border: st.retMethod === i ? '#4A4FE4' : '#E6E2D8' })),
-      retBtnBg: st.retReason === -1 ? '#B6B2A6' : '#1C1B19',
-      retBtnCursor: st.retReason === -1 ? 'default' : 'pointer',
-      retSubmit: () => { if (this.state.retReason !== -1) this.setState({ retDone: true }); },
-      retReset: () => this.setState({ retDone: false, retReason: -1, section: 'Orders' }),
-      isOverview: section === 'Overview', isOrders: section === 'Orders', isFavourites: section === 'Favourites',
-      isBrand: section === 'Brand assets', isInspiration: section === 'Inspiration', isTeam: section === 'Team', isAccount: section === 'Account',
-      activityDisplay: section === 'Overview' ? 'block' : 'none',
-      goOrders: () => this.setState({ section: 'Orders' }),
-      stats: [
-        { v: '4', l: 'Active designs' }, { v: '2', l: 'In production' }, { v: '11', l: 'Saved products' }, { v: '8', l: 'Brand assets' },
-      ],
-      designs: st.designs.map(d => ({
-        ...d,
-        statusBg: statusStyles[d.status].bg, statusInk: statusStyles[d.status].ink,
-        menuOpen: st.menuFor === d.id,
-        menu: (e) => { e.stopPropagation(); this.setState(s => ({ menuFor: s.menuFor === d.id ? null : d.id })); },
-        duplicate: () => this.setState(s => ({ designs: [...s.designs, { ...d, id: Date.now(), name: d.name + ' copy', status: 'Draft', edited: 'Just now' }], menuFor: null })),
-        remove: () => this.setState(s => ({ designs: s.designs.filter(x => x.id !== d.id), menuFor: null })),
+        return {
+          num: viewOrder.num, date: viewOrder.date, time: viewOrder.time, status: viewOrder.status,
+          statusBg: Component.STATUS_STYLE[viewOrder.status].bg, statusInk: Component.STATUS_STYLE[viewOrder.status].ink,
+          showTrackCta: viewOrder.kind === 'active',
+          items: viewOrder.items, shipName: viewOrder.shipName, shipLine1: viewOrder.shipLine1, shipCity: viewOrder.shipCity,
+          billingSame: viewOrder.billingSame, billingDifferent: !viewOrder.billingSame,
+          billName: viewOrder.billName, billLine1: viewOrder.billLine1, billCity: viewOrder.billCity,
+          subtotal: viewOrder.subtotal, shippingCost: viewOrder.shippingCost, tax: viewOrder.tax, total: viewOrder.total,
+          eta: viewOrder.eta, carrier: viewOrder.carrier,
+          stages: labels.map((l, i) => ({ label: l,
+            mark: i < viewOrder.stage ? '✓' : (i === viewOrder.stage ? '•' : ''),
+            dotBg: i < viewOrder.stage ? '#41573B' : (i === viewOrder.stage ? '#4A4FE4' : '#FBFAF8'),
+            dotBorder: i <= viewOrder.stage ? 'transparent' : '#DDD8CC',
+            weight: i === viewOrder.stage ? 600 : 400, ink: i <= viewOrder.stage ? '#1C1B19' : '#8B867B',
+            lineBg: i === labels.length - 1 ? 'transparent' : (i < viewOrder.stage ? '#41573B' : '#EEEBE3') })),
+        };
+      })() : {},
+      wishlistEmpty: st.wishlist.length === 0,
+      wishlist: st.wishlist.map(w => ({ ...w, slot: 'wish-' + w.id, remove: () => this.setState(s => ({ wishlist: s.wishlist.filter(x => x.id !== w.id) })) })),
+      designsEmpty: st.savedDesigns.length === 0,
+      savedDesigns: st.savedDesigns.map(d => ({
+        ...d, notEditing: !d.editing,
+        showReorderNote: st.reorderNoteFor === d.id,
+        startEdit: () => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, editing: true, nameInput: x.name } : x) })),
+        setName: (e) => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, nameInput: e.target.value } : x) })),
+        commitName: () => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, name: x.nameInput || x.name, editing: false } : x) })),
+        statusBg: Component.DESIGN_STATUS_STYLE[d.status].bg, statusInk: Component.DESIGN_STATUS_STYLE[d.status].ink,
+        duplicate: () => this.setState(s => ({ savedDesigns: [...s.savedDesigns, { ...d, id: Date.now(), name: d.name + ' copy', status: 'Draft', edited: 'Just now', editing: false }] })),
+        remove: () => this.setState(s => ({ savedDesigns: s.savedDesigns.filter(x => x.id !== d.id) })),
+        orderAgain: () => { this.setState({ reorderNoteFor: d.id }); setTimeout(() => this.setState(s => ({ reorderNoteFor: s.reorderNoteFor === d.id ? null : s.reorderNoteFor })), 4000); },
       })),
-      ordersPreview: [
-        { slot: 'ord-1', img: ((window.__resources||{})['u1556821840']||'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Jannes Jacobs on Unsplash', chref: 'https://unsplash.com/@jannesjacobs', ph: 'hoodie order photo', name: 'North Run Club × 24', num: '#W2P-1842', status: 'In production — printing now', statusInk: '#8A5F1E', dot: '#B07A2A', delivery: 'Estimated delivery Mar 9–11' },
-        { slot: 'ord-2', img: ((window.__resources||{})['u1583743814966']||'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Faith & Yarn on Unsplash', chref: 'https://unsplash.com/@faithandyarn_', ph: 'tee order photo', name: 'Velvet Static merch × 60', num: '#W2P-1836', status: 'Shipped — DHL', statusInk: '#4A4FE4', dot: '#4A4FE4', delivery: 'Arriving tomorrow · Track' },
-      ],
-      orders: [
-        { slot: 'ord-f1', track: () => this.setState({ section: 'Track order', trackFor: '#W2P-1842' }), startReturn: () => this.setState({ section: 'Returns' }), img: ((window.__resources||{})['u1556821840']||'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Jannes Jacobs on Unsplash', chref: 'https://unsplash.com/@jannesjacobs', ph: 'hoodie order', name: 'North Run Club × 24', num: '#W2P-1842', total: '€1,392', status: 'In production', statusInk: '#8A5F1E', delivery: 'delivery Mar 9–11', steps: ['#4A4FE4','#4A4FE4','#EEEBE3','#EEEBE3'] },
-        { slot: 'ord-f2', track: () => this.setState({ section: 'Track order', trackFor: '#W2P-1836' }), startReturn: () => this.setState({ section: 'Returns' }), img: ((window.__resources||{})['u1583743814966']||'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Faith & Yarn on Unsplash', chref: 'https://unsplash.com/@faithandyarn_', ph: 'tee order', name: 'Velvet Static merch × 60', num: '#W2P-1836', total: '€1,680', status: 'Shipped', statusInk: '#4A4FE4', delivery: 'arriving tomorrow', steps: ['#4A4FE4','#4A4FE4','#4A4FE4','#EEEBE3'] },
-        { slot: 'ord-f3', track: () => this.setState({ section: 'Track order', trackFor: '#W2P-1791' }), startReturn: () => this.setState({ section: 'Returns', retOrder: '#W2P-1791' }), img: ((window.__resources||{})['u1527719327859']||'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Taylor on Unsplash', chref: 'https://unsplash.com/@xoutcastx', ph: 'polo order', name: 'Sunday Café uniforms × 12', num: '#W2P-1791', total: '€516', status: 'Delivered', statusInk: '#41573B', delivery: 'Feb 18', steps: ['#41573B','#41573B','#41573B','#41573B'] },
-      ],
-      analytics: [
-        { v: '3', l: 'Orders this month' }, { v: '7', l: 'Designs created' }, { v: '96', l: 'Products purchased' }, { v: '€214', l: 'Saved with bundles' }, { v: '28d', l: 'Reorder frequency' },
-      ],
-      favourites: [
-        { slot: 'fav-1', img: ((window.__resources||{})['u1583743814966']||'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Faith & Yarn on Unsplash', chref: 'https://unsplash.com/@faithandyarn_', ph: 'saved product — heavyweight tee', kind: 'Product', name: 'Heavyweight Tee', meta: 'from €24' },
-        { slot: 'fav-2', img: ((window.__resources||{})['u1521577352947']||'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Alex Hddife on Unsplash', chref: 'https://unsplash.com/@alexhddife', ph: 'saved collection — organic series', kind: 'Collection', name: 'Organic Series', meta: '9 pieces' },
-        { slot: 'fav-3', img: ((window.__resources||{})['u1615397587950']||'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Khalid Boutchich on Unsplash', chref: 'https://unsplash.com/@khalidboutchich', ph: 'saved inspiration — club kit look', kind: 'Inspiration', name: 'Club kit look', meta: '@northrunclub' },
-        { slot: 'fav-4', img: ((window.__resources||{})['u1620799140188']||'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Mediamodifier on Unsplash', chref: 'https://unsplash.com/@mediamodifier', ph: 'saved product — zip hoodie', kind: 'Product', name: 'Zip Hoodie', meta: 'from €62' },
-        { slot: 'fav-5', img: ((window.__resources||{})['u1609873814058']||'https://images.unsplash.com/photo-1609873814058-a8928924184a?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Gab on Unsplash', chref: 'https://unsplash.com/@gabriele_macera', ph: 'saved campaign — streetwear', kind: 'Campaign', name: 'Streetwear Essentials', meta: 'AW26' },
-        { slot: 'fav-6', img: ((window.__resources||{})['u1534215754734']||'https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Ahmed Syed on Unsplash', chref: 'https://unsplash.com/@shotbyraza', ph: 'viewed product — cap', kind: 'Viewed', name: 'Structured Cap', meta: 'from €19' },
-      ],
-      brandColours: [ { hex: '#26241F' }, { hex: '#FBFAF8' }, { hex: '#3E4A5C' }, { hex: '#B0A28E' }, { hex: '#4A4FE4' } ],
-      uploads: ['up-1','up-2','up-3','up-4','up-5','up-6'],
-      inspiration: [
-        { slot: 'dins-1', img: ((window.__resources||{})['u1611817757591']||'https://images.unsplash.com/photo-1611817757591-c3f345024273?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by LOGAN WEAVER on Unsplash', chref: 'https://unsplash.com/@lgnwvr', cs: 2, rs: 2, ph: 'saved campaign', tag: 'Campaign' },
-        { slot: 'dins-2', img: ((window.__resources||{})['u1554568218']||'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Christian Bolt on Unsplash', chref: 'https://unsplash.com/@christianbolt', cs: 1, rs: 1, ph: 'saved look', tag: 'Saved look' },
-        { slot: 'dins-3', img: ((window.__resources||{})['u1615397587950']||'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Khalid Boutchich on Unsplash', chref: 'https://unsplash.com/@khalidboutchich', cs: 1, rs: 2, ph: 'community inspiration', tag: 'Community' },
-        { slot: 'dins-4', img: ((window.__resources||{})['u1622445275463']||'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by Mediamodifier on Unsplash', chref: 'https://unsplash.com/@mediamodifier', cs: 1, rs: 1, ph: 'collection', tag: 'Collection' },
-        { slot: 'dins-5', img: ((window.__resources||{})['u1610282081854']||'https://images.unsplash.com/photo-1610282081854-9c311350beb9?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by QingYu on Unsplash', chref: 'https://unsplash.com/@kukaka', cs: 1, rs: 1, ph: 'viewed product', tag: 'Viewed' },
-        { slot: 'dins-6', img: ((window.__resources||{})['u1542406775']||'https://images.unsplash.com/photo-1542406775-ade58c52d2e4?q=35&w=560&auto=format&fit=crop'), credit: 'Photo by rico cori on Unsplash', chref: 'https://unsplash.com/@ricocori', cs: 2, rs: 1, ph: 'lookbook spread', tag: 'Lookbook' },
-      ],
-      team: [
-        { initials: 'JT', name: 'João Teixeira', role: 'Owner', perm: 'Full access', color: '#3E4A5C' },
-        { initials: 'MR', name: 'Marta Rocha', role: 'Designer', perm: 'Edit', color: '#B0A28E' },
-        { initials: 'PL', name: 'Pedro Lima', role: 'Finance', perm: 'View', color: '#7A8471' },
-      ],
-      approvals: [
-        { name: 'North Run Club — final print', by: 'Marta, 1h ago' },
-        { name: 'Café crest embroidery colour', by: 'Marta, yesterday' },
-      ],
-      shared: [
-        { name: 'North Run Club', meta: '3 comments', color: '#3E4A5C' },
-        { name: 'Café crest', meta: 'Awaiting approval', color: '#E8E4DA' },
-        { name: 'Team kit v2', meta: 'Edited by Marta', color: '#7A8471' },
-        { name: 'Tour merch', meta: 'Brand locked 🔒', color: '#26241F' },
-      ],
-      account: [
-        { t: 'Addresses', d: 'Home — Rua das Flores 12, Porto. +1 more.' },
-        { t: 'Payment methods', d: 'Visa ···· 4242 (default), MB Way.' },
-        { t: 'Invoices', d: '14 invoices · download as PDF.' },
-        { t: 'Saved shipping', d: 'Standard to Porto · DHL Express saved.' },
-        { t: 'Company details', d: 'Norte Studio Lda · VAT PT508112334.' },
-        { t: 'Tax information', d: 'EU reverse charge enabled.' },
-      ],
-      notifications: [
-        { msg: 'Order #W2P-1836 shipped via DHL', time: '2h ago', dot: '#4A4FE4' },
-        { msg: 'Marta approved "North Run Club" print', time: '4h ago', dot: '#41573B' },
-        { msg: 'Template "Club crest" shared with you', time: 'Yesterday', dot: '#8B867B' },
-        { msg: 'New collection: Organic Series drop 2', time: '2 days ago', dot: '#8B867B' },
-        { msg: 'Production note: embroidery queue +1 day', time: '3 days ago', dot: '#B07A2A' },
-      ],
+      details: {
+        ...st.details,
+        setFirstName: (e) => this.setState(s => ({ details: { ...s.details, firstName: e.target.value, saved: false } })),
+        setLastName: (e) => this.setState(s => ({ details: { ...s.details, lastName: e.target.value, saved: false } })),
+        setEmail: (e) => this.setState(s => ({ details: { ...s.details, email: e.target.value, saved: false } })),
+        setPhone: (e) => this.setState(s => ({ details: { ...s.details, phone: e.target.value, saved: false } })),
+        save: () => { this.setState(s => ({ details: { ...s.details, saved: true } })); setTimeout(() => this.setState(s => ({ details: { ...s.details, saved: false } })), 2500); },
+      },
+      addresses: st.addresses.map(ad => ({
+        id: ad.id, label: ad.label, isDefault: ad.isDefault, canSetDefault: !ad.isDefault,
+        name: ad.firstName + ' ' + ad.lastName,
+        line1: ad.line1 + (ad.houseNum ? ', ' + ad.houseNum : '') + (ad.line2 ? ', ' + ad.line2 : ''),
+        cityLine: ad.zip + ' ' + ad.city, country: ad.country,
+        edit: () => this.setState({ addrFormOpen: true, addrEditingId: ad.id, addrForm: { ...ad, isDefault: ad.isDefault } }),
+        setDefault: () => this.setState(s => ({ addresses: s.addresses.map(x => ({ ...x, isDefault: x.id === ad.id })) })),
+      })),
+      addrFormOpen: st.addrFormOpen,
+      startAddAddress: () => this.setState({ addrFormOpen: true, addrEditingId: null, addrForm: { firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false } }),
+      addrForm: {
+        ...st.addrForm,
+        heading: st.addrEditingId ? 'Edit address' : 'Add new address',
+        countries: Component.COUNTRIES,
+        showState: st.addrForm.country !== 'Portugal',
+        stateColsSpec: st.addrForm.country !== 'Portugal' ? '1fr 1fr' : '1fr',
+        defaultBg: st.addrForm.isDefault ? '#1C1B19' : '#fff', defaultCheck: st.addrForm.isDefault ? '✓' : '',
+        setFirstName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, firstName: e.target.value } })),
+        setLastName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, lastName: e.target.value } })),
+        setLine1: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line1: e.target.value } })),
+        setHouseNum: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, houseNum: e.target.value } })),
+        setLine2: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line2: e.target.value } })),
+        setCity: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, city: e.target.value } })),
+        setZip: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, zip: e.target.value } })),
+        setCountry: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, country: e.target.value, state: e.target.value === 'Portugal' ? '' : s.addrForm.state } })),
+        setState: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, state: e.target.value } })),
+        toggleDefault: () => this.setState(s => ({ addrForm: { ...s.addrForm, isDefault: !s.addrForm.isDefault } })),
+        cancel: () => this.setState({ addrFormOpen: false }),
+        submit: () => {
+          const f = this.state.addrForm;
+          if (this.state.addrEditingId) {
+            this.setState(s => ({
+              addresses: s.addresses.map(x => x.id === s.addrEditingId ? { ...x, ...f, label: x.label } : (f.isDefault ? { ...x, isDefault: false } : x)),
+              addrFormOpen: false,
+            }));
+          } else {
+            const newId = Date.now();
+            this.setState(s => ({
+              addresses: [...s.addresses.map(x => f.isDefault ? { ...x, isDefault: false } : x), { id: newId, label: 'New address', ...f }],
+              addrFormOpen: false,
+            }));
+          }
+        },
+      },
     };
   }
 }
