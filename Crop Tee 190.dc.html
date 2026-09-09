@@ -247,7 +247,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
       <!-- ACCORDIONS -->
       <div style="border-top:1px solid #EEEBE3">
         <sc-for list="{{ accordions }}" as="a" hint-placeholder-count="4">
-          <div id="{{ a.anchor }}" style="border-bottom:1px solid #EEEBE3">
+          <div id="{{ a.anchor }}" style="border-bottom:1px solid #EEEBE3;scroll-margin-top:88px">
             <div onClick="{{ a.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:16px 2px;cursor:pointer;font-size:15px;font-weight:600" style-hover="color:#4A473F">{{ a.title }} <span style="color:#8B867B;font-weight:400;font-size:15px;transform:{{ a.rot }};transition:transform 150ms">⌄</span></div>
             <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}">
               <div style="padding:0 2px 18px">
@@ -475,10 +475,9 @@ class Component extends DCLogic {
   toggleVolume = () => this.setState(s => ({ volumeOpen: !s.volumeOpen }));
   openSizeGuide = () => {
     this.setState(s => ({ openAcc: s.openAcc.includes('Size guide') ? s.openAcc : [...s.openAcc, 'Size guide'] }));
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      const el = document.getElementById('acc-size-guide');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }));
+    const doScroll = () => { const el = document.getElementById('acc-size-guide'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    requestAnimationFrame(() => requestAnimationFrame(doScroll));
+    setTimeout(doScroll, 350);
   };
   renderVals() {
     const { colour, hoverColour, size, qty, langOpen, lang, searchOpen, searchQ, openAcc, volumeOpen } = this.state;
