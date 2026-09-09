@@ -51,7 +51,8 @@ input,select{font-family:inherit}
     </aside>
 
     <!-- MAIN -->
-    <main style="flex:1;min-width:0;padding:36px 32px 64px;max-width:1080px;box-sizing:border-box;overflow-x:auto">
+    <main style="flex:1;min-width:0;overflow-x:auto;display:flex;justify-content:center">
+    <div style="width:100%;max-width:1080px;padding:36px 32px 64px;box-sizing:border-box">
 
       <!-- ORDERS LIST -->
       <sc-if value="{{ isOrdersList }}" hint-placeholder-val="{{ true }}">
@@ -229,7 +230,7 @@ input,select{font-family:inherit}
                   <a href="Create%20your%20own.dc.html" style="font-size:12.5px;font-weight:600;color:#4A4FE4">Edit</a>
                   <span onClick="{{ d.duplicate }}" style="font-size:12.5px;font-weight:500;color:#4A473F;cursor:pointer">Duplicate</span>
                   <span onClick="{{ d.orderAgain }}" style="font-size:12.5px;font-weight:500;color:#4A473F;cursor:pointer">Order Again</span>
-                  <span onClick="{{ d.remove }}" style="font-size:12.5px;font-weight:500;color:#A34B33;cursor:pointer">Delete</span>
+                  <span onClick="{{ d.moveToTrash }}" style="font-size:12.5px;font-weight:500;color:#A34B33;cursor:pointer">Delete</span>
                 </div>
                 <sc-if value="{{ d.showReorderNote }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:10px;font-size:11.5px;color:#8B867B;line-height:1.5;background:#F5F3ED;border-radius:8px;padding:8px 10px">Review availability, colour, size, price and lead time before reordering.</div>
@@ -313,8 +314,55 @@ input,select{font-family:inherit}
           </sc-if>
         </div>
       </sc-if>
+
+      <!-- TRASH -->
+      <sc-if value="{{ isTrash }}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Trash</h1>
+        <sc-if value="{{ trashEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:80px 24px;max-width:420px;margin:0 auto">
+            <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:22px">Trash is empty.</h2>
+            <p style="margin:0;font-size:14px;color:#8B867B;line-height:1.6">Deleted designs stay here until you remove them for good.</p>
+          </div>
+        </sc-if>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+          <sc-for list="{{ trashedDesigns }}" as="t" hint-placeholder-count="2">
+            <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+              <div style="aspect-ratio:5/4;background:{{ t.bg }};display:flex;align-items:center;justify-content:center;opacity:0.6">
+                <div style="width:100px;height:118px;background:{{ t.garment }};border-radius:12px 12px 16px 16px;display:flex;align-items:center;justify-content:center">
+                  <span style="font-size:9px;letter-spacing:0.1em;color:{{ t.printInk }};font-weight:600;text-align:center;line-height:1.5">{{ t.print }}</span>
+                </div>
+              </div>
+              <div style="padding:16px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">{{ t.name }}</div>
+                <div style="font-size:12px;color:#8B867B;margin-bottom:12px">{{ t.product }} · Deleted {{ t.deletedAt }}</div>
+                <div style="display:flex;gap:12px">
+                  <span onClick="{{ t.restore }}" style="font-size:12.5px;font-weight:600;color:#4A4FE4;cursor:pointer">Restore</span>
+                  <span onClick="{{ t.askDelete }}" style="font-size:12.5px;font-weight:500;color:#A34B33;cursor:pointer">Delete forever</span>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
     </main>
   </div>
+
+  <!-- PASSWORD CONFIRM MODAL -->
+  <sc-if value="{{ pwModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cancelDelete }}" style="position:fixed;inset:0;background:rgba(20,20,18,0.4);z-index:95;display:flex;align-items:center;justify-content:center">
+      <div onClick="{{ stopClick }}" style="background:#fff;border-radius:16px;padding:28px;max-width:380px;width:100%">
+        <div style="font-size:16px;font-weight:600;margin-bottom:8px">Permanently delete this design?</div>
+        <p style="margin:0 0 16px;font-size:13px;color:#8B867B;line-height:1.5">This can't be undone. Enter your password to confirm.</p>
+        <input type="password" placeholder="Password" value="{{ pwInput }}" onChange="{{ setPwInput }}" style="width:100%;box-sizing:border-box;border:1px solid {{ pwBorder }};border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none;margin-bottom:6px">
+        <sc-if value="{{ pwError }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#A34B33;margin-bottom:10px">Password is required.</div></sc-if>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button onClick="{{ confirmDelete }}" style="flex:1;background:#A34B33;color:#fff;border:none;border-radius:999px;padding:12px 0;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer">Delete forever</button>
+          <span onClick="{{ cancelDelete }}" style="align-self:center;font-size:13px;color:#8B867B;cursor:pointer">Cancel</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 </div>
 
 </x-dc>
@@ -334,7 +382,7 @@ class Component extends DCLogic {
       { id: 2, name: 'Weekend Madrid', product: 'Oversized Hoodie 330', edited: '5h ago', status: 'Draft', bg: '#F1EEE7', garment: '#F3C4D0', print: 'MADRID', printInk: '#1C1B19', editing: false, nameInput: '' },
       { id: 3, name: "João's Bachelor Party", product: 'Heavyweight Tee', edited: 'Last week', status: 'Ordered', bg: '#EFEBE2', garment: '#26241F', print: "JOÃO'S\nPARTY", printInk: '#B0A28E', editing: false, nameInput: '' },
     ],
-    reorderNoteFor: null,
+    reorderNoteFor: null, trashedDesigns: [], pwModalId: null, pwInput: '', pwError: false,
     details: { firstName: 'João', lastName: 'Teixeira', email: 'joao@nortestudio.pt', phone: '+351 912 345 678', saved: false },
     addresses: [
       { id: 1, label: 'Home', isDefault: true, firstName: 'João', lastName: 'Teixeira', line1: 'Rua das Flores 12', houseNum: '', line2: '', city: 'Porto', zip: '4050-262', country: 'Portugal', state: '' },
@@ -387,7 +435,7 @@ class Component extends DCLogic {
     const logout = () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const navDefs = [
       { icon: '◷', label: 'Orders' }, { icon: '♡', label: 'Wishlist' },
-      { icon: '▦', label: 'Saved Designs' }, { icon: '○', label: 'My Details' },
+      { icon: '▦', label: 'Saved Designs' }, { icon: '⌫', label: 'Trash' }, { icon: '○', label: 'My Details' },
     ];
     const section = st.section;
     const viewOrder = st.viewOrderId ? Component.ORDERS.find(o => o.num === st.viewOrderId) : null;
@@ -400,7 +448,22 @@ class Component extends DCLogic {
         pick: () => this.setState({ section: n.label, viewOrderId: null }),
       })),
       isOrdersList: section === 'Orders' && !viewOrder, isOrderDetails: section === 'Orders' && !!viewOrder,
-      isWishlist: section === 'Wishlist', isSavedDesigns: section === 'Saved Designs', isMyDetails: section === 'My Details',
+      isWishlist: section === 'Wishlist', isSavedDesigns: section === 'Saved Designs', isTrash: section === 'Trash', isMyDetails: section === 'My Details',
+      trashEmpty: st.trashedDesigns.length === 0,
+      trashedDesigns: st.trashedDesigns.map(t => ({
+        ...t,
+        restore: () => this.setState(s => ({ trashedDesigns: s.trashedDesigns.filter(x => x.id !== t.id), savedDesigns: [...s.savedDesigns, { ...t, editing: false }] })),
+        askDelete: () => this.setState({ pwModalId: t.id, pwInput: '', pwError: false }),
+      })),
+      pwModalOpen: st.pwModalId != null,
+      pwInput: st.pwInput, pwError: st.pwError, pwBorder: st.pwError ? '#A34B33' : '#DDD8CC',
+      setPwInput: (e) => this.setState({ pwInput: e.target.value, pwError: false }),
+      stopClick: (e) => e.stopPropagation(),
+      cancelDelete: () => this.setState({ pwModalId: null, pwInput: '', pwError: false }),
+      confirmDelete: () => {
+        if (!this.state.pwInput) { this.setState({ pwError: true }); return; }
+        this.setState(s => ({ trashedDesigns: s.trashedDesigns.filter(x => x.id !== s.pwModalId), pwModalId: null, pwInput: '', pwError: false }));
+      },
       orderTabs: ['All', 'Active Shipments', 'Delivered'].map(l => ({
         label: l, pick: () => this.setState({ orderTab: l }),
         bg: st.orderTab === l ? '#1C1B19' : 'transparent', ink: st.orderTab === l ? '#fff' : '#1C1B19', border: st.orderTab === l ? '#1C1B19' : '#DDD8CC',
@@ -444,7 +507,7 @@ class Component extends DCLogic {
         commitName: () => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, name: x.nameInput || x.name, editing: false } : x) })),
         statusBg: Component.DESIGN_STATUS_STYLE[d.status].bg, statusInk: Component.DESIGN_STATUS_STYLE[d.status].ink,
         duplicate: () => this.setState(s => ({ savedDesigns: [...s.savedDesigns, { ...d, id: Date.now(), name: d.name + ' copy', status: 'Draft', edited: 'Just now', editing: false }] })),
-        remove: () => this.setState(s => ({ savedDesigns: s.savedDesigns.filter(x => x.id !== d.id) })),
+        moveToTrash: () => this.setState(s => ({ savedDesigns: s.savedDesigns.filter(x => x.id !== d.id), trashedDesigns: [...s.trashedDesigns, { ...d, editing: false, deletedAt: 'Just now' }] })),
         orderAgain: () => { this.setState({ reorderNoteFor: d.id }); setTimeout(() => this.setState(s => ({ reorderNoteFor: s.reorderNoteFor === d.id ? null : s.reorderNoteFor })), 4000); },
       })),
       details: {

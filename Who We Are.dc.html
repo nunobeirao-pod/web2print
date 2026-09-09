@@ -51,58 +51,124 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </nav>
 
   <!-- HERO -->
-  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 64px;text-align:center">
-    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:18px">Who we are</div>
-    <h1 style="margin:0 auto;max-width:820px;font-family:inherit;font-weight:700;font-size:clamp(36px,5vw,58px);line-height:1.1;letter-spacing:-0.01em">We print what you imagine, on garments built to last.</h1>
-  </section>
-
-  <!-- STORY IMAGE -->
-  <section style="max-width:1440px;margin:0 auto;padding:0 48px">
-    <div style="position:relative;aspect-ratio:16/7;border-radius:4px;overflow:hidden;background:#EFEBE2">
-      <image-slot id="wwa-hero" shape="rect" placeholder="Studio floor — printing in progress"></image-slot>
+  <section style="position:relative;height:88vh;min-height:560px;display:flex;align-items:flex-end;overflow:hidden;background:#1C1B19">
+    <div style="position:absolute;inset:0"><video ref="{{ heroVideoRef }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" style="width:100%;height:100%;object-fit:cover;display:block"></video></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.1) 30%,rgba(20,20,18,0.68) 100%);pointer-events:none"></div>
+    <div style="position:relative;z-index:1;max-width:1440px;margin:0 auto;width:100%;box-sizing:border-box;padding:0 48px 72px;color:#fff">
+      <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:18px">Who we are</div>
+      <h1 style="margin:0 0 20px;max-width:760px;font-family:inherit;font-weight:700;font-size:clamp(38px,5.5vw,64px);line-height:1.08;letter-spacing:-0.01em">We turn ideas into something you can wear.</h1>
+      <p style="margin:0 0 32px;max-width:560px;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.85)">From a photo, a memory, a sentence or simply an idea in your head — we make it easier to turn something personal into something real.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="Create%20your%20own.dc.html"><button style="background:#fff;color:#1C1B19;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#F3F0E9">Start Creating</button></a>
+        <a href="Homepage.dc.html#how-it-works"><button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;padding:15px 32px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#fff">See How It Works</button></a>
+      </div>
     </div>
   </section>
 
-  <!-- STORY TEXT -->
-  <section style="max-width:760px;margin:0 auto;padding:80px 24px 0">
-    <p style="margin:0 0 28px;font-size:19px;line-height:1.6;color:#1C1B19">Web2Print started as a print shop with one machine and a simple idea: printing custom garments shouldn't mean compromising on quality. Most on-demand print left the fabric as an afterthought — we started with it.</p>
-    <p style="margin:0;font-size:19px;line-height:1.6;color:#1C1B19">Every piece we sell is made from garments we would wear ourselves first, then print second. Heavyweight cottons, proper cuts, and inks that hold up wash after wash. No shortcuts, no thin blanks dressed up with a logo.</p>
-  </section>
-
-  <!-- VALUES -->
+  <!-- WHY WE EXIST -->
   <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
-      <div>
-        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:10px">01</div>
-        <h3 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:20px">The garment comes first</h3>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A473F">Heavyweight cottons and real cuts, chosen before a single design touches them.</p>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:10px">02</div>
-        <h3 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:20px">Print that lasts</h3>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A473F">Water-based inks that hold their color through washes, not just the first wear.</p>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:10px">03</div>
-        <h3 style="margin:0 0 10px;font-family:inherit;font-weight:700;font-size:20px">Made close to you</h3>
-        <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A473F">Produced in Portugal, shipped across Europe in days, not weeks.</p>
-      </div>
+    <div style="max-width:600px">
+      <h2 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);line-height:1.15;letter-spacing:-0.01em">Most ideas never leave the screen. We wanted to change that.</h2>
+      <p style="margin:0 0 22px;font-size:17px;line-height:1.65;color:#1C1B19">You might have a photo you love.<br>An inside joke only your friends understand.<br>A memory you want to keep.<br>Or an idea that exists only in your head.</p>
+      <p style="margin:0 0 22px;font-size:17px;line-height:1.65;color:#1C1B19">Turning that into something you can actually wear shouldn't require design skills, complicated software or a conversation with a printing company.</p>
+      <p style="margin:0;font-size:17px;line-height:1.65;color:#1C1B19;font-weight:600">That's why we created a simpler way to go from idea to piece.</p>
     </div>
+    <div style="margin-top:56px;aspect-ratio:16/8;border-radius:4px;overflow:hidden;background:#EFEBE2"><image-slot id="wwa-why" src="{{ imgWhy }}" shape="rect" placeholder="Lifestyle — someone wearing a personal design"></image-slot></div>
   </section>
 
-  <!-- STUDIO GRID -->
+  <!-- WHAT WE'RE BUILDING -->
   <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
-      <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden"><image-slot id="wwa-1" shape="rect" placeholder="Studio — cutting table"></image-slot></div>
-      <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden"><image-slot id="wwa-2" shape="rect" placeholder="Studio — press in action"></image-slot></div>
-      <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden"><image-slot id="wwa-3" shape="rect" placeholder="Team portrait"></image-slot></div>
+    <h2 style="margin:0 0 44px;max-width:640px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);line-height:1.15;letter-spacing:-0.01em">One place. From idea to finished piece.</h2>
+    <p style="margin:0 0 48px;max-width:600px;font-size:16px;line-height:1.6;color:#4A473F">We've brought creation, personalisation and production into one experience, so you don't have to understand what happens behind the scenes.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px">
+      <div style="border-top:1px solid #1C1B19;padding-top:24px">
+        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:16px">01 — Create</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#1C1B19">Start with whatever you have. Upload a photo, add text, choose a template or turn an idea into something new with our creative tools.</p>
+      </div>
+      <div style="border-top:1px solid #1C1B19;padding-top:24px">
+        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:16px">02 — Make it yours</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#1C1B19">See it. Change it. Make it feel right. Move things around, experiment and preview your creation directly on the piece before ordering.</p>
+      </div>
+      <div style="border-top:1px solid #1C1B19;padding-top:24px">
+        <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:16px">03 — We make it real</div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#1C1B19">From your screen to a real garment. Once you're happy with your design, we take care of production, quality control, packing and delivery.</p>
+      </div>
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- TECHNOLOGY + HUMAN -->
+  <section style="max-width:1440px;margin:96px auto 0;padding:0 48px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch">
+    <div style="background:#F3F0E9;padding:64px;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:18px">The Studio</div>
+      <h2 style="margin:0 0 20px;font-family:inherit;font-weight:700;font-size:clamp(26px,2.8vw,34px);line-height:1.2;letter-spacing:-0.01em">Technology when it helps. Humans where it matters.</h2>
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:#4A473F">We use technology to make creating easier — not to take the creative decision away from you.</p>
+      <p style="margin:0;font-size:15.5px;line-height:1.6;color:#4A473F">Our tools can help you start, improve an image or explore an idea. But you're always in control of what gets made.</p>
+    </div>
+    <div style="position:relative;background:#EFEBE2;min-height:420px"><image-slot id="wwa-studio" src="{{ imgStudio }}" shape="rect" placeholder="Studio interface / editing a design"></image-slot></div>
+  </section>
+  <section style="max-width:1440px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0">
+    <div style="position:relative;background:#EFEBE2;min-height:420px"><image-slot id="wwa-human" src="{{ imgHuman }}" shape="rect" placeholder="Real person in production — printing or quality check"></image-slot></div>
+    <div style="background:#1C1B19;color:#fff;padding:64px;display:flex;flex-direction:column;justify-content:center">
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.85)">And when your design leaves the screen, real people take over.</p>
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.85)">Production. Quality control. Packing. Support.</p>
+      <p style="margin:0;font-size:16px;line-height:1.6;font-weight:600">Digital where it makes things easier. Human where it makes things better.</p>
+    </div>
+  </section>
+
+  <!-- FROM SCREEN TO GARMENT -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
+    <h2 style="margin:0 0 48px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);letter-spacing:-0.01em">From screen to garment.</h2>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:20px">
+      <sc-for list="{{ processSteps }}" as="p" hint-placeholder-count="5">
+        <div>
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden;margin-bottom:18px"><image-slot id="{{ p.slot }}" src="{{ p.img }}" shape="rect" placeholder="{{ p.ph }}"></image-slot></div>
+          <div style="font-size:12px;font-weight:600;color:#8B867B;margin-bottom:8px">{{ p.num }} — {{ p.title }}</div>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:#1C1B19">{{ p.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- WHAT MATTERS TO US -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
+    <h2 style="margin:0 0 48px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);letter-spacing:-0.01em">What matters to us.</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:56px 48px;max-width:1040px">
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">No surprises.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">We'd rather tell you what to expect than promise something we can't deliver. From the design to the final piece, clarity matters.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Good enough isn't enough.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">The garment matters as much as what's printed on it. A great idea deserves a piece you'd actually want to wear.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Easy doesn't mean impersonal.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">Technology should remove friction, not human connection. When you need help, there should still be a person on the other side.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Always getting better.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">We test, learn and improve. From the Studio to the products and the way we produce them, there's always a better version to build.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO MOMENT -->
+  <section style="background:#1C1B19;color:#fff;padding:120px 48px;text-align:center;margin-top:96px">
+    <p style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.35;letter-spacing:-0.01em">Some things are too personal to come off a shelf.</p>
+    <div style="font-size:clamp(20px,2.2vw,28px);line-height:1.7;color:rgba(255,255,255,0.9)">
+      A birthday. • A friendship. • A stupid joke.<br>A photograph. • A team. • A memory.<br>An idea that only makes sense to you.
+    </div>
+    <p style="margin:40px 0 0;font-family:inherit;font-weight:700;font-size:clamp(20px,2.2vw,28px)">That's exactly the point.</p>
+  </section>
+
+  <!-- FINAL CTA -->
   <section style="max-width:1440px;margin:0 auto;padding:96px 48px 120px;text-align:center">
-    <h2 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:clamp(28px,3.5vw,40px);letter-spacing:-0.01em">See it for yourself.</h2>
-    <a href="Shop%20All.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Shop all</button></a>
+    <h2 style="margin:0 0 20px;font-family:inherit;font-weight:700;font-size:clamp(30px,4vw,48px);letter-spacing:-0.01em">Enough about us. What do you want to make?</h2>
+    <p style="margin:0 0 40px;max-width:520px;margin-left:auto;margin-right:auto;font-size:16px;line-height:1.6;color:#4A473F">Your idea can start with a photo, a sentence or nothing more than a thought.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="Create%20your%20own.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start Creating</button></a>
+      <a href="Shop%20All.dc.html"><button style="background:transparent;color:#1C1B19;border:1px solid #DDD8CC;border-radius:999px;padding:15px 32px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Explore Products</button></a>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -155,9 +221,23 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}}">
 class Component extends DCLogic {
   state = { searchOpen: false, searchQ: '', langOpen: false, lang: 'EN' };
+  static FALLBACK = {
+    VID: 'https://assets.mixkit.co/videos/1163/1163-720.mp4',
+    T3: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop',
+    T5: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=35&w=560&auto=format&fit=crop',
+    T6: 'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=35&w=560&auto=format&fit=crop',
+    T7: 'https://images.unsplash.com/photo-1651761179569-4ba2aa054997?q=35&w=560&auto=format&fit=crop',
+    T8: 'https://images.unsplash.com/photo-1627225924765-552d49cf47ad?q=35&w=560&auto=format&fit=crop',
+    T9: 'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=35&w=560&auto=format&fit=crop',
+    H1: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop',
+    H4: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?q=35&w=560&auto=format&fit=crop',
+  };
+  res(k) { return (window.__resources && window.__resources[k]) || Component.FALLBACK[k]; }
   renderVals() {
     const { searchOpen, searchQ, langOpen, lang } = this.state;
     return {
+      heroVideoRef: (el) => { if (!el) return; const u = this.res('VID'); if (el.getAttribute('src') !== u) { el.src = u; el.play && el.play().catch(() => {}); } },
+      imgWhy: this.res('T3'), imgStudio: this.res('T4') || this.res('T3'), imgHuman: this.res('H1'),
       toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
       onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
@@ -173,6 +253,13 @@ class Component extends DCLogic {
       logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
       langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       toggleCart: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
+      processSteps: [
+        { slot: 'wwa-step-1', num: '01', title: 'Your idea', desc: 'Your design starts with you.', ph: 'Studio / creation', img: this.res('T5') },
+        { slot: 'wwa-step-2', num: '02', title: 'Ready to print', desc: 'We check that your design is ready to become something physical.', ph: 'File preparation', img: this.res('T6') },
+        { slot: 'wwa-step-3', num: '03', title: 'Made by us', desc: 'Your piece moves into production.', ph: 'DTF production', img: this.res('T7') },
+        { slot: 'wwa-step-4', num: '04', title: 'Checked by hand', desc: 'Before it leaves us, the finished piece goes through quality control.', ph: 'Quality control', img: this.res('T8') },
+        { slot: 'wwa-step-5', num: '05', title: 'Ready for you', desc: 'Packed and sent on its way.', ph: 'Packaging / final piece', img: this.res('T9') },
+      ],
     };
   }
 }
