@@ -52,57 +52,95 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </nav>
 
   <!-- HERO -->
-  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 48px;text-align:center">
-    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:18px">Inspiration</div>
-    <h1 style="margin:0 auto 18px;max-width:760px;font-family:inherit;font-weight:700;font-size:clamp(36px,5vw,58px);line-height:1.1;letter-spacing:-0.01em">Ideas for whatever you're printing next.</h1>
-    <p style="margin:0 auto;max-width:560px;font-size:16px;line-height:1.6;color:#4A473F">Team kits, gifts, launches, reunions — real examples and starting points to steal for your own.</p>
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 56px;text-align:center">
+    <h1 style="margin:0 auto;max-width:760px;font-family:inherit;font-weight:700;font-size:clamp(38px,5.5vw,64px);line-height:1.08;letter-spacing:-0.01em">Need an idea? We've got a few.</h1>
   </section>
 
-  <!-- FILTERS -->
-  <section style="max-width:1440px;margin:0 auto;padding:0 48px 40px">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-      <sc-for list="{{ occasions }}" as="o" hint-placeholder-count="6">
-        <span onClick="{{ o.pick }}" style="border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.ink }};border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer" style-hover="border-color:#1C1B19">{{ o.label }}</span>
-      </sc-for>
-    </div>
-  </section>
-
-  <!-- ARTICLES -->
+  <!-- CATEGORY TILES -->
   <section style="max-width:1440px;margin:0 auto;padding:0 48px 96px">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px 20px">
-      <sc-for list="{{ articles }}" as="a" hint-placeholder-count="6">
-        <a href="#" style="color:#1C1B19;display:block">
-          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden;margin-bottom:14px">
-            <image-slot id="{{ a.slot }}" shape="rect" placeholder="{{ a.ph }}"></image-slot>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px">
+      <sc-for list="{{ categoryTiles }}" as="c" hint-placeholder-count="7">
+        <div onClick="{{ c.pick }}" style="cursor:pointer">
+          <div style="position:relative;aspect-ratio:1;background:#EFEBE2;border-radius:8px;overflow:hidden;margin-bottom:10px;box-shadow:{{ c.ring }}">
+            <image-slot id="{{ c.slot }}" shape="rect" placeholder="{{ c.ph }}"></image-slot>
           </div>
-          <div style="font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">{{ a.tag }}</div>
-          <h3 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:19px;line-height:1.25">{{ a.title }}</h3>
-          <p style="margin:0;font-size:13.5px;line-height:1.55;color:#4A473F">{{ a.excerpt }}</p>
-        </a>
-      </sc-for>
-    </div>
-  </section>
-
-  <!-- SOCIAL -->
-  <section style="max-width:1440px;margin:0 auto;padding:0 48px 96px">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-      <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:28px;letter-spacing:-0.01em">From the community</h2>
-      <span style="font-size:13px;color:#8B867B">Tag @web2print to be featured</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
-      <sc-for list="{{ social }}" as="s" hint-placeholder-count="6">
-        <div style="position:relative;aspect-ratio:1;background:#EFEBE2;border-radius:4px;overflow:hidden">
-          <image-slot id="{{ s.slot }}" shape="rect" placeholder="{{ s.ph }}"></image-slot>
-          <span style="position:absolute;bottom:8px;left:8px;background:rgba(28,27,25,0.6);backdrop-filter:blur(4px);color:#fff;font-size:10.5px;padding:4px 9px;border-radius:999px">{{ s.handle }}</span>
+          <div style="font-size:12.5px;font-weight:500;text-align:center;color:{{ c.ink }}">{{ c.label }}</div>
         </div>
       </sc-for>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section style="max-width:1440px;margin:0 auto;padding:0 48px 120px;text-align:center">
-    <h2 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:clamp(28px,3.5vw,40px);letter-spacing:-0.01em">Got an idea? Bring it to the studio.</h2>
-    <a href="Create%20your%20own.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start creating</button></a>
+  <!-- TRENDING RIGHT NOW -->
+  <section style="max-width:1440px;margin:0 auto;padding:0 48px 96px">
+    <h2 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:32px;letter-spacing:-0.01em">Trending right now</h2>
+    <div style="position:relative">
+      <div ref="{{ trendRef }}" style="display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px">
+        <sc-for list="{{ trending }}" as="t" hint-placeholder-count="4">
+          <div style="flex:0 0 340px;scroll-snap-align:start">
+            <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:8px;overflow:hidden;margin-bottom:16px">
+              <image-slot id="{{ t.slot }}" shape="rect" placeholder="{{ t.ph }}"></image-slot>
+            </div>
+            <div style="font-family:inherit;font-weight:700;font-size:18px;margin-bottom:2px">{{ t.title }}</div>
+            <div style="font-size:13.5px;color:#4A473F">{{ t.product }}</div>
+            <div style="font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">{{ t.occasion }}</div>
+            <a href="Create%20your%20own.dc.html" style="display:inline-flex;align-items:center;gap:6px;background:#1C1B19;color:#fff;border-radius:999px;padding:10px 20px;font-size:13px;font-weight:600" style-hover="background:#3A3833">Make your own →</a>
+          </div>
+        </sc-for>
+      </div>
+      <div onClick="{{ trendPrev }}" style="position:absolute;left:-16px;top:calc(50% - 44px);width:44px;height:44px;border-radius:50%;background:#FBFAF8;box-shadow:0 2px 14px rgba(28,27,25,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2" style-hover="background:#fff">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 3.5L5.5 9L11 14.5" stroke="#1C1B19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+      <div onClick="{{ trendNext }}" style="position:absolute;right:-16px;top:calc(50% - 44px);width:44px;height:44px;border-radius:50%;background:#FBFAF8;box-shadow:0 2px 14px rgba(28,27,25,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2" style-hover="background:#fff">
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M7 3.5L12.5 9L7 14.5" stroke="#1C1B19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- START FROM THESE IDEAS -->
+  <section style="max-width:1440px;margin:0 auto;padding:0 48px 96px">
+    <h2 style="margin:0 0 22px;font-family:inherit;font-weight:700;font-size:32px;letter-spacing:-0.01em">Start from these ideas</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+      <sc-for list="{{ collectionPills }}" as="p" hint-placeholder-count="8">
+        <span onClick="{{ p.pick }}" style="border:1px solid {{ p.border }};background:{{ p.bg }};color:{{ p.ink }};border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500;cursor:pointer" style-hover="border-color:#1C1B19">{{ p.label }}</span>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px">
+      <sc-for list="{{ collectionTiles }}" as="c" hint-placeholder-count="3">
+        <div onClick="{{ c.pick }}" style="cursor:pointer">
+          <div style="position:relative;aspect-ratio:16/10;background:#EFEBE2;border-radius:8px;overflow:hidden;margin-bottom:10px;box-shadow:{{ c.ring }}">
+            <image-slot id="{{ c.slot }}" shape="rect" placeholder="{{ c.ph }}"></image-slot>
+          </div>
+          <div style="font-size:14px;font-weight:600">{{ c.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <sc-for list="{{ templates }}" as="t" hint-placeholder-count="3">
+        <div>
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:8px;overflow:hidden;margin-bottom:14px">
+            <image-slot id="{{ t.slot }}" shape="rect" placeholder="{{ t.ph }}"></image-slot>
+          </div>
+          <div style="font-size:14.5px;font-weight:600;margin-bottom:12px">{{ t.name }}</div>
+          <a href="Create%20your%20own.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#4A4FE4">Use this design →</a>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- SPLIT CTA -->
+  <section style="max-width:1440px;margin:0 auto;padding:0 48px 120px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+      <div style="background:#F3F0E9;padding:64px 48px;display:flex;flex-direction:column;justify-content:center">
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.01em">Have the idea but not the design?</h3>
+        <p style="margin:0 0 26px;font-size:15px;line-height:1.6;color:#4A473F">Describe it. We'll help you make it.</p>
+        <a href="Create%20your%20own.dc.html" style="align-self:flex-start"><button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:15px 30px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3B40C9">Create w/AI</button></a>
+      </div>
+      <div style="background:#1C1B19;color:#fff;padding:64px 48px;display:flex;flex-direction:column;justify-content:center">
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.01em">Got an idea?</h3>
+        <p style="margin:0 0 26px;font-size:15px;line-height:1.6;color:rgba(255,255,255,0.8)">Bring it to the Studio.</p>
+        <a href="Create%20your%20own.dc.html" style="align-self:flex-start"><button style="background:#fff;color:#1C1B19;border:none;border-radius:999px;padding:15px 30px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#F3F0E9">Start Creating</button></a>
+      </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -152,19 +190,29 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { searchOpen: false, searchQ: '', langOpen: false, lang: 'EN', shopOpen: false, activeOccasion: 'All' };
-  static OCCASIONS = ['All', 'Team events', 'Gifting', 'Brand launches', 'Sports clubs', 'Reunions'];
-  static ARTICLES = [
-    { slot: 'insp-1', cat: 'Team events', tag: 'Team events', title: 'Matching kits for a 40-person office run', excerpt: 'How one team picked one colour, one weight and let names on the back do the rest.', ph: 'Group photo — matching printed tees' },
-    { slot: 'insp-2', cat: 'Gifting', tag: 'Gifting', title: 'A wedding party gift that people actually wear again', excerpt: 'Soft crewnecks with a small embroidered date beat another tote bag.', ph: 'Flat lay — embroidered crewneck gift' },
-    { slot: 'insp-3', cat: 'Brand launches', tag: 'Brand launches', title: 'Launch merch that outlasts the launch', excerpt: 'A small capsule of three pieces, timed to a single drop date.', ph: 'Studio shot — product launch capsule' },
-    { slot: 'insp-4', cat: 'Sports clubs', tag: 'Sports clubs', title: 'Numbered kits for a five-a-side league', excerpt: 'Roster names and numbers on the same blank, ordered once a season.', ph: 'Sports team wearing numbered jerseys' },
-    { slot: 'insp-5', cat: 'Reunions', tag: 'Reunions', title: 'One tee, twenty years of the same joke', excerpt: 'A reunion tee that referenced an old nickname instead of a generic crest.', ph: 'Family reunion group wearing tees' },
-    { slot: 'insp-6', cat: 'Team events', tag: 'Team events', title: 'Onboarding kits new hires actually keep', excerpt: 'Hoodie plus cap, sized properly, sent before day one.', ph: 'Desk flat lay — hoodie and cap kit' },
+  state = { searchOpen: false, searchQ: '', langOpen: false, lang: 'EN', shopOpen: false, activeCategory: null, activeCollection: 'Pet Friends' };
+  static CATEGORIES = ['Just for me', 'Gift', 'Group', 'Team', 'Family', 'Couple', 'Something funny'];
+  static TRENDING = [
+    { slot: 'trend-1', title: 'Dad since 1988', product: 'Regular Tee', occasion: "Father's Day gift", cat: 'Gift', ph: 'Dad-themed printed tee' },
+    { slot: 'trend-2', title: 'Weekend in Madrid', product: 'Oversized Hoodie', occasion: 'Group Trip', cat: 'Group', ph: 'Group trip printed hoodie' },
+    { slot: 'trend-3', title: "João's Bachelor Party", product: 'Heavyweight Tee', occasion: 'Bachelor party', cat: 'Group', ph: 'Bachelor party group tee' },
+    { slot: 'trend-4', title: 'Best Friends Since 2010', product: 'Crop Tee', occasion: 'Friendship gift', cat: 'Gift', ph: 'Matching friendship tees' },
+    { slot: 'trend-5', title: 'North Run Club', product: 'Sports Bra', occasion: 'Team event', cat: 'Team', ph: 'Running club printed kit' },
   ];
+  static COLLECTIONS = {
+    'Pet Friends': { ph: 'Dog wearing a printed bandana / owner tee', templates: ['My Dog Thinks I\'m Cool', 'Cat Mom Club', 'Good Boy'] },
+    'Couple': { ph: 'Couple wearing matching printed tees', templates: ['Better Together', 'His & Hers', 'Since [Year]'] },
+    'Boys Trips': { ph: 'Group of men on a trip, matching tees', templates: ['Boys Trip 2026', 'Last One Standing', 'Vegas or Bust'] },
+    'Girls Trips': { ph: 'Group of women on a trip, matching tees', templates: ['Girls Trip 2026', 'Squad Getaway', 'Sun & Sand'] },
+    'Birthdays': { ph: 'Birthday party group wearing printed tees', templates: ['Birthday Crew', 'Est. [Year]', 'Level Up'] },
+    'Funny': { ph: 'Person wearing a joke-print tee', templates: ["I'm Only Here for the Food", 'Professional Overthinker', 'Send Coffee'] },
+    'Sports': { ph: 'Sports team wearing numbered kits', templates: ['Match Day', 'Team Roster', 'Champions Cut'] },
+    'Teams': { ph: 'Office team wearing matching hoodies', templates: ['Team [Name]', 'Onboarding Kit', 'Off-Site 2026'] },
+  };
   renderVals() {
-    const { searchOpen, searchQ, langOpen, lang, shopOpen, activeOccasion } = this.state;
-    const articles = Component.ARTICLES.filter(a => activeOccasion === 'All' || a.cat === activeOccasion);
+    const { searchOpen, searchQ, langOpen, lang, shopOpen, activeCategory, activeCollection } = this.state;
+    const trending = Component.TRENDING.filter(t => !activeCategory || t.cat === activeCategory);
+    const collection = Component.COLLECTIONS[activeCollection];
     return {
       toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
       searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
@@ -181,12 +229,29 @@ class Component extends DCLogic {
       logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
       langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       toggleCart: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
-      occasions: Component.OCCASIONS.map(o => ({
-        label: o, border: activeOccasion === o ? '#1C1B19' : '#DDD8CC', bg: activeOccasion === o ? '#1C1B19' : '#fff', ink: activeOccasion === o ? '#fff' : '#1C1B19',
-        pick: () => this.setState({ activeOccasion: o }),
+
+      categoryTiles: Component.CATEGORIES.map(c => ({
+        slot: 'cat-' + c.replace(/\s+/g, '-').toLowerCase(), label: c, ph: c,
+        ink: activeCategory === c ? '#1C1B19' : '#4A473F',
+        ring: activeCategory === c ? '0 0 0 2px #1C1B19' : 'none',
+        pick: () => this.setState({ activeCategory: activeCategory === c ? null : c }),
       })),
-      articles,
-      social: [1, 2, 3, 4, 5, 6].map(n => ({ slot: 'insp-social-' + n, handle: '@web2print_' + (100 + n), ph: 'UGC — customer wearing printed piece' })),
+
+      trending,
+      trendRef: (el) => { this._trendEl = el; },
+      trendPrev: () => { const el = this._trendEl; if (!el) return; const step = (el.firstElementChild ? el.firstElementChild.getBoundingClientRect().width : el.clientWidth / 3) + 24; el.scrollBy({ left: -step, behavior: 'smooth' }); },
+      trendNext: () => { const el = this._trendEl; if (!el) return; const step = (el.firstElementChild ? el.firstElementChild.getBoundingClientRect().width : el.clientWidth / 3) + 24; el.scrollBy({ left: step, behavior: 'smooth' }); },
+
+      collectionPills: Object.keys(Component.COLLECTIONS).map(name => ({
+        label: name, border: activeCollection === name ? '#1C1B19' : '#DDD8CC', bg: activeCollection === name ? '#1C1B19' : '#fff', ink: activeCollection === name ? '#fff' : '#1C1B19',
+        pick: () => this.setState({ activeCollection: name }),
+      })),
+      collectionTiles: Object.keys(Component.COLLECTIONS).slice(0, 3).map(name => ({
+        slot: 'coll-' + name.replace(/\s+/g, '-').toLowerCase(), label: name, ph: Component.COLLECTIONS[name].ph,
+        ring: activeCollection === name ? '0 0 0 2px #1C1B19' : 'none',
+        pick: () => this.setState({ activeCollection: name }),
+      })),
+      templates: collection.templates.map((name, i) => ({ slot: 'tpl-' + activeCollection.replace(/\s+/g, '-').toLowerCase() + '-' + i, name, ph: name })),
     };
   }
 }

@@ -105,21 +105,33 @@ input,select,textarea{font-family:inherit}
       </sc-if>
       <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
         <div>
-          <h2 style="margin:0 0 6px;font-family:inherit;font-weight:700;font-size:26px">Request a quote</h2>
-          <p style="margin:0 0 28px;font-size:14px;color:#8B867B">Add each piece you need. We'll get back to you with pricing and lead time.</p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:26px">Check your quote</h2>
+            <span title="Add each piece and personalisation to see live pricing before you talk to us." style="width:18px;height:18px;border-radius:50%;border:1px solid #8B867B;color:#8B867B;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:default">?</span>
+          </div>
+          <p style="margin:0 0 24px;font-size:14px;color:#8B867B">Add all the pieces you want. We'll get back to you with a final price and lead time.</p>
 
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px">
             <sc-for list="{{ lineItems }}" as="li" hint-placeholder-count="1">
-              <div style="display:grid;grid-template-columns:1fr 100px 32px;gap:10px;align-items:center">
+              <div style="display:grid;grid-template-columns:1fr 1fr 84px 32px;gap:10px;align-items:center">
                 <select value="{{ li.product }}" onChange="{{ li.setProduct }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;background:#fff;color:#1C1B19;outline:none">
                   <sc-for list="{{ productOptions }}" as="p" hint-placeholder-count="6"><option value="{{ p }}">{{ p }}</option></sc-for>
+                </select>
+                <select value="{{ li.personalisation }}" onChange="{{ li.setPersonalisation }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;background:#fff;color:#1C1B19;outline:none">
+                  <sc-for list="{{ personalisationOptions }}" as="p" hint-placeholder-count="4"><option value="{{ p }}">{{ p }}</option></sc-for>
                 </select>
                 <input type="number" min="1" value="{{ li.qty }}" onChange="{{ li.setQty }}" placeholder="Qty" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 10px;font-size:13.5px;text-align:center;outline:none">
                 <span onClick="{{ li.remove }}" style="cursor:pointer;color:#8B867B;text-align:center;font-size:16px" style-hover="color:#A34B33">✕</span>
               </div>
             </sc-for>
           </div>
-          <span onClick="{{ addLineItem }}" style="font-size:13px;color:#4A4FE4;font-weight:500;cursor:pointer;display:inline-block;margin-bottom:28px">+ Add another item</span>
+          <span onClick="{{ addLineItem }}" style="font-size:13px;color:#4A4FE4;font-weight:500;cursor:pointer;display:inline-block;margin-bottom:22px">+ Add another item</span>
+
+          <div style="border-top:1px solid #EEEBE3;padding-top:16px;margin-bottom:24px;display:flex;flex-direction:column;gap:8px;max-width:260px;margin-left:auto">
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>Subtotal</span><span>{{ quoteSubtotal }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>VAT</span><span>{{ quoteVat }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid #EEEBE3;padding-top:8px"><span>TOTAL</span><span>{{ quoteTotal }}</span></div>
+          </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
             <input value="{{ name }}" onChange="{{ setName }}" placeholder="Full name" style="border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;outline:none">
@@ -191,10 +203,12 @@ input,select,textarea{font-family:inherit}
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   static PRODUCTS = ['Heavyweight Tee', 'Oversized Hoodie', 'Crewneck Sweatshirt', 'Structured Cap', 'Tote Bag', 'Sports Bra'];
+  static PRICES = { 'Heavyweight Tee': 24, 'Oversized Hoodie': 44, 'Crewneck Sweatshirt': 35, 'Structured Cap': 18, 'Tote Bag': 12, 'Sports Bra': 28 };
+  static PERSONALISATIONS = ['No print', 'Front print', 'Back print', 'Front + back print', 'Embroidery'];
   static LINE_ID = 0;
   state = {
     searchOpen: false, searchQ: '', langOpen: false, lang: 'EN', shopOpen: false, submitted: false,
-    lineItems: [{ id: 0, product: 'Heavyweight Tee', qty: 50 }],
+    lineItems: [{ id: 0, product: 'Heavyweight Tee', personalisation: 'Front print', qty: 50 }],
     name: '', company: '', email: '', phone: '', notes: '',
   };
   renderVals() {
@@ -231,13 +245,18 @@ class Component extends DCLogic {
         { title: 'Guaranteed delivery dates', desc: 'Fixed production slots for events and launch dates.' },
       ],
       productOptions: Component.PRODUCTS,
+      personalisationOptions: Component.PERSONALISATIONS,
       lineItems: lineItems.map(li => ({
-        product: li.product, qty: li.qty,
+        product: li.product, personalisation: li.personalisation, qty: li.qty,
         setProduct: (e) => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, product: e.target.value } : x) })),
+        setPersonalisation: (e) => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, personalisation: e.target.value } : x) })),
         setQty: (e) => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, qty: e.target.value } : x) })),
         remove: () => this.setState(s => ({ lineItems: s.lineItems.length > 1 ? s.lineItems.filter(x => x.id !== li.id) : s.lineItems })),
       })),
-      addLineItem: () => { Component.LINE_ID++; this.setState(s => ({ lineItems: [...s.lineItems, { id: Component.LINE_ID, product: 'Heavyweight Tee', qty: 50 }] })); },
+      addLineItem: () => { Component.LINE_ID++; this.setState(s => ({ lineItems: [...s.lineItems, { id: Component.LINE_ID, product: 'Heavyweight Tee', personalisation: 'Front print', qty: 50 }] })); },
+      quoteSubtotal: '€' + lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0).toFixed(2),
+      quoteVat: '€' + (lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0) * 0.23).toFixed(2),
+      quoteTotal: '€' + (lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0) * 1.23).toFixed(2),
       name, company, email, phone, notes,
       setName: (e) => this.setState({ name: e.target.value }),
       setCompany: (e) => this.setState({ company: e.target.value }),

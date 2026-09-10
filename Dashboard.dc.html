@@ -20,22 +20,38 @@ input,select{font-family:inherit}
 <div data-screen-label="Dashboard" style="min-height:100vh;display:flex;flex-direction:column">
 
   <!-- TOP NAV -->
-  <nav style="height:60px;background:rgba(251,250,248,0.94);border-bottom:1px solid #E6E2D8;display:flex;align-items:center;padding:0 24px;gap:20px;flex-shrink:0;z-index:20">
-    <a href="Homepage.dc.html" style="font-size:16px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;text-decoration:none">Web2Print</a>
-    <div style="flex:1;display:flex;justify-content:center;min-width:0;padding:0 10px">
-      <input placeholder="Search orders, designs…" style="width:100%;max-width:340px;min-width:0;box-sizing:border-box;border:1px solid #E6E2D8;border-radius:999px;padding:10px 20px;font-size:13px;font-family:inherit;background:#fff;outline:none" style-focus="border-color:#4A4FE4">
-    </div>
-    <div style="display:flex;gap:16px;align-items:center">
-      <a href="Create%20your%20own.dc.html" style="text-decoration:none"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:10px 22px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">+ New design</button></a>
-      <a href="Shop%20All.dc.html" style="font-size:13px;color:#4A473F;text-decoration:none">Shop</a>
-      <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:38px;margin-bottom:-38px">
-        <span onClick="{{ goHome }}" style="width:32px;height:32px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ initials }}</span>
-        <sc-if value="{{ acctMenuOpen }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;top:38px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70">
-            <span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span>
-          </div>
-        </sc-if>
-      </span>
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.94);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8;flex-shrink:0">
+    <div style="max-width:1440px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;gap:24px">
+      <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap"><a href="Create%20your%20own.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
+        <span style="display:flex;align-items:center">
+          <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+            <input autoFocus="{{ true }}" value="{{ searchQ }}" onChange="{{ onSearchChange }}" onKeyDown="{{ onSearchKey }}" placeholder="Search orders, designs…" style="width:170px;border:none;border-bottom:1px solid #1C1B19;background:transparent;font-size:13.5px;font-family:inherit;color:#1C1B19;outline:none;padding:2px;margin-right:6px"></input>
+          </sc-if>
+          <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
+        </span>
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+          <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4"><span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span></sc-for>
+            </div>
+          </sc-if>
+        </span>
+        <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
+          <span onClick="{{ goHome }}" style="width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ initials }}</span>
+          <sc-if value="{{ acctMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70">
+              <span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span>
+            </div>
+          </sc-if>
+        </span>
+        <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <a href="Shop%20All.dc.html" title="Cart" style="color:inherit;position:relative;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg></a>
+      </div>
     </div>
   </nav>
 
@@ -45,7 +61,13 @@ input,select{font-family:inherit}
     <aside style="width:180px;min-width:180px;border-right:1px solid #EEEBE3;padding:24px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
         <div onClick="{{ n.pick }}" style="display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:10px;cursor:pointer;background:{{ n.bg }};color:{{ n.ink }};font-size:13.5px;font-weight:{{ n.weight }};transition:background 150ms" style-hover="background:{{ n.hoverBg }}">
-          <span style="font-size:14px;width:18px;text-align:center">{{ n.icon }}</span>{{ n.label }}
+          <span style="width:18px;display:flex;align-items:center;justify-content:center;flex:none">
+            <sc-if value="{{ n.isOrders }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg></sc-if>
+            <sc-if value="{{ n.isWishlist }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></sc-if>
+            <sc-if value="{{ n.isSaved }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"></path><path d="M8 4v5h8V4"></path><path d="M8 20v-6h8v6"></path></svg></sc-if>
+            <sc-if value="{{ n.isDeleted }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13h10l1-13"></path><path d="M10 11v6M14 11v6"></path></svg></sc-if>
+            <sc-if value="{{ n.isDetails }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></sc-if>
+          </span>{{ n.label }}
         </div>
       </sc-for>
     </aside>
@@ -65,7 +87,7 @@ input,select{font-family:inherit}
         <div style="display:flex;flex-direction:column;gap:12px">
           <sc-for list="{{ orderCards }}" as="o" hint-placeholder-count="3">
             <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:20px 22px;display:flex;gap:18px;align-items:center" style-hover="box-shadow:0 8px 24px rgba(28,27,25,0.06)">
-              <div style="width:64px;height:76px;border-radius:10px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="{{ o.slot }}" src="{{ o.img }}" shape="rect" placeholder="{{ o.ph }}"></image-slot></div>
+              <div style="width:64px;height:76px;border-radius:10px;overflow:hidden;flex:none;background:#EFEBE2;cursor:pointer" onClick="{{ o.openLightbox }}"><image-slot id="{{ o.slot }}" src="{{ o.img }}" credit="{{ o.credit }}" credit-href="{{ o.creditHref }}" shape="rect" placeholder="{{ o.ph }}"></image-slot></div>
               <div style="flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) minmax(70px,1fr);align-items:center;gap:10px">
                 <div>
                   <div style="font-size:14px;font-weight:600">{{ o.num }}</div>
@@ -91,12 +113,12 @@ input,select{font-family:inherit}
           <div style="text-align:right">
             <span style="background:{{ od.statusBg }};color:{{ od.statusInk }};border-radius:999px;padding:7px 16px;font-size:12.5px;font-weight:500">{{ od.status }}</span>
             <sc-if value="{{ od.showTrackCta }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:10px"><span onClick="{{ toggleTrack }}" style="font-size:13px;font-weight:600;color:#4A4FE4;cursor:pointer">{{ trackLabel }}</span></div>
+              <div style="margin-top:10px"><a href="{{ od.trackUrl }}" target="_blank" rel="noopener" style="font-size:13px;font-weight:600;color:#4A4FE4">Track Shipment ↗</a></div>
             </sc-if>
           </div>
         </div>
 
-        <sc-if value="{{ trackOpen }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ od.showTrackCta }}" hint-placeholder-val="{{ false }}">
           <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:26px;margin-bottom:28px">
             <div style="display:flex;gap:0;margin-bottom:22px">
               <sc-for list="{{ od.stages }}" as="stg" hint-placeholder-count="5">
@@ -107,7 +129,7 @@ input,select{font-family:inherit}
                 </div>
               </sc-for>
             </div>
-            <div style="font-size:13px;color:#4A473F">Estimated delivery: <strong style="color:#1C1B19">{{ od.eta }}</strong> · Carrier: {{ od.carrier }}</div>
+            <div style="font-size:13px;color:#4A473F">Estimated delivery: <strong style="color:#1C1B19">{{ od.eta }}</strong> · Carrier: {{ od.carrier }} · <a href="{{ od.trackUrl }}" target="_blank" rel="noopener" style="color:#4A4FE4;font-weight:600">Track on carrier site ↗</a></div>
           </div>
         </sc-if>
 
@@ -127,7 +149,7 @@ input,select{font-family:inherit}
                 <tbody>
                   <sc-for list="{{ od.items }}" as="it" hint-placeholder-count="2">
                     <tr style="border-top:1px solid #F1EEE7">
-                      <td style="padding:14px 16px"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:52px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="{{ it.slot }}" src="{{ it.img }}" shape="rect" placeholder="{{ it.ph }}"></image-slot></div><span style="font-weight:500">{{ it.product }}</span></div></td>
+                      <td style="padding:14px 16px"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:52px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2;cursor:pointer" onClick="{{ it.openLightbox }}"><image-slot id="{{ it.slot }}" src="{{ it.img }}" credit="{{ it.credit }}" credit-href="{{ it.creditHref }}" shape="rect" placeholder="{{ it.ph }}"></image-slot></div><span style="font-weight:500">{{ it.product }}</span></div></td>
                       <td style="padding:14px 16px;color:#4A473F">{{ it.desc }}</td>
                       <td style="padding:14px 16px;color:#4A473F">{{ it.size }}</td>
                       <td style="padding:14px 16px;text-align:center;color:#4A473F">{{ it.qty }}</td>
@@ -181,7 +203,7 @@ input,select{font-family:inherit}
         <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
           <sc-for list="{{ wishlist }}" as="w" hint-placeholder-count="3">
             <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
-              <a href="{{ w.href }}" style="display:block"><div style="aspect-ratio:4/5;background:#EFEBE2"><image-slot id="{{ w.slot }}" src="{{ w.img }}" shape="rect" placeholder="{{ w.ph }}"></image-slot></div></a>
+              <a href="{{ w.href }}" style="display:block"><div style="aspect-ratio:4/5;background:#EFEBE2"><image-slot id="{{ w.slot }}" src="{{ w.img }}" credit="{{ w.credit }}" credit-href="{{ w.creditHref }}" shape="rect" placeholder="{{ w.ph }}"></image-slot></div></a>
               <div style="padding:16px">
                 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
                   <a href="{{ w.href }}" style="font-size:14px;font-weight:600;color:#1C1B19">{{ w.name }}</a>
@@ -191,6 +213,7 @@ input,select{font-family:inherit}
                   <div style="display:flex;gap:5px"><sc-for list="{{ w.swatches }}" as="sw" hint-placeholder-count="4"><span style="width:13px;height:13px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15)"></span></sc-for></div>
                   <span onClick="{{ w.remove }}" style="font-size:12px;color:#8B867B;cursor:pointer" style-hover="color:#A34B33">Remove</span>
                 </div>
+                <a href="Create%20your%20own.dc.html" style="display:block;margin-top:12px"><button style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:10px 0;font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start Creating</button></a>
               </div>
             </div>
           </sc-for>
@@ -210,7 +233,7 @@ input,select{font-family:inherit}
         <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
           <sc-for list="{{ savedDesigns }}" as="d" hint-placeholder-count="3">
             <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
-              <div style="aspect-ratio:5/4;background:{{ d.bg }};display:flex;align-items:center;justify-content:center">
+              <div style="aspect-ratio:5/4;background:{{ d.bg }};display:flex;align-items:center;justify-content:center;cursor:pointer" onClick="{{ d.openLightbox }}">
                 <div style="width:100px;height:118px;background:{{ d.garment }};border-radius:12px 12px 16px 16px;display:flex;align-items:center;justify-content:center">
                   <span style="font-size:9px;letter-spacing:0.1em;color:{{ d.printInk }};font-weight:600;text-align:center;line-height:1.5">{{ d.print }}</span>
                 </div>
@@ -281,27 +304,29 @@ input,select{font-family:inherit}
           <sc-if value="{{ addrFormOpen }}" hint-placeholder-val="{{ false }}">
             <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:24px">
               <div style="font-size:14.5px;font-weight:600;margin-bottom:16px">{{ addrForm.heading }}</div>
+              <input placeholder="Address Name (e.g. Home, Work)" value="{{ addrForm.addressName }}" onChange="{{ addrForm.setAddressName }}" required="{{ true }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none;margin-bottom:12px">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-                <input placeholder="First Name" value="{{ addrForm.firstName }}" onChange="{{ addrForm.setFirstName }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
-                <input placeholder="Last Name" value="{{ addrForm.lastName }}" onChange="{{ addrForm.setLastName }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="First Name" value="{{ addrForm.firstName }}" onChange="{{ addrForm.setFirstName }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="Last Name" value="{{ addrForm.lastName }}" onChange="{{ addrForm.setLastName }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
               </div>
-              <input placeholder="Address Line 1" value="{{ addrForm.line1 }}" onChange="{{ addrForm.setLine1 }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none;margin-bottom:12px">
+              <input placeholder="Address Line 1" value="{{ addrForm.line1 }}" onChange="{{ addrForm.setLine1 }}" required="{{ true }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none;margin-bottom:12px">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-                <input placeholder="House / Apartment / Building Number" value="{{ addrForm.houseNum }}" onChange="{{ addrForm.setHouseNum }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
-                <input placeholder="Address Line 2 (optional)" value="{{ addrForm.line2 }}" onChange="{{ addrForm.setLine2 }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="House / Apartment / Building Number" value="{{ addrForm.houseNum }}" onChange="{{ addrForm.setHouseNum }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="Address Line 2" value="{{ addrForm.line2 }}" onChange="{{ addrForm.setLine2 }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-                <input placeholder="City" value="{{ addrForm.city }}" onChange="{{ addrForm.setCity }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
-                <input placeholder="ZIP / Postal Code" value="{{ addrForm.zip }}" onChange="{{ addrForm.setZip }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="City" value="{{ addrForm.city }}" onChange="{{ addrForm.setCity }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                <input placeholder="ZIP / Postal Code" value="{{ addrForm.zip }}" onChange="{{ addrForm.setZip }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
               </div>
               <div style="display:grid;grid-template-columns:{{ addrForm.stateColsSpec }};gap:12px;margin-bottom:16px">
-                <select value="{{ addrForm.country }}" onChange="{{ addrForm.setCountry }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;background:#fff;outline:none">
+                <select value="{{ addrForm.country }}" onChange="{{ addrForm.setCountry }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;background:#fff;outline:none">
                   <sc-for list="{{ addrForm.countries }}" as="c" hint-placeholder-count="4"><option value="{{ c }}">{{ c }}</option></sc-for>
                 </select>
                 <sc-if value="{{ addrForm.showState }}" hint-placeholder-val="{{ false }}">
-                  <input placeholder="State / Province" value="{{ addrForm.state }}" onChange="{{ addrForm.setState }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
+                  <input placeholder="State / Province" value="{{ addrForm.state }}" onChange="{{ addrForm.setState }}" required="{{ true }}" style="border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;outline:none">
                 </sc-if>
               </div>
+              <sc-if value="{{ addrForm.error }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#A34B33;margin-bottom:12px">Please fill in all fields.</div></sc-if>
               <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
                 <span onClick="{{ addrForm.toggleDefault }}" style="width:18px;height:18px;border-radius:4px;border:1.5px solid #1C1B19;background:{{ addrForm.defaultBg }};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none">{{ addrForm.defaultCheck }}</span>
                 <span style="font-size:13px;color:#4A473F">Set as default address</span>
@@ -315,12 +340,12 @@ input,select{font-family:inherit}
         </div>
       </sc-if>
 
-      <!-- TRASH -->
+      <!-- DELETED DESIGNS -->
       <sc-if value="{{ isTrash }}" hint-placeholder-val="{{ false }}">
-        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Trash</h1>
+        <h1 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:38px">Deleted Designs</h1>
         <sc-if value="{{ trashEmpty }}" hint-placeholder-val="{{ false }}">
           <div style="text-align:center;padding:80px 24px;max-width:420px;margin:0 auto">
-            <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:22px">Trash is empty.</h2>
+            <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:22px">No deleted designs.</h2>
             <p style="margin:0;font-size:14px;color:#8B867B;line-height:1.6">Deleted designs stay here until you remove them for good.</p>
           </div>
         </sc-if>
@@ -348,6 +373,16 @@ input,select{font-family:inherit}
     </main>
   </div>
 
+  <!-- IMAGE LIGHTBOX -->
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLightbox }}" style="position:fixed;inset:0;background:rgba(20,20,18,0.75);z-index:96;display:flex;align-items:center;justify-content:center;padding:40px">
+      <span onClick="{{ closeLightbox }}" style="position:absolute;top:24px;right:28px;color:#fff;font-size:28px;cursor:pointer;line-height:1">✕</span>
+      <div onClick="{{ stopClick }}" style="max-width:560px;max-height:80vh;width:100%;aspect-ratio:4/5;background:{{ lightboxBg }};border-radius:12px;overflow:hidden;position:relative">
+        <image-slot id="{{ lightboxSlot }}" src="{{ lightboxImg }}" shape="rect" placeholder="{{ lightboxPh }}"></image-slot>
+      </div>
+    </div>
+  </sc-if>
+
   <!-- PASSWORD CONFIRM MODAL -->
   <sc-if value="{{ pwModalOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ cancelDelete }}" style="position:fixed;inset:0;background:rgba(20,20,18,0.4);z-index:95;display:flex;align-items:center;justify-content:center">
@@ -372,10 +407,11 @@ class Component extends DCLogic {
   state = {
     section: ({ track: 'Orders', return: 'Orders' }[window.__sectionHint || (location.hash || '').slice(1)] || 'Orders'),
     orderTab: 'All', viewOrderId: null, trackOpen: false,
+    shopOpen: false, searchOpen: false, searchQ: '', langOpen: false, lang: 'EN',
     wishlist: [
-      { id: 1, name: 'Heavyweight Tee', price: '24', href: 'Product Page.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#D9C9AE'], ph: 'Heavyweight Tee' },
-      { id: 2, name: 'Structured Cap', price: '19', href: 'Accessories.dc.html', swatches: ['#1C1B19', '#4A3427'], ph: 'Structured Cap' },
-      { id: 3, name: 'Oversized Hoodie 330', price: '44', href: 'Oversized%20Hoodie%20330.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#1F2A44'], ph: 'Oversized Hoodie 330' },
+      { id: 1, name: 'Heavyweight Tee', price: '24', href: 'Product Page.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#D9C9AE'], ph: 'Heavyweight Tee', img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=35&w=400&auto=format&fit=crop', credit: 'Photo by Anton Sinelnikov on Unsplash', creditHref: 'https://unsplash.com/@antonstage' },
+      { id: 2, name: 'Structured Cap', price: '19', href: 'Accessories.dc.html', swatches: ['#1C1B19', '#4A3427'], ph: 'Structured Cap', img: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=35&w=400&auto=format&fit=crop', credit: 'Photo by Mnz on Unsplash', creditHref: 'https://unsplash.com/@mnz' },
+      { id: 3, name: 'Oversized Hoodie 330', price: '44', href: 'Oversized%20Hoodie%20330.dc.html', swatches: ['#1C1B19', '#F5F3ED', '#1F2A44'], ph: 'Oversized Hoodie 330', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=35&w=400&auto=format&fit=crop', credit: 'Photo by Becca McHaffie on Unsplash', creditHref: 'https://unsplash.com/@beccamchaffie' },
     ],
     savedDesigns: [
       { id: 1, name: 'Birthday Mum 2027', product: 'Regular Hoodie 300', edited: '2 days ago', status: 'Ready', bg: '#EFEBE2', garment: '#D9C9AE', print: 'MUM', printInk: '#1C1B19', editing: false, nameInput: '' },
@@ -389,35 +425,35 @@ class Component extends DCLogic {
       { id: 2, label: 'Work', isDefault: false, firstName: 'João', lastName: 'Teixeira', line1: 'Av. da Liberdade 110', houseNum: '', line2: '', city: 'Lisboa', zip: '1250-146', country: 'Portugal', state: '' },
     ],
     addrFormOpen: false, addrEditingId: null,
-    addrForm: { firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false },
+    addrForm: { addressName: '', firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false, error: false },
   };
   static ORDERS = [
     { num: '#W2P-1858', date: 'Sep 2, 2026', time: '14:20', total: '€44.00', status: 'In Production', kind: 'active',
-      slot: 'ord-1858', ph: 'Oversized Hoodie 330', img: null,
-      items: [{ slot: 'it-1858-1', product: 'Oversized Hoodie 330', desc: 'Custom print — front chest', size: 'M', qty: 1, price: '€44.00', total: '€44.00', ph: 'Custom print preview' }],
+      slot: 'ord-1858', ph: 'Oversized Hoodie 330', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=35&w=200&auto=format&fit=crop', credit: 'Photo by Becca McHaffie on Unsplash', creditHref: 'https://unsplash.com/@beccamchaffie',
+      items: [{ slot: 'it-1858-1', product: 'Oversized Hoodie 330', desc: 'Custom print — front chest', size: 'M', qty: 1, price: '€44.00', total: '€44.00', ph: 'Custom print preview', img: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=35&w=200&auto=format&fit=crop', credit: 'Photo by Becca McHaffie on Unsplash', creditHref: 'https://unsplash.com/@beccamchaffie' }],
       shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
       subtotal: '€44.00', shippingCost: 'Free', tax: '€0.00', total: '€44.00',
-      stage: 1, eta: 'Sep 5–7', carrier: 'CTT Expresso' },
+      stage: 1, eta: 'Sep 5–7', carrier: 'CTT Expresso', trackUrl: 'https://www.ctt.pt/particulares/seguir-encomenda' },
     { num: '#W2P-1842', date: 'Aug 28, 2026', time: '09:12', total: '€1,392.00', status: 'Shipped', kind: 'active',
-      slot: 'ord-1842', ph: 'North Run Club order', img: ((window.__resources || {})['u1556821840']) || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop',
-      items: [{ slot: 'it-1842-1', product: 'Oversized Hoodie 330', desc: 'North Run Club — front + back print', size: 'L', qty: 24, price: '€44.00', total: '€1,056.00', ph: 'Custom print preview' },
-              { slot: 'it-1842-2', product: 'Structured Cap', desc: 'North Run Club — embroidered logo', size: 'One size', qty: 24, price: '€14.00', total: '€336.00', ph: 'Custom print preview' }],
+      slot: 'ord-1842', ph: 'North Run Club order', img: ((window.__resources || {})['u1556821840']) || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Jannes Jacobs on Unsplash', creditHref: 'https://unsplash.com/@jannesjacobs',
+      items: [{ slot: 'it-1842-1', product: 'Oversized Hoodie 330', desc: 'North Run Club — front + back print', size: 'L', qty: 24, price: '€44.00', total: '€1,056.00', ph: 'Custom print preview', img: ((window.__resources || {})['u1556821840']) || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Jannes Jacobs on Unsplash', creditHref: 'https://unsplash.com/@jannesjacobs' },
+              { slot: 'it-1842-2', product: 'Structured Cap', desc: 'North Run Club — embroidered logo', size: 'One size', qty: 24, price: '€14.00', total: '€336.00', ph: 'Custom print preview', img: ((window.__resources || {})['u1556821840']) || 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Jannes Jacobs on Unsplash', creditHref: 'https://unsplash.com/@jannesjacobs' }],
       shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
       subtotal: '€1,392.00', shippingCost: 'Free', tax: '€0.00', total: '€1,392.00',
-      stage: 3, eta: 'Tomorrow, by 18:00', carrier: 'DHL Express · JD0148 8821 3406' },
+      stage: 3, eta: 'Tomorrow, by 18:00', carrier: 'DHL Express · JD0148 8821 3406', trackUrl: 'https://www.dhl.com/global-en/home/tracking/tracking-express.html?tracking-id=JD0148 8821 3406' },
     { num: '#W2P-1836', date: 'Aug 20, 2026', time: '15:30', total: '€1,680.00', status: 'Quality Check', kind: 'active',
-      slot: 'ord-1836', ph: 'Velvet Static merch order', img: ((window.__resources || {})['u1583743814966']) || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop',
-      items: [{ slot: 'it-1836-1', product: 'Heavyweight Tee', desc: 'Velvet Static merch — front print', size: 'Mixed', qty: 60, price: '€24.00', total: '€1,440.00', ph: 'Custom print preview' }],
+      slot: 'ord-1836', ph: 'Velvet Static merch order', img: ((window.__resources || {})['u1583743814966']) || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Mediamodifier on Unsplash', creditHref: 'https://unsplash.com/@mediamodifier',
+      items: [{ slot: 'it-1836-1', product: 'Heavyweight Tee', desc: 'Velvet Static merch — front print', size: 'Mixed', qty: 60, price: '€24.00', total: '€1,440.00', ph: 'Custom print preview', img: ((window.__resources || {})['u1583743814966']) || 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Mediamodifier on Unsplash', creditHref: 'https://unsplash.com/@mediamodifier' }],
       shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: false,
       billName: 'Norte Studio Lda', billLine1: 'Av. da Liberdade 110', billCity: '1250-146 Lisboa, Portugal',
       subtotal: '€1,440.00', shippingCost: '€40.00', tax: '€200.00', total: '€1,680.00',
-      stage: 2, eta: 'Sep 8–10', carrier: 'DHL Express' },
+      stage: 2, eta: 'Sep 8–10', carrier: 'DHL Express', trackUrl: 'https://www.dhl.com/global-en/home/tracking.html' },
     { num: '#W2P-1791', date: 'Feb 16, 2026', time: '17:44', total: '€516.00', status: 'Delivered', kind: 'delivered',
-      slot: 'ord-1791', ph: 'Sunday Café uniforms order', img: ((window.__resources || {})['u1527719327859']) || 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop',
-      items: [{ slot: 'it-1791-1', product: 'Classic Polo', desc: 'Sunday Café — embroidered crest', size: 'Mixed', qty: 12, price: '€43.00', total: '€516.00', ph: 'Custom print preview' }],
+      slot: 'ord-1791', ph: 'Sunday Café uniforms order', img: ((window.__resources || {})['u1527719327859']) || 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Ali Saadat on Unsplash', creditHref: 'https://unsplash.com/@camsaadat',
+      items: [{ slot: 'it-1791-1', product: 'Classic Polo', desc: 'Sunday Café — embroidered crest', size: 'Mixed', qty: 12, price: '€43.00', total: '€516.00', ph: 'Custom print preview', img: ((window.__resources || {})['u1527719327859']) || 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop', credit: 'Photo by Ali Saadat on Unsplash', creditHref: 'https://unsplash.com/@camsaadat' }],
       shipName: 'João Teixeira', shipLine1: 'Rua das Flores 12', shipCity: '4050-262 Porto, Portugal', billingSame: true,
       subtotal: '€516.00', shippingCost: '€0.00', tax: '€0.00', total: '€516.00',
-      stage: 4, eta: 'Delivered Feb 18', carrier: 'CTT Expresso' },
+      stage: 4, eta: 'Delivered Feb 18', carrier: 'CTT Expresso', trackUrl: 'https://www.ctt.pt/particulares/seguir-encomenda' },
   ];
   static STATUS_STYLE = {
     'Order Confirmed': { bg: '#F1EEE7', ink: '#4A473F' }, 'In Production': { bg: '#FBF0DC', ink: '#8A5F1E' },
@@ -434,13 +470,19 @@ class Component extends DCLogic {
     const goHome = () => { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const logout = () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const navDefs = [
-      { icon: '◷', label: 'Orders' }, { icon: '♡', label: 'Wishlist' },
-      { icon: '▦', label: 'Saved Designs' }, { icon: '⌫', label: 'Trash' }, { icon: '○', label: 'My Details' },
+      { icon: '◷', label: 'Orders', isOrders: true }, { icon: '♡', label: 'Wishlist', isWishlist: true },
+      { icon: '▦', label: 'Saved Designs', isSaved: true }, { icon: '⌫', label: 'Deleted Designs', isDeleted: true }, { icon: '○', label: 'My Details', isDetails: true },
     ];
     const section = st.section;
     const viewOrder = st.viewOrderId ? Component.ORDERS.find(o => o.num === st.viewOrderId) : null;
     return {
       initials, acctMenuOpen, openAcctMenu, closeAcctMenu, goHome, logout,
+      shopOpen: st.shopOpen, openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }),
+      searchOpen: st.searchOpen, searchQ: st.searchQ, toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
+      onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
+      onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
+      langOpen: st.langOpen, openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: st.lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
       navItems: navDefs.map(n => ({
         ...n,
         bg: section === n.label ? '#1C1B19' : 'transparent', ink: section === n.label ? '#FBFAF8' : '#4A473F',
@@ -448,7 +490,7 @@ class Component extends DCLogic {
         pick: () => this.setState({ section: n.label, viewOrderId: null }),
       })),
       isOrdersList: section === 'Orders' && !viewOrder, isOrderDetails: section === 'Orders' && !!viewOrder,
-      isWishlist: section === 'Wishlist', isSavedDesigns: section === 'Saved Designs', isTrash: section === 'Trash', isMyDetails: section === 'My Details',
+      isWishlist: section === 'Wishlist', isSavedDesigns: section === 'Saved Designs', isTrash: section === 'Deleted Designs', isMyDetails: section === 'My Details',
       trashEmpty: st.trashedDesigns.length === 0,
       trashedDesigns: st.trashedDesigns.map(t => ({
         ...t,
@@ -459,6 +501,9 @@ class Component extends DCLogic {
       pwInput: st.pwInput, pwError: st.pwError, pwBorder: st.pwError ? '#A34B33' : '#DDD8CC',
       setPwInput: (e) => this.setState({ pwInput: e.target.value, pwError: false }),
       stopClick: (e) => e.stopPropagation(),
+      lightboxOpen: !!st.lightboxImg, lightboxImg: st.lightboxImg, lightboxSlot: st.lightboxSlot, lightboxPh: st.lightboxPh || 'Preview', lightboxBg: '#EFEBE2',
+      openLightbox: (slot, img, ph) => (e) => { if (e) e.preventDefault(); this.setState({ lightboxImg: img || 'placeholder', lightboxSlot: 'lb-' + slot, lightboxPh: ph }); },
+      closeLightbox: () => this.setState({ lightboxImg: null }),
       cancelDelete: () => this.setState({ pwModalId: null, pwInput: '', pwError: false }),
       confirmDelete: () => {
         if (!this.state.pwInput) { this.setState({ pwError: true }); return; }
@@ -469,25 +514,23 @@ class Component extends DCLogic {
         bg: st.orderTab === l ? '#1C1B19' : 'transparent', ink: st.orderTab === l ? '#fff' : '#1C1B19', border: st.orderTab === l ? '#1C1B19' : '#DDD8CC',
       })),
       orderCards: Component.ORDERS.filter(o => st.orderTab === 'All' || (st.orderTab === 'Active Shipments' && o.kind === 'active') || (st.orderTab === 'Delivered' && o.kind === 'delivered')).map(o => ({
-        slot: o.slot, img: o.img, ph: o.ph, num: o.num, date: o.date, total: o.total, status: o.status,
+        slot: o.slot, img: o.img, credit: o.credit, creditHref: o.creditHref, ph: o.ph, num: o.num, date: o.date, total: o.total, status: o.status,
         statusBg: Component.STATUS_STYLE[o.status].bg, statusInk: Component.STATUS_STYLE[o.status].ink,
         view: () => this.setState({ viewOrderId: o.num, trackOpen: false }),
+        openLightbox: (e) => { e.stopPropagation(); this.setState({ lightboxImg: o.img || 'placeholder', lightboxSlot: 'lb-' + o.slot, lightboxPh: o.ph }); },
       })),
       backToOrders: () => this.setState({ viewOrderId: null }),
-      toggleTrack: () => this.setState(s => ({ trackOpen: !s.trackOpen })),
-      trackLabel: st.trackOpen ? 'Hide shipment status' : 'Track Shipment',
-      trackOpen: st.trackOpen,
       od: viewOrder ? (() => {
         const labels = ['Confirmed', 'Printing', 'Quality check', 'Shipped', 'Delivered'];
         return {
           num: viewOrder.num, date: viewOrder.date, time: viewOrder.time, status: viewOrder.status,
           statusBg: Component.STATUS_STYLE[viewOrder.status].bg, statusInk: Component.STATUS_STYLE[viewOrder.status].ink,
           showTrackCta: viewOrder.kind === 'active',
-          items: viewOrder.items, shipName: viewOrder.shipName, shipLine1: viewOrder.shipLine1, shipCity: viewOrder.shipCity,
+          items: viewOrder.items.map(it => ({ ...it, openLightbox: () => this.setState({ lightboxImg: it.img || 'placeholder', lightboxSlot: 'lb-' + it.slot, lightboxPh: it.ph }) })), shipName: viewOrder.shipName, shipLine1: viewOrder.shipLine1, shipCity: viewOrder.shipCity,
           billingSame: viewOrder.billingSame, billingDifferent: !viewOrder.billingSame,
           billName: viewOrder.billName, billLine1: viewOrder.billLine1, billCity: viewOrder.billCity,
           subtotal: viewOrder.subtotal, shippingCost: viewOrder.shippingCost, tax: viewOrder.tax, total: viewOrder.total,
-          eta: viewOrder.eta, carrier: viewOrder.carrier,
+          eta: viewOrder.eta, carrier: viewOrder.carrier, trackUrl: viewOrder.trackUrl,
           stages: labels.map((l, i) => ({ label: l,
             mark: i < viewOrder.stage ? '✓' : (i === viewOrder.stage ? '•' : ''),
             dotBg: i < viewOrder.stage ? '#41573B' : (i === viewOrder.stage ? '#4A4FE4' : '#FBFAF8'),
@@ -502,6 +545,7 @@ class Component extends DCLogic {
       savedDesigns: st.savedDesigns.map(d => ({
         ...d, notEditing: !d.editing,
         showReorderNote: st.reorderNoteFor === d.id,
+        openLightbox: () => this.setState({ lightboxImg: 'placeholder', lightboxSlot: 'lb-sd-' + d.id, lightboxPh: d.name + ' preview' }),
         startEdit: () => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, editing: true, nameInput: x.name } : x) })),
         setName: (e) => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, nameInput: e.target.value } : x) })),
         commitName: () => this.setState(s => ({ savedDesigns: s.savedDesigns.map(x => x.id === d.id ? { ...x, name: x.nameInput || x.name, editing: false } : x) })),
@@ -523,11 +567,11 @@ class Component extends DCLogic {
         name: ad.firstName + ' ' + ad.lastName,
         line1: ad.line1 + (ad.houseNum ? ', ' + ad.houseNum : '') + (ad.line2 ? ', ' + ad.line2 : ''),
         cityLine: ad.zip + ' ' + ad.city, country: ad.country,
-        edit: () => this.setState({ addrFormOpen: true, addrEditingId: ad.id, addrForm: { ...ad, isDefault: ad.isDefault } }),
+        edit: () => this.setState({ addrFormOpen: true, addrEditingId: ad.id, addrForm: { ...ad, addressName: ad.label, isDefault: ad.isDefault, error: false } }),
         setDefault: () => this.setState(s => ({ addresses: s.addresses.map(x => ({ ...x, isDefault: x.id === ad.id })) })),
       })),
       addrFormOpen: st.addrFormOpen,
-      startAddAddress: () => this.setState({ addrFormOpen: true, addrEditingId: null, addrForm: { firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false } }),
+      startAddAddress: () => this.setState({ addrFormOpen: true, addrEditingId: null, addrForm: { addressName: '', firstName: '', lastName: '', line1: '', houseNum: '', line2: '', city: '', zip: '', country: 'Portugal', state: '', isDefault: false, error: false } }),
       addrForm: {
         ...st.addrForm,
         heading: st.addrEditingId ? 'Edit address' : 'Add new address',
@@ -535,28 +579,32 @@ class Component extends DCLogic {
         showState: st.addrForm.country !== 'Portugal',
         stateColsSpec: st.addrForm.country !== 'Portugal' ? '1fr 1fr' : '1fr',
         defaultBg: st.addrForm.isDefault ? '#1C1B19' : '#fff', defaultCheck: st.addrForm.isDefault ? '✓' : '',
-        setFirstName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, firstName: e.target.value } })),
-        setLastName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, lastName: e.target.value } })),
-        setLine1: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line1: e.target.value } })),
-        setHouseNum: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, houseNum: e.target.value } })),
-        setLine2: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line2: e.target.value } })),
-        setCity: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, city: e.target.value } })),
-        setZip: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, zip: e.target.value } })),
+        setAddressName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, addressName: e.target.value, error: false } })),
+        setFirstName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, firstName: e.target.value, error: false } })),
+        setLastName: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, lastName: e.target.value, error: false } })),
+        setLine1: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line1: e.target.value, error: false } })),
+        setHouseNum: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, houseNum: e.target.value, error: false } })),
+        setLine2: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, line2: e.target.value, error: false } })),
+        setCity: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, city: e.target.value, error: false } })),
+        setZip: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, zip: e.target.value, error: false } })),
         setCountry: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, country: e.target.value, state: e.target.value === 'Portugal' ? '' : s.addrForm.state } })),
-        setState: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, state: e.target.value } })),
+        setState: (e) => this.setState(s => ({ addrForm: { ...s.addrForm, state: e.target.value, error: false } })),
         toggleDefault: () => this.setState(s => ({ addrForm: { ...s.addrForm, isDefault: !s.addrForm.isDefault } })),
         cancel: () => this.setState({ addrFormOpen: false }),
         submit: () => {
           const f = this.state.addrForm;
+          const required = [f.addressName, f.firstName, f.lastName, f.line1, f.houseNum, f.city, f.zip, f.country];
+          if (f.country !== 'Portugal') required.push(f.state);
+          if (required.some(v => !v || !String(v).trim())) { this.setState(s => ({ addrForm: { ...s.addrForm, error: true } })); return; }
           if (this.state.addrEditingId) {
             this.setState(s => ({
-              addresses: s.addresses.map(x => x.id === s.addrEditingId ? { ...x, ...f, label: x.label } : (f.isDefault ? { ...x, isDefault: false } : x)),
+              addresses: s.addresses.map(x => x.id === s.addrEditingId ? { ...x, ...f, label: f.addressName } : (f.isDefault ? { ...x, isDefault: false } : x)),
               addrFormOpen: false,
             }));
           } else {
             const newId = Date.now();
             this.setState(s => ({
-              addresses: [...s.addresses.map(x => f.isDefault ? { ...x, isDefault: false } : x), { id: newId, label: 'New address', ...f }],
+              addresses: [...s.addresses.map(x => f.isDefault ? { ...x, isDefault: false } : x), { id: newId, label: f.addressName, ...f }],
               addrFormOpen: false,
             }));
           }
