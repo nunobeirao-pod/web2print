@@ -83,8 +83,8 @@ html{scroll-behavior:smooth}
   <nav style="position:fixed;top:0;left:0;right:0;z-index:50;transition:all 250ms ease-out;background:{{ navBg }};border-bottom:1px solid {{ navBorder }};backdrop-filter:{{ navBlur }}">
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:{{ navInk }};flex:none">Web2Print</div>
-      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:{{ navInk }};white-space:nowrap">
-        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html" style="color:inherit">Inspiration</a><a href="For%20Teams.dc.html" style="color:inherit">For Teams</a><a href="Who We Are.dc.html" style="color:inherit">Who we are</a><a href="Create%20your%20own.dc.html" style="color:{{ navAccent }};font-weight:700">Start Creating</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:{{ navInk }};white-space:nowrap"><a href="Create%20your%20own.dc.html" style="color:{{ navAccent }};font-weight:700">Start Creating</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html" style="color:inherit">Inspiration</a><a href="For%20Teams.dc.html" style="color:inherit">For Teams</a><a href="Who We Are.dc.html" style="color:inherit">Who we are</a>
       </div>
       <div style="display:flex;gap:18px;justify-content:flex-end;color:{{ navInk }};align-items:center;margin-left:auto">
         <span style="display:flex;align-items:center">
@@ -98,7 +98,7 @@ html{scroll-behavior:smooth}
         <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
           <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+            <div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
               <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4">
                 <span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span>
               </sc-for>
@@ -241,7 +241,7 @@ html{scroll-behavior:smooth}
             </div>
           </div>
         </div>
-        <span onClick="{{ goAI }}" style="margin-top:32px"><button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:16px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:all 150ms ease-out" style-hover="background:#3B40C9">Open the Studio →</button></span>
+        <span onClick="{{ goAI }}" style="margin-top:32px"><button style="background:#4A4FE4;color:#fff;border:none;border-radius:999px;padding:16px 34px;font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:all 150ms ease-out" style-hover="background:#3B40C9">Start Creating →</button></span>
       </div>
     </div>
   </section>
@@ -255,7 +255,7 @@ html{scroll-behavior:smooth}
     <div style="position:relative">
       <div ref="{{ bestRef }}" style="display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px">
         <sc-for list="{{ homeProducts }}" as="p" hint-placeholder-count="2">
-          <a href="Product Page.dc.html" style="color:#1C1B19;display:block;flex:0 0 260px;scroll-snap-align:start">
+          <a href="Product Page.dc.html" style="color:#1C1B19;display:block;flex:0 0 220px;scroll-snap-align:start">
             <div style="position:relative;aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden">
               <span style="position:absolute;top:10px;left:10px;font-size:18px;z-index:2">🔥</span>
               <span style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(251,250,248,0.92);display:flex;align-items:center;justify-content:center;z-index:2">
@@ -317,7 +317,7 @@ html{scroll-behavior:smooth}
               <div style="position:absolute;top:10px;left:10px;background:rgba(28,27,25,0.5);backdrop-filter:blur(4px);border-radius:999px;padding:4px 10px;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#fff;pointer-events:none">{{ u.source }}</div>
             </div>
             <div style="margin-top:12px;font-size:13.5px;font-weight:500;color:#1C1B19">{{ u.handle }}</div>
-            <div style="margin-top:4px;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;color:#8B867B">{{ u.occasion }}</div>
+            <div style="margin-top:4px;font-size:14px;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;color:#1C1B19">{{ u.occasion }}</div>
             <div style="font-size:12.5px;color:#4A473F">{{ u.product }}</div>
             <a href="Create%20your%20own.dc.html" style="display:inline-block;margin-top:6px;font-size:12.5px;font-weight:600;color:#4A4FE4">Create something like this →</a>
           </div>
