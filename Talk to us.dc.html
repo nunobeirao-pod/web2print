@@ -44,13 +44,44 @@ html{scroll-behavior:smooth}
         <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
           <sc-if value="{{ isGuestAcct }}" hint-placeholder-val="{{ true }}"><span onClick="{{ goAccount }}" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></span></sc-if>
           <sc-if value="{{ isSignedIn }}" hint-placeholder-val="{{ false }}"><span onClick="{{ goDashboard }}" title="Account" style="cursor:pointer;width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initials }}</span></sc-if>
-          <sc-if value="{{ showAcctMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70"><a href="Dashboard.dc.html" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#1C1B19" style-hover="background:#F3F0E9">Dashboard</a><span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span></div></sc-if>
+          <sc-if value="{{ showAcctMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70"><a href="Dashboard.dc.html" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#1C1B19" style-hover="background:#F3F0E9">Dashboard</a><span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span></div></sc-if>
         </span>
-        <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <span onClick="{{ goWishlist }}" title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
         <a href="Checkout.dc.html" title="Cart" style="color:inherit;position:relative;cursor:pointer;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-11px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">2</span></a>
       </div>
     </div>
   </nav>
+  <!-- AUTH DRAWER -->
+  <sc-if value="{{ authOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAuth }}" style="position:fixed;inset:0;z-index:92;background:rgba(20,20,18,0.18);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100vw;z-index:93;background:linear-gradient(155deg,rgba(255,255,255,0.32) 0%,rgba(255,255,255,0.08) 18%,rgba(238,235,228,0.42) 45%,rgba(238,235,228,0.5) 100%);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(28,27,25,0.22),inset 1px 0 0 rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.6);color:#1C1B19;overflow-y:auto">
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,0.35),transparent 55%)"></div>
+      <div style="padding:26px 26px 0;display:flex;justify-content:flex-end">
+        <span onClick="{{ closeAuth }}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px" style-hover="background:rgba(255,255,255,0.85)">✕</span>
+      </div>
+      <div style="padding:6px 26px 26px">
+        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:36px;line-height:1.1;letter-spacing:-0.01em">Continue creating.</h1>
+        <p style="margin:0 0 26px;font-size:14.5px;color:#4A473F">Your designs are waiting.</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <input type="email" placeholder="Email" value="{{ authEmail }}" onChange="{{ setAuthEmail }}" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <input type="password" placeholder="Password" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <div style="display:flex;justify-content:flex-end"><span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Forgot password?</span></div>
+          <button onClick="{{ authSignIn }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:17px 0;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Sign in</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;margin:24px 0"><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span><span style="font-size:11.5px;color:#8B867B">or</span><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Google</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Apple</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Microsoft <span style="color:#8B867B;font-size:12px">— Business</span></button>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px">
+          <span>New here? <span style="font-weight:500;color:#4A4FE4;cursor:pointer">Create account</span></span>
+          <span onClick="{{ closeAuth }}" style="color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Continue as guest →</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 
   <!-- PERKS BAR -->
   <div style="background:#1C1B19;color:#FBFAF8">
@@ -272,7 +303,11 @@ class Component extends DCLogic {
       onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
       openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
-      goAccount: () => { const dest = (window.localStorage && window.localStorage.getItem('w2p_signed_in')) ? 'Dashboard.dc.html' : 'Authentication.dc.html'; if (window.__navigate) window.__navigate(dest); else location.href = dest; },
+      goAccount: () => { if (window.localStorage && window.localStorage.getItem('w2p_signed_in')) { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; } else { this.setState({ authOpen: true }); } },
+      authOpen: this.state.authOpen, closeAuth: () => this.setState({ authOpen: false }),
+      authEmail: this.state.authEmail || '', setAuthEmail: (e) => this.setState({ authEmail: e.target.value }),
+      authSignIn: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} this.setState({ authOpen: false }); },
+      goWishlist: () => { window.__sectionHint = 'wishlist'; if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html#wishlist'; },
       isSignedIn: !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')), isGuestAcct: !(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
       initials: (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT',
       acctMenuOpen: !!this._acctOpen, showAcctMenu: !!this._acctOpen && !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')),

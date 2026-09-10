@@ -44,12 +44,12 @@ input,select{font-family:inherit}
         <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
           <span onClick="{{ goHome }}" style="width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ initials }}</span>
           <sc-if value="{{ acctMenuOpen }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;top:30px;right:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70">
+            <div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70">
               <span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span>
             </div>
           </sc-if>
         </span>
-        <span title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <span onClick="{{ goWishlist }}" title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
         <a href="Shop%20All.dc.html" title="Cart" style="color:inherit;position:relative;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg></a>
       </div>
     </div>
@@ -405,7 +405,7 @@ input,select{font-family:inherit}
 class Component extends DCLogic {
   static COUNTRIES = ['Portugal', 'Spain', 'France', 'Germany', 'Italy'];
   state = {
-    section: ({ track: 'Orders', return: 'Orders' }[window.__sectionHint || (location.hash || '').slice(1)] || 'Orders'),
+    section: ({ track: 'Orders', return: 'Orders', wishlist: 'Wishlist' }[window.__sectionHint || (location.hash || '').slice(1)] || 'Orders'),
     orderTab: 'All', viewOrderId: null, trackOpen: false,
     shopOpen: false, searchOpen: false, searchQ: '', langOpen: false, lang: 'EN',
     wishlist: [
@@ -477,6 +477,7 @@ class Component extends DCLogic {
     const viewOrder = st.viewOrderId ? Component.ORDERS.find(o => o.num === st.viewOrderId) : null;
     return {
       initials, acctMenuOpen, openAcctMenu, closeAcctMenu, goHome, logout,
+      goWishlist: () => this.setState({ section: 'Wishlist', viewOrderId: null }),
       shopOpen: st.shopOpen, openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }),
       searchOpen: st.searchOpen, searchQ: st.searchQ, toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
       onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
