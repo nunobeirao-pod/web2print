@@ -374,12 +374,36 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
       <div style="font-family:monospace;font-size:12px;color:#8B867B">WEB2PRINT · DESIGN SYSTEM · v2</div>
     </div>
   </section>
+
+  <!-- 07 UX WRITING -->
+  <section data-screen-label="Terminology" style="padding:80px 0;border-top:1px solid #E6E2D8">
+    <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">07 — UX writing &amp; terminology</div>
+    <div style="font-size:13.5px;color:#4A473F;line-height:1.6;max-width:620px;margin-bottom:28px">One term per action, used the same way everywhere. Don't alternate between "Create Your Own", "Open the Studio", "Start with AI" and similar phrasing for the same action — pick the glossary term and reuse it.</div>
+    <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;overflow:hidden">
+      <sc-for list="{{ glossary }}" as="g" hint-placeholder-count="8">
+        <div style="display:grid;grid-template-columns:220px 1fr;gap:24px;padding:16px 28px;border-bottom:1px solid #EEEBE3">
+          <div style="font-size:14px;font-weight:600">{{ g.term }}</div>
+          <div style="font-size:13.5px;color:#4A473F">{{ g.use }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   renderVals() {
     return {
+      glossary: [
+        { term: 'Studio', use: 'Name of the creation tool.' },
+        { term: 'Create', use: 'Navigation item that enters the creation experience.' },
+        { term: 'Start Creating', use: 'Primary CTA to begin a new design.' },
+        { term: 'Continue Designing', use: 'Resume an existing project.' },
+        { term: 'Finish Design', use: 'Validate and complete a design before the cart.' },
+        { term: 'Edit Design', use: 'Return to the Studio from the cart or an order.' },
+        { term: 'Saved Designs', use: 'Area where saved projects live.' },
+        { term: 'Order Again', use: 'Reuse a past design, with fresh stock/price/lead-time checks.' },
+      ],
       neutrals: [
         { name: 'White', hex: '#FFFFFF', use: 'Cards, surfaces' },
         { name: 'Paper', hex: '#FBFAF8', use: 'Page background' },
