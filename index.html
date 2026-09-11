@@ -80,7 +80,16 @@ html{scroll-behavior:smooth}
 <div data-screen-label="Homepage" style="min-height:100vh">
 
   <!-- NAV -->
-  <nav style="position:fixed;top:0;left:0;right:0;z-index:50;transition:all 250ms ease-out;background:{{ navBg }};border-bottom:1px solid {{ navBorder }};backdrop-filter:{{ navBlur }}">
+  <div style="position:fixed;top:0;left:0;right:0;z-index:50">
+    <div style="background:#1C1B19;color:#FBFAF8;overflow:hidden">
+      <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:34px;display:flex;align-items:center;justify-content:flex-start;gap:32px;font-size:12px;font-weight:500;white-space:nowrap;overflow-x:auto">
+        <span style="display:flex;align-items:center;gap:7px;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"></rect><path d="M15 10h3.5L21 13v4h-6"></path><circle cx="6" cy="19" r="1.6"></circle><circle cx="17.5" cy="19" r="1.6"></circle></svg>24/48h delivery to Portugal, Spain &amp; France</span>
+        <span style="display:flex;align-items:center;gap:7px;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 8.5c0 4.5-7 10-7 10s-7-5.5-7-10a7 7 0 0 1 14 0z"></path><path d="M9.5 8.5l1.2 1.2L14.5 6"></path></svg>Save more with quantity pricing</span>
+        <a href="For%20Teams.dc.html" style="display:flex;align-items:center;gap:7px;flex:none;color:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><path d="M2.5 19c0-3 2.9-5 6.5-5s6.5 2 6.5 5"></path><path d="M16.5 4.5a3 3 0 0 1 0 6"></path><path d="M17.5 14.2c2.6.5 4 2.1 4 4.8"></path></svg>For Teams — bulk pricing &amp; dedicated support</a>
+        <a href="Create%20your%20own.dc.html" style="display:flex;align-items:center;gap:7px;flex:none;color:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l1.8 4.4 4.7.4-3.6 3.1 1.1 4.6-4-2.5-4 2.5 1.1-4.6-3.6-3.1 4.7-.4z"></path></svg>Design it yourself in our Studio</a>
+      </div>
+    </div>
+    <nav style="position:relative;transition:all 250ms ease-out;background:{{ navBg }};border-bottom:1px solid {{ navBorder }};backdrop-filter:{{ navBlur }}">
     <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
       <div style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:{{ navInk }};flex:none">Web2Print</div>
       <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:{{ navInk }};white-space:nowrap"><a href="Create%20your%20own.dc.html" style="color:{{ navAccent }};font-weight:700">Start Creating</a>
@@ -119,7 +128,31 @@ html{scroll-behavior:smooth}
         </span>
       </div>
     </div>
-  </nav>
+    </nav>
+  </div>
+
+  <!-- LEAD POPUP -->
+  <sc-if value="{{ leadOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeLead }}" style="position:fixed;inset:0;z-index:110;background:rgba(20,20,18,0.45);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:111;background:#FBFAF8;border-radius:16px;width:min(420px,90vw);padding:36px 32px 28px;box-shadow:0 24px 64px rgba(28,27,25,0.28);text-align:center">
+      <span onClick="{{ closeLead }}" style="position:absolute;top:14px;right:16px;cursor:pointer;font-size:18px;color:#8B867B;line-height:1" style-hover="color:#1C1B19">×</span>
+      <div style="font-size:19px;font-weight:600;letter-spacing:-0.01em;margin-bottom:16px">Web2Print</div>
+      <div style="font-family:inherit;font-weight:700;font-size:26px;letter-spacing:-0.01em;margin-bottom:6px">GET €10 OFF</div>
+      <div style="font-size:14px;color:#4A473F;margin-bottom:20px">on your first order<br/>Get your exclusive code by email.</div>
+      <sc-if value="{{ leadSubmitted }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:14px 0;font-size:14px;font-weight:600;color:#41573B">Check your email — your code is on its way.</div>
+      </sc-if>
+      <sc-if value="{{ leadNotSubmitted }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submitLead }}" style="display:flex;flex-direction:column;gap:10px">
+          <input type="email" required="{{ true }}" placeholder="Your email" value="{{ leadEmail }}" onChange="{{ setLeadEmail }}" style="width:100%;box-sizing:border-box;padding:13px 16px;border-radius:999px;border:1px solid #E6E2D8;font-size:14px;font-family:inherit;background:#fff"/>
+          <button type="submit" style="background:#1C1B19;color:#FBFAF8;border:none;border-radius:999px;padding:14px 0;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;letter-spacing:0.02em">I WANT MINE</button>
+        </form>
+        <span onClick="{{ closeLead }}" style="display:inline-block;margin-top:14px;font-size:12.5px;font-weight:600;color:#8B867B;cursor:pointer;text-decoration:underline" style-hover="color:#1C1B19">No, thanks</span>
+      </sc-if>
+      <div style="font-size:10.5px;color:#8B867B;margin-top:16px;line-height:1.5">Valid on orders over €120. For 10 days.<br/>See terms and conditions.</div>
+      <div style="font-size:10px;color:#8B867B;margin-top:14px;line-height:1.5;text-align:left">By submitting this form, you agree to receive informational emails (e.g. order updates) and/or marketing messages (e.g. cart reminders) from Web2Print. Consent is not a condition of purchase. Unsubscribe at any time via the cancellation link. <span style="font-weight:700;text-decoration:underline">Privacy Policy</span> &amp; <span style="font-weight:700;text-decoration:underline">Terms and Conditions</span>. The €10 discount is valid only on orders over €120, for 10 days. Single-use coupon with newsletter and/or SMS subscription, non-cumulative.</div>
+    </div>
+  </sc-if>
 
   <!-- CART DRAWER -->
   <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
@@ -133,6 +166,17 @@ html{scroll-behavior:smooth}
       <div style="padding:20px 26px;flex:1;overflow-y:auto">
         <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;padding:14px 18px;text-align:center;font-size:13.5px;margin-bottom:18px">{{ freeShipMsg }}
           <div style="height:5px;background:rgba(28,27,25,0.15);border-radius:999px;margin-top:10px;overflow:hidden"><div style="height:100%;width:{{ freeShipPct }}%;background:#1C1B19"></div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;padding:14px 18px;margin-bottom:18px">
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:10px">{{ volumeMsg }}</div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ volumeTiers }}" as="t" hint-placeholder-count="3">
+              <div style="flex:1;text-align:center;border-radius:8px;padding:8px 4px;background:{{ t.bg }};border:1px solid {{ t.border }}">
+                <div style="font-size:12px;font-weight:700;color:{{ t.ink }}">{{ t.qty }}+</div>
+                <div style="font-size:10.5px;color:{{ t.ink }}">{{ t.pct }}</div>
+              </div>
+            </sc-for>
+          </div>
         </div>
         <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:16px;display:flex;gap:14px;margin-bottom:18px">
           <div style="width:70px;height:70px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="cart-item-1" data-src="{{ cartItemImg }}" shape="rect" placeholder="Regular Hoodie 300"></image-slot></div>
@@ -472,7 +516,7 @@ html{scroll-behavior:smooth}
 class Component extends DCLogic {
   static PHOTOS = { QSTEMPLATES: 'uploads/qs-templates.jpg', QSAI: 'uploads/qs-ai.jpg', TSHIRT: 'uploads/T-shirts.jpg', HOODIE: 'uploads/Hoodies_1st.jpg', SWEAT1: 'uploads/Sweatshirts_1st.jpg', SWEAT2: 'uploads/Sweatshirts_2nd.jpg', POLO1: 'uploads/Polos_1st.jpg', POLO2: 'uploads/Polos_2nd.jpg', SHIRT1: 'uploads/Shirts_1st.jpg', SHIRT2: 'uploads/Shirts_2nd.jpg', TOTE1: 'uploads/Tote-bags_1st.jpg', TOTE2: 'uploads/Tote-bags_2nd.jpg', CAP1: 'uploads/Caps_1st.jpg', CAP2: 'uploads/Caps_2nd.jpg', BAG1: 'uploads/Bags_1st.jpg', BAG2: 'uploads/Bags_2nd.jpg', RHOODIE1: 'uploads/regular%20hoodie%20300%20-%201.png', OHOODIE2: 'uploads/oversized%20hoodie%20330%20-%202.png', STUDIODEMO: 'uploads/studio%20demo.mp4', B1: 'https://images.unsplash.com/photo-1574365569389-a10d488ca3fb?q=35&w=560&auto=format&fit=crop', B2: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=35&w=560&auto=format&fit=crop', B4: 'https://images.unsplash.com/photo-1610282081854-9c311350beb9?q=35&w=560&auto=format&fit=crop', B5: 'https://images.unsplash.com/photo-1721111260419-03565e518110?q=35&w=560&auto=format&fit=crop', C1: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=35&w=560&auto=format&fit=crop', C3: 'https://images.unsplash.com/photo-1552060155-4eac706a5515?q=35&w=560&auto=format&fit=crop', T2: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=35&w=560&auto=format&fit=crop', T3: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop', T4: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=35&w=560&auto=format&fit=crop', T5: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=35&w=560&auto=format&fit=crop', T6: 'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=35&w=560&auto=format&fit=crop', T7: 'https://images.unsplash.com/photo-1651761179569-4ba2aa054997?q=35&w=560&auto=format&fit=crop', T8: 'https://images.unsplash.com/photo-1627225924765-552d49cf47ad?q=35&w=560&auto=format&fit=crop', T9: 'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=35&w=560&auto=format&fit=crop', T10: 'https://images.unsplash.com/photo-1618453292459-53424b66bb6a?q=35&w=560&auto=format&fit=crop', T11: 'https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?q=35&w=560&auto=format&fit=crop', T12: 'https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?q=35&w=560&auto=format&fit=crop', T13: 'https://images.unsplash.com/photo-1554568218-0f1715e72254?q=35&w=560&auto=format&fit=crop', T14: 'https://images.unsplash.com/photo-1627225925683-1da7021732ea?q=35&w=560&auto=format&fit=crop', T15: 'https://images.unsplash.com/photo-1527719327859-c6ce80353573?q=35&w=560&auto=format&fit=crop', H1: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop', H2: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=35&w=560&auto=format&fit=crop', H3: 'https://images.unsplash.com/photo-1680292783974-a9a336c10366?q=35&w=560&auto=format&fit=crop', H4: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?q=35&w=560&auto=format&fit=crop', H5: 'https://images.unsplash.com/photo-1579572331145-5e53b299c64e?q=35&w=560&auto=format&fit=crop', H6: 'https://images.unsplash.com/photo-1685354218016-3899c9ef79ad?q=35&w=560&auto=format&fit=crop', H7: 'https://images.unsplash.com/photo-1609873814058-a8928924184a?q=35&w=560&auto=format&fit=crop', H8: 'https://images.unsplash.com/photo-1578768079052-aa76e52ff62e?q=35&w=560&auto=format&fit=crop', H9: 'https://images.unsplash.com/photo-1601063476271-a159c71ab0b3?q=35&w=560&auto=format&fit=crop', H10: 'https://images.unsplash.com/photo-1615397587950-3cbb55f95b77?q=35&w=560&auto=format&fit=crop', H11: 'https://images.unsplash.com/photo-1611817757591-c3f345024273?q=35&w=560&auto=format&fit=crop', H12: 'https://images.unsplash.com/photo-1513789181297-6f2ec112c0bc?q=35&w=560&auto=format&fit=crop', H13: 'https://images.unsplash.com/photo-1517942420142-6a296f9ee4b1?q=35&w=560&auto=format&fit=crop', H14: 'https://images.unsplash.com/photo-1542406775-ade58c52d2e4?q=35&w=560&auto=format&fit=crop' };
   res(k) { return (window.__resources && window.__resources[k]) || Component.PHOTOS[k]; }
-  state = { scrolled: false, activeCollection: 0, inspirationOpen: false, hoveredCat: -1, carHover: false, carL: false, carR: true, searchOpen: false, searchQ: '', cartOpen: false, cartQty: 1 };
+  state = { scrolled: false, activeCollection: 0, inspirationOpen: false, hoveredCat: -1, carHover: false, carL: false, carR: true, searchOpen: false, searchQ: '', cartOpen: false, cartQty: 1, leadOpen: false, leadEmail: '', leadSubmitted: false };
   static SEARCH_ITEMS = [
     { name: 'Heavyweight Tee', meta: 'Garment · from €24', href: 'Product%20Page.dc.html' },
     { name: 'Oversized Hoodie', meta: 'Garment · from €54', href: 'Product%20Page.dc.html' },
@@ -508,8 +552,32 @@ class Component extends DCLogic {
       if (sc !== this.state.scrolled) this.setState({ scrolled: sc });
     };
     window.addEventListener('scroll', this._onScroll, { passive: true });
+    if (!sessionStorage.getItem('leadPopupSeen')) {
+      this._leadTimer = setTimeout(() => this.openLead(), 2000);
+      this._onLeadScroll = () => {
+        if (window.scrollY / (document.body.scrollHeight - window.innerHeight) > 0.5) this.openLead();
+      };
+      window.addEventListener('scroll', this._onLeadScroll, { passive: true });
+      this._onExitIntent = (e) => { if (e.clientY < 10) this.openLead(); };
+      document.addEventListener('mouseout', this._onExitIntent);
+    }
   }
-  componentWillUnmount() { window.removeEventListener('scroll', this._onScroll); }
+  openLead = () => {
+    if (sessionStorage.getItem('leadPopupSeen')) return;
+    this.setState({ leadOpen: true });
+    sessionStorage.setItem('leadPopupSeen', '1');
+    clearTimeout(this._leadTimer);
+    window.removeEventListener('scroll', this._onLeadScroll);
+    document.removeEventListener('mouseout', this._onExitIntent);
+  };
+  closeLead = () => this.setState({ leadOpen: false });
+  submitLead = (e) => { e.preventDefault(); this.setState({ leadSubmitted: true }); };
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    clearTimeout(this._leadTimer);
+    window.removeEventListener('scroll', this._onLeadScroll);
+    document.removeEventListener('mouseout', this._onExitIntent);
+  }
   renderVals() {
     const { scrolled, activeCollection, inspirationOpen, hoveredCat, carHover, carL, carR } = this.state;
     const catHovs = { 'cat-tees': 'T3', 'cat-hoodies': 'H3', 'cat-sweats': 'SWEAT2', 'cat-polos': 'POLO2', 'cat-shirts': 'SHIRT2', 'cat-totes': 'TOTE2', 'cat-caps': 'CAP2', 'cat-bags': 'BAG2' };
@@ -588,6 +656,9 @@ class Component extends DCLogic {
         { slot: 'cat-athleisure', img: 'uploads/athleisure%20banner.png', ph: 'Athleisure garments', label: 'Athleisure', href: 'Athleisure.dc.html' },
         { slot: 'cat-accessories', img: 'uploads/accessories%20banner.png', ph: 'Accessories', label: 'Accessories', href: 'Accessories.dc.html' },
       ],
+      leadOpen: this.state.leadOpen, closeLead: this.closeLead,
+      leadEmail: this.state.leadEmail, setLeadEmail: (e) => this.setState({ leadEmail: e.target.value }),
+      leadSubmitted: this.state.leadSubmitted, leadNotSubmitted: !this.state.leadSubmitted, submitLead: this.submitLead,
       cartOpen: this.state.cartOpen,
       toggleCart: () => this.setState(s => ({ cartOpen: !s.cartOpen })), closeCart: () => this.setState({ cartOpen: false }),
       cartQty: this.state.cartQty,
@@ -596,6 +667,19 @@ class Component extends DCLogic {
       cartSubtotal: '€' + (39 * this.state.cartQty).toFixed(2).replace('.', ','),
       freeShipMsg: (() => { const rem = 75 - 39 * this.state.cartQty; return rem > 0 ? '€' + rem.toFixed(2) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
       freeShipPct: Math.min(100, (39 * this.state.cartQty / 75) * 100),
+      volumeTiers: [
+        { qty: 3, pct: '10%' }, { qty: 5, pct: '15%' }, { qty: 10, pct: '20%' },
+      ].map(t => {
+        const active = this.state.cartQty >= t.qty;
+        return { ...t, bg: active ? '#1C1B19' : 'rgba(255,255,255,0.55)', border: active ? '#1C1B19' : 'rgba(28,27,25,0.12)', ink: active ? '#FBFAF8' : '#4A473F' };
+      }),
+      volumeMsg: (() => {
+        const q = this.state.cartQty;
+        if (q >= 10) return 'You\u2019re saving 20% with quantity pricing';
+        if (q >= 5) return 'You\u2019re saving 15% \u2014 add ' + (10 - q) + ' more for 20% off';
+        if (q >= 3) return 'You\u2019re saving 10% \u2014 add ' + (5 - q) + ' more for 15% off';
+        return 'Buy more, save more \u2014 add ' + (3 - q) + ' more for 10% off';
+      })(),
       upsell: [
         { slot: 'up-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44,00€', img: this.res('OHOODIE2'), href: 'Oversized%20Hoodie%20330.dc.html' },
         { slot: 'up-2', ph: 'Cap', name: 'Cap', price: '18,00€', img: 'uploads/Caps_1st.jpg' },

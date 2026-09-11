@@ -29,7 +29,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 .mby-row{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 64px)/5);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
 .mby-row>div{min-width:0;scroll-snap-align:start}
 @media (max-width:768px){.mby-row{grid-auto-columns:62%;gap:14px}}
-@media (max-width:768px){.pdp-sticky-cta{display:flex !important}}
+.pdp-sticky-cta{transition:transform 220ms ease-out}
 </style>
 </helmet>
 <div data-screen-label="Product Page" style="min-height:100vh">
@@ -182,43 +182,54 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <div style="position:sticky;top:88px;display:flex;flex-direction:column;gap:24px;padding-bottom:40px">
       <div>
         <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:34px;line-height:1.05;letter-spacing:-0.01em;text-transform:uppercase">Regular Hoodie 300</h1>
+        <div onClick="{{ scrollToReviews }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:10px;width:fit-content" style-hover="text-decoration:underline">
+          <span style="color:#41573B;font-size:15px;letter-spacing:1px">★★★★★</span>
+          <span style="font-size:13px;color:#4A473F">{{ reviewAvg }} · {{ reviewCount }} reviews</span>
+        </div>
         <p style="margin:0 0 14px;font-size:14.5px;line-height:1.5;color:#4A473F">A heavyweight hoodie built for everyday layering. 300 gsm brushed cotton, dropped shoulders, double-layer hood, kangaroo pocket. Garment-dyed for a lived-in feel from day one.</p>
-        <div style="font-family:inherit;font-weight:700;font-size:24px">€39.00 <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
+        <div style="font-family:inherit;font-weight:700;font-size:24px;color:{{ saleInk }}">€{{ salePrice }} <sc-if value="{{ onSale }}" hint-placeholder-val="{{ false }}"><span style="font-weight:500;color:#8B867B;text-decoration:line-through;margin-left:4px">€{{ regPrice }}</span></sc-if> <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
+        <sc-if value="{{ freeShipUnlocked }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12.5px;font-weight:600;color:#41573B">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>
+            You've unlocked free shipping
+          </div>
+        </sc-if>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;color:#4A473F">
+          <span style="background:#FFB3C7;color:#17120F;font-weight:800;font-size:12px;font-style:italic;border-radius:4px;padding:2px 6px;letter-spacing:-0.01em">Klarna.</span>
+          3 payments of €13.00 at 0% interest. <span style="text-decoration:underline;cursor:pointer">Learn more</span>
+        </div>
       </div>
 
+      <!-- TRUST LINE -->
+      <div style="border-top:1px solid #EEEBE3;border-bottom:1px solid #EEEBE3;padding:14px 0;font-size:13px;color:#4A473F;text-align:center">10,000+ happy customers &nbsp;•&nbsp; Made in Portugal &nbsp;•&nbsp; 30-day guarantee</div>
+
       <!-- SPECS -->
-      <div style="border-top:1px solid #EEEBE3;padding-top:18px;font-size:13.5px;color:#4A473F">100% combed cotton &nbsp;•&nbsp; 300 gsm &nbsp;•&nbsp; Regular fit</div>
+      <div style="padding-top:18px;font-size:13.5px;color:#4A473F">100% combed cotton &nbsp;•&nbsp; 300 gsm &nbsp;•&nbsp; Regular fit</div>
 
 
 
       <!-- COLOUR -->
       <div>
-        <span style="font-size:13px;color:#4A473F">Colour</span>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+        <span style="font-size:13px;color:#4A473F">Colour: <span style="font-weight:600;color:#1C1B19">{{ cur.name }}</span></span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
           <sc-for list="{{ colours }}" as="c" hint-placeholder-count="5">
             <div style="position:relative;display:flex;justify-content:center">
-              <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;white-space:nowrap;color:#1C1B19">{{ c.name }}</span>
-              </sc-if>
               <sc-if value="{{ c.hovering }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
+                <span style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
               </sc-if>
-              <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:32px;height:32px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
+              <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:22px;height:22px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
             </div>
           </sc-for>
         </div>
-        <div style="margin-top:26px">
-          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:22px">Limited edition</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div style="margin-top:14px">
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Limited edition</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
             <sc-for list="{{ limitedColours }}" as="c" hint-placeholder-count="5">
               <div style="position:relative;display:flex;justify-content:center">
-                <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;white-space:nowrap;color:#1C1B19">{{ c.name }}</span>
-                </sc-if>
                 <sc-if value="{{ c.hovering }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
+                  <span style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
                 </sc-if>
-                <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:32px;height:32px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
+                <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:22px;height:22px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
               </div>
             </sc-for>
           </div>
@@ -240,8 +251,8 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
       </div>
 
       <!-- CTA -->
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:18px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%" style-hover="filter:brightness(0.94)">Start Creating</button></a>
+      <div ref="{{ ctaRef }}" style="display:flex;flex-direction:column;gap:10px">
+        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:14px 0 12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px" style-hover="filter:brightness(0.94)"><span>Start Creating — €{{ price2dp }}</span><span style="font-size:11px;font-weight:500;opacity:0.85">In stock: ready to ship</span></button></a>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
           <span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#4A473F">Prefer it blank? <span style="text-decoration:underline">Order without customisation</span></span>
           <button title="Add to wishlist" style="width:40px;height:40px;flex:none;background:transparent;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B867B" style-hover="color:#1C1B19">
@@ -295,7 +306,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
                   </table>
                 </sc-if>
                 <sc-if value="{{ a.isText }}" hint-placeholder-val="{{ true }}">
-                  <p style="margin:0;font-size:13.5px;line-height:1.65;color:#4A473F">{{ a.body }}</p>
+                  <p style="margin:0;font-size:13.5px;line-height:1.65;color:#4A473F;white-space:pre-line">{{ a.body }}</p>
                   <sc-if value="{{ a.hasFeatures }}" hint-placeholder-val="{{ false }}">
                     <div style="display:flex;gap:32px;margin-top:22px">
                       <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
@@ -337,7 +348,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </div>
 
   <!-- REVIEWS -->
-  <section style="max-width:1200px;margin:0 auto;padding:112px 24px 0;text-align:center">
+  <section id="pdp-reviews" style="max-width:1200px;margin:0 auto;padding:112px 24px 0;text-align:center">
     <div style="font-size:13px;color:#4A473F;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:8px">
       <span style="font-weight:600;color:#1C1B19">Excellent</span> {{ reviewAvg }} out of 5 <span style="color:#41573B;letter-spacing:1px">★★★★★</span> Verified reviews
     </div>
@@ -428,10 +439,12 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     </div>
   </section>
 
-  <!-- STICKY MOBILE CTA -->
-  <div class="pdp-sticky-cta" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
-    <span style="font-family:inherit;font-weight:700;font-size:16px">€{{ price2dp }}</span>
-    <a href="Create%20your%20own.dc.html" style="flex:1;max-width:220px"><button style="width:100%;background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer">Start Creating</button></a>
+  <!-- FLOATING CTA (shows once the main CTA scrolls out of view, any screen size) -->
+  <div class="pdp-sticky-cta" style="display:{{ floatingCtaDisplay }};position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:center;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
+    <div style="max-width:1440px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 48px">
+      <div style="display:flex;flex-direction:column;line-height:1.3"><span style="font-family:inherit;font-weight:700;font-size:16px">€{{ price2dp }}</span><span style="font-size:10.5px;color:#4A473F">In stock: ready to ship</span></div>
+      <a href="Create%20your%20own.dc.html" style="flex:none;width:220px"><button style="width:100%;background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer">Start Creating</button></a>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -504,8 +517,14 @@ class Component extends DCLogic {
     const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
     return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#1C1B19' : '#FBFAF8';
   }
-  state = { colour: 0, hoverColour: null, size: 2, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', openAcc: ['Fabric & Care'], cartOpen: false, cartQty: 1, volumeOpen: false };
+  state = { colour: 0, hoverColour: null, size: 2, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', openAcc: ['Fabric & Care'], cartOpen: false, cartQty: 1, volumeOpen: false, floatingCta: false };
   toggleVolume = () => this.setState(s => ({ volumeOpen: !s.volumeOpen }));
+  scrollToReviews = () => { const el = document.getElementById('pdp-reviews'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  ctaRef = (el) => {
+    if (!el || this._ctaObserver) return;
+    this._ctaObserver = new IntersectionObserver(([entry]) => this.setState({ floatingCta: !entry.isIntersecting }), { threshold: 0 });
+    this._ctaObserver.observe(el);
+  };
   openSizeGuide = () => {
     this.setState(s => ({ openAcc: s.openAcc.includes('Size guide') ? s.openAcc : [...s.openAcc, 'Size guide'] }));
     const doScroll = () => { const el = document.getElementById('acc-size-guide'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
@@ -513,7 +532,7 @@ class Component extends DCLogic {
     setTimeout(doScroll, 350);
   };
   renderVals() {
-    const { colour, hoverColour, size, qty, langOpen, lang, searchOpen, searchQ, openAcc, volumeOpen } = this.state;
+    const { colour, hoverColour, size, qty, langOpen, lang, searchOpen, searchQ, openAcc, volumeOpen, floatingCta } = this.state;
     const all = [...Component.CORE, ...Component.LIMITED];
     const cur = all[colour];
     const mkSwatch = (c, idx) => ({
@@ -580,6 +599,7 @@ class Component extends DCLogic {
         }
         return rows;
       })(),
+      cur,
       colours: Component.CORE.map((c, i) => mkSwatch(c, i)),
       limitedColours: Component.LIMITED.map((c, i) => mkSwatch(c, Component.CORE.length + i)),
       sizes: sizeNames.map((label, i) => ({
@@ -592,6 +612,9 @@ class Component extends DCLogic {
       openSizeGuide: this.openSizeGuide,
       fitHelp: 'Regular fit — true to size. Order one size larger for a looser fit.',
       volumeOpen, volumeRot: volumeOpen ? 'rotate(180deg)' : 'none', toggleVolume: this.toggleVolume,
+      ctaRef: this.ctaRef, floatingCtaDisplay: floatingCta ? 'flex' : 'none',
+      freeShipUnlocked: base >= 75,
+      onSale: true, salePrice: '35.00', regPrice: '39.00', saleInk: '#C0392B',
       relatedProducts: [
         { slot: 'ymal-1', ph: 'Oversized Hoodie 330', name: 'Oversized Hoodie 330', price: '44', img: res('OHOODIE2'), href: 'Oversized%20Hoodie%20330.dc.html', bestFor: 'Best for cold days and prints', meta: '330 gsm · Oversized fit', swatches: ['#1C1B19', '#F5F3ED', '#D9C9AE', '#4A3427', '#1F2A44'] },
         { slot: 'ymal-2', ph: 'Regular Sweat 300', name: 'Regular Sweat 300', price: '35', img: null, href: 'Hoodies%20and%20Sweats.dc.html', bestFor: 'Best for casual layering', meta: '300 gsm · Regular fit', swatches: ['#1C1B19', '#F5F3ED', '#D9C9AE', '#4A3427', '#1F2A44'] },
@@ -616,12 +639,14 @@ class Component extends DCLogic {
           head: ['Size', 'Chest (cm)', 'Length (cm)', 'Sleeve (cm)'],
           rows: [['XS', '96', '65', '58'], ['S', '102', '67', '60'], ['M', '108', '69', '62'], ['L', '114', '71', '64'], ['XL', '120', '73', '66'], ['XXL', '126', '75', '68']] },
         { title: 'Shipping Policy', isText: true, isTable: false, body: '24–48h delivery to Portugal & Spain. Up to 5 days across the rest of Europe. Free shipping over €75.' },
+        { title: 'Our sustainability commitment', isText: true, isTable: false, body: 'GOTS-certified organic cotton, water-based inks, and garments made in Portugal to cut transport emissions. Every order ships in recycled, plastic-free packaging.' },
+        { title: 'FAQ', isText: true, isTable: false, body: 'How does sizing run? True to size — check the size guide above if you\'re between sizes.\n\nCan I return a customised design? Yes, within 30 days if there\'s a print or manufacturing defect.\n\nHow long does printing take? Orders ship within 24–48h of production, which starts right after checkout.' },
       ].map(a => ({
         ...a,
         open: openAcc.includes(a.title), rot: openAcc.includes(a.title) ? 'rotate(180deg)' : 'none',
         toggle: () => this.setState(s => ({ openAcc: s.openAcc.includes(a.title) ? s.openAcc.filter(x => x !== a.title) : [...s.openAcc, a.title] })),
       })),
-      reviewAvg: '4.8',
+      reviewAvg: '4.8', reviewCount: 128,
       productReviews: [
         { name: 'Rui Almeida', meta: 'Verified buyer', quote: 'Heavier than I expected in a good way. Holds the print really well after washing.' },
         { name: 'Sofia Nunes', meta: 'Verified buyer', quote: 'Fits oversized as described. The fabric feels premium, not like a basic blank.' },
