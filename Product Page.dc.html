@@ -194,19 +194,10 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
             You've unlocked free shipping
           </div>
         </sc-if>
-        <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;color:#4A473F">
-          <span style="background:#FFB3C7;color:#17120F;font-weight:800;font-size:12px;font-style:italic;border-radius:4px;padding:2px 6px;letter-spacing:-0.01em">Klarna.</span>
-          3 payments of €13.00 at 0% interest. <span style="text-decoration:underline;cursor:pointer">Learn more</span>
-        </div>
       </div>
 
       <!-- TRUST LINE -->
       <div style="border-top:1px solid #EEEBE3;border-bottom:1px solid #EEEBE3;padding:14px 0;font-size:13px;color:#4A473F;text-align:center">10,000+ happy customers &nbsp;•&nbsp; Made in Portugal &nbsp;•&nbsp; 30-day guarantee</div>
-
-      <!-- SPECS -->
-      <div style="padding-top:18px;font-size:13.5px;color:#4A473F">100% combed cotton &nbsp;•&nbsp; 300 gsm &nbsp;•&nbsp; Regular fit</div>
-
-
 
       <!-- COLOUR -->
       <div>
@@ -221,7 +212,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
             </div>
           </sc-for>
         </div>
-        <div style="margin-top:14px">
+        <div style="margin-top:26px">
           <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Limited edition</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <sc-for list="{{ limitedColours }}" as="c" hint-placeholder-count="5">
@@ -253,22 +244,22 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
       <!-- CTA -->
       <div ref="{{ ctaRef }}" style="display:flex;flex-direction:column;gap:10px">
         <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:14px 0 12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px" style-hover="filter:brightness(0.94)"><span>Start Creating — €{{ price2dp }}</span><span style="font-size:11px;font-weight:500;opacity:0.85">In stock: ready to ship</span></button></a>
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-          <span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#4A473F">Prefer it blank? <span style="text-decoration:underline">Order without customisation</span></span>
-          <button title="Add to wishlist" style="width:40px;height:40px;flex:none;background:transparent;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B867B" style-hover="color:#1C1B19">
+        <div style="display:flex;gap:10px">
+          <button style="flex:1;background:transparent;color:#1C1B19;border:1px solid #1C1B19;border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out" style-hover="background:#1C1B19;color:#FBFAF8">Order Blank</button>
+          <button title="Add to wishlist" style="width:48px;height:48px;flex:none;background:transparent;border:1px solid #E6E2D8;border-radius:999px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B867B" style-hover="color:#1C1B19;border-color:#1C1B19">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
           </button>
         </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#4A473F;padding-top:2px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="14" height="10" rx="1.5"></rect><path d="M15 10h3.5L21 13v4h-6"></path><circle cx="6" cy="19" r="1.6"></circle><circle cx="17.5" cy="19" r="1.6"></circle></svg>
-          <span>24/48h delivery to Portugal, Spain and France. Rest of Europe: until 5 business days.</span>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#4A473F">
+          <span style="background:#FFB3C7;color:#17120F;font-weight:800;font-size:12px;font-style:italic;border-radius:4px;padding:2px 6px;letter-spacing:-0.01em">Klarna.</span>
+          3 payments of €13.00 at 0% interest. <span style="text-decoration:underline;cursor:pointer">Learn more</span>
         </div>
       </div>
 
       <!-- VOLUME PRICING -->
       <div style="border-top:1px solid #EEEBE3;padding-top:16px">
         <div onClick="{{ toggleVolume }}" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer">
-          <span style="font-size:13px;color:#4A473F">Ordering more? Save with quantity pricing.</span>
+          <span style="font-size:13px;color:#4A473F">Ordering more than 50 pieces? Check our bulk pricing.</span>
           <span style="color:#8B867B;font-size:13px;transform:{{ volumeRot }};transition:transform 150ms">⌄</span>
         </div>
         <sc-if value="{{ volumeOpen }}" hint-placeholder-val="{{ false }}">
@@ -439,11 +430,10 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     </div>
   </section>
 
-  <!-- FLOATING CTA (shows once the main CTA scrolls out of view, any screen size) -->
-  <div class="pdp-sticky-cta" style="display:{{ floatingCtaDisplay }};position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:center;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
-    <div style="max-width:1440px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 48px">
-      <div style="display:flex;flex-direction:column;line-height:1.3"><span style="font-family:inherit;font-weight:700;font-size:16px">€{{ price2dp }}</span><span style="font-size:10.5px;color:#4A473F">In stock: ready to ship</span></div>
-      <a href="Create%20your%20own.dc.html" style="flex:none;width:220px"><button style="width:100%;background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:13px 0;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer">Start Creating</button></a>
+  <!-- FLOATING CTA (same button as main CTA, always visible while scrolling) -->
+  <div class="pdp-sticky-cta" style="display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:center;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
+    <div style="max-width:1440px;width:100%;display:flex;justify-content:center;padding:0 48px">
+      <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block;width:100%;max-width:420px"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:14px 0 12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px" style-hover="filter:brightness(0.94)"><span>Start Creating — €{{ price2dp }}</span><span style="font-size:11px;font-weight:500;opacity:0.85">In stock: ready to ship</span></button></a>
     </div>
   </div>
 
@@ -639,7 +629,6 @@ class Component extends DCLogic {
           head: ['Size', 'Chest (cm)', 'Length (cm)', 'Sleeve (cm)'],
           rows: [['XS', '96', '65', '58'], ['S', '102', '67', '60'], ['M', '108', '69', '62'], ['L', '114', '71', '64'], ['XL', '120', '73', '66'], ['XXL', '126', '75', '68']] },
         { title: 'Shipping Policy', isText: true, isTable: false, body: '24–48h delivery to Portugal & Spain. Up to 5 days across the rest of Europe. Free shipping over €75.' },
-        { title: 'Our sustainability commitment', isText: true, isTable: false, body: 'GOTS-certified organic cotton, water-based inks, and garments made in Portugal to cut transport emissions. Every order ships in recycled, plastic-free packaging.' },
         { title: 'FAQ', isText: true, isTable: false, body: 'How does sizing run? True to size — check the size guide above if you\'re between sizes.\n\nCan I return a customised design? Yes, within 30 days if there\'s a print or manufacturing defect.\n\nHow long does printing take? Orders ship within 24–48h of production, which starts right after checkout.' },
       ].map(a => ({
         ...a,
