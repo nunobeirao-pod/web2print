@@ -470,8 +470,8 @@ class Component extends DCLogic {
     const goHome = () => { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const logout = () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; };
     const navDefs = [
-      { icon: '◷', label: 'Orders', isOrders: true }, { icon: '♡', label: 'Wishlist', isWishlist: true },
-      { icon: '▦', label: 'Saved Designs', isSaved: true }, { icon: '⌫', label: 'Deleted Designs', isDeleted: true }, { icon: '○', label: 'My Details', isDetails: true },
+      { icon: '○', label: 'My Details', isDetails: true }, { icon: '◷', label: 'Orders', isOrders: true }, { icon: '♡', label: 'Wishlist', isWishlist: true },
+      { icon: '▦', label: 'Saved Designs', isSaved: true }, { icon: '⌫', label: 'Deleted Designs', isDeleted: true },
     ];
     const section = st.section;
     const viewOrder = st.viewOrderId ? Component.ORDERS.find(o => o.num === st.viewOrderId) : null;
