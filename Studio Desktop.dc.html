@@ -106,7 +106,7 @@
           <sc-for list="{{ textFieldItems }}" as="it" hint-placeholder-count="1">
             <div onMouseDown="{{ it.startDrag }}" style="position:absolute;left:{{ it.x }}px;top:{{ it.y }}px;transform:rotate({{ it.rot }}deg);cursor:{{ it.cursor }};z-index:{{ it.z }}">
               <div style="position:relative;display:inline-block;outline:{{ it.outline }};outline-offset:0;padding:1px">
-                <span ref="{{ it.textRef }}" style="font-family:{{ it.family }};font-weight:{{ it.weight }};font-style:{{ it.fontStyle }};font-size:{{ it.size }}px;letter-spacing:{{ it.ls }}px;color:{{ it.color }};text-decoration:{{ it.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ it.textShadow }};display:inline-block">{{ it.text }}</span>
+                <img ref="{{ it.textImgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="display:block;width:{{ it.imgW }}px;height:{{ it.imgH }}px;pointer-events:none">
                 <sc-if value="{{ it.selected }}" hint-placeholder-val="{{ false }}">
                 <span style="position:absolute;left:50%;top:-{{ it.stem }}px;height:{{ it.stem }}px;border-left:{{ it.bw }}px solid #1C1B19;pointer-events:none"></span>
                 <span onMouseDown="{{ it.startRotate }}" title="Rotate" style="position:absolute;left:50%;top:-{{ it.rotTop }}px;margin-left:-{{ it.hh }}px;width:{{ it.hs }}px;height:{{ it.hs }}px;border-radius:50%;background:#fff;border:{{ it.bw }}px solid #1C1B19;box-sizing:border-box;cursor:grab"></span>
@@ -203,7 +203,7 @@
             <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:scale({{ c.thumbScale }});transform-origin:0 0;pointer-events:none">
               <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
               <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
-                <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ t.textShadow }};padding:1px">{{ t.text }}</span>
+                <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:pre-line;line-height:1.1;text-shadow:{{ t.textShadow }};text-align:{{ t.textAlign }};padding:1px">{{ t.text }}</span>
               </sc-for>
               <sc-for list="{{ c.pics }}" as="p" hint-placeholder-count="0">
                 <img ref="{{ p.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.w }}px;height:{{ p.h }}px;transform:rotate({{ p.rot }}deg);object-fit:{{ p.fit }};clip-path:{{ p.clip }}">
@@ -279,6 +279,12 @@
               <button onClick="{{ toggleBold }}" aria-label="Bold" style="flex:1;border:1px solid {{ boldBorder }};background:{{ boldBg }};border-radius:8px;height:36px;font-size:13px;font-weight:700;cursor:pointer">B</button>
               <button onClick="{{ toggleItalic }}" aria-label="Italic" style="flex:1;border:1px solid {{ italicBorder }};background:{{ italicBg }};border-radius:8px;height:36px;font-size:13px;font-style:italic;cursor:pointer">I</button>
               <button onClick="{{ toggleUnderline }}" aria-label="Underline" style="flex:1;border:1px solid {{ underlineBorder }};background:{{ underlineBg }};border-radius:8px;height:36px;font-size:13px;text-decoration:underline;cursor:pointer">U</button>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button onClick="{{ setAlignLeft }}" aria-label="Align left" style="flex:1;border:1px solid {{ alignLeftBorder }};background:{{ alignLeftBg }};border-radius:8px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h13"></path></svg></button>
+              <button onClick="{{ setAlignCenter }}" aria-label="Align center" style="flex:1;border:1px solid {{ alignCenterBorder }};background:{{ alignCenterBg }};border-radius:8px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M7 12h10M5.5 18h13"></path></svg></button>
+              <button onClick="{{ setAlignRight }}" aria-label="Align right" style="flex:1;border:1px solid {{ alignRightBorder }};background:{{ alignRightBg }};border-radius:8px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M10 12h10M7 18h13"></path></svg></button>
+              <button onClick="{{ setAlignJustify }}" aria-label="Justify" style="flex:1;border:1px solid {{ alignJustifyBorder }};background:{{ alignJustifyBg }};border-radius:8px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div>
@@ -656,7 +662,7 @@
               <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:scale({{ c.thumbScale }});transform-origin:0 0;pointer-events:none">
                 <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
                 <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
-                  <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ t.textShadow }};padding:1px">{{ t.text }}</span>
+                  <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:pre-line;line-height:1.1;text-shadow:{{ t.textShadow }};text-align:{{ t.textAlign }};padding:1px">{{ t.text }}</span>
                 </sc-for>
                 <sc-for list="{{ c.pics }}" as="p" hint-placeholder-count="0">
                   <img ref="{{ p.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.w }}px;height:{{ p.h }}px;transform:rotate({{ p.rot }}deg);object-fit:{{ p.fit }};clip-path:{{ p.clip }}">
@@ -733,7 +739,7 @@
                     <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:translate({{ c.fitX }}px,{{ c.fitY }}px) scale({{ c.fitScale }});transform-origin:0 0;pointer-events:none">
                       <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
                       <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
-                        <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ t.textShadow }};padding:1px">{{ t.text }}</span>
+                        <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:pre-line;line-height:1.1;text-shadow:{{ t.textShadow }};text-align:{{ t.textAlign }};padding:1px">{{ t.text }}</span>
                       </sc-for>
                       <sc-for list="{{ c.pics }}" as="p" hint-placeholder-count="0">
                         <img ref="{{ p.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.w }}px;height:{{ p.h }}px;transform:rotate({{ p.rot }}deg);object-fit:{{ p.fit }};clip-path:{{ p.clip }}">
@@ -769,7 +775,7 @@
                     <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:translate({{ c.fitX }}px,{{ c.fitY }}px) scale({{ c.fitScale }});transform-origin:0 0;pointer-events:none">
                       <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
                       <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
-                        <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ t.textShadow }};padding:1px">{{ t.text }}</span>
+                        <span style="position:absolute;left:{{ t.x }}px;top:{{ t.y }}px;transform:rotate({{ t.rot }}deg);font-family:{{ t.family }};font-weight:{{ t.weight }};font-style:{{ t.fontStyle }};font-size:{{ t.size }}px;letter-spacing:{{ t.ls }}px;color:{{ t.color }};text-decoration:{{ t.decoration }};white-space:pre-line;line-height:1.1;text-shadow:{{ t.textShadow }};text-align:{{ t.textAlign }};padding:1px">{{ t.text }}</span>
                       </sc-for>
                       <sc-for list="{{ c.pics }}" as="p" hint-placeholder-count="0">
                         <img ref="{{ p.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.w }}px;height:{{ p.h }}px;transform:rotate({{ p.rot }}deg);object-fit:{{ p.fit }};clip-path:{{ p.clip }}">
@@ -907,10 +913,134 @@ class Component extends DCLogic {
   };
 
   _img = {}; _paint = {}; _edge = {}; _maskAlpha = {}; _textSize = {};
+  /* True tight ink bounds — DOM/canvas layout metrics (offsetWidth, Range rects) all reserve
+     the font's full ascent+descent slot, not the actual painted pixels. Rasterising to an
+     offscreen canvas and scanning the alpha channel is the only way to get real glyph-ink
+     (and, for uploads, real logo-artwork) extents, matching how a print file gets trimmed. */
+  scanInkBounds(ctx, w, h){
+    const data = ctx.getImageData(0, 0, w, h).data;
+    let minX=w, maxX=-1, minY=h, maxY=-1;
+    for (let y=0; y<h; y++) for (let x=0; x<w; x++) { if (data[(y*w+x)*4+3] > 10) { if (x<minX)minX=x; if (x>maxX)maxX=x; if (y<minY)minY=y; if (y>maxY)maxY=y; } }
+    return maxX < 0 ? null : { x1:minX, y1:minY, x2:maxX, y2:maxY };
+  }
+  measureMultilineInk(lines, family, weight, italic, size, lsPerLine){
+    const c = this._inkCanvas || (this._inkCanvas = document.createElement('canvas'));
+    const ctx = c.getContext('2d');
+    const lineH = size * 1.15;
+    const maxLen = Math.max(...lines.map(l => l.length), 1);
+    c.width = Math.max(10, Math.ceil(maxLen * size * 1.3) + 60);
+    c.height = Math.max(10, Math.ceil(lineH * lines.length + size * 1.4));
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle = '#000'; ctx.textBaseline = 'alphabetic';
+    const padX = 24, ascent = size * 0.9;
+    lines.forEach((line, i) => {
+      ctx.font = (italic ? 'italic ' : '') + weight + ' ' + size + 'px "' + family + '"';
+      try { ctx.letterSpacing = (lsPerLine[i]||0) + 'px'; } catch(e){}
+      ctx.fillText(line, padX, ascent + i*lineH);
+    });
+    const b = this.scanInkBounds(ctx, c.width, c.height);
+    return b ? { w: b.x2-b.x1+1, h: b.y2-b.y1+1 } : { w: 1, h: size };
+  }
+  measureLineInkWidth(text, family, weight, italic, size, ls){
+    return this.measureMultilineInk([text], family, weight, italic, size, [ls]).w;
+  }
+  /* Render the text/logo-label itself as a pre-trimmed raster image: rasterise at 3x, scan the
+     ink bounds, crop to exactly that — so the on-canvas <img> IS the tight box (width/height
+     match one-to-one), instead of trying to make a live DOM text node's outline hug its own
+     font metrics (which always keeps the font's reserved ascent/descent padding). */
+  getTextImage(it){
+    const D = ST();
+    const font = D.FONTS[it.fi] || D.FONTS[0];
+    const weight = it.bold ? 900 : font[2];
+    const family = (font[1]||'').split(',')[0].replace(/["']/g,'').trim() || 'sans-serif';
+    const align = it.align || 'center';
+    const color = it.hex || D.INK[it.ci] || '#1C1B19';
+    const oc = it.ol ? (D.INK[it.oci] || '#1C1B19') : null;
+    const key = it.text+'|'+it.fi+'|'+it.size+'|'+it.bold+'|'+it.italic+'|'+(it.ls||0)+'|'+align+'|'+color+'|'+it.underline+'|'+(oc||'');
+    this._textImgCache = this._textImgCache || {};
+    if (this._textImgCache[key]) return this._textImgCache[key];
+    const lines = String(it.text||'').split('\n');
+    const size = it.size;
+    let lsPerLine;
+    if (align === 'justify') {
+      const widths = lines.map(l => this.measureLineInkWidth(l, family, weight, it.italic, size, it.ls||0));
+      const target = Math.max(...widths, 1);
+      lsPerLine = lines.map((l,li) => l.length > 1 ? (((target-widths[li])/(l.length-1)) + (it.ls||0)) : (it.ls||0));
+    } else {
+      lsPerLine = lines.map(() => it.ls||0);
+    }
+    const natWidths = lines.map((l,i) => this.measureLineInkWidth(l, family, weight, it.italic, size, lsPerLine[i]));
+    const maxNat = Math.max(...natWidths, 1);
+    const SS = 3, lineH = size*1.15, padX = 24, ascent = size*0.9;
+    const maxLen = Math.max(...lines.map(l=>l.length), 1);
+    const cw = Math.max(10, Math.ceil(maxLen*size*1.3) + 60), ch = Math.max(10, Math.ceil(lineH*lines.length + size*1.4));
+    const c = document.createElement('canvas'); c.width = Math.round(cw*SS); c.height = Math.round(ch*SS);
+    const ctx = c.getContext('2d'); ctx.scale(SS, SS);
+    ctx.fillStyle = color; ctx.textBaseline = 'alphabetic';
+    lines.forEach((line, i) => {
+      ctx.font = (it.italic?'italic ':'') + weight + ' ' + size + 'px "' + family + '"';
+      try { ctx.letterSpacing = (lsPerLine[i]||0) + 'px'; } catch(e){}
+      let lx = padX;
+      if (align === 'center') lx = padX + (maxNat-natWidths[i])/2;
+      else if (align === 'right') lx = padX + (maxNat-natWidths[i]);
+      const ly = ascent + i*lineH;
+      if (oc) { ctx.strokeStyle = oc; ctx.lineWidth = Math.max(1, size*0.05); ctx.strokeText(line, lx, ly); }
+      ctx.fillText(line, lx, ly);
+      if (it.underline) { ctx.strokeStyle = color; ctx.lineWidth = Math.max(1, size*0.06); const uw = ctx.measureText(line).width; ctx.beginPath(); ctx.moveTo(lx, ly+size*0.12); ctx.lineTo(lx+uw, ly+size*0.12); ctx.stroke(); }
+    });
+    const b = this.scanInkBounds(ctx, c.width, c.height);
+    if (!b) return null;
+    const outW = b.x2-b.x1+1, outH = b.y2-b.y1+1;
+    const out = document.createElement('canvas'); out.width = outW; out.height = outH;
+    out.getContext('2d').drawImage(c, b.x1, b.y1, outW, outH, 0, 0, outW, outH);
+    const result = { url: out.toDataURL('image/png'), w: outW/SS, h: outH/SS };
+    this._textImgCache[key] = result;
+    return result;
+  }
+  getImgInk(url){
+    if (!url) return null;
+    this._imgInkCache = this._imgInkCache || {};
+    const cached = this._imgInkCache[url];
+    if (cached) return cached === 'loading' ? null : cached;
+    this._imgInkCache[url] = 'loading';
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const nw = img.naturalWidth || 1, nh = img.naturalHeight || 1;
+        const c = document.createElement('canvas'); c.width = nw; c.height = nh;
+        const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0);
+        const b = this.scanInkBounds(ctx, nw, nh);
+        this._imgInkCache[url] = b ? { nw, nh, x1:b.x1, y1:b.y1, x2:b.x2, y2:b.y2 } : { nw, nh, x1:0, y1:0, x2:nw-1, y2:nh-1 };
+      } catch(e) { this._imgInkCache[url] = { nw: img.naturalWidth||1, nh: img.naturalHeight||1, x1:0, y1:0, x2:(img.naturalWidth||1)-1, y2:(img.naturalHeight||1)-1 }; }
+      this.forceUpdate();
+    };
+    img.onerror = () => { this._imgInkCache[url] = { nw:1, nh:1, x1:0, y1:0, x2:0, y2:0 }; };
+    img.src = url;
+    return null;
+  }
   measureTextRef(id){
     return node => {
       if (!node) return;
-      const w = node.offsetWidth, h = node.offsetHeight;
+      // tight ink bounds of the glyphs themselves (not the font's line-height box) —
+      // so the cm measurements and print export match the visible text/logo exactly
+      let w = node.offsetWidth, h = node.offsetHeight;
+      try {
+        // a Range spanning ELEMENT children (the multi-line justify wrapper: div > div per
+        // line) only gives the loose line-box union, not tight ink bounds — so when the node
+        // holds block children, measure each line's own text range and union those instead
+        const lineNodes = (node.children && node.children.length) ? [...node.children] : [node];
+        let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity;
+        lineNodes.forEach(ln => {
+          const range = document.createRange();
+          range.selectNodeContents(ln);
+          const r = range.getBoundingClientRect();
+          if (r.width > 0 && r.height > 0) { left = Math.min(left, r.left); right = Math.max(right, r.right); top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom); }
+        });
+        if (isFinite(left) && right > left) {
+          const scale = (this.state.fitScale || 1) * (this.state.zoom || 1);
+          w = (right - left) / scale; h = (bottom - top) / scale;
+        }
+      } catch(e){}
       const prev = this._textSize[id];
       if (!prev || Math.abs(prev.w - w) > 0.5 || Math.abs(prev.h - h) > 0.5) { this._textSize[id] = { w, h }; this.setState({}); }
     };
@@ -939,6 +1069,10 @@ class Component extends DCLogic {
     if (prevState.view !== this.state.view || prevState.active !== this.state.active || prevState.panel !== this.state.panel || prevState.inspPinned !== this.state.inspPinned || prevState.sel.length !== this.state.sel.length) setTimeout(() => this.measureFit(), 0);
   }
   componentDidMount(){
+    this.resumeSavedDesign();
+    // custom Google Fonts may still be loading when justify/text metrics are first computed
+    // (canvas measureText falls back to a generic font meanwhile) — re-measure once real fonts land
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.forceUpdate());
     if (window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     const onResize = () => { this.setState({ winW: window.innerWidth }); this.measureFit(); };
     window.addEventListener('resize', onResize); onResize();
@@ -1027,7 +1161,7 @@ class Component extends DCLogic {
     const olFor = it => { if (!it.ol) return 'none'; const oc = D.INK[it.oci]||'#1C1B19'; return ['-1px -1px 0 '+oc,'1px -1px 0 '+oc,'-1px 1px 0 '+oc,'1px 1px 0 '+oc].join(','); };
     return {
       imgRef: this.mkIconRef(this.paintGarment(v, D.COLOURS[dd.colourIdx][1]) || ''), stageW: stg.w, stageH: stg.h, thumbScale: +(size / stg.w).toFixed(4), fitScale: +fitScale.toFixed(4), fitX: +((size - stg.w*fitScale)/2).toFixed(1), fitY: +((size - stg.h*fitScale)/2).toFixed(1), view: v,
-      texts: items.filter(i=>i.kind==='text'||i.kind==='field').map(it => { const f = D.FONTS[it.fi] || D.FONTS[0]; return { x: it.x, y: it.y, rot: it.rot||0, text: it.text, size: it.size, ls: it.ls||0, family: f[1], weight: it.bold ? 900 : f[2], fontStyle: it.italic?'italic':'normal', decoration: it.underline?'underline':'none', color: it.hex || D.INK[it.ci] || '#1C1B19', textShadow: olFor(it) }; }),
+      texts: items.filter(i=>i.kind==='text'||i.kind==='field').map(it => { const f = D.FONTS[it.fi] || D.FONTS[0]; return { x: it.x, y: it.y, rot: it.rot||0, text: it.text, size: it.size, ls: it.ls||0, family: f[1], weight: it.bold ? 900 : f[2], fontStyle: it.italic?'italic':'normal', decoration: it.underline?'underline':'none', color: it.hex || D.INK[it.ci] || '#1C1B19', textShadow: olFor(it), textAlign: it.align || 'center' }; }),
       pics: items.filter(i=>i.kind!=='text'&&i.kind!=='field').map(it => {
         let url = it.url || '', fit = 'contain', clip = 'none';
         if (it.kind==='shape'||it.kind==='sticker') { const set = it.kind==='shape' ? D.SHAPES : D.STICKERS; const sh = set.find(x=>x.id===it.shapeId) || set[0]; url = svgIcon(sh.svg, it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))); }
@@ -1056,11 +1190,20 @@ class Component extends DCLogic {
   selItem(){ return this.selItems()[0]; }
   itemBox(it){
     const isText = it.kind==='text'||it.kind==='field';
-    const m = isText ? this._textSize[it.id] : null;
-    // offsetWidth/Height are unaffected by the stage's CSS transform — already in stage units
-    const w = isText ? (m ? m.w : (it.text||'').length*it.size*0.58) : it.w;
-    const h = isText ? (m ? m.h : it.size*1.2) : it.h;
-    return { x: it.x, y: it.y, w, h };
+    if (isText) {
+      const img = this.getTextImage(it);
+      if (img) return { x: it.x, y: it.y, w: img.w, h: img.h };
+      return { x: it.x, y: it.y, w: Math.max(1,(it.text||'').length*it.size*0.5), h: it.size };
+    }
+    if (it.kind === 'upload' && it.url) {
+      const ink = this.getImgInk(it.url);
+      if (ink && ink.x2 > ink.x1 && ink.nw && ink.nh) {
+        const fx = it.x + (ink.x1/ink.nw)*it.w, fy = it.y + (ink.y1/ink.nh)*it.h;
+        const fw = ((ink.x2-ink.x1+1)/ink.nw)*it.w, fh = ((ink.y2-ink.y1+1)/ink.nh)*it.h;
+        return { x: fx, y: fy, w: fw, h: fh };
+      }
+    }
+    return { x: it.x, y: it.y, w: it.w, h: it.h };
   }
   selBounds(){
     const bs = this.selItems().map(it => this.itemBox(it)); if (!bs.length) return null;
@@ -1076,10 +1219,10 @@ class Component extends DCLogic {
     this.commit(designs => { designs[this.state.active].views[view].items.push(it); });
     this.setState({ sel: [it.id], ctx: null });
   }
-  addText(){ this.addItem({ kind:'text', text:'YOUR TEXT', size:30, fi:0, ci:1, ls:2, bold:true, italic:false, underline:false, ol:false, oci:0 }); }
-  addSmallText(){ this.addItem({ kind:'text', text:'Your text', size:16, fi:0, ci:1, ls:0, bold:false, italic:false, underline:false, ol:false, oci:0 }); }
-  addNumberField(){ const F=ST().FIELDS.number; this.addItem({ kind:'field', text:F.sample, size:64, fi:4, ci:1, ls:2, bold:false, italic:false, underline:false, ol:true, oci:0 }); }
-  addNameField(){ const F=ST().FIELDS.name; this.addItem({ kind:'field', text:F.sample, size:34, fi:4, ci:1, ls:3, bold:false, italic:false, underline:false, ol:true, oci:0 }); }
+  addText(){ this.addItem({ kind:'text', text:'YOUR TEXT', size:30, fi:0, ci:1, ls:2, bold:true, italic:false, underline:false, ol:false, oci:0, align:'center' }); }
+  addSmallText(){ this.addItem({ kind:'text', text:'Your text', size:16, fi:0, ci:1, ls:0, bold:false, italic:false, underline:false, ol:false, oci:0, align:'center' }); }
+  addNumberField(){ const F=ST().FIELDS.number; this.addItem({ kind:'field', text:F.sample, size:64, fi:4, ci:1, ls:2, bold:false, italic:false, underline:false, ol:true, oci:0, align:'center' }); }
+  addNameField(){ const F=ST().FIELDS.name; this.addItem({ kind:'field', text:F.sample, size:34, fi:4, ci:1, ls:3, bold:false, italic:false, underline:false, ol:true, oci:0, align:'center' }); }
   addShape(shapeId){ this.addItem({ kind:'shape', shapeId, ci: 1, w:110, h:110 }); }
   addSticker(id){ this.addItem({ kind:'sticker', shapeId:id, ci: this.state.stickerInk, w:110, h:110 }); }
   addFrame(frameId){ this.addItem({ kind:'frame', frameId, slot:'slot-'+nextId(), w:150, h:150 }); }
@@ -1145,22 +1288,14 @@ class Component extends DCLogic {
   async drawItemOnCanvas(ctx, it){
     const D = ST();
     if (it.kind === 'text' || it.kind === 'field') {
-      const box = this.itemBox(it);
-      const font = D.FONTS[it.fi] || D.FONTS[0];
-      const weight = it.bold ? 900 : font[2];
-      const style = it.italic ? 'italic ' : '';
-      const family = (font[1] || '').split(',')[0].replace(/["']/g, '').trim() || 'sans-serif';
+      const img = this.getTextImage(it);
+      if (!img) return;
+      const box = { w: img.w, h: img.h };
+      const glyphImg = await this.loadImg(img.url);
       ctx.save();
       ctx.translate(it.x + box.w/2, it.y + box.h/2);
       ctx.rotate((it.rot||0) * Math.PI/180);
-      ctx.font = style + weight + ' ' + it.size + 'px "' + family + '"';
-      ctx.fillStyle = it.hex || D.INK[it.ci] || '#1C1B19';
-      ctx.textBaseline = 'top';
-      try { ctx.letterSpacing = (it.ls||0) + 'px'; } catch(e){}
-      const tx = -box.w/2, ty = -box.h/2;
-      if (it.ol) { ctx.strokeStyle = D.INK[it.oci] || '#1C1B19'; ctx.lineWidth = Math.max(1, it.size*0.05); ctx.strokeText(it.text, tx, ty); }
-      ctx.fillText(it.text, tx, ty);
-      if (it.underline) { ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = Math.max(1, it.size*0.06); ctx.beginPath(); ctx.moveTo(tx, ty+box.h*0.92); ctx.lineTo(tx+box.w, ty+box.h*0.92); ctx.stroke(); }
+      ctx.drawImage(glyphImg, -box.w/2, -box.h/2, box.w, box.h);
       ctx.restore();
       return;
     }
@@ -1232,7 +1367,7 @@ class Component extends DCLogic {
           files.push({ name: base + '-png.png', dataUrl: canvas.toDataURL('image/png') });
         } else {
           printPages.push({ canvas, cmW, cmH });
-          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10] }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
         }
         const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Copies>' + Math.max(1, qty) + '</Copies>\n\n</JHDR>\n';
         files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
@@ -1241,10 +1376,10 @@ class Component extends DCLogic {
       }
     }
     let combinedPdf = null;
-    printPages.forEach(p => { const wmm = p.cmW*10, hmm = p.cmH*10; if (!combinedPdf) combinedPdf = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm] }); else combinedPdf.addPage([wmm,hmm]); combinedPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, wmm, hmm); });
+    printPages.forEach(p => { const wmm = p.cmW*10, hmm = p.cmH*10; if (!combinedPdf) combinedPdf = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm], compress: true }); else combinedPdf.addPage([wmm,hmm]); combinedPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, wmm, hmm); });
     if (combinedPdf) files.push({ name: 'production-pack-' + stamp + '-print-pack.pdf', dataUrl: combinedPdf.output('datauristring') });
     let mockupPdf = null;
-    mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h] }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
+    mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h], compress: true }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
     if (mockupPdf) files.push({ name: 'production-pack-' + stamp + '.pdf', dataUrl: mockupPdf.output('datauristring') });
     this.setState({ compiling: false, productionFiles: files });
     try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); this.toastMsg('Production pack ready', files.length + ' file(s) — will download at checkout.'); }
@@ -1439,8 +1574,9 @@ class Component extends DCLogic {
   save(){
     this.setState({ dirty: false });
     try {
-      const D = ST(), key = 'w2p_saved_designs';
+      const D = ST(), key = 'w2p_saved_designs', fullKey = 'w2p_saved_full';
       const list = JSON.parse(window.localStorage.getItem(key) || '[]');
+      const fullMap = JSON.parse(window.localStorage.getItem(fullKey) || '{}');
       this.state.designs.forEach((dd, i) => {
         const textItem = Object.values(dd.views).flatMap(v => v.items).find(it => it.kind === 'text' || it.kind === 'field');
         const entry = {
@@ -1453,10 +1589,24 @@ class Component extends DCLogic {
         };
         const idx = list.findIndex(x => x.id === entry.id);
         if (idx > -1) list[idx] = Object.assign({}, list[idx], entry); else list.unshift(entry);
+        fullMap[dd.id] = dd;
       });
       window.localStorage.setItem(key, JSON.stringify(list));
+      window.localStorage.setItem(fullKey, JSON.stringify(fullMap));
     } catch(e){}
     this.toastMsg('Saved', 'Project saved to your account.');
+  }
+  resumeSavedDesign(){
+    try {
+      const rid = window.localStorage.getItem('w2p_resume_id');
+      if (!rid) return;
+      window.localStorage.removeItem('w2p_resume_id');
+      const fullMap = JSON.parse(window.localStorage.getItem('w2p_saved_full') || '{}');
+      const dd = fullMap[rid];
+      if (!dd) return;
+      dd.id = nextId();
+      this.setState({ designs: [dd], active: 0, view: 'Front', sel: [] });
+    } catch(e){}
   }
 
   setColour(idx){ this.commit(designs => { designs[this.state.active].colourIdx = idx; }); }
@@ -1590,9 +1740,8 @@ class Component extends DCLogic {
       startRotate: e => { if (!preview) this.startRotate(it.id, e); },
     });
     const textFieldItems = items.filter(i=>i.kind==='text'||i.kind==='field').map(it => {
-      const font = D.FONTS[it.fi] || D.FONTS[0];
-      return { ...common(it), family: font[1], weight: it.bold ? 900 : font[2], fontStyle: it.italic?'italic':'normal',
-        decoration: it.underline?'underline':'none', color: it.hex || D.INK[it.ci] || '#1C1B19', textShadow: outlineStyleFor(it), textRef: this.measureTextRef(it.id) };
+      const img = this.getTextImage(it);
+      return { ...common(it), textImgRef: this.mkIconRef(img ? img.url : ''), imgW: img ? img.w : 1, imgH: img ? img.h : it.size };
     });
     const vectorItems = items.filter(i=>i.kind==='shape'||i.kind==='sticker').map(it => {
       const set = it.kind==='shape' ? D.SHAPES : D.STICKERS;
@@ -1843,6 +1992,11 @@ class Component extends DCLogic {
       toggleBold: () => sel && this.updateSel({ bold: !sel.bold }), boldBorder: sel&&sel.bold?'#4A4FE4':'#DDD8CC', boldBg: sel&&sel.bold?'#F4F4FE':'#fff',
       toggleItalic: () => sel && this.updateSel({ italic: !sel.italic }), italicBorder: sel&&sel.italic?'#4A4FE4':'#DDD8CC', italicBg: sel&&sel.italic?'#F4F4FE':'#fff',
       toggleUnderline: () => sel && this.updateSel({ underline: !sel.underline }), underlineBorder: sel&&sel.underline?'#4A4FE4':'#DDD8CC', underlineBg: sel&&sel.underline?'#F4F4FE':'#fff',
+      setAlignLeft: () => sel && this.updateSel({ align: 'left' }), setAlignCenter: () => sel && this.updateSel({ align: 'center' }), setAlignRight: () => sel && this.updateSel({ align: 'right' }), setAlignJustify: () => sel && this.updateSel({ align: 'justify' }),
+      alignLeftBorder: sel&&(sel.align||'center')==='left'?'#4A4FE4':'#DDD8CC', alignLeftBg: sel&&(sel.align||'center')==='left'?'#F4F4FE':'#fff',
+      alignCenterBorder: sel&&(sel.align||'center')==='center'?'#4A4FE4':'#DDD8CC', alignCenterBg: sel&&(sel.align||'center')==='center'?'#F4F4FE':'#fff',
+      alignRightBorder: sel&&(sel.align||'center')==='right'?'#4A4FE4':'#DDD8CC', alignRightBg: sel&&(sel.align||'center')==='right'?'#F4F4FE':'#fff',
+      alignJustifyBorder: sel&&(sel.align||'center')==='justify'?'#4A4FE4':'#DDD8CC', alignJustifyBg: sel&&(sel.align||'center')==='justify'?'#F4F4FE':'#fff',
       selSize: sel ? sel.size : 0, setSize: e => this.updateSel({ size:+e.target.value }),
       selLs: sel ? (sel.ls||0) : 0, setLs: e => this.updateSel({ ls:+e.target.value }),
       inkOpts: D.INK.map((hex,i) => ({ hex, ring: ring(sel && !sel.hex && sel.ci===i), pick: () => this.updateSel({ ci:i, hex: undefined }) })),
