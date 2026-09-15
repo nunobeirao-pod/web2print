@@ -1208,7 +1208,9 @@ class Component extends DCLogic {
     return canvas;
   }
   async compileProductionFiles(){
-    if (!window.jspdf) { this.toastMsg('Production pack', 'PDF library still loading — try again shortly.'); return; }
+    let tries = 0;
+    while (!window.jspdf && tries < 50) { await new Promise(r => setTimeout(r, 100)); tries++; }
+    if (!window.jspdf) { this.toastMsg('Production pack failed', 'PDF library did not load — click Add to Cart again.'); return; }
     this.setState({ compiling: true });
     try { await document.fonts.ready; } catch(e){}
     const now = new Date();
@@ -1245,7 +1247,8 @@ class Component extends DCLogic {
     mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h] }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
     if (mockupPdf) files.push({ name: 'production-pack-' + stamp + '.pdf', dataUrl: mockupPdf.output('datauristring') });
     this.setState({ compiling: false, productionFiles: files });
-    try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); } catch(e){ this.toastMsg('Production pack', 'Files ready, but too large to hand off automatically — download from here.'); }
+    try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); this.toastMsg('Production pack ready', files.length + ' file(s) — will download at checkout.'); }
+    catch(e){ this.toastMsg('Production pack too large', 'Generated ' + files.length + ' files but they don\u2019t fit in local storage — reduce artwork or views.'); }
   }
 
   updateSel(patch){
