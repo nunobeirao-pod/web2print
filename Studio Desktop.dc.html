@@ -11,6 +11,7 @@
   <script src="./studio-data.js"></script>
   <script src="./image-slot.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bangers&family=Barlow+Condensed:wght@700&family=Bebas+Neue&family=Bungee&family=Fjalla+One&family=Graduate&family=Lobster&family=Montserrat:wght@800&family=Oswald:wght@600&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@800&family=Rubik+Mono+One&family=Squada+One&family=Staatliches&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
@@ -857,7 +858,7 @@ function stageInfo(view){
 }
 /* physical width (cm) of each view's traced print-area box — gives every canvas
    unit a real-world size so the inspector and spec overlay can talk in cm */
-const PRINT_CM = { Front: 30, Back: 30, Left: 10, Right: 10, Neck: 8 };
+const PRINT_CM = { Front: 48, Back: 48, Left: 10, Right: 10, Neck: 8 };
 function cmPerPx(view){ const s = stageInfo(view); return (PRINT_CM[view] || 30) / s.box.w; }
 function hexL(hex){ const n = parseInt(hex.slice(1),16); return (0.2126*(n>>16&255)+0.7152*(n>>8&255)+0.0722*(n&255))/255; }
 function svgIcon(fn, color){
@@ -893,7 +894,7 @@ const TEMPLATES_DEF = [
 
 class Component extends DCLogic {
   state = {
-    panel: 'Colour', sel: [], shareOpen: false, designsOpen: false, addOpen: false, hoverColour: null, reviewOpen: false, reviewOk: false, reviewStep: 1, reviewDesign: 0, view: 'Front', active: 0, zoom: 1, ctx: null,
+    panel: 'Colour', sel: [], shareOpen: false, designsOpen: false, addOpen: false, hoverColour: null, staging: [], compiling: false, productionFiles: [], reviewOpen: false, reviewOk: false, reviewStep: 1, reviewDesign: 0, view: 'Front', active: 0, zoom: 1, ctx: null,
     grid: false, snap: (this && this.props && this.props.snapToGridDefault) !== false, guides: true, spec: false, previewMode: false, fitScale: 1, cartOpen: false,
     elTab: 'text', newPid: null, stickerInk: 0, dirty: false, winW: 1440, inspPinned: false,
     designs: (() => {
@@ -1041,7 +1042,7 @@ class Component extends DCLogic {
   closePanel(){ this.setState({ panel: null }); }
   setView(v){ this.setState({ view: v, sel: [], ctx: null }); }
   select(id, additive){
-    const items = this.VW(this.curView()).items;
+    const items = this.VW(this.curView()).items.concat(this.state.staging||[]);
     const it = items.find(x => x.id === id);
     const ids = it && it.gid ? items.filter(x => x.gid === it.gid).map(x => x.id) : [id];
     this.setState(s => {
@@ -1051,7 +1052,7 @@ class Component extends DCLogic {
     });
   }
   deselect(){ this.setState({ sel: [], ctx: null }); }
-  selItems(){ const items = this.VW(this.curView()).items; return this.state.sel.map(id => items.find(x => x.id === id)).filter(Boolean); }
+  selItems(){ const items = this.VW(this.curView()).items.concat(this.state.staging||[]); return this.state.sel.map(id => items.find(x => x.id === id)).filter(Boolean); }
   selItem(){ return this.selItems()[0]; }
   itemBox(it){
     const isText = it.kind==='text'||it.kind==='field';
@@ -1135,25 +1136,181 @@ class Component extends DCLogic {
     probe.src = url;
   }
 
+  /* ---- PRODUCTION PACK — print-ready PDF/PNG + mockup PDF + Cadlink .jhdr, generated when the
+     order is finalised (Add to Cart). Everything already on the canvas (text, uploads, shapes,
+     stickers) is re-rendered onto an offscreen canvas at real print size / high DPI with a
+     transparent background, then wrapped in a PDF (vector-origin content) or kept as flat PNG
+     (pure raster-origin uploads) per the print method's needs. */
+  loadImg(src){ return new Promise((res, rej) => { const img = new Image(); img.onload = () => res(img); img.onerror = rej; img.src = src; }); }
+  async drawItemOnCanvas(ctx, it){
+    const D = ST();
+    if (it.kind === 'text' || it.kind === 'field') {
+      const box = this.itemBox(it);
+      const font = D.FONTS[it.fi] || D.FONTS[0];
+      const weight = it.bold ? 900 : font[2];
+      const style = it.italic ? 'italic ' : '';
+      const family = (font[1] || '').split(',')[0].replace(/["']/g, '').trim() || 'sans-serif';
+      ctx.save();
+      ctx.translate(it.x + box.w/2, it.y + box.h/2);
+      ctx.rotate((it.rot||0) * Math.PI/180);
+      ctx.font = style + weight + ' ' + it.size + 'px "' + family + '"';
+      ctx.fillStyle = it.hex || D.INK[it.ci] || '#1C1B19';
+      ctx.textBaseline = 'top';
+      try { ctx.letterSpacing = (it.ls||0) + 'px'; } catch(e){}
+      const tx = -box.w/2, ty = -box.h/2;
+      if (it.ol) { ctx.strokeStyle = D.INK[it.oci] || '#1C1B19'; ctx.lineWidth = Math.max(1, it.size*0.05); ctx.strokeText(it.text, tx, ty); }
+      ctx.fillText(it.text, tx, ty);
+      if (it.underline) { ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = Math.max(1, it.size*0.06); ctx.beginPath(); ctx.moveTo(tx, ty+box.h*0.92); ctx.lineTo(tx+box.w, ty+box.h*0.92); ctx.stroke(); }
+      ctx.restore();
+      return;
+    }
+    let src = '';
+    if (it.kind === 'shape' || it.kind === 'sticker') {
+      const set = it.kind === 'shape' ? D.SHAPES : D.STICKERS;
+      const s = set.find(x=>x.id===it.shapeId) || set[0];
+      src = svgIcon(s.svg, it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19')));
+    } else { src = it.url || ''; }
+    if (!src) return;
+    try {
+      const img = await this.loadImg(src);
+      ctx.save();
+      ctx.translate(it.x + it.w/2, it.y + it.h/2);
+      ctx.rotate((it.rot||0) * Math.PI/180);
+      ctx.drawImage(img, -it.w/2, -it.h/2, it.w, it.h);
+      ctx.restore();
+    } catch(e){}
+  }
+  async renderPrintCanvas(dd, view){
+    const stg = stageInfo(view), items = dd.views[view].items;
+    const cpp = cmPerPx(view);
+    const boxWcm = ST().PRINT_CM ? ST().PRINT_CM[view] : (PRINT_CM[view] || 30);
+    const boxHcm = stg.box.h * cpp;
+    const DPI = 300;
+    const wpx = Math.max(1, Math.round((PRINT_CM[view]||30) * DPI/2.54));
+    const hpx = Math.max(1, Math.round(boxHcm * DPI/2.54));
+    const canvas = document.createElement('canvas'); canvas.width = wpx; canvas.height = hpx;
+    const ctx = canvas.getContext('2d');
+    const scale = wpx / stg.box.w;
+    ctx.save(); ctx.scale(scale, scale); ctx.translate(-stg.box.x, -stg.box.y);
+    for (const it of items) await this.drawItemOnCanvas(ctx, it);
+    ctx.restore();
+    return canvas;
+  }
+  async renderMockupCanvas(dd, view){
+    const D = ST(), stg = stageInfo(view), items = dd.views[view].items, MULT = 2.5;
+    const canvas = document.createElement('canvas'); canvas.width = Math.round(stg.w*MULT); canvas.height = Math.round(stg.h*MULT);
+    const ctx = canvas.getContext('2d');
+    ctx.save(); ctx.scale(MULT, MULT);
+    const garmentUrl = this.paintGarment(view, D.COLOURS[dd.colourIdx][1]);
+    if (garmentUrl) { try { const g = await this.loadImg(garmentUrl); ctx.drawImage(g, 0, 0, stg.w, stg.h); } catch(e){} }
+    for (const it of items) await this.drawItemOnCanvas(ctx, it);
+    ctx.restore();
+    return canvas;
+  }
+  async compileProductionFiles(){
+    if (!window.jspdf) { this.toastMsg('Production pack', 'PDF library still loading — try again shortly.'); return; }
+    this.setState({ compiling: true });
+    try { await document.fonts.ready; } catch(e){}
+    const now = new Date();
+    const stamp = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
+    const files = [];
+    const printPages = [], mockupPages = [];
+    for (let di = 0; di < this.state.designs.length; di++) {
+      const dd = this.state.designs[di];
+      const qty = this.dQty(dd);
+      const vs = viewsFor(dd.pid).filter(v => dd.views[v] && dd.views[v].items.length);
+      for (const view of vs) {
+        const items = dd.views[view].items;
+        const allRasterOnly = items.every(it => it.kind === 'upload' && it.source !== 'vector');
+        const fmt = allRasterOnly ? 'png' : 'pdf';
+        const canvas = await this.renderPrintCanvas(dd, view);
+        const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-4x';
+        const cmW = PRINT_CM[view] || 30, cmH = cmW * (canvas.height / canvas.width);
+        if (fmt === 'png') {
+          files.push({ name: base + '-png.png', dataUrl: canvas.toDataURL('image/png') });
+        } else {
+          printPages.push({ canvas, cmW, cmH });
+          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10] }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+        }
+        const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Copies>' + Math.max(1, qty) + '</Copies>\n\n</JHDR>\n';
+        files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
+        const mCanvas = await this.renderMockupCanvas(dd, view);
+        mockupPages.push({ canvas: mCanvas });
+      }
+    }
+    let combinedPdf = null;
+    printPages.forEach(p => { const wmm = p.cmW*10, hmm = p.cmH*10; if (!combinedPdf) combinedPdf = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm] }); else combinedPdf.addPage([wmm,hmm]); combinedPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, wmm, hmm); });
+    if (combinedPdf) files.push({ name: 'production-pack-' + stamp + '-print-pack.pdf', dataUrl: combinedPdf.output('datauristring') });
+    let mockupPdf = null;
+    mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h] }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
+    if (mockupPdf) files.push({ name: 'production-pack-' + stamp + '.pdf', dataUrl: mockupPdf.output('datauristring') });
+    this.setState({ compiling: false, productionFiles: files });
+    try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); } catch(e){ this.toastMsg('Production pack', 'Files ready, but too large to hand off automatically — download from here.'); }
+  }
+
   updateSel(patch){
     const ids = this.state.sel, view = this.curView();
-    this.commit(designs => { designs[this.state.active].views[view].items.forEach(it => { if (ids.includes(it.id)) Object.assign(it, typeof patch === 'function' ? patch(it) : patch); }); });
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      designs[s.active].views[view].items.forEach(it => { if (ids.includes(it.id)) Object.assign(it, typeof patch === 'function' ? patch(it) : patch); });
+      staging.forEach(it => { if (ids.includes(it.id)) Object.assign(it, typeof patch === 'function' ? patch(it) : patch); });
+      return { designs, staging, past: [...s.past, s.designs].slice(-30), future: [], dirty: true };
+    });
   }
   updateOne(id, patch){
     const view = this.curView();
-    this.commit(designs => { const it = designs[this.state.active].views[view].items.find(x=>x.id===id); if (it) Object.assign(it, patch); });
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      let it = designs[s.active].views[view].items.find(x=>x.id===id);
+      if (!it) it = staging.find(x=>x.id===id);
+      if (it) Object.assign(it, patch);
+      return { designs, staging, past: [...s.past, s.designs].slice(-30), future: [], dirty: true };
+    });
   }
   duplicateSel(){
     const its = this.selItems(); if (!its.length) return;
+    const stagedIdSet = new Set((this.state.staging||[]).map(x=>x.id));
     const gid = its.length > 1 && its[0].gid ? nextId() : null;
-    const copies = its.map(it => { const c = JSON.parse(JSON.stringify(it)); c.id = nextId(); c.x += 14; c.y += 14; if (gid) c.gid = gid; else delete c.gid; return c; });
-    this.commit(designs => { designs[this.state.active].views[this.curView()].items.push(...copies); });
-    this.setState({ sel: copies.map(c=>c.id) });
+    const copies = its.map(it => { const c = JSON.parse(JSON.stringify(it)); const wasStaged = stagedIdSet.has(it.id); c.id = nextId(); c.x += 14; c.y += 14; if (gid) c.gid = gid; else delete c.gid; return { c, wasStaged }; });
+    const view = this.curView();
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      copies.forEach(({c,wasStaged}) => { if (wasStaged) staging.push(c); else designs[s.active].views[view].items.push(c); });
+      return { designs, staging, sel: copies.map(({c})=>c.id), past: [...s.past, s.designs].slice(-30), future: [], dirty: true };
+    });
   }
   deleteSel(){
     const ids = this.state.sel, view = this.curView();
-    this.commit(designs => { const v = designs[this.state.active].views[view]; v.items = v.items.filter(x => !ids.includes(x.id)); });
-    this.setState({ sel: [], ctx: null });
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = (s.staging||[]).filter(x => !ids.includes(x.id));
+      const v = designs[s.active].views[view]; v.items = v.items.filter(x => !ids.includes(x.id));
+      return { designs, staging, sel: [], ctx: null, past: [...s.past, s.designs].slice(-30), future: [], dirty: true };
+    });
+  }
+  mutateItemsLive(ids, fn){
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      designs[s.active].views[this.curView()].items.forEach(item => { if (ids.includes(item.id)) Object.assign(item, fn(item) || {}); });
+      staging.forEach(item => { if (ids.includes(item.id)) Object.assign(item, fn(item) || {}); });
+      return { designs, staging };
+    });
+  }
+  settleStaging(ids, view){
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      const vitems = designs[s.active].views[view].items;
+      const stg = stageInfo(view);
+      const isOutside = it => { const b = this.itemBox(it); const cx = b.x + b.w/2, cy = b.y + b.h/2; return cx < 0 || cx > stg.w || cy < 0 || cy > stg.h; };
+      for (let k = vitems.length - 1; k >= 0; k--) { const item = vitems[k]; if (ids.includes(item.id) && isOutside(item)) { staging.push(item); vitems.splice(k,1); } }
+      for (let k = staging.length - 1; k >= 0; k--) { const item = staging[k]; if (ids.includes(item.id) && !isOutside(item)) { vitems.push(item); staging.splice(k,1); } }
+      return { designs, staging };
+    });
   }
   lockSel(){ const it = this.selItem(); if (it) this.updateSel({ locked: !it.locked }); }
   groupSel(){
@@ -1191,16 +1348,22 @@ class Component extends DCLogic {
   sendBack(){ this.reorderSel('back'); }
   reorderSel(dir){
     const ids = this.state.sel, view = this.curView();
-    this.commit(designs => {
-      const v = designs[this.state.active].views[view];
+    this.setState(s => {
+      const designs = JSON.parse(JSON.stringify(s.designs));
+      const staging = JSON.parse(JSON.stringify(s.staging||[]));
+      const v = designs[s.active].views[view];
       const picked = v.items.filter(x => ids.includes(x.id)), rest = v.items.filter(x => !ids.includes(x.id));
       v.items = dir === 'front' ? [...rest, ...picked] : [...picked, ...rest];
+      const spicked = staging.filter(x => ids.includes(x.id)), srest = staging.filter(x => !ids.includes(x.id));
+      const newStaging = dir === 'front' ? [...srest, ...spicked] : [...spicked, ...srest];
+      return { designs, staging: newStaging };
     });
   }
 
   startDrag(id, e){
     const view = this.curView();
-    const it = this.VW(view).items.find(x=>x.id===id);
+    const merged = this.VW(view).items.concat(this.state.staging||[]);
+    const it = merged.find(x=>x.id===id);
     if (!it) return;
     e.stopPropagation();
     if (it.locked){ this.select(id, e.shiftKey); return; }
@@ -1208,33 +1371,36 @@ class Component extends DCLogic {
     const already = this.state.sel.includes(id);
     if (e.shiftKey) { this.select(id, true); return; }
     if (!already) this.select(id, false);
-    const ids = already ? this.state.sel : (it.gid ? this.VW(view).items.filter(x=>x.gid===it.gid).map(x=>x.id) : [id]);
-    const origin = {}; this.VW(view).items.forEach(x => { if (ids.includes(x.id)) origin[x.id] = { x: x.x, y: x.y }; });
+    const ids = already ? this.state.sel : (it.gid ? merged.filter(x=>x.gid===it.gid).map(x=>x.id) : [id]);
+    const origin = {}; merged.forEach(x => { if (ids.includes(x.id)) origin[x.id] = { x: x.x, y: x.y }; });
     const sx=e.clientX, sy=e.clientY, zoom=this.state.fitScale*this.state.zoom;
-    const stg = stageInfo(view), pad = 60;
+    const stg = stageInfo(view), pad = 80;
     const before = this.snapshot();
     let moved = false;
     const move = ev => {
       let dx = (ev.clientX-sx)/zoom, dy = (ev.clientY-sy)/zoom;
       if (this.state.snap){ const su = Math.max(0.5, 4/zoom); dx = Math.round(dx/su)*su; dy = Math.round(dy/su)*su; }
       moved = moved || dx || dy;
-      this.setState(s => {
-        const designs = JSON.parse(JSON.stringify(s.designs));
-        designs[s.active].views[view].items.forEach(item => {
-          const o = origin[item.id]; if (!o || item.locked) return;
-          item.x = Math.max(-pad, Math.min(stg.w+pad, o.x + dx)); item.y = Math.max(-pad, Math.min(stg.h+pad, o.y + dy));
-        });
-        return { designs };
+      this.mutateItemsLive(ids, item => {
+        const o = origin[item.id]; if (!o || item.locked) return null;
+        const b = this.itemBox(item);
+        const nx = Math.max(-(b.w+pad), Math.min(stg.w+pad, o.x + dx));
+        const ny = Math.max(-(b.h+pad), Math.min(stg.h+pad, o.y + dy));
+        return { x: nx, y: ny };
       });
     };
-    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); if (moved) this.setState(s => ({ past: [...s.past, before].slice(-30), future: [], dirty: true })); };
+    const up = () => {
+      window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up);
+      if (moved) { this.settleStaging(ids, view); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [], dirty: true })); }
+    };
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
   }
   startResize(id, e, corner){
     e.stopPropagation(); e.preventDefault();
     corner = corner || 'se';
     const view = this.curView();
-    const it = this.VW(view).items.find(x=>x.id===id); if (!it || it.locked) return;
+    const merged = this.VW(view).items.concat(this.state.staging||[]);
+    const it = merged.find(x=>x.id===id); if (!it || it.locked) return;
     const isText = it.kind==='text'||it.kind==='field';
     const b = this.itemBox(it);
     const sx=e.clientX, sy=e.clientY, ow=b.w, oh=b.h, ratio=ow/Math.max(1,oh), osize=it.size, zoom=this.state.fitScale*this.state.zoom;
@@ -1245,14 +1411,13 @@ class Component extends DCLogic {
       const dx = (ev.clientX-sx)/zoom * (east ? 1 : -1), dy = (ev.clientY-sy)/zoom * (south ? 1 : -1);
       const nw = Math.max(isText ? 12 : 20, Math.max(ow+dx, (oh+dy)*ratio)), nh = nw/ratio;
       const nx = east ? ax : ax - nw, ny = south ? ay : ay - nh;
-      this.setState(s => { const designs = JSON.parse(JSON.stringify(s.designs)); const item = designs[s.active].views[view].items.find(x=>x.id===id); if (item){ item.x = nx; item.y = ny; if (isText) item.size = Math.max(6, Math.round(osize * nw/ow)); else { item.w=nw; item.h=nh; } } return { designs }; });
+      this.mutateItemsLive([id], () => isText ? { x:nx, y:ny, size: Math.max(6, Math.round(osize * nw/ow)) } : { x:nx, y:ny, w:nw, h:nh });
     };
     const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [], dirty: true })); };
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
   }
   startRotate(id, e){
     e.stopPropagation(); e.preventDefault();
-    const view = this.curView();
     const before = this.snapshot();
     const host = e.currentTarget.parentElement;
     const move = ev => {
@@ -1260,7 +1425,7 @@ class Component extends DCLogic {
       const cx = r.left + r.width/2, cy = r.top + r.height/2;
       let deg = Math.atan2(ev.clientY-cy, ev.clientX-cx) * 180/Math.PI + 90;
       deg = Math.round(deg/5)*5; if (deg > 180) deg -= 360; if (deg < -180) deg += 360;
-      this.setState(s => { const designs = JSON.parse(JSON.stringify(s.designs)); const item = designs[s.active].views[view].items.find(x=>x.id===id); if (item) item.rot = deg; return { designs }; });
+      this.mutateItemsLive([id], () => ({ rot: deg }));
     };
     const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [], dirty: true })); };
     window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
@@ -1376,7 +1541,7 @@ class Component extends DCLogic {
     const selItems = this.selItems();
     const sel = selItems[0];
     const multi = selItems.length > 1;
-    const items = this.VW(view).items;
+    const items = this.VW(view).items.concat((this.state.staging||[]).map(x => ({ ...x, staged: true })));
     const isSel = id => st.sel.includes(id) && !preview;
     const narrow = st.winW < 1180;
     const method = D.METHODS.find(m=>m.id===d.methodId) || D.METHODS[0];
@@ -1418,6 +1583,7 @@ class Component extends DCLogic {
 
     let warnItem = null;
     for (const it of items) {
+      if (it.staged) continue;
       const b = this.itemBox(it);
       const pts = [[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h],[b.x+b.w/2,b.y+b.h/2],[b.x+b.w/2,b.y+b.h],[b.x,b.y+b.h/2],[b.x+b.w,b.y+b.h/2]];
       const gv = D.GARMENT_VIEWS[view];
@@ -1540,7 +1706,7 @@ class Component extends DCLogic {
           tierMsg: next ? 'Add ' + (next[0] - qty) + ' more to save ' + next[1] + '%' : 'You\u2019re saving ' + Math.round(dsc*100) + '% with quantity pricing',
           tierBars: TIERS.map((t, k) => { const on = qty >= t[0]; const prev = k ? TIERS[k-1][0] : 0; const fill = on ? 100 : qty <= prev ? 0 : Math.round((qty - prev) / (t[0] - prev) * 100); return { pct: t[1] + '%', fill, ink: on ? '#4A4FE4' : '#8B867B', lockDisplay: on ? 'none' : 'inline', checkDisplay: on ? 'inline' : 'none' }; }),
           rvItems: qty, rvTotal: eur(this.orderTotal()), rvUnitGross: eur(qty ? gross / qty : 0), rvUnitNet: eur(qty ? this.orderTotal() / qty : 0), rvDisabled: qty <= 0, rvBtnBg: qty > 0 ? '#1C1B19' : '#C9CBF5', rvCursor: qty > 0 ? 'pointer' : 'not-allowed',
-          rvAddToCart: () => { if (qty <= 0) return; this.commit(designs => { for (let k = designs.length - 1; k >= 0 && designs.length > 1; k--) if (designs[k].family && designs[k].lines.every(l => !(+l.q)) && !(designs[k].roster||[]).length) designs.splice(k, 1); designs.forEach(d => { if (d.lines.some(l => +l.q > 0) || (d.roster||[]).length) d.approved = true; }); }); this.setState(s => ({ reviewOpen: false, cartOpen: true, active: Math.min(s.active, s.designs.length - 1) })); this.toastMsg('Added to cart', qty + ' item' + (qty === 1 ? '' : 's') + ' · ' + eur(this.orderTotal())); },
+          rvAddToCart: () => { if (qty <= 0) return; this.commit(designs => { for (let k = designs.length - 1; k >= 0 && designs.length > 1; k--) if (designs[k].family && designs[k].lines.every(l => !(+l.q)) && !(designs[k].roster||[]).length) designs.splice(k, 1); designs.forEach(d => { if (d.lines.some(l => +l.q > 0) || (d.roster||[]).length) d.approved = true; }); }); this.setState(s => ({ reviewOpen: false, cartOpen: true, active: Math.min(s.active, s.designs.length - 1) })); this.toastMsg('Added to cart', qty + ' item' + (qty === 1 ? '' : 's') + ' · ' + eur(this.orderTotal())); this.compileProductionFiles(); },
         };
       })(),
       reviewOpen: st.reviewOpen, reviewOk: st.reviewOk, toggleReviewOk: e => this.setState({ reviewOk: !!e.target.checked }),
