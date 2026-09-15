@@ -469,6 +469,19 @@ class Component extends DCLogic {
     'Out for Delivery': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Delivered': { bg: '#EDF2EA', ink: '#41573B' },
   };
   static DESIGN_STATUS_STYLE = { 'Draft': { bg: '#F1EEE7', ink: '#4A473F' }, 'Ready': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Ordered': { bg: '#EDF2EA', ink: '#41573B' } };
+  componentDidMount(){
+    try {
+      const fromStudio = JSON.parse(window.localStorage.getItem('w2p_saved_designs') || '[]');
+      if (fromStudio.length) {
+        this.setState(s => {
+          const existingIds = new Set(s.savedDesigns.map(x => x.id));
+          const fresh = fromStudio.filter(x => !existingIds.has(x.id)).map(x => ({ ...x, editing: false }));
+          const merged = s.savedDesigns.map(x => { const upd = fromStudio.find(f => f.id === x.id); return upd ? { ...x, ...upd, editing: false } : x; });
+          return { savedDesigns: [...fresh, ...merged] };
+        });
+      }
+    } catch(e){}
+  }
   renderVals() {
     const st = this.state;
     const initials = (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT';

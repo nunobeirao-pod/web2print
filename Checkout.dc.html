@@ -212,12 +212,10 @@ class Component extends DCLogic {
   state = { news: false, billing: true, save: false, pay: 'card', promoInput: '', qty: 1, phase: 'checkout' };
   autoDownloadProduction(){
     const files = this.readProductionFiles();
-    files.forEach((f, i) => {
-      setTimeout(() => {
-        const a = document.createElement('a');
-        a.href = f.dataUrl; a.download = f.name;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      }, i * 300);
+    files.forEach(f => {
+      const a = document.createElement('a');
+      a.href = f.dataUrl; a.download = f.name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
     });
   }
   readProductionFiles(){
@@ -259,8 +257,9 @@ class Component extends DCLogic {
       ctaLabel: st.phase === 'processing' ? 'Processing payment…' : 'Pay now',
       completeOrder: () => {
         if (st.phase === 'processing') return;
+        this.autoDownloadProduction();
         this.setState({ phase: 'processing' });
-        setTimeout(() => { this.setState({ phase: 'success' }); this.autoDownloadProduction(); }, 1400);
+        setTimeout(() => this.setState({ phase: 'success' }), 1400);
       },
     };
   }

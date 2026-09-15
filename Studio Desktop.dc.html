@@ -1436,7 +1436,28 @@ class Component extends DCLogic {
 
   undo(){ this.setState(s => s.past.length ? { designs: s.past[s.past.length-1], past: s.past.slice(0,-1), future: [s.designs, ...s.future], sel:[], dirty:true } : null); }
   redo(){ this.setState(s => s.future.length ? { designs: s.future[0], future: s.future.slice(1), past: [...s.past, s.designs], sel:[], dirty:true } : null); }
-  save(){ this.setState({ dirty: false }); this.toastMsg('Saved', 'Project saved to your account.'); }
+  save(){
+    this.setState({ dirty: false });
+    try {
+      const D = ST(), key = 'w2p_saved_designs';
+      const list = JSON.parse(window.localStorage.getItem(key) || '[]');
+      this.state.designs.forEach((dd, i) => {
+        const textItem = Object.values(dd.views).flatMap(v => v.items).find(it => it.kind === 'text' || it.kind === 'field');
+        const entry = {
+          id: 'studio-' + dd.id,
+          name: 'Design ' + String(i+1).padStart(2,'0') + ' \u00b7 ' + prod(dd.pid).t,
+          product: prod(dd.pid).t,
+          edited: 'Just now', status: 'Draft',
+          bg: '#EFEBE2', garment: D.COLOURS[dd.colourIdx][1],
+          print: textItem ? textItem.text : '', printInk: textItem ? (textItem.hex || D.INK[textItem.ci] || '#1C1B19') : '#1C1B19',
+        };
+        const idx = list.findIndex(x => x.id === entry.id);
+        if (idx > -1) list[idx] = Object.assign({}, list[idx], entry); else list.unshift(entry);
+      });
+      window.localStorage.setItem(key, JSON.stringify(list));
+    } catch(e){}
+    this.toastMsg('Saved', 'Project saved to your account.');
+  }
 
   setColour(idx){ this.commit(designs => { designs[this.state.active].colourIdx = idx; }); }
   setMethod(id){ this.commit(designs => { designs[this.state.active].methodId = id; }); }
