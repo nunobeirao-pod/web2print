@@ -182,47 +182,52 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
     <div style="position:sticky;top:88px;display:flex;flex-direction:column;gap:24px;padding-bottom:40px">
       <div>
         <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:34px;line-height:1.05;letter-spacing:-0.01em;text-transform:uppercase">Oversized Hoodie 330</h1>
+        <div onClick="{{ scrollToReviews }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:10px;width:fit-content" style-hover="text-decoration:underline">
+          <span style="color:#41573B;font-size:15px;letter-spacing:1px">★★★★★</span>
+          <span style="font-size:13px;color:#4A473F">{{ reviewAvg }} · {{ reviewCount }} reviews</span>
+        </div>
         <p style="margin:0 0 14px;font-size:14.5px;line-height:1.5;color:#4A473F">A roomier, heavier hoodie with dropped shoulders — made to hold a bigger print.</p>
         <div style="font-family:inherit;font-weight:700;font-size:24px">€44.00 <span style="font-family:'Helvetica Neue',Helvetica,sans-serif;font-size:12px;font-weight:400;color:#8B867B;letter-spacing:0.06em;text-transform:uppercase">VAT included</span></div>
+        <sc-if value="{{ freeShipUnlocked }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12.5px;font-weight:600;color:#41573B">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg>
+            You've unlocked free shipping
+          </div>
+        </sc-if>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;color:#4A473F">
+          <span style="background:#FFB3C7;color:#17120F;font-weight:800;font-size:12px;font-style:italic;border-radius:4px;padding:2px 6px;letter-spacing:-0.01em">Klarna.</span>
+          3 payments of €14.67 at 0% interest. <span style="text-decoration:underline;cursor:pointer">Learn more</span>
+        </div>
       </div>
+
+      <!-- TRUST LINE -->
+      <div style="border-top:1px solid #EEEBE3;border-bottom:1px solid #EEEBE3;padding:14px 0;font-size:13px;color:#4A473F;text-align:center">10,000+ happy customers &nbsp;•&nbsp; Made in Portugal &nbsp;•&nbsp; 30-day guarantee</div>
 
       <!-- SPECS -->
-      <div style="border-top:1px solid #EEEBE3;padding-top:18px;display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Composition</span><span>100% combed cotton</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Weight</span><span>330 g/m²</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13.5px"><span style="color:#8B867B;letter-spacing:0.06em;text-transform:uppercase;font-size:11.5px">Fit</span><span>Oversized</span></div>
-      </div>
-
-
+      <div style="padding-top:18px;font-size:13.5px;color:#4A473F">100% combed cotton &nbsp;•&nbsp; 330 gsm &nbsp;•&nbsp; Oversized fit</div>
 
       <!-- COLOUR -->
       <div>
-        <span style="font-size:13px;color:#4A473F">Colour</span>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+        <span style="font-size:13px;color:#4A473F">Colour: <span style="font-weight:600;color:#1C1B19">{{ cur.name }}</span></span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
           <sc-for list="{{ colours }}" as="c" hint-placeholder-count="5">
             <div style="position:relative;display:flex;justify-content:center">
-              <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;white-space:nowrap;color:#1C1B19">{{ c.name }}</span>
-              </sc-if>
               <sc-if value="{{ c.hovering }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
+                <span style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
               </sc-if>
-              <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:32px;height:32px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
+              <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:22px;height:22px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
             </div>
           </sc-for>
         </div>
-        <div style="margin-top:26px">
-          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:22px">Limited edition</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div style="margin-top:14px">
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:8px">Limited edition</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
             <sc-for list="{{ limitedColours }}" as="c" hint-placeholder-count="5">
               <div style="position:relative;display:flex;justify-content:center">
-                <sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;white-space:nowrap;color:#1C1B19">{{ c.name }}</span>
-                </sc-if>
                 <sc-if value="{{ c.hovering }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
+                  <span style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:#1C1B19;color:#fff;font-size:10.5px;font-weight:500;white-space:nowrap;padding:4px 9px;border-radius:6px;z-index:5">{{ c.name }}</span>
                 </sc-if>
-                <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:32px;height:32px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
+                <span onClick="{{ c.pick }}" onMouseEnter="{{ c.enter }}" onMouseLeave="{{ c.leave }}" style="width:22px;height:22px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(28,27,25,0.14);box-shadow:{{ c.ring }};cursor:pointer;transition:box-shadow 200ms"></span>
               </div>
             </sc-for>
           </div>
@@ -245,7 +250,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
 
       <!-- CTA -->
       <div style="display:flex;flex-direction:column;gap:10px">
-        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:18px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%" style-hover="filter:brightness(0.94)">Start Creating</button></a>
+        <a href="Create%20your%20own.dc.html" style="text-decoration:none;display:block"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:14px 0 12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px" style-hover="filter:brightness(0.94)"><span>Start Creating — €44.00</span><span style="font-size:11px;font-weight:500;opacity:0.85">In stock: ready to ship</span></button></a>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
           <span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#4A473F">Prefer it blank? <span style="text-decoration:underline">Order without customisation</span></span>
           <button title="Add to wishlist" style="width:40px;height:40px;flex:none;background:transparent;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B867B" style-hover="color:#1C1B19">
@@ -359,7 +364,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </div>
 
   <!-- REVIEWS -->
-  <section style="max-width:1200px;margin:0 auto;padding:112px 24px 0;text-align:center">
+  <section id="pdp-reviews" style="max-width:1200px;margin:0 auto;padding:112px 24px 0;text-align:center">
     <div style="font-size:13px;color:#4A473F;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:8px">
       <span style="font-weight:600;color:#1C1B19">Excellent</span> {{ reviewAvg }} out of 5 <span style="color:#41573B;letter-spacing:1px">★★★★★</span> Verified reviews
     </div>
@@ -511,6 +516,7 @@ class Component extends DCLogic {
     return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#1C1B19' : '#FBFAF8';
   }
   state = { colour: 0, hoverColour: null, size: 2, qty: 1, langOpen: false, lang: 'EN', searchOpen: false, searchQ: '', openAcc: ['Description'], cartOpen: false, cartQty: 1, volumeOpen: false };
+  scrollToReviews = () => { const el = document.getElementById('pdp-reviews'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
   qtyDec = () => this.setState(s => ({ qty: Math.max(1, s.qty - 1) }));
   qtyInc = () => this.setState(s => ({ qty: s.qty + 1 }));
   toggleVolume = () => this.setState(s => ({ volumeOpen: !s.volumeOpen }));
@@ -622,7 +628,7 @@ class Component extends DCLogic {
         open: openAcc.includes(a.title), rot: openAcc.includes(a.title) ? 'rotate(180deg)' : 'none',
         toggle: () => this.setState(s => ({ openAcc: s.openAcc.includes(a.title) ? s.openAcc.filter(x => x !== a.title) : [...s.openAcc, a.title] })),
       })),
-      reviewAvg: '4.8',
+      reviewAvg: '4.8', reviewCount: 96, freeShipUnlocked: 44 >= 75, scrollToReviews: this.scrollToReviews, cur,
       productReviews: [
         { name: 'Rui Almeida', meta: 'Verified buyer', quote: 'Heavier than I expected in a good way. Holds the print really well after washing.' },
         { name: 'Sofia Nunes', meta: 'Verified buyer', quote: 'Fits oversized as described. The fabric feels premium, not like a basic blank.' },

@@ -699,7 +699,7 @@ class Component extends DCLogic {
       closeAcctMenu: () => { this._acctOpen = false; this.forceUpdate(); },
       goDashboard: () => { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; },
       logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
-      goAI: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
+      goAI: () => { if (window.__navigate) window.__navigate('Studio%20Desktop.dc.html'); else location.href = 'Studio%20Desktop.dc.html'; },
       goProduct: () => { if (window.__navigate) window.__navigate('Product%20Page.dc.html'); else location.href = 'Product%20Page.dc.html'; },
       navBg: scrolled ? 'rgba(251,250,248,0.92)' : 'transparent',
       navBorder: scrolled ? '#E6E2D8' : 'transparent',

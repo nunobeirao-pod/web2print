@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./studio-data.js"></script>
+  <script src="./image-slot.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bangers&family=Barlow+Condensed:wght@700&family=Bebas+Neue&family=Bungee&family=Fjalla+One&family=Graduate&family=Lobster&family=Montserrat:wght@800&family=Oswald:wght@600&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@800&family=Rubik+Mono+One&family=Squada+One&family=Staatliches&family=Teko:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#EBE9E3;color:#15181F;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+    a{color:#4A47E0;text-decoration:none}a:hover{text-decoration:underline}
+    input[type=range]{accent-color:#4A47E0}
+    ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#CFCCC4;border-radius:8px}
+  </style>
+</helmet>
+<div data-screen-label="Create your own — Desktop" style="height:100vh;display:flex;flex-direction:column;user-select:none">
+
+  <!-- TOP BAR -->
+  <div style="height:56px;background:rgba(255,255,255,0.94);backdrop-filter:blur(12px);border-bottom:1px solid #E4E2DC;display:flex;align-items:center;padding:0 14px;gap:8px;z-index:60;flex-shrink:0">
+    <a href="Homepage.dc.html" style="font-size:15px;font-weight:600;letter-spacing:-0.01em;padding-right:8px;color:#15181F;flex-shrink:0">Web2Print</a>
+    <div style="display:flex;align-items:center;gap:8px;border-left:1px solid #E4E2DC;padding-left:12px;flex-shrink:0">
+      <span style="width:9px;height:9px;border-radius:50%;background:{{ headerColourHex }};border:1px solid rgba(21,24,31,.15)"></span>
+      <span style="font-size:13.5px;font-weight:500;white-space:nowrap">{{ headerName }}</span>
+    </div>
+    <div style="display:flex;gap:4px;flex-shrink:0">
+      <span onClick="{{ undo }}" title="Undo" style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:{{ undoInk }}" style-hover="background:#EFEEE9">↩</span>
+      <span onClick="{{ redo }}" title="Redo" style="width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:{{ redoInk }}" style-hover="background:#EFEEE9">↪</span>
+    </div>
+    <div style="flex:1;min-width:0;display:flex;justify-content:center">
+      <div style="background:#EFEEE9;border-radius:999px;padding:4px;display:flex;gap:2px;flex:0 0 auto">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="5">
+          <span onClick="{{ v.pick }}" style="padding:6px 11px;border-radius:999px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ v.bg }};color:{{ v.ink }};display:flex;gap:5px;align-items:center">{{ v.label }}<sc-if value="{{ v.hasContent }}" hint-placeholder-val="{{ false }}"><span style="width:5px;height:5px;border-radius:50%;background:#4A47E0"></span></sc-if></span>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+      <span onClick="{{ togglePreview }}" style="border:1px solid {{ previewBorder }};color:{{ previewInk }};background:{{ previewBg }};border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:500;cursor:pointer;transition:all 150ms;white-space:nowrap">Preview</span>
+      <span title="Save Design" style="border:1px solid #CFCCC4;border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0" style-hover="border-color:#15181F">Save</span>
+      <a href="Checkout.dc.html" style="flex-shrink:0"><button style="background:#12463A;color:#fff;border:none;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap" style-hover="background:#0D362D">Finish Design</button></a>
+      <span onClick="{{ toggleCart }}" style="font-size:13px;color:#5A6371;position:relative;padding-left:4px;padding-right:12px;cursor:pointer;flex-shrink:0;white-space:nowrap">Cart<span style="position:absolute;top:-8px;right:-2px;background:#4A47E0;color:#fff;border-radius:999px;font-size:9px;font-weight:600;padding:1px 5px">{{ cartCount }}</span></span>
+    </div>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div style="flex:1;position:relative;overflow:hidden">
+
+    <!-- LEFT RAIL -->
+    <div style="position:absolute;left:12px;top:12px;bottom:12px;width:64px;background:rgba(255,255,255,0.94);backdrop-filter:blur(12px);border:1px solid #E4E2DC;border-radius:16px;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;z-index:40;box-shadow:0 4px 20px rgba(21,24,31,.06);overflow-y:auto">
+      <sc-for list="{{ rail }}" as="r" hint-placeholder-count="11">
+        <div onClick="{{ r.pick }}" title="{{ r.label }}" style="width:48px;height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;background:{{ r.bg }};color:{{ r.ink }};transition:background 150ms" style-hover="background:{{ r.hoverBg }}">
+          <span style="font-size:15px;line-height:1">{{ r.icon }}</span>
+          <span style="font-size:8.5px;font-weight:500;letter-spacing:.02em">{{ r.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- SLIDE-OUT PANEL -->
+    <sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:86px;top:12px;bottom:12px;width:320px;background:rgba(255,255,255,0.98);backdrop-filter:blur(16px);border:1px solid #E4E2DC;border-radius:16px;z-index:39;box-shadow:0 12px 48px rgba(21,24,31,.12);display:flex;flex-direction:column;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 20px 12px;flex-shrink:0">
+          <span style="font-size:14px;font-weight:600">{{ panelTitle }}</span>
+          <span onClick="{{ closePanel }}" style="cursor:pointer;color:#8A919C;padding:2px 6px" style-hover="color:#15181F">✕</span>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 20px 20px">
+
+          <!-- AI -->
+          <sc-if value="{{ panelIsAI }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #C9C6F0;background:#F1F0FC;border-radius:14px;padding:14px;margin-bottom:16px">
+              <textarea placeholder="What are we designing today?" style="width:100%;box-sizing:border-box;border:none;background:transparent;resize:none;height:56px;font-family:inherit;font-size:13px;outline:none;padding:0"></textarea>
+              <div style="display:flex;justify-content:flex-end"><span style="background:#4A47E0;color:#fff;border-radius:999px;padding:9px 20px;font-size:12.5px;font-weight:500;cursor:pointer" style-hover="background:#3A38B8">✦ Generate</span></div>
+            </div>
+            <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A919C;margin-bottom:10px">Try these</div>
+            <sc-for list="{{ aiIdeas }}" as="idea" hint-placeholder-count="3">
+              <div style="border:1px solid #E4E2DC;border-radius:10px;padding:12px;font-size:12.5px;color:#5A6371;margin-bottom:8px;cursor:pointer" style-hover="border-color:#4A47E0;color:#15181F">{{ idea }}</div>
+            </sc-for>
+          </sc-if>
+
+          <!-- TEMPLATES -->
+          <sc-if value="{{ panelIsTemplates }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <sc-for list="{{ templates }}" as="t" hint-placeholder-count="6">
+                <div onClick="{{ t.apply }}" style="border:1px solid #E4E2DC;border-radius:12px;padding:10px;cursor:pointer;background:#fff" style-hover="border-color:#15181F">
+                  <div style="aspect-ratio:1;background:#EFEEE9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10.5px;color:#8A919C;margin-bottom:8px;font-family:ui-monospace,monospace">preview</div>
+                  <div style="font-size:12px;font-weight:600">{{ t.name }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size:11.5px;color:#8A919C;margin-top:16px;line-height:1.5">A template replaces the artwork on this design. Everything stays editable afterwards — words, colours, size and position.</p>
+          </sc-if>
+
+          <!-- COLOUR -->
+          <sc-if value="{{ panelIsColour }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Garment colour — {{ colourName }}</div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:20px">
+              <sc-for list="{{ colourSwatches }}" as="c" hint-placeholder-count="24">
+                <span onClick="{{ c.pick }}" title="{{ c.name }}" style="width:100%;aspect-ratio:1;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(21,24,31,.15);box-shadow:{{ c.ring }};cursor:pointer"></span>
+              </sc-for>
+            </div>
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Print method</div>
+            <sc-for list="{{ methods }}" as="m" hint-placeholder-count="3">
+              <div onClick="{{ m.pick }}" style="border:1px solid {{ m.border }};background:{{ m.bg }};border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer">
+                <div style="font-size:13px;font-weight:600;color:{{ m.ink }}">{{ m.t }}</div>
+                <div style="font-size:11.5px;color:#8A919C;margin-top:2px">{{ m.s }} · +{{ m.unitStr }}/unit</div>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <!-- FILE -->
+          <sc-if value="{{ panelIsFile }}" hint-placeholder-val="{{ false }}">
+            <label style="display:block;border:1.5px dashed #CFCCC4;border-radius:12px;padding:22px 16px;text-align:center;cursor:pointer;margin-bottom:18px" style-hover="border-color:#4A47E0">
+              <div style="font-size:13px;font-weight:600">Choose a file</div>
+              <div style="font-size:11.5px;color:#8A919C;margin-top:3px">PNG, JPG, SVG, PDF or AI · max 5 MB</div>
+              <input type="file" accept="image/*,application/pdf,.ai,application/postscript,application/illustrator" onChange="{{ importArtwork }}" style="display:none">
+            </label>
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Your designs</div>
+            <sc-if value="{{ hasLibrary }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <sc-for list="{{ library }}" as="l" hint-placeholder-count="0">
+                  <div onClick="{{ l.place }}" title="{{ l.name }}" style="aspect-ratio:1;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid #E4E2DC;background:#fff;display:flex;align-items:center;justify-content:center;padding:8px">
+                    <img ref="{{ l.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="{{ l.name }}" style="max-width:100%;max-height:100%;object-fit:contain">
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ libraryEmpty }}" hint-placeholder-val="{{ true }}">
+              <p style="font-size:11.5px;color:#8A919C;margin:4px 0 0;line-height:1.5">Nothing yet — artwork you upload collects here so you can reuse it across views and designs.</p>
+            </sc-if>
+          </sc-if>
+
+          <!-- ELEMENTS -->
+          <sc-if value="{{ panelIsElements }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:6px;margin-bottom:16px">
+              <span onClick="{{ setElTabText }}" style="flex:1;text-align:center;border:1px solid {{ elTabTextBorder }};background:{{ elTabTextBg }};border-radius:999px;padding:8px 0;font-size:12px;font-weight:500;cursor:pointer">Text</span>
+              <span onClick="{{ setElTabShapes }}" style="flex:1;text-align:center;border:1px solid {{ elTabShapesBorder }};background:{{ elTabShapesBg }};border-radius:999px;padding:8px 0;font-size:12px;font-weight:500;cursor:pointer">Shapes</span>
+              <span onClick="{{ setElTabFrames }}" style="flex:1;text-align:center;border:1px solid {{ elTabFramesBorder }};background:{{ elTabFramesBg }};border-radius:999px;padding:8px 0;font-size:12px;font-weight:500;cursor:pointer">Frames</span>
+            </div>
+            <sc-if value="{{ elTabIsText }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ addText }}" style="border:1px solid #E4E2DC;border-radius:12px;padding:18px;cursor:pointer;background:#fff;text-align:center" style-hover="border-color:#15181F">
+                <span style="font-weight:700;font-size:22px">Add a text box</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ elTabIsShapes }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+                <sc-for list="{{ shapes }}" as="s" hint-placeholder-count="10">
+                  <span onClick="{{ s.add }}" title="{{ s.t }}" style="aspect-ratio:1;border:1px solid #E4E2DC;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:12px;background:#fff" style-hover="border-color:#15181F">
+                    <img ref="{{ s.iconRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="{{ s.t }}" style="width:100%;height:100%;object-fit:contain">
+                  </span>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ elTabIsFrames }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+                <sc-for list="{{ frames }}" as="f" hint-placeholder-count="6">
+                  <span onClick="{{ f.add }}" title="{{ f.t }}" style="aspect-ratio:1;background:#CFCCC4;cursor:pointer;clip-path:{{ f.clip }};-webkit-clip-path:{{ f.clip }}" style-hover="background:#B9B2A6"></span>
+                </sc-for>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <!-- STICKERS -->
+          <sc-if value="{{ panelIsStickers }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Colour</div>
+            <div style="display:flex;gap:8px;margin-bottom:18px">
+              <sc-for list="{{ inkSwatches }}" as="k" hint-placeholder-count="5">
+                <span onClick="{{ k.pick }}" style="width:26px;height:26px;border-radius:50%;background:{{ k.hex }};border:1px solid rgba(21,24,31,.15);box-shadow:{{ k.ring }};cursor:pointer"></span>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+              <sc-for list="{{ stickers }}" as="s" hint-placeholder-count="9">
+                <span onClick="{{ s.add }}" title="{{ s.t }}" style="aspect-ratio:1;border:1px solid #E4E2DC;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:12px;background:#fff" style-hover="border-color:#15181F">
+                  <img ref="{{ s.iconRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="{{ s.t }}" style="width:100%;height:100%;object-fit:contain">
+                </span>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- TEAM -->
+          <sc-if value="{{ panelIsTeam }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Place a variable field</div>
+            <div style="display:flex;gap:8px;margin-bottom:16px">
+              <span onClick="{{ addNumberField }}" style="flex:1;text-align:center;border:1px solid #CFCCC4;border-radius:999px;padding:9px 0;font-size:12.5px;cursor:pointer" style-hover="border-color:#15181F">+ Number</span>
+              <span onClick="{{ addNameField }}" style="flex:1;text-align:center;border:1px solid #CFCCC4;border-radius:999px;padding:9px 0;font-size:12.5px;cursor:pointer" style-hover="border-color:#15181F">+ Name</span>
+            </div>
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Squad list</div>
+            <label style="display:flex;align-items:center;gap:10px;border:1px solid #E4E2DC;border-radius:10px;padding:12px;cursor:pointer;margin-bottom:12px" style-hover="border-color:#15181F">
+              <span style="font-size:12.5px;font-weight:600">Import a list</span>
+              <span style="font-size:10.5px;color:#8A919C;margin-left:auto">CSV / TSV / TXT</span>
+              <input type="file" accept=".csv,.tsv,.txt,text/csv,text/plain" onChange="{{ importRoster }}" style="display:none">
+            </label>
+            <sc-for list="{{ rosterRows }}" as="r" hint-placeholder-count="0">
+              <div style="display:flex;gap:6px;align-items:center;border:1px solid {{ r.border }};background:{{ r.bg }};border-radius:8px;padding:6px;margin-bottom:6px">
+                <input value="{{ r.n }}" onChange="{{ r.setN }}" placeholder="#" style="width:32px;border:1px solid #E4E2DC;border-radius:6px;padding:5px;font-size:12px;text-align:center;font-family:inherit">
+                <input value="{{ r.name }}" onChange="{{ r.setName }}" placeholder="Name" style="flex:1;min-width:0;border:1px solid #E4E2DC;border-radius:6px;padding:5px 7px;font-size:12px;font-family:inherit">
+                <span onClick="{{ r.preview }}" style="cursor:pointer;font-size:10.5px;color:{{ r.previewColor }};white-space:nowrap">{{ r.previewLabel }}</span>
+                <span onClick="{{ r.remove }}" style="cursor:pointer;color:#8A919C;padding:0 2px">✕</span>
+              </div>
+            </sc-for>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+              <span onClick="{{ addRosterRow }}" style="font-size:11px;border:1px solid #CFCCC4;border-radius:999px;padding:6px 12px;cursor:pointer">+ Add player</span>
+              <span onClick="{{ fill11 }}" style="font-size:11px;border:1px solid #CFCCC4;border-radius:999px;padding:6px 12px;cursor:pointer">Fill 1–11</span>
+              <span onClick="{{ clearRoster }}" style="font-size:11px;border:1px solid #CFCCC4;border-radius:999px;padding:6px 12px;cursor:pointer;color:#B4472E">Clear</span>
+            </div>
+          </sc-if>
+
+          <!-- PROOF -->
+          <sc-if value="{{ panelIsProof }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:12.5px;color:#5A6371;margin:0 0 16px;line-height:1.5">Cyan, magenta and yellow stay close to themselves when printed — bright greens and blues move the most. A guide, not a contract proof.</p>
+            <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A919C;margin-bottom:10px">On screen → on fabric</div>
+            <sc-for list="{{ proofRows }}" as="p" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+                <span style="width:26px;height:26px;border-radius:6px;background:{{ p.screen }};border:1px solid rgba(21,24,31,.12);flex-shrink:0"></span>
+                <span style="color:#CFCCC4">→</span>
+                <span style="width:26px;height:26px;border-radius:6px;background:{{ p.fabric }};border:1px solid rgba(21,24,31,.12);flex-shrink:0"></span>
+                <span style="font-size:11.5px;font-weight:500;margin-left:8px">{{ p.name }}</span>
+                <span style="font-size:10.5px;color:#8A919C;margin-left:auto">{{ p.shift }}</span>
+              </div>
+            </sc-for>
+          </sc-if>
+
+          <!-- DESIGNS -->
+          <sc-if value="{{ panelIsDesigns }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:11.5px;color:#8A919C;margin:0 0 12px;line-height:1.5">Each design is one product, one colour, one set of artwork. Add as many as this order needs.</p>
+            <sc-for list="{{ designRows }}" as="d" hint-placeholder-count="1">
+              <div onClick="{{ d.pick }}" style="display:flex;align-items:center;gap:10px;border:1px solid {{ d.border }};background:{{ d.bg }};border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer">
+                <span style="width:18px;height:18px;border-radius:50%;background:{{ d.hex }};border:1px solid rgba(21,24,31,.15);flex-shrink:0"></span>
+                <span style="flex:1;font-size:12.5px;font-weight:500">{{ d.label }}</span>
+                <span style="font-size:11px;color:#8A919C">{{ d.priceStr }}</span>
+              </div>
+            </sc-for>
+            <div style="border:1px solid #E4E2DC;border-radius:10px;padding:12px;margin-top:8px">
+              <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Start another design</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+                <sc-for list="{{ productPicks }}" as="p" hint-placeholder-count="5">
+                  <span onClick="{{ p.pick }}" style="border:1px solid {{ p.border }};background:{{ p.bg }};border-radius:8px;padding:8px;text-align:center;font-size:11.5px;cursor:pointer">{{ p.t }}</span>
+                </sc-for>
+              </div>
+              <span onClick="{{ addDesign }}" style="display:block;text-align:center;background:#15181F;color:#fff;border-radius:999px;padding:9px 0;font-size:12.5px;cursor:pointer">+ Add design</span>
+            </div>
+          </sc-if>
+
+          <!-- ORDER -->
+          <sc-if value="{{ panelIsOrder }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:#8A919C;margin-bottom:10px">Products, sizes &amp; quantities</div>
+            <sc-for list="{{ orderDesignBlocks }}" as="b" hint-placeholder-count="1">
+              <div style="border:1px solid #E4E2DC;border-radius:10px;padding:12px;margin-bottom:10px">
+                <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">{{ b.title }}</div>
+                <sc-for list="{{ b.lines }}" as="l" hint-placeholder-count="1">
+                  <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+                    <select value="{{ l.s }}" onChange="{{ l.setSize }}" style="flex:1;border:1px solid #CFCCC4;border-radius:6px;padding:6px;font-size:12px;font-family:inherit">
+                      <sc-for list="{{ l.sizeOpts }}" as="so" hint-placeholder-count="5"><option value="{{ so }}">{{ so }}</option></sc-for>
+                    </select>
+                    <input type="number" min="0" value="{{ l.q }}" onChange="{{ l.setQty }}" style="width:56px;border:1px solid #CFCCC4;border-radius:6px;padding:6px;font-size:12px;text-align:center;font-family:inherit">
+                    <span onClick="{{ l.remove }}" style="cursor:pointer;color:#8A919C">✕</span>
+                  </div>
+                </sc-for>
+                <span onClick="{{ b.addLine }}" style="font-size:11.5px;color:#4A47E0;cursor:pointer">+ Add size</span>
+              </div>
+            </sc-for>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid #CFCCC4;padding-top:12px;margin-top:4px;font-size:13px;font-weight:600">
+              <span>{{ totalQtyStr }}</span><span>{{ orderTotalStr }}</span>
+            </div>
+            <p style="font-size:11px;color:#8A919C;margin-top:8px">{{ discountNote }}</p>
+            <span onClick="{{ addToQuote }}" style="display:block;text-align:center;background:#12463A;color:#fff;border-radius:999px;padding:11px 0;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px" style-hover="background:#0D362D">Add to quote</span>
+          </sc-if>
+
+          <!-- SHARE -->
+          <sc-if value="{{ panelIsShare }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">What you're sending</div>
+            <pre style="white-space:pre-wrap;font-family:inherit;font-size:11.5px;background:#EFEEE9;border-radius:10px;padding:12px;margin:0 0 14px;line-height:1.5">{{ shareText }}</pre>
+            <span onClick="{{ copyShare }}" style="display:block;border:1px solid #E4E2DC;border-radius:10px;padding:12px;cursor:pointer;margin-bottom:14px;font-size:12.5px;font-weight:600" style-hover="border-color:#15181F">Copy link &amp; summary</span>
+            <div style="font-size:11px;color:#8A919C;margin-bottom:8px">Or share via email</div>
+            <a href="{{ mailtoHref }}" style="display:block;text-align:center;background:#15181F;color:#fff;border-radius:999px;padding:10px 0;font-size:12.5px">Open email draft</a>
+          </sc-if>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- CANVAS -->
+    <div ref="{{ canvasRef }}" onMouseDown="{{ deselect }}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <div style="transform:scale({{ totalScale }});transition:transform 200ms ease-out;position:relative;width:{{ stageW }}px;height:{{ stageH }}px">
+
+        <!-- garment photo, recoloured to the selected colourway -->
+        <img ref="{{ garmentRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none">
+
+        <!-- traced print-area outline (real garment mask, eroded to the safe boundary) -->
+        <sc-if value="{{ showGuides }}" hint-placeholder-val="{{ false }}">
+          <img ref="{{ edgeRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;opacity:.85">
+        </sc-if>
+        <sc-if value="{{ showGrid }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:{{ boxX }}px;top:{{ boxY }}px;width:{{ boxW }}px;height:{{ boxH }}px;background-image:linear-gradient(rgba(74,71,224,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(74,71,224,.12) 1px,transparent 1px);background-size:20px 20px;pointer-events:none"></div>
+        </sc-if>
+        <!-- text / field items -->
+        <sc-for list="{{ textFieldItems }}" as="it" hint-placeholder-count="1">
+          <div onMouseDown="{{ it.startDrag }}" style="position:absolute;left:{{ it.x }}px;top:{{ it.y }}px;transform:rotate({{ it.rot }}deg);cursor:{{ it.cursor }};z-index:{{ it.z }}">
+            <div style="position:relative;display:inline-block;outline:{{ it.outline }};outline-offset:6px;padding:2px">
+              <span ref="{{ it.textRef }}" style="font-family:{{ it.family }};font-weight:{{ it.weight }};font-style:{{ it.fontStyle }};font-size:{{ it.size }}px;letter-spacing:{{ it.ls }}px;color:{{ it.color }};text-decoration:{{ it.decoration }};white-space:nowrap;line-height:1.1;text-shadow:{{ it.textShadow }}">{{ it.text }}</span>
+              <sc-if value="{{ it.selected }}" hint-placeholder-val="{{ false }}">
+                <span onMouseDown="{{ it.startRotate }}" style="position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:14px;width:20px;height:20px;border-radius:50%;background:#15181F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:grab">↻</span>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+
+        <!-- vector items: shapes / stickers -->
+        <sc-for list="{{ vectorItems }}" as="it" hint-placeholder-count="0">
+          <div onMouseDown="{{ it.startDrag }}" style="position:absolute;left:{{ it.x }}px;top:{{ it.y }}px;width:{{ it.w }}px;height:{{ it.h }}px;transform:rotate({{ it.rot }}deg);cursor:{{ it.cursor }};outline:{{ it.outline }};outline-offset:4px;z-index:{{ it.z }}">
+            <img ref="{{ it.iconRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" draggable="false" style="width:100%;height:100%;object-fit:contain;pointer-events:none">
+            <sc-if value="{{ it.selected }}" hint-placeholder-val="{{ false }}">
+              <span onMouseDown="{{ it.startResize }}" style="position:absolute;right:-7px;bottom:-7px;width:14px;height:14px;background:#fff;border:2px solid #4A47E0;border-radius:3px;cursor:nwse-resize"></span>
+              <span onMouseDown="{{ it.startRotate }}" style="position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#15181F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:grab">↻</span>
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <!-- media items: uploads / frames -->
+        <sc-for list="{{ mediaItems }}" as="it" hint-placeholder-count="0">
+          <div onMouseDown="{{ it.startDrag }}" style="position:absolute;left:{{ it.x }}px;top:{{ it.y }}px;width:{{ it.w }}px;height:{{ it.h }}px;transform:rotate({{ it.rot }}deg);cursor:{{ it.cursor }};outline:{{ it.outline }};outline-offset:4px;z-index:{{ it.z }};clip-path:{{ it.clip }}">
+            <sc-if value="{{ it.hasUrl }}" hint-placeholder-val="{{ false }}">
+              <img ref="{{ it.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" draggable="false" style="width:100%;height:100%;object-fit:{{ it.fit }};pointer-events:none">
+            </sc-if>
+            <sc-if value="{{ it.noUrl }}" hint-placeholder-val="{{ false }}">
+              <image-slot id="{{ it.slot }}" shape="rect" placeholder="artwork"></image-slot>
+            </sc-if>
+            <sc-if value="{{ it.selected }}" hint-placeholder-val="{{ false }}">
+              <span onMouseDown="{{ it.startResize }}" style="position:absolute;right:-7px;bottom:-7px;width:14px;height:14px;background:#fff;border:2px solid #4A47E0;border-radius:3px;cursor:nwse-resize"></span>
+              <span onMouseDown="{{ it.startRotate }}" style="position:absolute;left:50%;bottom:-34px;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:#15181F;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:grab">↻</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- FLOATING CONTEXT TOOLBAR -->
+    <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:20px;left:clamp(96px,calc(50% - 200px),calc(100% - 700px));z-index:45;background:rgba(21,24,31,.92);backdrop-filter:blur(10px);border-radius:999px;padding:7px 10px;display:flex;gap:2px;align-items:center;box-shadow:0 8px 30px rgba(21,24,31,.25)">
+        <span onClick="{{ duplicateSel }}" style="color:#fff;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">Duplicate</span>
+        <span onClick="{{ centerSel }}" style="color:#fff;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">Centre</span>
+        <span onClick="{{ bringFront }}" style="color:#fff;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">To front</span>
+        <span onClick="{{ sendBack }}" style="color:#fff;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">To back</span>
+        <span onClick="{{ lockSel }}" style="color:#fff;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">{{ lockLabel }}</span>
+        <span style="width:1px;height:16px;background:rgba(255,255,255,.2);margin:0 4px"></span>
+        <span onClick="{{ deleteSel }}" style="color:#F2A08D;font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer" style-hover="background:rgba(255,255,255,.12)">Delete</span>
+      </div>
+    </sc-if>
+
+    <!-- RIGHT INSPECTOR -->
+    <sc-if value="{{ inspectorOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;right:12px;top:12px;width:264px;background:rgba(255,255,255,.98);backdrop-filter:blur(16px);border:1px solid #E4E2DC;border-radius:16px;z-index:44;box-shadow:0 12px 48px rgba(21,24,31,.12);padding:18px 18px 20px;max-height:calc(100% - 24px);overflow-y:auto">
+        <div style="font-size:13px;font-weight:600;margin-bottom:14px">{{ inspectorTitle }}</div>
+
+        <sc-if value="{{ selIsText }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="font-size:11px;color:#8A919C;margin-bottom:6px">Typeface</div>
+              <div style="max-height:150px;overflow-y:auto;border:1px solid #E4E2DC;border-radius:10px;padding:6px">
+                <sc-for list="{{ fontOpts }}" as="f" hint-placeholder-count="6">
+                  <div onClick="{{ f.pick }}" style="padding:8px 8px;border-radius:6px;cursor:pointer;font-family:{{ f.family }};font-size:14px;background:{{ f.bg }};color:{{ f.ink }}">{{ f.label }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px">
+              <span onClick="{{ toggleBold }}" style="flex:1;text-align:center;border:1px solid {{ boldBorder }};background:{{ boldBg }};border-radius:8px;padding:8px 0;font-size:13px;font-weight:900;cursor:pointer">B</span>
+              <span onClick="{{ toggleItalic }}" style="flex:1;text-align:center;border:1px solid {{ italicBorder }};background:{{ italicBg }};border-radius:8px;padding:8px 0;font-size:13px;font-style:italic;cursor:pointer">I</span>
+              <span onClick="{{ toggleUnderline }}" style="flex:1;text-align:center;border:1px solid {{ underlineBorder }};background:{{ underlineBg }};border-radius:8px;padding:8px 0;font-size:13px;text-decoration:underline;cursor:pointer">U</span>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A919C;margin-bottom:6px"><span>Size</span><span>{{ selSize }}px</span></div>
+              <input type="range" min="14" max="120" value="{{ selSize }}" onChange="{{ setSize }}" style="width:100%">
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A919C;margin-bottom:6px"><span>Letter spacing</span><span>{{ selLs }}px</span></div>
+              <input type="range" min="0" max="14" value="{{ selLs }}" onChange="{{ setLs }}" style="width:100%">
+            </div>
+            <div>
+              <div style="font-size:11px;color:#8A919C;margin-bottom:6px">Colour</div>
+              <div style="display:flex;gap:7px">
+                <sc-for list="{{ inkOpts }}" as="k" hint-placeholder-count="5">
+                  <span onClick="{{ k.pick }}" style="width:24px;height:24px;border-radius:50%;background:{{ k.hex }};border:1px solid rgba(21,24,31,.15);box-shadow:{{ k.ring }};cursor:pointer"></span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;font-weight:500">Outline</span>
+              <span onClick="{{ toggleOutline }}" style="width:36px;height:21px;border-radius:999px;background:{{ olBg }};position:relative;cursor:pointer"><span style="position:absolute;top:2.5px;left:{{ olKnob }};width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)"></span></span>
+            </div>
+            <sc-if value="{{ selOutline }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:7px">
+                <sc-for list="{{ outlineOpts }}" as="k" hint-placeholder-count="5">
+                  <span onClick="{{ k.pick }}" style="width:24px;height:24px;border-radius:50%;background:{{ k.hex }};border:1px solid rgba(21,24,31,.15);box-shadow:{{ k.ring }};cursor:pointer"></span>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selIsVector }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="font-size:11px;color:#8A919C;margin-bottom:6px">Colour</div>
+              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px">
+                <sc-for list="{{ vectorColourOpts }}" as="c" hint-placeholder-count="12">
+                  <span onClick="{{ c.pick }}" style="width:100%;aspect-ratio:1;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(21,24,31,.15);box-shadow:{{ c.ring }};cursor:pointer"></span>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{ selIsFrame }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="font-size:11px;color:#8A919C;margin-bottom:6px">Frame shape</div>
+                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+                  <sc-for list="{{ frameOpts }}" as="f" hint-placeholder-count="7">
+                    <span onClick="{{ f.pick }}" title="{{ f.t }}" style="aspect-ratio:1;background:{{ f.bg }};clip-path:{{ f.clip }};cursor:pointer"></span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A919C;margin-bottom:6px"><span>Size</span><span>{{ selW }}px</span></div>
+              <input type="range" min="40" max="320" value="{{ selW }}" onChange="{{ setW }}" style="width:100%">
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selIsMedia }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A919C;margin-bottom:6px"><span>Size</span><span>{{ selW }}px</span></div>
+              <input type="range" min="40" max="360" value="{{ selW }}" onChange="{{ setW }}" style="width:100%">
+            </div>
+            <div style="border:1px solid #E4E2DC;border-radius:12px;padding:12px 14px;background:#fff">
+              <div style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8A919C;margin-bottom:8px">Print compatibility</div>
+              <div style="display:flex;flex-direction:column;gap:7px;font-size:12px">
+                <div style="display:flex;justify-content:space-between"><span>Digital transfer</span><span style="color:#2E6B4F;font-weight:500">✓ Perfect</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Embroidery</span><span style="color:#8A5F1E;font-weight:500">{{ embCompat }}</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #E4E2DC">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A919C;margin-bottom:6px"><span>Rotation</span><span>{{ selRot }}°</span></div>
+          <input type="range" min="-180" max="180" value="{{ selRot }}" onChange="{{ setRot }}" style="width:100%">
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- VALIDATION WARNING -->
+    <sc-if value="{{ hasWarning }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;bottom:126px;left:50%;transform:translateX(-50%);z-index:45;background:#fff;border:1px solid #EED9C4;border-radius:999px;padding:9px 10px 9px 18px;display:flex;gap:14px;align-items:center;box-shadow:0 8px 30px rgba(21,24,31,.12)">
+        <span style="font-size:12.5px;color:#8A5F1E;font-weight:500">⚠ {{ warningMsg }}</span>
+        <span onClick="{{ fixWarning }}" style="background:#15181F;color:#fff;border-radius:999px;padding:6px 14px;font-size:11.5px;font-weight:500;cursor:pointer">Move inside</span>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div style="height:48px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid #E4E2DC;display:flex;align-items:center;justify-content:center;gap:22px;z-index:60;flex-shrink:0;font-size:12.5px;color:#5A6371">
+    <div style="display:flex;gap:8px;align-items:center">
+      <span onClick="{{ zoomOut }}" style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#EFEEE9">−</span>
+      <span style="font-weight:600;color:#15181F;min-width:42px;text-align:center">{{ zoomPct }}</span>
+      <span onClick="{{ zoomIn }}" style="width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#EFEEE9">+</span>
+    </div>
+    <span onClick="{{ resetView }}" style="cursor:pointer;padding:6px 10px;border-radius:8px" style-hover="background:#EFEEE9">Reset view</span>
+    <span onClick="{{ toggleGrid }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ gridInk }};font-weight:{{ gridWeight }}" style-hover="background:#EFEEE9">Grid</span>
+    <span onClick="{{ toggleSnap }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ snapInk }};font-weight:{{ snapWeight }}" style-hover="background:#EFEEE9">Snap</span>
+    <span onClick="{{ toggleGuides }}" style="cursor:pointer;padding:6px 10px;border-radius:8px;color:{{ guidesInk }};font-weight:{{ guidesWeight }}" style-hover="background:#EFEEE9">Print area</span>
+  </div>
+
+  <!-- CART DRAWER — same pattern as the rest of the site -->
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCart }}" style="position:fixed;inset:0;z-index:90;background:rgba(20,20,18,0.18);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100vw;z-index:91;background:linear-gradient(155deg,rgba(255,255,255,0.32) 0%,rgba(255,255,255,0.08) 18%,rgba(238,235,228,0.42) 45%,rgba(238,235,228,0.5) 100%);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(28,27,25,0.22),inset 1px 0 0 rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.6);color:#1C1B19;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,0.35),transparent 55%)"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 26px 0">
+        <span style="font-size:19px;font-weight:600">{{ cartHeading }}</span>
+        <span onClick="{{ closeCart }}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px" style-hover="background:rgba(255,255,255,0.85)">✕</span>
+      </div>
+      <div style="padding:20px 26px;flex:1;overflow-y:auto">
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;padding:14px 18px;text-align:center;font-size:13.5px;margin-bottom:18px">{{ freeShipMsg }}
+          <div style="height:5px;background:rgba(28,27,25,0.15);border-radius:999px;margin-top:10px;overflow:hidden"><div style="height:100%;width:{{ freeShipPct }}%;background:#1C1B19"></div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;padding:14px 18px;margin-bottom:18px">
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:10px">{{ volumeMsg }}</div>
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ volumeTiers }}" as="t" hint-placeholder-count="3">
+              <div style="flex:1;text-align:center;border-radius:8px;padding:8px 4px;background:{{ t.bg }};border:1px solid {{ t.border }}">
+                <div style="font-size:12px;font-weight:700;color:{{ t.ink }}">{{ t.qty }}+</div>
+                <div style="font-size:10.5px;color:{{ t.ink }}">{{ t.pct }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ cartLines }}" as="c" hint-placeholder-count="1">
+          <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:14px;padding:16px;display:flex;gap:14px;margin-bottom:18px">
+            <div style="width:70px;height:70px;border-radius:8px;overflow:hidden;flex:none;background:{{ c.hex }}"></div>
+            <div style="flex:1">
+              <div style="font-size:14.5px;font-weight:600">{{ c.name }}</div>
+              <div style="font-size:13px;color:#4A473F;margin-top:2px">{{ c.unitPrice }}</div>
+              <div style="font-size:12px;color:#8B867B">{{ c.meta }}</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-top:10px">
+                <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.6);border-radius:999px;padding:5px 12px">
+                  <span onClick="{{ c.dec }}" style="cursor:pointer">−</span><span style="font-size:13px;font-weight:600">{{ c.qty }}</span><span onClick="{{ c.inc }}" style="cursor:pointer">+</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:16px;margin-top:10px">
+                <span onClick="{{ c.edit }}" style="font-size:12px;font-weight:600;color:#4A4FE4;cursor:pointer">Edit Design</span>
+                <span onClick="{{ c.remove }}" style="cursor:pointer;font-size:12px;font-weight:500;color:#8B867B">Remove</span>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <div style="background:rgba(255,255,255,0.4);backdrop-filter:blur(10px);border-radius:12px;text-align:center;font-size:11.5px;color:#4A473F;margin-top:18px;padding:12px">Worldwide Shipping · Secure Payments · Easy Returns</div>
+        <div style="background:rgba(255,255,255,0.55);backdrop-filter:blur(10px);border-radius:14px;padding:20px;margin-top:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+            <div><div style="font-size:16px;font-weight:700">Subtotal</div><div style="font-size:12px;color:#8B867B">{{ cartQtyLabel }}</div></div>
+            <span style="font-family:inherit;font-weight:700;font-size:20px">{{ cartSubtotal }}</span>
+          </div>
+          <a href="Checkout.dc.html" style="display:block"><button style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Checkout</button></a>
+          <div style="text-align:center;font-size:11.5px;color:#8B867B;margin-top:10px">Shipping &amp; taxes calculated at checkout</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:50%;bottom:64px;transform:translateX(-50%);background:#15181F;color:#fff;border-radius:12px;padding:12px 18px;font-size:12.5px;box-shadow:0 8px 30px rgba(21,24,31,.3);z-index:80">
+      <b>{{ toastTitle }}</b><span style="margin-left:8px;color:rgba(255,255,255,.7)">{{ toastSub }}</span>
+    </div>
+  </sc-if>
+</div>
+</helmet>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;defaultPrintMethod&quot;: {&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;dtf&quot;,&quot;tsType&quot;:&quot;'dtf'|'emb'|'oth'&quot;,&quot;options&quot;:[&quot;dtf&quot;,&quot;emb&quot;,&quot;oth&quot;],&quot;section&quot;:&quot;Defaults&quot;}, &quot;snapToGridDefault&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Defaults&quot;}}">
+function ST(){ return window.STUDIO; }
+let UID = 1000;
+const nextId = () => ++UID;
+function prod(pid){ const list = ST().PRODUCTS; return list.find(p=>p.id===pid) || list[0]; }
+function viewsFor(pid){ return pid==='cap' ? ['Front'] : ST().ORDER; }
+function newDesign(pid, colourIdx, methodId){
+  const sizes = prod(pid).sizes;
+  const views = {}; viewsFor(pid).forEach(v => views[v] = { items: [] });
+  return { id: nextId(), pid, colourIdx, methodId, views, lines: [{ s: sizes[Math.min(1,sizes.length-1)], q: 1 }], roster: [], previewRow: null };
+}
+function eur(v){ return '€' + (v||0).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function stageInfo(view){
+  const gv = ST().GARMENT_VIEWS[view] || ST().GARMENT_VIEWS.Front;
+  const w = 380, h = Math.round(380 * gv.h / gv.w);
+  return { w, h, src: gv.src, box: { x: Math.round(gv.box.x*w), y: Math.round(gv.box.y*h), w: Math.round(gv.box.w*w), h: Math.round(gv.box.h*h) } };
+}
+function hexL(hex){ const n = parseInt(hex.slice(1),16); return (0.2126*(n>>16&255)+0.7152*(n>>8&255)+0.0722*(n&255))/255; }
+function svgIcon(fn, color){
+  const body = fn(color || '#15181F');
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' + body + '</svg>';
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+class Component extends DCLogic {
+  state = {
+    panel: null, sel: null, view: 'Front', active: 0, zoom: 1,
+    grid: false, snap: true, guides: true, previewMode: false, fitScale: 1, cartOpen: false,
+    elTab: 'text', newPid: null, stickerInk: 0,
+    designs: (() => {
+      const d = newDesign('tee', 0, (this && this.props && this.props.defaultPrintMethod) || 'dtf');
+      const box = stageInfo('Front').box;
+      d.views.Front.items.push({ id: nextId(), kind: 'text', text: 'YOUR TEXT', x: box.x + 14, y: box.y + 90, rot: 0, size: 30, fi: 0, ci: 1, ls: 2, bold: true, italic: false, underline: false, ol: false, oci: 0, locked: false });
+      return [d];
+    })(),
+    past: [], future: [], toast: null,
+  };
+
+  _img = {};
+  _paint = {};
+  _edge = {};
+  _maskAlpha = {};
+  _textSize = {};
+  measureTextRef(id){
+    return node => {
+      if (!node) return;
+      const w = node.offsetWidth, h = node.offsetHeight;
+      const prev = this._textSize[id];
+      if (!prev || Math.abs(prev.w - w) > 0.5 || Math.abs(prev.h - h) > 0.5) { this._textSize[id] = { w, h }; this.setState({}); }
+    };
+  }
+  insideMask(view, xFrac, yFrac, boxFrac){
+    if (xFrac < 0 || xFrac > 1 || yFrac < 0 || yFrac > 1) return false;
+    const m = this._maskAlpha[view];
+    if (!m) {
+      // mask pixels not loaded yet — fall back to the traced shape's own bounding box
+      if (!boxFrac) return true;
+      return xFrac >= boxFrac.x && xFrac <= boxFrac.x+boxFrac.w && yFrac >= boxFrac.y && yFrac <= boxFrac.y+boxFrac.h;
+    }
+    const px = Math.min(m.w - 1, Math.max(0, Math.round(xFrac * m.w)));
+    const py = Math.min(m.h - 1, Math.max(0, Math.round(yFrac * m.h)));
+    return m.data[(py * m.w + px) * 4 + 3] > 100;
+  }
+  canvasRef = node => { this._canvasNode = node; if (node) this.measureFit(); };
+  measureFit(){
+    try {
+      const node = this._canvasNode;
+      if (!node) return;
+      const stage = stageInfo(this.curView());
+      const cw = node.clientWidth - 32, ch = node.clientHeight - 32;
+      if (cw <= 0 || ch <= 0) return;
+      const fit = +Math.min(cw / stage.w, ch / stage.h, 2.3).toFixed(3);
+      if (Math.abs(fit - this.state.fitScale) > 0.005) this.setState({ fitScale: fit });
+    } catch (e) { /* layout not ready yet */ }
+  }
+  componentDidUpdate(prevProps, prevState){
+    if (prevState.view !== this.state.view || prevState.active !== this.state.active) this.measureFit();
+  }
+  componentDidMount(){
+    if (window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    window.addEventListener('resize', () => this.measureFit());
+    setTimeout(() => this.measureFit(), 0);
+    Object.keys(ST().GARMENT_VIEWS).forEach(k => {
+      const gv = ST().GARMENT_VIEWS[k];
+      const im = new Image();
+      im.onload = () => { this._img[k] = im; this.setState({}); };
+      im.src = './' + gv.src;
+      const mk = new Image();
+      mk.onload = () => {
+        try {
+          this._edge[k] = this.buildEdge(mk);
+          const c = document.createElement('canvas'); c.width = mk.naturalWidth; c.height = mk.naturalHeight;
+          const cx = c.getContext('2d'); cx.drawImage(mk, 0, 0);
+          this._maskAlpha[k] = { w: c.width, h: c.height, data: cx.getImageData(0, 0, c.width, c.height).data };
+        } catch (e) { /* canvas readback blocked; skip the outline/hit-test for this view */ }
+        this.setState({});
+      };
+      mk.src = './' + gv.mask;
+    });
+  }
+  erode(img, r){
+    const w = img.naturalWidth, h = img.naturalHeight;
+    const base = document.createElement('canvas'); base.width = w; base.height = h;
+    base.getContext('2d').drawImage(img, 0, 0);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d');
+    x.drawImage(base, 0, 0);
+    x.globalCompositeOperation = 'destination-in';
+    for (let i = 0; i < 24; i++) { const a = i*Math.PI*2/24; x.drawImage(base, Math.cos(a)*r, Math.sin(a)*r); }
+    return c;
+  }
+  buildEdge(img){
+    const safe = this.erode(img, 9), inner = this.erode(img, 11.5);
+    const w = safe.width, h = safe.height;
+    const e = document.createElement('canvas'); e.width = w; e.height = h;
+    const ex = e.getContext('2d');
+    ex.drawImage(safe, 0, 0);
+    ex.globalCompositeOperation = 'destination-out'; ex.drawImage(inner, 0, 0);
+    ex.globalCompositeOperation = 'source-in'; ex.fillStyle = '#E0006E'; ex.fillRect(0, 0, w, h);
+    return e.toDataURL('image/png');
+  }
+  paintGarment(view, hex){
+    const key = view + hex;
+    if (this._paint[key]) return this._paint[key];
+    const src = this._img && this._img[view];
+    if (!src) return null;
+    try {
+      const c = document.createElement('canvas'); c.width = src.naturalWidth; c.height = src.naturalHeight;
+      const x = c.getContext('2d');
+      x.drawImage(src, 0, 0);
+      x.globalCompositeOperation = 'color'; x.fillStyle = hex; x.fillRect(0, 0, c.width, c.height);
+      const D = ST(), L = hexL(hex);
+      if (L < D.BASE_L){ const g = Math.round(255*L/D.BASE_L); x.globalCompositeOperation='multiply'; x.fillStyle=`rgb(${g},${g},${g})`; x.fillRect(0,0,c.width,c.height); }
+      else if (L > D.BASE_L){ const g = Math.round(255*(L-D.BASE_L)/(1-D.BASE_L)); x.globalCompositeOperation='screen'; x.fillStyle=`rgb(${g},${g},${g})`; x.fillRect(0,0,c.width,c.height); }
+      x.globalCompositeOperation = 'destination-in'; x.drawImage(src, 0, 0);
+      const url = c.toDataURL('image/png');
+      this._paint[key] = url;
+      return url;
+    } catch (e) { return null; }
+  }
+  mkIconRef(url){ return node => { if (node && url && node.src !== url) node.src = url; }; }
+  snapshot(){ return JSON.parse(JSON.stringify(this.state.designs)); }
+  commit(mutate){
+    this.setState(st => {
+      const designs = JSON.parse(JSON.stringify(st.designs));
+      mutate(designs);
+      return { designs, past: [...st.past, st.designs].slice(-30), future: [] };
+    });
+  }
+  D(st){ st = st || this.state; return st.designs[st.active]; }
+  VW(view, st){ st = st || this.state; const d = this.D(st); return d.views[view] || d.views[Object.keys(d.views)[0]]; }
+  curView(){ const d = this.D(); return d.views[this.state.view] ? this.state.view : Object.keys(d.views)[0]; }
+
+  toastMsg(title, sub){
+    clearTimeout(this._toastT);
+    this.setState({ toast: { title, sub } });
+    this._toastT = setTimeout(() => this.setState({ toast: null }), 2800);
+  }
+
+  pick(tool){ this.setState(s => ({ panel: s.panel === tool ? null : tool })); }
+  closePanel(){ this.setState({ panel: null }); }
+  setView(v){ this.setState({ view: v, sel: null }); }
+  select(id){ this.setState({ sel: id }); }
+  deselect(){ this.setState({ sel: null, panel: this.state.panel }); }
+
+  selItem(){ return this.VW(this.curView()).items.find(x => x.id === this.state.sel); }
+
+  addItem(patch){
+    const view = this.curView();
+    const box = stageInfo(view).box;
+    const base = { id: nextId(), x: Math.round(box.x + box.w*0.2), y: Math.round(box.y + box.h*0.15), w: 110, h: 110, rot: 0, locked: false };
+    const it = Object.assign(base, patch);
+    this.commit(designs => { designs[this.state.active].views[view].items.push(it); });
+    this.setState({ sel: it.id, panel: null });
+  }
+  addText(){ this.addItem({ kind:'text', text:'YOUR TEXT', size:30, fi:0, ci:1, ls:2, bold:true, italic:false, underline:false, ol:false, oci:0 }); }
+  addNumberField(){ const F=ST().FIELDS.number; this.addItem({ kind:'field', text:F.sample, size:64, fi:4, ci:1, ls:2, bold:false, italic:false, underline:false, ol:true, oci:0 }); }
+  addNameField(){ const F=ST().FIELDS.name; this.addItem({ kind:'field', text:F.sample, size:34, fi:4, ci:1, ls:3, bold:false, italic:false, underline:false, ol:true, oci:0 }); }
+  addShape(shapeId){ this.addItem({ kind:'shape', shapeId, ci: 1, w:110, h:110 }); }
+  addSticker(id){ this.addItem({ kind:'sticker', shapeId:id, ci: this.state.stickerInk, w:110, h:110 }); }
+  addFrame(frameId){ this.addItem({ kind:'frame', frameId, slot:'slot-'+nextId(), w:150, h:150 }); }
+  addUpload(){
+    const slot = 'slot-' + nextId();
+    this.addItem({ kind:'upload', slot, w:150, h:150 });
+    this.setState(s => ({ library: [...s.library || [], { slot, ts: Date.now() }] }));
+  }
+  /* Real artwork upload — images go straight in; PDF and Illustrator files are
+     rasterised page 1 with pdf.js for the on-screen preview (an .ai saved with
+     PDF compatibility opens the same way), exactly as the mobile build does. */
+  importArtwork(e){
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    e.target.value = '';
+    if (file.size > 5 * 1024 * 1024) { this.toastMsg('Too large', 'Artwork files must be under 5 MB.'); return; }
+    const name = file.name || 'Artwork';
+    const isPdfLike = /pdf|illustrator|postscript/i.test(file.type) || /\.(pdf|ai|eps)$/i.test(name);
+    if (isPdfLike) this.rasterisePdf(file, name);
+    else {
+      const r = new FileReader();
+      r.onload = () => this.placeArtwork(r.result, name);
+      r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
+      r.readAsDataURL(file);
+    }
+  }
+  rasterisePdf(file, name){
+    if (!window.pdfjsLib) { this.toastMsg('Preview unavailable', 'The PDF renderer is still loading — try again in a moment.'); return; }
+    if (!window.pdfjsLib.GlobalWorkerOptions.workerSrc) window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const r = new FileReader();
+    r.onload = async () => {
+      try {
+        const doc = await window.pdfjsLib.getDocument({ data: new Uint8Array(r.result) }).promise;
+        const page = await doc.getPage(1);
+        const base = page.getViewport({ scale: 1 });
+        const scale = Math.min(1400 / base.width, 1400 / base.height, 3);
+        const viewport = page.getViewport({ scale });
+        const c = document.createElement('canvas');
+        c.width = Math.ceil(viewport.width); c.height = Math.ceil(viewport.height);
+        await page.render({ canvasContext: c.getContext('2d'), viewport }).promise;
+        this.placeArtwork(c.toDataURL('image/png'), name);
+        this.toastMsg('Added', name + ' · page 1 rasterised for preview, vector kept for print.');
+      } catch (err) {
+        this.toastMsg('Preview unavailable', 'Accepted for print, but ' + name + ' could not be previewed.');
+      }
+    };
+    r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
+    r.readAsArrayBuffer(file);
+  }
+  placeArtwork(url, name){
+    const probe = new Image();
+    probe.onload = () => {
+      const ratio = probe.naturalWidth / Math.max(1, probe.naturalHeight);
+      const box = stageInfo(this.curView()).box;
+      let w = Math.min(box.w * 0.6, 200), h = w / ratio;
+      if (h > box.h * 0.5) { h = box.h * 0.5; w = h * ratio; }
+      this.addItem({ kind: 'upload', url, name, w: Math.round(w), h: Math.round(h) });
+      this.setState(s => ({ library: [{ url, name, ts: Date.now() }, ...(s.library || []).filter(l => l.url !== url)].slice(0, 40) }));
+    };
+    probe.onerror = () => this.toastMsg('Upload failed', 'That artwork could not be displayed.');
+    probe.src = url;
+  }
+
+  updateSel(patch){
+    const id = this.state.sel, view = this.curView();
+    this.commit(designs => { const it = designs[this.state.active].views[view].items.find(x=>x.id===id); if (it) Object.assign(it, patch); });
+  }
+  duplicateSel(){
+    const it = this.selItem(); if (!it) return;
+    const c = JSON.parse(JSON.stringify(it)); c.id = nextId(); c.x += 14; c.y += 14;
+    this.commit(designs => { designs[this.state.active].views[this.curView()].items.push(c); });
+    this.setState({ sel: c.id });
+  }
+  deleteSel(){
+    const id = this.state.sel, view = this.curView();
+    this.commit(designs => { const items = designs[this.state.active].views[view].items; const i = items.findIndex(x=>x.id===id); if (i>-1) items.splice(i,1); });
+    this.setState({ sel: null });
+  }
+  lockSel(){ const it = this.selItem(); if (it) this.updateSel({ locked: !it.locked }); }
+  centerSel(){
+    const it = this.selItem(); if (!it) return;
+    const box = stageInfo(this.curView()).box;
+    this.updateSel({ x: Math.round(box.x + box.w/2 - (it.w||60)/2) });
+  }
+  bringFront(){ this.reorderSel('front'); }
+  sendBack(){ this.reorderSel('back'); }
+  reorderSel(dir){
+    const id = this.state.sel, view = this.curView();
+    this.commit(designs => {
+      const items = designs[this.state.active].views[view].items;
+      const i = items.findIndex(x=>x.id===id); if (i<0) return;
+      const [it] = items.splice(i,1);
+      if (dir==='front') items.push(it); else items.unshift(it);
+    });
+  }
+
+  startDrag(id, e){
+    const view = this.curView();
+    const it = this.VW(view).items.find(x=>x.id===id);
+    if (!it || it.locked){ this.select(id); return; }
+    e.stopPropagation(); e.preventDefault();
+    this.select(id);
+    const sx=e.clientX, sy=e.clientY, ox=it.x, oy=it.y, zoom=this.state.fitScale*this.state.zoom;
+    const stg = stageInfo(view), pad = 60;
+    const before = this.snapshot();
+    const move = ev => {
+      let nx = ox + (ev.clientX-sx)/zoom, ny = oy + (ev.clientY-sy)/zoom;
+      nx = Math.max(-pad, Math.min(stg.w+pad, nx));
+      ny = Math.max(-pad, Math.min(stg.h+pad, ny));
+      if (this.state.snap){ const su = Math.max(0.5, 4/zoom); nx = Math.round(nx/su)*su; ny = Math.round(ny/su)*su; }
+      this.setState(s => { const designs = JSON.parse(JSON.stringify(s.designs)); const item = designs[s.active].views[view].items.find(x=>x.id===id); if (item){ item.x=nx; item.y=ny; } return { designs }; });
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [] })); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  startResize(id, e){
+    e.stopPropagation(); e.preventDefault();
+    const view = this.curView();
+    const it = this.VW(view).items.find(x=>x.id===id); if (!it) return;
+    const sx=e.clientX, ow=it.w, oh=it.h, ratio=ow/oh, zoom=this.state.fitScale*this.state.zoom;
+    const before = this.snapshot();
+    const move = ev => {
+      const dx = (ev.clientX-sx)/zoom;
+      const nw = Math.max(30, ow+dx), nh = nw/ratio;
+      this.setState(s => { const designs = JSON.parse(JSON.stringify(s.designs)); const item = designs[s.active].views[view].items.find(x=>x.id===id); if (item){ item.w=nw; item.h=nh; } return { designs }; });
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [] })); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  startRotate(id, e){
+    e.stopPropagation(); e.preventDefault();
+    const view = this.curView();
+    const before = this.snapshot();
+    const move = ev => {
+      const node = document.querySelector('[data-item-id="'+id+'"]');
+      const r = (node || e.currentTarget.parentElement).getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      let deg = Math.atan2(ev.clientY-cy, ev.clientX-cx) * 180/Math.PI + 90;
+      deg = Math.round(deg/5)*5;
+      this.setState(s => { const designs = JSON.parse(JSON.stringify(s.designs)); const item = designs[s.active].views[view].items.find(x=>x.id===id); if (item) item.rot = deg; return { designs }; });
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); this.setState(s => ({ past: [...s.past, before].slice(-30), future: [] })); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+
+  undo(){ this.setState(s => s.past.length ? { designs: s.past[s.past.length-1], past: s.past.slice(0,-1), future: [s.designs, ...s.future], sel:null } : null); }
+  redo(){ this.setState(s => s.future.length ? { designs: s.future[0], future: s.future.slice(1), past: [...s.past, s.designs], sel:null } : null); }
+
+  setColour(idx){ this.commit(designs => { designs[this.state.active].colourIdx = idx; }); }
+  setMethod(id){ this.commit(designs => { designs[this.state.active].methodId = id; }); }
+
+  addDesign(){
+    const pid = this.state.newPid || 'tee';
+    this.commit(designs => { designs.push(newDesign(pid, 0, 'dtf')); });
+    this.setState(s => ({ active: s.designs.length, view: 'Front', sel: null, newPid: null, panel: null }));
+  }
+  switchDesign(i){ this.setState({ active: i, view: 'Front', sel: null }); }
+
+  addLine(){ this.commit(designs => { const d = designs[this.state.active]; d.lines.push({ s: prod(d.pid).sizes[0], q: 1 }); }); }
+  updateLine(i, patch){ this.commit(designs => { Object.assign(designs[this.state.active].lines[i], patch); }); }
+  removeLine(i){ this.commit(designs => { const lines = designs[this.state.active].lines; if (lines.length>1) lines.splice(i,1); }); }
+
+  addRosterRow(){ this.commit(designs => { const d = designs[this.state.active]; (d.roster || (d.roster=[])).push({ n:'', name:'' }); }); }
+  fill11(){ this.commit(designs => { designs[this.state.active].roster = Array.from({length:11}, (_,i)=>({ n:String(i+1), name:'' })); }); }
+  clearRoster(){ this.commit(designs => { designs[this.state.active].roster = []; }); }
+  updateRoster(i, patch){ this.commit(designs => { Object.assign(designs[this.state.active].roster[i], patch); }); }
+  removeRoster(i){ this.commit(designs => { designs[this.state.active].roster.splice(i,1); }); }
+  setPreviewRow(i){ this.commit(designs => { const d = designs[this.state.active]; d.previewRow = d.previewRow===i ? null : i; }); }
+  importRoster(e){
+    const file = e.target.files && e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const rows = String(reader.result).split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      const parsed = rows.map(line => { const p = line.split(/[,;\t]/).map(s=>s.trim()); return { n: p[0]||'', name: p[1]||'' }; });
+      this.commit(designs => { designs[this.state.active].roster = parsed; });
+      this.toastMsg('Imported', parsed.length + ' rows added.');
+    };
+    reader.readAsText(file);
+  }
+
+  copyShare(){
+    const text = this.buildShareText();
+    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(()=>{});
+    this.toastMsg('Copied', 'Link and summary copied to clipboard.');
+  }
+  buildShareText(){
+    const D = ST();
+    const lines = this.state.designs.map((d,i) => {
+      const items = viewsFor(d.pid).reduce((t,v)=>t+d.views[v].items.length,0);
+      return 'Design ' + (i+1) + ': ' + prod(d.pid).t + ' · ' + D.COLOURS[d.colourIdx][0] + ' · ' + items + ' artwork item(s)';
+    });
+    return lines.join('\n') + '\n\nEstimated total: ' + eur(this.orderTotal());
+  }
+
+  priceParts(d){
+    const D = ST();
+    const faces = viewsFor(d.pid).filter(v => d.views[v].items.length).length;
+    const method = D.METHODS.find(m=>m.id===d.methodId) || D.METHODS[0];
+    const cells = viewsFor(d.pid).reduce((t,v)=>t + d.views[v].items.length, 0);
+    const hasFields = viewsFor(d.pid).some(v => d.views[v].items.some(i=>i.kind==='field'));
+    return { faces, ink: cells * (method.unit/100), setup: faces * D.SETUP_POS, vari: hasFields ? D.VARIABLE_UNIT : 0 };
+  }
+  dQty(d){ return (d.roster && d.roster.length) ? d.roster.length : d.lines.reduce((t,l)=>t+(+l.q||0),0); }
+  totalQty(){ return this.state.designs.reduce((t,d)=>t+this.dQty(d), 0); }
+  priceUnit(d){ const D = ST(); const p = this.priceParts(d); return prod(d.pid).base + p.ink + p.vari + p.setup/Math.max(1,this.dQty(d)); }
+  orderTotal(){
+    const D = ST(), dsc = 1 - D.discountFor(this.totalQty());
+    return this.state.designs.reduce((t,d) => {
+      const p = this.priceParts(d), dq = Math.max(1,this.dQty(d));
+      const rows = (d.roster && d.roster.length) ? d.roster.map(()=>({ s: prod(d.pid).sizes[1]||prod(d.pid).sizes[0], q:1 })) : d.lines;
+      const sub = rows.reduce((s,l) => s + (prod(d.pid).base + D.sizeUp(l.s) + p.ink + p.vari + p.setup/dq) * (+l.q||0), 0);
+      return t + sub * dsc;
+    }, 0);
+  }
+  addToQuote(){ this.setState({ panel: null }); this.toastMsg('Added to quote', this.totalQty() + ' unit(s) · ' + eur(this.orderTotal())); }
+
+  toggleGrid(){ this.setState(s=>({ grid: !s.grid })); }
+  toggleSnap(){ this.setState(s=>({ snap: !s.snap })); }
+  toggleGuides(){ this.setState(s=>({ guides: !s.guides })); }
+  togglePreview(){ this.setState(s=>({ previewMode: !s.previewMode, sel: null, panel: null })); }
+  zoomIn(){ this.setState(s=>({ zoom: Math.min(2, +(s.zoom+0.1).toFixed(2)) })); }
+  zoomOut(){ this.setState(s=>({ zoom: Math.max(0.5, +(s.zoom-0.1).toFixed(2)) })); }
+  resetView(){ this.setState({ zoom: 1 }); }
+
+  renderVals(){
+    const st = this.state, D = ST();
+    const d = this.D();
+    const view = this.curView();
+    const stage = stageInfo(view), box = stage.box;
+    const garmentHex = D.COLOURS[d.colourIdx][1];
+    const garmentImg = this.paintGarment(view, garmentHex) || '';
+    const edgeImg = this._edge[view] || '';
+    const preview = st.previewMode;
+    const sel = this.selItem();
+    const items = this.VW(view).items;
+
+    const RAIL = [
+      { id:'AI', icon:'✦', label:'AI' }, { id:'Templates', icon:'▦', label:'Templates' },
+      { id:'Colour', icon:'◐', label:'Colour' }, { id:'File', icon:'⇪', label:'File' },
+      { id:'Elements', icon:'✳', label:'Elements' }, { id:'Stickers', icon:'✺', label:'Stickers' },
+      { id:'Team', icon:'⚑', label:'Team' }, { id:'Proof', icon:'◑', label:'Proof' },
+      { id:'Designs', icon:'▤', label:'Designs' }, { id:'Order', icon:'▣', label:'Order' },
+      { id:'Share', icon:'↗', label:'Share' },
+    ];
+
+    const TEMPLATES = [
+      { name:'Varsity Number', run:()=>this.addNumberField() },
+      { name:'Wordmark', run:()=>this.addText() },
+      { name:'Badge + Text', run:()=>{ this.addShape('circle'); this.addText(); } },
+      { name:'Star Emblem', run:()=>this.addSticker('star') },
+      { name:'Name + Number', run:()=>{ this.addNameField(); this.addNumberField(); } },
+      { name:'Arrow Mark', run:()=>this.addShape('arrow-r') },
+    ];
+
+    const method = D.METHODS.find(m=>m.id===d.methodId) || D.METHODS[0];
+
+    const outlineStyleFor = it => {
+      if (!it.ol) return 'none';
+      const oc = D.INK[it.oci]||'#15181F';
+      return ['-1px -1px 0 '+oc,'1px -1px 0 '+oc,'-1px 1px 0 '+oc,'1px 1px 0 '+oc].join(',');
+    };
+
+    const textFieldItems = items.filter(i=>i.kind==='text'||i.kind==='field').map(it => {
+      const font = D.FONTS[it.fi] || D.FONTS[0];
+      return {
+        ...it,
+        family: font[1], weight: it.bold ? 900 : font[2], fontStyle: it.italic?'italic':'normal',
+        decoration: it.underline?'underline':'none', color: D.INK[it.ci]||'#15181F',
+        textShadow: outlineStyleFor(it),
+        selected: st.sel===it.id && !preview, z: st.sel===it.id?5:2,
+        outline: (st.sel===it.id && !preview) ? '1.5px solid #4A47E0' : 'none',
+        cursor: it.locked ? 'default' : 'move',
+        startDrag: e => { if (!preview) this.startDrag(it.id, e); },
+        startRotate: e => { if (!preview) this.startRotate(it.id, e); },
+        textRef: this.measureTextRef(it.id),
+      };
+    });
+    const vectorItems = items.filter(i=>i.kind==='shape'||i.kind==='sticker').map(it => {
+      const set = it.kind==='shape' ? D.SHAPES : D.STICKERS;
+      const s = set.find(x=>x.id===it.shapeId) || set[0];
+      const icon = svgIcon(s.svg, D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#15181F'));
+      return {
+        ...it, iconRef: this.mkIconRef(icon),
+        selected: st.sel===it.id && !preview, z: st.sel===it.id?5:2,
+        outline: (st.sel===it.id && !preview) ? '1.5px solid #4A47E0' : 'none',
+        cursor: it.locked ? 'default' : 'move',
+        startDrag: e => { if (!preview) this.startDrag(it.id, e); },
+        startResize: e => { if (!preview) this.startResize(it.id, e); },
+        startRotate: e => { if (!preview) this.startRotate(it.id, e); },
+      };
+    });
+    const mediaItems = items.filter(i=>i.kind==='upload'||i.kind==='frame').map(it => {
+      const frame = it.kind==='frame' ? D.FRAMES.find(f=>f.id===it.frameId) : null;
+      return {
+        ...it, clip: frame ? frame.clip : 'none',
+        hasUrl: !!it.url, noUrl: !it.url, fit: frame ? 'cover' : 'contain',
+        imgRef: this.mkIconRef(it.url),
+        selected: st.sel===it.id && !preview, z: st.sel===it.id?5:2,
+        outline: (st.sel===it.id && !preview) ? '1.5px solid #4A47E0' : 'none',
+        cursor: it.locked ? 'default' : 'move',
+        startDrag: e => { if (!preview) this.startDrag(it.id, e); },
+        startResize: e => { if (!preview) this.startResize(it.id, e); },
+        startRotate: e => { if (!preview) this.startRotate(it.id, e); },
+      };
+    });
+
+    // warnings: any corner of the item sitting off the real traced garment shape
+    let warnItem = null;
+    for (const it of items) {
+      const isText = it.kind==='text'||it.kind==='field';
+      const measured = isText ? this._textSize[it.id] : null;
+      const totalScaleNow = st.fitScale*st.zoom;
+      const w = isText ? (measured ? measured.w/totalScaleNow : (it.text||'').length*it.size*0.58) : it.w;
+      const h = isText ? (measured ? measured.h/totalScaleNow : it.size*1.2) : it.h;
+      const pts = [[it.x,it.y],[it.x+w,it.y],[it.x,it.y+h],[it.x+w,it.y+h],[it.x+w/2,it.y+h/2],
+        [it.x+w/2,it.y],[it.x+w/2,it.y+h],[it.x,it.y+h/2],[it.x+w,it.y+h/2]];
+      const gv = D.GARMENT_VIEWS[view];
+      const off = pts.some(([px,py]) => !this.insideMask(view, px/stage.w, py/stage.h, gv && gv.box));
+      if (off) { warnItem = it; break; }
+    }
+
+    const roster = d.roster || [];
+    const rosterRows = roster.map((r,i) => ({
+      n: r.n, name: r.name,
+      border: d.previewRow===i ? '#4A47E0' : '#E4E2DC', bg: d.previewRow===i ? '#F1F0FC' : '#fff',
+      setN: e => this.updateRoster(i, { n: e.target.value }),
+      setName: e => this.updateRoster(i, { name: e.target.value }),
+      preview: () => this.setPreviewRow(i),
+      previewLabel: d.previewRow===i ? 'Previewing' : 'Preview',
+      previewColor: d.previewRow===i ? '#4A47E0' : '#8A919C',
+      remove: () => this.removeRoster(i),
+    }));
+
+    const proofRows = (() => {
+      const hexes = new Set([garmentHex]);
+      items.forEach(it => { if (it.ci!=null) hexes.add(D.INK[it.ci] || (D.COLOURS[it.ci]&&D.COLOURS[it.ci][1])); });
+      return [...hexes].filter(Boolean).slice(0,8).map(hex => {
+        const n = parseInt(hex.slice(1),16), r=(n>>16&255)/255, g=(n>>8&255)/255, b=(n&255)/255;
+        const [pr,pg,pb] = D.toPrint(r,g,b);
+        const fabric = '#'+[pr,pg,pb].map(v=>Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
+        const shift = Math.round((Math.abs(pr-r*255)+Math.abs(pg-g*255)+Math.abs(pb-b*255))/3);
+        return { screen: hex, fabric, name: hex.toUpperCase(), shift: shift>40?'shifts a lot':shift>15?'shifts a little':'stays close' };
+      });
+    })();
+
+    const designRows = st.designs.map((dd,i) => ({
+      hex: D.COLOURS[dd.colourIdx][1],
+      label: prod(dd.pid).t + ' · ' + D.COLOURS[dd.colourIdx][0],
+      priceStr: eur(this.priceUnit(dd)) + '/u',
+      border: st.active===i ? '#4A47E0' : '#E4E2DC', bg: st.active===i ? '#F1F0FC' : '#fff',
+      pick: () => this.switchDesign(i),
+    }));
+    const productPicks = D.PRODUCTS.map(p => ({
+      t: p.t, border: st.newPid===p.id ? '#4A47E0' : '#CFCCC4', bg: st.newPid===p.id ? '#F1F0FC' : '#fff',
+      pick: () => this.setState({ newPid: p.id }),
+    }));
+
+    const orderDesignBlocks = st.designs.map((dd,i) => ({
+      title: prod(dd.pid).t + ' — ' + D.COLOURS[dd.colourIdx][0],
+      lines: dd.lines.map((l,li) => ({
+        s: l.s, q: l.q, sizeOpts: prod(dd.pid).sizes,
+        setSize: e => this.commit(designs => { designs[i].lines[li].s = e.target.value; }),
+        setQty: e => this.commit(designs => { designs[i].lines[li].q = +e.target.value||0; }),
+        remove: () => this.commit(designs => { if (designs[i].lines.length>1) designs[i].lines.splice(li,1); }),
+      })),
+      addLine: () => this.commit(designs => { designs[i].lines.push({ s: prod(dd.pid).sizes[0], q:1 }); }),
+    }));
+
+    const qty = this.totalQty(), dsc = D.discountFor(qty);
+
+    return {
+      undo: () => this.undo(), redo: () => this.redo(),
+      undoInk: st.past.length ? '#15181F' : '#CFCCC4', redoInk: st.future.length ? '#15181F' : '#CFCCC4',
+      headerName: prod(d.pid).t, headerColourHex: garmentHex, headerColourName: D.COLOURS[d.colourIdx][0],
+      headerPrice: eur(this.priceUnit(d)) + ' /unit',
+      togglePreview: () => this.togglePreview(),
+      previewBg: preview ? '#15181F' : 'transparent', previewInk: preview ? '#fff' : '#15181F', previewBorder: preview ? '#15181F' : '#CFCCC4',
+      cartCount: qty, openOrder: () => this.setState({ panel: 'Order' }),
+      cartOpen: st.cartOpen,
+      toggleCart: () => this.setState(s => ({ cartOpen: !s.cartOpen })),
+      closeCart: () => this.setState({ cartOpen: false }),
+      cartHeading: qty + (qty === 1 ? ' item' : ' items') + ' in your cart',
+      cartQtyLabel: qty + (qty === 1 ? ' item' : ' items'),
+      cartSubtotal: eur(this.orderTotal()),
+      cartLines: st.designs.map((dd, i) => ({
+        hex: D.COLOURS[dd.colourIdx][1],
+        name: prod(dd.pid).t,
+        unitPrice: eur(this.priceUnit(dd)),
+        meta: D.COLOURS[dd.colourIdx][0] + ' / ' + (dd.lines[0] ? dd.lines[0].s : '—') + ' · ' + (D.METHODS.find(m => m.id === dd.methodId) || D.METHODS[0]).t,
+        qty: this.dQty(dd),
+        inc: () => this.commit(designs => { designs[i].lines[0].q = (+designs[i].lines[0].q || 0) + 1; }),
+        dec: () => this.commit(designs => { designs[i].lines[0].q = Math.max(1, (+designs[i].lines[0].q || 1) - 1); }),
+        edit: () => this.setState({ active: i, view: 'Front', sel: null, cartOpen: false }),
+        remove: () => { if (st.designs.length > 1) this.commit(designs => designs.splice(i, 1)); this.setState(s => ({ active: Math.min(s.active, Math.max(0, s.designs.length - 2)) })); },
+      })),
+      freeShipMsg: (() => { const rem = 75 - this.orderTotal(); return rem > 0 ? eur(rem) + ' away from free shipping' : 'You\u2019ve unlocked free shipping!'; })(),
+      freeShipPct: Math.min(100, (this.orderTotal() / 75) * 100),
+      volumeTiers: [{ qty: 10, pct: '1%' }, { qty: 50, pct: '3%' }, { qty: 100, pct: '4%' }].map(t => {
+        const on = qty >= t.qty;
+        return { ...t, bg: on ? '#1C1B19' : 'rgba(255,255,255,0.55)', border: on ? '#1C1B19' : 'rgba(28,27,25,0.12)', ink: on ? '#FBFAF8' : '#4A473F' };
+      }),
+      volumeMsg: (() => {
+        if (qty >= 100) return 'You\u2019re saving 4% with quantity pricing';
+        if (qty >= 50) return 'You\u2019re saving 3% — add ' + (100 - qty) + ' more for 4% off';
+        if (qty >= 10) return 'You\u2019re saving 1% — add ' + (50 - qty) + ' more for 3% off';
+        return 'Add ' + (10 - qty) + ' more for 1% quantity pricing';
+      })(),
+
+      rail: RAIL.map(r => ({
+        ...r, bg: st.panel===r.id ? '#15181F' : 'transparent', hoverBg: st.panel===r.id?'#15181F':'#EFEEE9',
+        ink: st.panel===r.id ? '#fff' : '#5A6371', pick: () => this.pick(r.id),
+      })),
+      panelOpen: !!st.panel && !preview, panelTitle: st.panel || '', closePanel: () => this.closePanel(),
+      panelIsAI: st.panel==='AI', panelIsTemplates: st.panel==='Templates', panelIsColour: st.panel==='Colour',
+      panelIsFile: st.panel==='File', panelIsElements: st.panel==='Elements', panelIsStickers: st.panel==='Stickers',
+      panelIsTeam: st.panel==='Team', panelIsProof: st.panel==='Proof', panelIsDesigns: st.panel==='Designs',
+      panelIsOrder: st.panel==='Order', panelIsShare: st.panel==='Share',
+
+      aiIdeas: D.AI_IDEAS,
+      templates: TEMPLATES.map(t => ({ name: t.name, apply: () => { t.run(); this.setState({ panel:null }); } })),
+
+      colourName: D.COLOURS[d.colourIdx][0],
+      colourSwatches: D.COLOURS.map((c,i) => ({ hex:c[1], name:c[0], ring: i===d.colourIdx?'0 0 0 2px #fff, 0 0 0 3.5px #4A47E0':'none', pick: () => this.setColour(i) })),
+      methods: D.METHODS.map(m => ({ ...m, unitStr: eur(m.unit), border: d.methodId===m.id?'#4A47E0':'#E4E2DC', bg: d.methodId===m.id?'#F1F0FC':'#fff', ink: d.methodId===m.id?'#4A47E0':'#15181F', pick: () => this.setMethod(m.id) })),
+
+      importArtwork: e => this.importArtwork(e),
+      hasLibrary: (st.library||[]).length>0, libraryEmpty: (st.library||[]).length===0,
+      library: (st.library||[]).map(l => ({
+        name: l.name || 'Artwork', imgRef: this.mkIconRef(l.url),
+        place: () => l.url && this.placeArtwork(l.url, l.name),
+      })),
+
+      elTabIsText: st.elTab==='text', elTabIsShapes: st.elTab==='shapes', elTabIsFrames: st.elTab==='frames',
+      setElTabText: () => this.setState({ elTab:'text' }), setElTabShapes: () => this.setState({ elTab:'shapes' }), setElTabFrames: () => this.setState({ elTab:'frames' }),
+      elTabTextBorder: st.elTab==='text'?'#15181F':'#CFCCC4', elTabTextBg: st.elTab==='text'?'#EFEEE9':'transparent',
+      elTabShapesBorder: st.elTab==='shapes'?'#15181F':'#CFCCC4', elTabShapesBg: st.elTab==='shapes'?'#EFEEE9':'transparent',
+      elTabFramesBorder: st.elTab==='frames'?'#15181F':'#CFCCC4', elTabFramesBg: st.elTab==='frames'?'#EFEEE9':'transparent',
+      addText: () => this.addText(),
+      shapes: D.SHAPES.map(s => { const icon = svgIcon(s.svg,'#15181F'); return { t: s.t, iconRef: this.mkIconRef(icon), add: () => this.addShape(s.id) }; }),
+      frames: D.FRAMES.map(f => ({ t: f.t, clip: f.clip, add: () => this.addFrame(f.id) })),
+
+      inkSwatches: D.INK.map((hex,i) => ({ hex, ring: i===st.stickerInk?'0 0 0 2px #fff, 0 0 0 3.5px #4A47E0':'none', pick: () => this.setState({ stickerInk:i }) })),
+      stickers: D.STICKERS.map(s => { const icon = svgIcon(s.svg, D.INK[st.stickerInk]); return { t: s.t, iconRef: this.mkIconRef(icon), add: () => this.addSticker(s.id) }; }),
+
+      addNumberField: () => this.addNumberField(), addNameField: () => this.addNameField(),
+      importRoster: e => this.importRoster(e), rosterRows,
+      addRosterRow: () => this.addRosterRow(), fill11: () => this.fill11(), clearRoster: () => this.clearRoster(),
+
+      proofRows,
+
+      designRows, productPicks, addDesign: () => this.addDesign(),
+
+      orderDesignBlocks,
+      totalQtyStr: qty + ' unit' + (qty===1?'':'s'), orderTotalStr: eur(this.orderTotal()),
+      discountNote: dsc>0 ? ('Volume discount applied: ' + Math.round(dsc*100) + '% off.') : 'Order 10+ units for a volume discount.',
+      addToQuote: () => this.addToQuote(),
+
+      shareText: this.buildShareText(),
+      copyShare: () => this.copyShare(),
+      mailtoHref: 'mailto:?subject=' + encodeURIComponent('My Web2Print design') + '&body=' + encodeURIComponent(this.buildShareText()),
+
+      garmentHex, garmentRef: this.mkIconRef(garmentImg), edgeRef: this.mkIconRef(edgeImg), stageW: stage.w, stageH: stage.h,
+      canvasRef: this.canvasRef, totalScale: +(st.fitScale * st.zoom).toFixed(3),
+      showGuides: st.guides && !preview, showGrid: st.grid && !preview,
+      boxX: box.x, boxY: box.y, boxY2: box.y-20, boxW: box.w, boxH: box.h,
+      viewLabel: view,
+      textFieldItems, vectorItems, mediaItems,
+
+      hasSelection: !!sel && !preview,
+      duplicateSel: () => this.duplicateSel(), centerSel: () => this.centerSel(),
+      bringFront: () => this.bringFront(), sendBack: () => this.sendBack(),
+      lockSel: () => this.lockSel(), lockLabel: sel && sel.locked ? 'Unlock' : 'Lock',
+      deleteSel: () => this.deleteSel(),
+
+      inspectorOpen: !!sel && !preview,
+      inspectorTitle: sel ? (sel.kind==='text'?'Text':sel.kind==='field'?'Field':sel.kind==='shape'?'Shape':sel.kind==='sticker'?'Sticker':sel.kind==='frame'?'Frame':'Upload') : '',
+      selIsText: !!sel && (sel.kind==='text'||sel.kind==='field'),
+      selIsVector: !!sel && (sel.kind==='shape'||sel.kind==='sticker'),
+      selIsFrame: !!sel && sel.kind==='frame',
+      selIsMedia: !!sel && (sel.kind==='upload'||sel.kind==='frame'),
+      fontOpts: D.FONTS.map((f,i) => ({ label: f[0], family: f[1], bg: sel&&sel.fi===i?'#F1F0FC':'transparent', ink: sel&&sel.fi===i?'#4A47E0':'#15181F', pick: () => this.updateSel({ fi:i }) })),
+      toggleBold: () => sel && this.updateSel({ bold: !sel.bold }), boldBorder: sel&&sel.bold?'#4A47E0':'#CFCCC4', boldBg: sel&&sel.bold?'#F1F0FC':'#fff',
+      toggleItalic: () => sel && this.updateSel({ italic: !sel.italic }), italicBorder: sel&&sel.italic?'#4A47E0':'#CFCCC4', italicBg: sel&&sel.italic?'#F1F0FC':'#fff',
+      toggleUnderline: () => sel && this.updateSel({ underline: !sel.underline }), underlineBorder: sel&&sel.underline?'#4A47E0':'#CFCCC4', underlineBg: sel&&sel.underline?'#F1F0FC':'#fff',
+      selSize: sel ? sel.size : 0, setSize: e => this.updateSel({ size:+e.target.value }),
+      selLs: sel ? (sel.ls||0) : 0, setLs: e => this.updateSel({ ls:+e.target.value }),
+      inkOpts: D.INK.map((hex,i) => ({ hex, ring: sel&&sel.ci===i?'0 0 0 2px #fff, 0 0 0 3.5px #4A47E0':'none', pick: () => this.updateSel({ ci:i }) })),
+      toggleOutline: () => sel && this.updateSel({ ol: !sel.ol }), olBg: sel&&sel.ol?'#4A47E0':'#CFCCC4', olKnob: sel&&sel.ol?'17px':'3px', selOutline: !!sel&&sel.ol,
+      outlineOpts: D.INK.map((hex,i) => ({ hex, ring: sel&&sel.oci===i?'0 0 0 2px #fff, 0 0 0 3.5px #4A47E0':'none', pick: () => this.updateSel({ oci:i }) })),
+      vectorColourOpts: D.COLOURS.map((c,i) => ({ hex:c[1], ring: sel&&sel.ci===i?'0 0 0 2px #fff, 0 0 0 3.5px #4A47E0':'none', pick: () => this.updateSel({ ci:i }) })),
+      frameOpts: D.FRAMES.map(f => ({ t:f.t, clip:f.clip, bg:'#CFCCC4', pick: () => this.updateSel({ frameId:f.id }) })),
+      selW: sel ? Math.round(sel.w||0) : 0, setW: e => { const w=+e.target.value; const ratio=(sel.w||1)/(sel.h||1); this.updateSel({ w, h: w/ratio }); },
+      embCompat: 'up to 12 colours',
+      selRot: sel ? Math.round(sel.rot||0) : 0, setRot: e => this.updateSel({ rot:+e.target.value }),
+
+      hasWarning: !!warnItem && !preview,
+      warningMsg: 'Outside the print area — will be cut off.',
+      fixWarning: () => { if (warnItem) this.commit(designs => { const it = designs[this.state.active].views[view].items.find(x=>x.id===warnItem.id); if (it){ const w = it.kind==='text'||it.kind==='field' ? (it.text||'').length*it.size*0.58 : it.w, h = it.kind==='text'||it.kind==='field' ? it.size*1.2 : it.h; it.x = Math.round(box.x+box.w/2-w/2); it.y = Math.round(box.y+box.h/2-h/2); } }); },
+
+      views: viewsFor(d.pid).map(v => ({ label: v, bg: view===v?'#15181F':'transparent', ink: view===v?'#fff':'#5A6371', hasContent: d.views[v].items.length>0, pick: () => this.setView(v) })),
+
+      zoomPct: Math.round(st.zoom*100)+'%', zoomIn: () => this.zoomIn(), zoomOut: () => this.zoomOut(), resetView: () => this.resetView(),
+      toggleGrid: () => this.toggleGrid(), gridInk: st.grid?'#4A47E0':'#5A6371', gridWeight: st.grid?600:400,
+      toggleSnap: () => this.toggleSnap(), snapInk: st.snap?'#4A47E0':'#5A6371', snapWeight: st.snap?600:400,
+      toggleGuides: () => this.toggleGuides(), guidesInk: st.guides?'#4A47E0':'#5A6371', guidesWeight: st.guides?600:400,
+
+      deselect: () => this.deselect(),
+      toastOpen: !!st.toast, toastTitle: st.toast?st.toast.title:'', toastSub: st.toast?st.toast.sub:'',
+    };
+  }
+}
+
+</script>
+</body>
+</html>
