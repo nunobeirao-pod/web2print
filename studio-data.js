@@ -83,9 +83,13 @@ window.STUDIO = (function () {
      saved as assets/tee-*.webp. Print-area boxes are fractions (0-1) of each
      photo's own width/height, eyeballed against the photo since the real traced
      alpha masks weren't ported; w/h are the source photos' natural pixel size. */
+  /* Real per-size max print width (cm), traced from the size chart — the Studio canvas
+     is authored against the M reference (SIZE_PRINT_CM.M); every other size's production
+     file is the same design scaled to its own garment's real printable width. */
+  const SIZE_PRINT_CM = { S: 46, M: 50, L: 54, XL: 58, '2XL': 62 };
   const GARMENT_VIEWS = {
-    Front: { src: 'assets/tee-front.webp', mask: 'assets/tee-mask-front.png', w: 760, h: 773, box: { x: .1922, y: .0131, w: .6144, h: .9858 } },
-    Back: { src: 'assets/tee-back.webp', mask: 'assets/tee-mask-back.png', w: 760, h: 773, box: { x: .1956, y: .0120, w: .6100, h: .9869 } },
+    Front: { src: 'assets/tee-front.webp', mask: 'assets/tee-mask-front.png', w: 760, h: 773, box: { x: .2210, y: .0131, w: .5568, h: .9858 } },
+    Back: { src: 'assets/tee-back.webp', mask: 'assets/tee-mask-back.png', w: 760, h: 773, box: { x: .2242, y: .0120, w: .5528, h: .9869 } },
     Left: { src: 'assets/tee-left.webp', mask: 'assets/tee-mask-left.png', w: 760, h: 1390, box: { x: .1933, y: .2837, w: .6033, h: .3293 } },
     Right: { src: 'assets/tee-right.webp', mask: 'assets/tee-mask-right.png', w: 760, h: 1389, box: { x: .2044, y: .2845, w: .6022, h: .3289 } },
     Neck: { src: 'assets/tee-neck.webp', mask: 'assets/tee-mask-neck.png', w: 620, h: 554, box: { x: .2678, y: .1322, w: .4556, h: .1883 } }
@@ -111,5 +115,5 @@ window.STUDIO = (function () {
     const rr = 1 - Math.min(1, c + k), gg = 1 - Math.min(1, m + k), bb = 1 - Math.min(1, y + k);
     return [rr * 255, gg * 255, bb * 255];
   }
-  return { COLOURS, INK, FONTS, FONT_CATS, METHODS, SHAPES, STICKERS, FRAMES, PRODUCTS, ORDER, GARMENT_VIEWS, BASE_L, AI_IDEAS, FIELDS, VARIABLE_UNIT, SETUP_POS, discountFor, sizeUp, toPrint };
+  return { COLOURS, INK, FONTS, FONT_CATS, METHODS, SHAPES, STICKERS, FRAMES, PRODUCTS, ORDER, GARMENT_VIEWS, BASE_L, AI_IDEAS, FIELDS, VARIABLE_UNIT, SETUP_POS, SIZE_PRINT_CM, discountFor, sizeUp, toPrint };
 })();

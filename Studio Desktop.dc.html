@@ -12,6 +12,7 @@
   <script src="./image-slot.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bangers&family=Barlow+Condensed:wght@700&family=Bebas+Neue&family=Bungee&family=Fjalla+One&family=Graduate&family=Lobster&family=Montserrat:wght@800&family=Oswald:wght@600&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@800&family=Rubik+Mono+One&family=Squada+One&family=Staatliches&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
@@ -302,11 +303,34 @@
                 <sc-for list="{{ inkOpts }}" as="k" hint-placeholder-count="5">
                   <button onClick="{{ k.pick }}" aria-label="{{ k.hex }}" style="width:32px;height:32px;border-radius:8px;background:{{ k.hex }};border:1px solid rgba(28,27,25,.12);box-shadow:{{ k.ring }};cursor:pointer;padding:0;flex-shrink:0"></button>
                 </sc-for>
-                <label title="Custom colour" style="width:32px;height:32px;border-radius:8px;cursor:pointer;position:relative;flex-shrink:0;box-shadow:{{ customRing }};background:conic-gradient(#E64545,#F0B429,#41573B,#4A4FE4,#A34B33,#E64545)">
-                  <input type="color" value="{{ selHex }}" onChange="{{ setHex }}" aria-label="Custom colour" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer">
-                </label>
+                <button onClick="{{ toggleCmykPicker }}" title="Custom colour (CMYK)" aria-label="Custom colour" style="width:32px;height:32px;border-radius:8px;cursor:pointer;position:relative;flex-shrink:0;box-shadow:{{ customRing }};background:conic-gradient(#E64545,#F0B429,#41573B,#4A4FE4,#A34B33,#E64545);border:none;padding:0"></button>
               </div>
             </div>
+            <sc-if value="{{ cmykPickerOpen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
+                <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+                  <span style="font-size:11.5px;font-weight:600;color:#4A473F;letter-spacing:.04em">CMYK · PRINT-SAFE</span>
+                  <div style="display:flex;gap:6px;align-items:center">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                      <span style="width:22px;height:22px;border-radius:6px;background:{{ selHex }};border:1px solid rgba(28,27,25,.12)"></span>
+                      <span style="font-size:9px;color:#8B867B">RGB</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                      <span style="width:22px;height:22px;border-radius:6px;background:{{ selHexPrint }};border:1px solid rgba(28,27,25,.12)"></span>
+                      <span style="font-size:9px;color:#8B867B">CMYK</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="position:relative;width:100%">
+                  <canvas ref="{{ svRef }}" width="220" height="140" onMouseDown="{{ svDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
+                  <div style="position:absolute;top:{{ svDotY }}%;left:{{ svDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ selHex }}"></div>
+                </div>
+                <div style="position:relative;width:100%;height:20px">
+                  <canvas ref="{{ hueRef }}" width="220" height="20" onMouseDown="{{ hueDown }}" style="width:100%;height:20px;border-radius:10px;cursor:pointer"></canvas>
+                  <div style="position:absolute;top:50%;left:{{ huePct }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);transform:translate(-50%,-50%);pointer-events:none;background:{{ hueDotColor }}"></div>
+                </div>
+              </div>
+            </sc-if>
             <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="font-size:12.5px;font-weight:500">Outline</span>
               <button onClick="{{ toggleOutline }}" role="switch" aria-label="Outline" style="width:36px;height:22px;border-radius:999px;border:none;background:{{ olBg }};position:relative;cursor:pointer;padding:0;transition:background 150ms"><span style="position:absolute;top:3px;left:{{ olKnob }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left 150ms"></span></button>
@@ -316,6 +340,37 @@
                 <sc-for list="{{ outlineOpts }}" as="k" hint-placeholder-count="5">
                   <button onClick="{{ k.pick }}" aria-label="{{ k.hex }}" style="width:32px;height:32px;border-radius:8px;background:{{ k.hex }};border:1px solid rgba(28,27,25,.12);box-shadow:{{ k.ring }};cursor:pointer;padding:0"></button>
                 </sc-for>
+                <button onClick="{{ toggleOlCmykPicker }}" title="Custom outline colour" aria-label="Custom outline colour" style="width:32px;height:32px;border-radius:8px;cursor:pointer;position:relative;flex-shrink:0;box-shadow:{{ olCustomRing }};background:conic-gradient(#E64545,#F0B429,#41573B,#4A4FE4,#A34B33,#E64545);border:none;padding:0"></button>
+              </div>
+              <sc-if value="{{ olCmykPickerOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:2px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
+                  <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+                    <span style="font-size:11.5px;font-weight:600;color:#4A473F;letter-spacing:.04em">CMYK · PRINT-SAFE</span>
+                    <div style="display:flex;gap:6px;align-items:center">
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="width:22px;height:22px;border-radius:6px;background:{{ olHex }};border:1px solid rgba(28,27,25,.12)"></span>
+                        <span style="font-size:9px;color:#8B867B">RGB</span>
+                      </div>
+                      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                        <span style="width:22px;height:22px;border-radius:6px;background:{{ olHexPrint }};border:1px solid rgba(28,27,25,.12)"></span>
+                        <span style="font-size:9px;color:#8B867B">CMYK</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="position:relative;width:100%">
+                    <canvas ref="{{ olSvRef }}" width="220" height="140" onMouseDown="{{ olSvDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
+                    <div style="position:absolute;top:{{ olSvDotY }}%;left:{{ olSvDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ olHex }}"></div>
+                  </div>
+                  <div style="position:relative;width:100%;height:20px">
+                    <canvas ref="{{ olHueRef }}" width="220" height="20" onMouseDown="{{ olHueDown }}" style="width:100%;height:20px;border-radius:10px;cursor:pointer"></canvas>
+                    <div style="position:absolute;top:50%;left:{{ olHuePct }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);transform:translate(-50%,-50%);pointer-events:none;background:{{ olHueDotColor }}"></div>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+                <span style="font-size:12.5px;font-weight:500;flex-shrink:0">Line thickness</span>
+                <input type="range" min="0.1" max="5" step="0.1" value="{{ olWidthMm }}" onChange="{{ setOlWidthMm }}" style="flex:1;accent-color:#1C1B19">
+                <span style="width:48px;font-size:12px;color:#4A473F;text-align:right;font-variant-numeric:tabular-nums">{{ olWidthMm }} mm</span>
               </div>
             </sc-if>
           </sc-if>
@@ -358,14 +413,17 @@
           <sc-if value="{{ selIsSingle }}" hint-placeholder-val="{{ false }}">
             <div style="border-top:1px solid #E6E2D8;padding-top:16px">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8B867B">Position &amp; size</span><span style="font-size:11px;color:#8B867B">cm · from print area</span></div>
-              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px">
-                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">X</span><input type="number" step="0.1" value="{{ selXcm }}" onChange="{{ setXcm }}" aria-label="X position" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums"></label>
-                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">Y</span><input type="number" step="0.1" value="{{ selYcm }}" onChange="{{ setYcm }}" aria-label="Y position" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums"></label>
-                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">W</span><input type="number" step="0.1" min="0.5" value="{{ selWcm }}" onChange="{{ setWcm }}" disabled="{{ sizeDisabled }}" aria-label="Width" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums"></label>
-                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">H</span><input type="number" step="0.1" min="0.5" value="{{ selHcm }}" onChange="{{ setHcm }}" disabled="{{ sizeDisabled }}" aria-label="Height" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums"></label>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">X</span><input type="number" step="0.1" defaultValue="{{ selXcm }}" key="{{ selXcm }}" onBlur="{{ setXcm }}" onKeyDown="{{ commitOnEnter }}" aria-label="X position" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums;padding-right:6px"></label>
+                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">Y</span><input type="number" step="0.1" defaultValue="{{ selYcm }}" key="{{ selYcm }}" onBlur="{{ setYcm }}" onKeyDown="{{ commitOnEnter }}" aria-label="Y position" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums;padding-right:6px"></label>
+              </div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center">
+                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">W</span><input type="number" step="0.1" min="0.5" defaultValue="{{ selWcm }}" key="{{ selWcm }}" onBlur="{{ setWcm }}" onKeyDown="{{ commitOnEnter }}" disabled="{{ sizeDisabled }}" aria-label="Width" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums;padding-right:6px"></label>
+                <button onClick="{{ toggleAspectLock }}" title="{{ aspectLockTitle }}" aria-label="Lock aspect ratio" style="width:28px;height:28px;border-radius:6px;border:none;background:{{ aspectLockBg }};color:{{ aspectLockInk }};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin:0 -2px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><sc-if value="{{ aspectLocked }}" hint-placeholder-val="{{ true }}"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></sc-if><sc-if value="{{ aspectUnlocked }}" hint-placeholder-val="{{ false }}"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 7-2.6"></path></sc-if></svg></button>
+                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff"><span style="font-size:11px;color:#8B867B;width:12px">H</span><input type="number" step="0.1" min="0.5" defaultValue="{{ selHcm }}" key="{{ selHcm }}" onBlur="{{ setHcm }}" onKeyDown="{{ commitOnEnter }}" disabled="{{ sizeDisabled }}" aria-label="Height" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums;padding-right:6px"></label>
               </div>
               <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
-                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 10px;gap:8px;background:#fff;width:96px;box-sizing:border-box;flex-shrink:0"><span style="font-size:11px;color:#8B867B">Rot</span><input type="number" step="1" min="-180" max="180" value="{{ selRot }}" onChange="{{ setRot }}" aria-label="Rotation" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums"><span style="font-size:11px;color:#8B867B">°</span></label>
+                <label style="display:flex;align-items:center;min-width:0;border:1px solid #DDD8CC;border-radius:8px;height:36px;padding:0 8px;gap:6px;background:#fff;width:118px;box-sizing:border-box;flex-shrink:0"><span style="font-size:11px;color:#8B867B">Rot</span><input type="number" step="1" min="-180" max="180" defaultValue="{{ selRot }}" key="{{ selRot }}" onBlur="{{ setRot }}" onKeyDown="{{ commitOnEnter }}" aria-label="Rotation" style="flex:1;width:0;min-width:0;border:none;background:transparent;font-size:12.5px;outline:none;text-align:right;font-variant-numeric:tabular-nums;padding-right:2px"><span style="font-size:11px;color:#8B867B">°</span></label>
                 <input type="range" min="-180" max="180" value="{{ selRot }}" onChange="{{ setRot }}" aria-label="Rotation" style="flex:1;margin:0">
               </div>
               <div style="display:flex;justify-content:space-between;font-size:12px;color:#8B867B;margin-top:12px"><span>Distance from top of print area</span><span style="color:#1C1B19;font-weight:500;font-variant-numeric:tabular-nums">{{ selYcm }} cm</span></div>
@@ -864,8 +922,44 @@ function stageInfo(view){
 }
 /* physical width (cm) of each view's traced print-area box — gives every canvas
    unit a real-world size so the inspector and spec overlay can talk in cm */
-const PRINT_CM = { Front: 48, Back: 48, Left: 10, Right: 10, Neck: 8 };
+const PRINT_CM = { Front: 50, Back: 50, Left: 10, Right: 10, Neck: 8 };
 function cmPerPx(view){ const s = stageInfo(view); return (PRINT_CM[view] || 30) / s.box.w; }
+function mmToPx(mm){ return mm / (cmPerPx('Front')*10); }
+/* Scale factor from the Studio's M-reference canvas to a given order size, e.g. XXL prints
+   wider than S — the production file's physical cm size follows the size chart, not a fixed cm. */
+function sizePrintScale(size){
+  const T = (ST().SIZE_PRINT_CM) || {}; const m = T.M || PRINT_CM.Front;
+  return (T[size] || m) / m;
+}
+function rgbToCmyk(hex){
+  hex = hex || '#1C1B19'; const n = parseInt(hex.slice(1),16), r=(n>>16&255)/255, g=(n>>8&255)/255, b=(n&255)/255;
+  const k = 1 - Math.max(r,g,b);
+  if (k >= 1) return [0,0,0,100];
+  const c = (1-r-k)/(1-k), m = (1-g-k)/(1-k), y = (1-b-k)/(1-k);
+  return [Math.round(c*100), Math.round(m*100), Math.round(y*100), Math.round(k*100)];
+}
+function hsvToRgb(h,s,v){
+  const c=v*s, x=c*(1-Math.abs((h/60)%2-1)), m=v-c;
+  let r,g,b;
+  if (h<60) [r,g,b]=[c,x,0]; else if (h<120) [r,g,b]=[x,c,0]; else if (h<180) [r,g,b]=[0,c,x];
+  else if (h<240) [r,g,b]=[0,x,c]; else if (h<300) [r,g,b]=[x,0,c]; else [r,g,b]=[c,0,x];
+  return [Math.round((r+m)*255), Math.round((g+m)*255), Math.round((b+m)*255)];
+}
+function printSafeHex(hex){ const [c,m,y,k] = rgbToCmyk(hex); return hexFromCmyk(c,m,y,k); }
+function hexFromCmyk(c,m,y,k){
+  // Simulated ink-on-paper mix (SWOP-ish ink primaries, multiplicative subtractive blend)
+  // instead of naive maths CMYK->RGB — the naive formula still lets C+Y=100 render as a
+  // neon #00FF00, which no press can reproduce. This clamps every combination into the
+  // desaturated range real ink actually achieves.
+  c/=100; m/=100; y/=100; k/=100;
+  const CI=[0,174,239], MI=[236,0,140], YI=[255,237,0], KI=[35,24,27];
+  const chan = i => {
+    const f = (1-c*(1-CI[i]/255)) * (1-m*(1-MI[i]/255)) * (1-y*(1-YI[i]/255)) * (1-k*(1-KI[i]/255));
+    return Math.max(0, Math.min(255, Math.round(255*f)));
+  };
+  const h = v => v.toString(16).padStart(2,'0');
+  return '#' + h(chan(0)) + h(chan(1)) + h(chan(2));
+}
 function hexL(hex){ const n = parseInt(hex.slice(1),16); return (0.2126*(n>>16&255)+0.7152*(n>>8&255)+0.0722*(n&255))/255; }
 function svgIcon(fn, color){
   const body = fn(color || '#1C1B19');
@@ -954,9 +1048,9 @@ class Component extends DCLogic {
     const weight = it.bold ? 900 : font[2];
     const family = (font[1]||'').split(',')[0].replace(/["']/g,'').trim() || 'sans-serif';
     const align = it.align || 'center';
-    const color = it.hex || D.INK[it.ci] || '#1C1B19';
-    const oc = it.ol ? (D.INK[it.oci] || '#1C1B19') : null;
-    const key = it.text+'|'+it.fi+'|'+it.size+'|'+it.bold+'|'+it.italic+'|'+(it.ls||0)+'|'+align+'|'+color+'|'+it.underline+'|'+(oc||'');
+    const color = printSafeHex(it.hex || D.INK[it.ci] || '#1C1B19');
+    const oc = it.ol ? printSafeHex(it.ohex || D.INK[it.oci] || '#1C1B19') : null;
+    const key = it.text+'|'+it.fi+'|'+it.size+'|'+it.bold+'|'+it.italic+'|'+(it.ls||0)+'|'+align+'|'+color+'|'+it.underline+'|'+(oc||'')+'|'+(it.ow||'');
     this._textImgCache = this._textImgCache || {};
     if (this._textImgCache[key]) return this._textImgCache[key];
     const lines = String(it.text||'').split('\n');
@@ -984,7 +1078,7 @@ class Component extends DCLogic {
       if (align === 'center') lx = padX + (maxNat-natWidths[i])/2;
       else if (align === 'right') lx = padX + (maxNat-natWidths[i]);
       const ly = ascent + i*lineH;
-      if (oc) { ctx.strokeStyle = oc; ctx.lineWidth = Math.max(1, size*0.05); ctx.strokeText(line, lx, ly); }
+      if (oc) { ctx.strokeStyle = oc; ctx.lineWidth = Math.max(0.5, mmToPx(it.ow!=null?it.ow:0.6)); ctx.lineJoin = 'round'; ctx.miterLimit = 2; ctx.strokeText(line, lx, ly); }
       ctx.fillText(line, lx, ly);
       if (it.underline) { ctx.strokeStyle = color; ctx.lineWidth = Math.max(1, size*0.06); const uw = ctx.measureText(line).width; ctx.beginPath(); ctx.moveTo(lx, ly+size*0.12); ctx.lineTo(lx+uw, ly+size*0.12); ctx.stroke(); }
     });
@@ -1158,13 +1252,13 @@ class Component extends DCLogic {
     const D = ST(), v = view && dd.views[view] ? view : (dd.views.Front ? 'Front' : Object.keys(dd.views)[0]);
     const stg = stageInfo(v), items = dd.views[v].items;
     const fitScale = Math.min(size / stg.w, size / stg.h);
-    const olFor = it => { if (!it.ol) return 'none'; const oc = D.INK[it.oci]||'#1C1B19'; return ['-1px -1px 0 '+oc,'1px -1px 0 '+oc,'-1px 1px 0 '+oc,'1px 1px 0 '+oc].join(','); };
+    const olFor = it => { if (!it.ol) return 'none'; const oc = it.ohex || D.INK[it.oci]||'#1C1B19'; const w = Math.max(1, Math.round(mmToPx(it.ow!=null?it.ow:0.6))); const s=[]; for(let dx=-w;dx<=w;dx++) for(let dy=-w;dy<=w;dy++) if(dx||dy) s.push(dx+'px '+dy+'px 0 '+oc); return s.join(','); };
     return {
       imgRef: this.mkIconRef(this.paintGarment(v, D.COLOURS[dd.colourIdx][1]) || ''), stageW: stg.w, stageH: stg.h, thumbScale: +(size / stg.w).toFixed(4), fitScale: +fitScale.toFixed(4), fitX: +((size - stg.w*fitScale)/2).toFixed(1), fitY: +((size - stg.h*fitScale)/2).toFixed(1), view: v,
       texts: items.filter(i=>i.kind==='text'||i.kind==='field').map(it => { const f = D.FONTS[it.fi] || D.FONTS[0]; return { x: it.x, y: it.y, rot: it.rot||0, text: it.text, size: it.size, ls: it.ls||0, family: f[1], weight: it.bold ? 900 : f[2], fontStyle: it.italic?'italic':'normal', decoration: it.underline?'underline':'none', color: it.hex || D.INK[it.ci] || '#1C1B19', textShadow: olFor(it), textAlign: it.align || 'center' }; }),
       pics: items.filter(i=>i.kind!=='text'&&i.kind!=='field').map(it => {
         let url = it.url || '', fit = 'contain', clip = 'none';
-        if (it.kind==='shape'||it.kind==='sticker') { const set = it.kind==='shape' ? D.SHAPES : D.STICKERS; const sh = set.find(x=>x.id===it.shapeId) || set[0]; url = svgIcon(sh.svg, it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))); }
+        if (it.kind==='shape'||it.kind==='sticker') { const set = it.kind==='shape' ? D.SHAPES : D.STICKERS; const sh = set.find(x=>x.id===it.shapeId) || set[0]; url = svgIcon(sh.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19')))); }
         if (it.kind==='frame') { const fr = D.FRAMES.find(f=>f.id===it.frameId); clip = fr ? fr.clip : 'none'; fit = 'cover'; }
         return { x: it.x, y: it.y, w: it.w, h: it.h, rot: it.rot||0, fit, clip, imgRef: this.mkIconRef(url) };
       }),
@@ -1175,6 +1269,120 @@ class Component extends DCLogic {
   pick(tool){ this.setState(s => ({ panel: s.panel === tool ? null : tool })); }
   closePanel(){ this.setState({ panel: null }); }
   setView(v){ this.setState({ view: v, sel: [], ctx: null }); }
+  mkSvRef(){
+    return node => {
+      const hue = this.state.pickHue || 0;
+      if (!node || node._paintedHue === hue) return;
+      node._paintedHue = hue;
+      const ctx = node.getContext('2d'), w = node.width, h = node.height;
+      const [hr,hg,hb] = hsvToRgb(hue, 1, 1);
+      const grad1 = ctx.createLinearGradient(0, 0, w, 0);
+      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, 'rgb(' + hr + ',' + hg + ',' + hb + ')');
+      ctx.fillStyle = grad1; ctx.fillRect(0, 0, w, h);
+      const grad2 = ctx.createLinearGradient(0, 0, 0, h);
+      grad2.addColorStop(0, 'rgba(0,0,0,0)'); grad2.addColorStop(1, '#000');
+      ctx.fillStyle = grad2; ctx.fillRect(0, 0, w, h);
+    };
+  }
+  mkHueRef(){
+    return node => {
+      if (!node || node._painted) return;
+      node._painted = true;
+      const ctx = node.getContext('2d'), w = node.width, h = node.height;
+      const grad = ctx.createLinearGradient(0, 0, w, 0);
+      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); grad.addColorStop(i/360, 'rgb('+r+','+g+','+b+')'); }
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+    };
+  }
+  applyHs(hue, sat, val){
+    this.setState({ pickHue: hue, pickSat: sat, pickVal: val });
+    const [r,g,b] = hsvToRgb(hue, sat, val);
+    const hex = '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    this.updateSel({ hex });
+  }
+  startSvPick(e){
+    const canvas = e.currentTarget, rect = canvas.getBoundingClientRect();
+    const pick = ev => {
+      const x = Math.max(0, Math.min(rect.width, ev.clientX-rect.left));
+      const y = Math.max(0, Math.min(rect.height, ev.clientY-rect.top));
+      this.applyHs(this.state.pickHue || 0, x/rect.width, 1 - y/rect.height);
+    };
+    pick(e);
+    const move = ev => pick(ev);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  startHuePick(e){
+    const canvas = e.currentTarget, rect = canvas.getBoundingClientRect();
+    const pick = ev => {
+      const x = Math.max(0, Math.min(rect.width, ev.clientX-rect.left));
+      const hue = x/rect.width*360;
+      canvas._paintedSvReset = true;
+      this.state.pickHue = hue; // ensure svRef repaint sees new hue before re-render
+      this.applyHs(hue, 1, 1);
+    };
+    pick(e);
+    const move = ev => pick(ev);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  mkOlSvRef(){
+    return node => {
+      const hue = this.state.olPickHue || 0;
+      if (!node || node._paintedHue === hue) return;
+      node._paintedHue = hue;
+      const ctx = node.getContext('2d'), w = node.width, h = node.height;
+      const [hr,hg,hb] = hsvToRgb(hue, 1, 1);
+      const grad1 = ctx.createLinearGradient(0, 0, w, 0);
+      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, 'rgb(' + hr + ',' + hg + ',' + hb + ')');
+      ctx.fillStyle = grad1; ctx.fillRect(0, 0, w, h);
+      const grad2 = ctx.createLinearGradient(0, 0, 0, h);
+      grad2.addColorStop(0, 'rgba(0,0,0,0)'); grad2.addColorStop(1, '#000');
+      ctx.fillStyle = grad2; ctx.fillRect(0, 0, w, h);
+    };
+  }
+  mkOlHueRef(){
+    return node => {
+      if (!node || node._painted) return;
+      node._painted = true;
+      const ctx = node.getContext('2d'), w = node.width, h = node.height;
+      const grad = ctx.createLinearGradient(0, 0, w, 0);
+      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); grad.addColorStop(i/360, 'rgb('+r+','+g+','+b+')'); }
+      ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+    };
+  }
+  applyOlHs(hue, sat, val){
+    this.setState({ olPickHue: hue, olPickSat: sat, olPickVal: val });
+    const [r,g,b] = hsvToRgb(hue, sat, val);
+    const hex = '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    this.updateSel({ ohex: hex });
+  }
+  startOlSvPick(e){
+    const canvas = e.currentTarget, rect = canvas.getBoundingClientRect();
+    const pick = ev => {
+      const x = Math.max(0, Math.min(rect.width, ev.clientX-rect.left));
+      const y = Math.max(0, Math.min(rect.height, ev.clientY-rect.top));
+      this.applyOlHs(this.state.olPickHue || 0, x/rect.width, 1 - y/rect.height);
+    };
+    pick(e);
+    const move = ev => pick(ev);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  startOlHuePick(e){
+    const canvas = e.currentTarget, rect = canvas.getBoundingClientRect();
+    const pick = ev => {
+      const x = Math.max(0, Math.min(rect.width, ev.clientX-rect.left));
+      const hue = x/rect.width*360;
+      this.state.olPickHue = hue;
+      this.applyOlHs(hue, 1, 1);
+    };
+    pick(e);
+    const move = ev => pick(ev);
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
+  selectedHexNow(){ const s = this.selItems()[0]; const D = ST(); return s ? (s.hex || D.INK[s.ci] || '#1C1B19') : '#1C1B19'; }
   select(id, additive){
     const items = this.VW(this.curView()).items.concat(this.state.staging||[]);
     const it = items.find(x => x.id === id);
@@ -1192,7 +1400,7 @@ class Component extends DCLogic {
     const isText = it.kind==='text'||it.kind==='field';
     if (isText) {
       const img = this.getTextImage(it);
-      if (img) return { x: it.x, y: it.y, w: img.w, h: img.h };
+      if (img) return { x: it.x, y: it.y, w: img.w*(it.sx||1), h: img.h*(it.sy||1) };
       return { x: it.x, y: it.y, w: Math.max(1,(it.text||'').length*it.size*0.5), h: it.size };
     }
     if (it.kind === 'upload' && it.url) {
@@ -1258,21 +1466,22 @@ class Component extends DCLogic {
         const c = document.createElement('canvas'); c.width = Math.ceil(viewport.width); c.height = Math.ceil(viewport.height);
         await page.render({ canvasContext: c.getContext('2d'), viewport }).promise;
         this._vector = this._vector || {}; this._vector[name] = bytes;
-        this.placeArtwork(c.toDataURL('image/png'), name, 'vector');
+        const isCmyk = /DeviceCMYK/.test(String.fromCharCode.apply(null, bytes.subarray(0, Math.min(bytes.length, 400000))));
+        this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { cmykOriginal: isCmyk, originalBytesB64: isCmyk ? btoa(String.fromCharCode.apply(null, bytes)) : null });
         this.toastMsg('Added', name + ' · page 1 previewed, vector kept for print.');
       } catch (err) { this.toastMsg('Preview unavailable', 'Accepted for print, but ' + name + ' could not be previewed.'); }
     };
     r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
     r.readAsArrayBuffer(file);
   }
-  placeArtwork(url, name, source){
+  placeArtwork(url, name, source, extra){
     const probe = new Image();
     probe.onload = () => {
       const ratio = probe.naturalWidth / Math.max(1, probe.naturalHeight);
       const box = stageInfo(this.curView()).box;
       let w = Math.min(box.w * 0.6, 200), h = w / ratio;
       if (h > box.h * 0.5) { h = box.h * 0.5; w = h * ratio; }
-      this.addItem({ kind: 'upload', url, name, source: source || 'raster', w: Math.round(w), h: Math.round(h) });
+      this.addItem(Object.assign({ kind: 'upload', url, name, source: source || 'raster', w: Math.round(w), h: Math.round(h) }, extra||{}));
       this.setState(s => ({ library: [{ url, name, source, ts: Date.now() }, ...(s.library || []).filter(l => l.url !== url)].slice(0, 40) }));
     };
     probe.onerror = () => this.toastMsg('Upload failed', 'That artwork could not be displayed.');
@@ -1290,7 +1499,7 @@ class Component extends DCLogic {
     if (it.kind === 'text' || it.kind === 'field') {
       const img = this.getTextImage(it);
       if (!img) return;
-      const box = { w: img.w, h: img.h };
+      const box = { w: img.w*(it.sx||1), h: img.h*(it.sy||1) };
       const glyphImg = await this.loadImg(img.url);
       ctx.save();
       ctx.translate(it.x + box.w/2, it.y + box.h/2);
@@ -1303,7 +1512,7 @@ class Component extends DCLogic {
     if (it.kind === 'shape' || it.kind === 'sticker') {
       const set = it.kind === 'shape' ? D.SHAPES : D.STICKERS;
       const s = set.find(x=>x.id===it.shapeId) || set[0];
-      src = svgIcon(s.svg, it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19')));
+      src = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))));
     } else { src = it.url || ''; }
     if (!src) return;
     try {
@@ -1331,6 +1540,135 @@ class Component extends DCLogic {
     ctx.restore();
     return canvas;
   }
+  getQrCanvas(text){
+    if (!window.QRCode) return null;
+    let host = this._qrHost;
+    if (!host) { host = document.createElement('div'); host.style.position = 'fixed'; host.style.left = '-9999px'; document.body.appendChild(host); this._qrHost = host; }
+    host.innerHTML = '';
+    new window.QRCode(host, { text, width: 260, height: 260, correctLevel: window.QRCode.CorrectLevel.M });
+    return host.querySelector('canvas');
+  }
+  /* Placement sheet — mockup + real-world dimension callouts (print width/height, offset from
+     top and from the garment's horizontal centre) plus a QR code for production tracking, so
+     the print shop can verify logo position without opening the Studio file. */
+  async renderPlacementCanvas(dd, view, orderRef, qty, size, sizeScale){
+    const D = ST(), stg = stageInfo(view), items = dd.views[view].items;
+    const cpp = cmPerPx(view) * (sizeScale||1);
+    const CW = 1600, CH = 2000, M = 90;
+    const canvas = document.createElement('canvas'); canvas.width = CW; canvas.height = CH;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, CW, CH);
+    ctx.fillStyle = '#1C1B19'; ctx.font = '600 34px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('PLACEMENT SHEET', M, 70);
+    ctx.font = '400 20px "Helvetica Neue", Arial, sans-serif'; ctx.fillStyle = '#6B6659';
+    ctx.fillText(prod(dd.pid).t.toUpperCase() + '  \u00b7  ' + view.toUpperCase() + '  \u00b7  REF ' + orderRef, M, 102);
+
+    // mockup, scaled to fit the left/top art area
+    const artW = CW - M*2, mockTop = 150, artMaxH = 1180;
+    const scale = Math.min(artW/stg.w, artMaxH/stg.h);
+    const mockW = stg.w*scale, mockH = stg.h*scale, mockX = M, mockY = mockTop;
+    const garmentUrl = this.paintGarment(view, D.COLOURS[dd.colourIdx][1]);
+    ctx.save(); ctx.translate(mockX, mockY); ctx.scale(scale, scale);
+    if (garmentUrl) { try { const g = await this.loadImg(garmentUrl); ctx.drawImage(g, 0, 0, stg.w, stg.h); } catch(e){} }
+    for (const it of items) await this.drawItemOnCanvas(ctx, it);
+    ctx.restore();
+
+    // union ink bbox of all items, in stage px then mockup px
+    let ux1=Infinity, uy1=Infinity, ux2=-Infinity, uy2=-Infinity;
+    items.forEach(it => { const b = this.itemBox(it); ux1=Math.min(ux1,b.x); uy1=Math.min(uy1,b.y); ux2=Math.max(ux2,b.x+b.w); uy2=Math.max(uy2,b.y+b.h); });
+    if (ux2 > ux1) {
+      const bx = mockX + ux1*scale, by = mockY + uy1*scale, bw = (ux2-ux1)*scale, bh = (uy2-uy1)*scale;
+      const wCm = +((ux2-ux1)*cpp).toFixed(1), hCm = +((uy2-uy1)*cpp).toFixed(1);
+      const topCm = +((uy1-stg.box.y)*cpp).toFixed(1);
+      const centerOffCm = +(((ux1+ux2)/2 - (stg.box.x+stg.box.w/2))*cpp).toFixed(1);
+      ctx.strokeStyle = '#4A4FE4'; ctx.lineWidth = 2; ctx.setLineDash([6,5]);
+      ctx.strokeRect(bx, by, bw, bh);
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#4A4FE4'; ctx.font = '600 18px "Helvetica Neue", Arial, sans-serif'; ctx.textAlign = 'center';
+      // width arrow, above box
+      const aw = by - 14;
+      ctx.beginPath(); ctx.moveTo(bx, aw); ctx.lineTo(bx+bw, aw); ctx.stroke();
+      ctx.fillText(wCm + ' cm', bx+bw/2, aw-8);
+      // height arrow, right of box
+      ctx.save(); ctx.translate(bx+bw+24, by+bh/2); ctx.rotate(-Math.PI/2); ctx.fillText(hCm + ' cm', 0, -6); ctx.restore();
+      ctx.beginPath(); ctx.moveTo(bx+bw+14, by); ctx.lineTo(bx+bw+14, by+bh); ctx.stroke();
+      // top offset, from garment print-area top to box top
+      const topY0 = mockY + stg.box.y*scale;
+      ctx.strokeStyle = '#B54708';
+      ctx.beginPath(); ctx.moveTo(bx-28, topY0); ctx.lineTo(bx-28, by); ctx.stroke();
+      ctx.save(); ctx.translate(bx-40, (topY0+by)/2); ctx.rotate(-Math.PI/2); ctx.fillStyle = '#B54708'; ctx.fillText(topCm + ' cm from top', 0, 0); ctx.restore();
+      // centre offset, dashed vertical guide at garment centre vs box centre
+      const centerX0 = mockX + (stg.box.x+stg.box.w/2)*scale;
+      ctx.strokeStyle = '#9A958A'; ctx.setLineDash([3,4]);
+      ctx.beginPath(); ctx.moveTo(centerX0, by+bh+10); ctx.lineTo(centerX0, by+bh+40); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(bx+bw/2, by+bh+10); ctx.lineTo(bx+bw/2, by+bh+40); ctx.stroke();
+      ctx.setLineDash([]); ctx.fillStyle = '#6B6659'; ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
+      ctx.fillText((centerOffCm===0?'centred':(Math.abs(centerOffCm)+' cm off-centre')), (centerX0+bx+bw/2)/2, by+bh+58);
+    }
+    ctx.textAlign = 'left';
+
+    // spec + QR footer
+    const footY = mockY + artMaxH + 60;
+    ctx.strokeStyle = '#E6E2D8'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(M, footY); ctx.lineTo(CW-M, footY); ctx.stroke();
+    ctx.fillStyle = '#1C1B19'; ctx.font = '600 20px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('PRODUCTION DETAILS', M, footY+42);
+    ctx.font = '400 18px "Helvetica Neue", Arial, sans-serif'; ctx.fillStyle = '#4A473F';
+    const lines = ['Product: ' + prod(dd.pid).t, 'Size: ' + (size||'M'), 'Colour: ' + (D.COLOURS[dd.colourIdx][0]||''), 'View: ' + view, 'Quantity: ' + qty, 'Order ref: ' + orderRef];
+    lines.forEach((l,i) => ctx.fillText(l, M, footY+80+i*30));
+    const qr = this.getQrCanvas('W2P-' + orderRef + '-' + dd.id + '-' + view);
+    if (qr) { ctx.drawImage(qr, CW-M-220, footY+30, 220, 220); ctx.font = '400 14px "Helvetica Neue", Arial, sans-serif'; ctx.fillStyle = '#6B6659'; ctx.textAlign = 'center'; ctx.fillText('Scan to track production', CW-M-110, footY+270); ctx.textAlign = 'left'; }
+    return canvas;
+  }
+  /* True vector + CMYK output for everything authored inside the Studio (typed text, library
+     shapes/stickers) — drawn with jsPDF's native text/path primitives and CMYK fill colours
+     instead of a rasterised PNG, so it stays scalable and colour-accurate for print. Uploaded
+     PDF/AI artwork is not re-vectorised here — its own original file is passed through as-is
+     (see cmykOriginal handling in compileProductionFiles) to keep its real vector CMYK data. */
+  async renderVectorCmykPdf(dd, view, cmW, cmH){
+    const D = ST(), stg = stageInfo(view), items = dd.views[view].items, cpp = cmPerPx(view);
+    const wmm = cmW*10, hmm = cmH*10;
+    const doc = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm], compress: true });
+    const toMM = px => px*cpp*10;
+    for (const it of items) {
+      const relX = it.x - stg.box.x, relY = it.y - stg.box.y;
+      if (it.kind === 'text' || it.kind === 'field') {
+        const font = D.FONTS[it.fi] || D.FONTS[0];
+        const fam = (font[1]||'').toLowerCase();
+        const face = fam.includes('courier')||fam.includes('mono') ? 'courier' : (fam.includes('times')||fam.includes('serif')) ? 'times' : 'helvetica';
+        doc.setFont(face, it.italic ? 'italic' : 'normal', it.bold ? 700 : 400);
+        const sizeMM = toMM(it.size), sizePt = sizeMM / 0.352778;
+        doc.setFontSize(sizePt);
+        const cmyk = rgbToCmyk(it.hex || D.INK[it.ci] || '#1C1B19');
+        doc.setTextColor(cmyk[0], cmyk[1], cmyk[2], cmyk[3]);
+        const lines = String(it.text||'').split('\n');
+        const align = (it.align==='justify') ? 'left' : (it.align || 'center');
+        const lineHmm = sizeMM*1.15;
+        lines.forEach((line, li) => {
+          let lx = toMM(relX);
+          if (align==='center') lx = toMM(relX) + toMM(it._w||0)/2; // fallback anchor; align handles centring
+          doc.text(line, toMM(relX) + (align==='center' ? toMM(this.itemBox(it).w)/2 : align==='right' ? toMM(this.itemBox(it).w) : 0), toMM(relY) + sizeMM*0.85 + li*lineHmm, { align, angle: -(it.rot||0) });
+        });
+      } else if (it.kind === 'shape') {
+        const cmyk = rgbToCmyk(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : '#1C1B19'));
+        doc.setFillColor(cmyk[0], cmyk[1], cmyk[2], cmyk[3]);
+        const shape = (D.SHAPES.find(s=>s.id===it.shapeId)||{}).id || '';
+        const x = toMM(relX), y = toMM(relY), w = toMM(it.w), h = toMM(it.h);
+        doc.saveGraphicsState && doc.saveGraphicsState();
+        if (/circle|dot/i.test(shape)) doc.ellipse(x+w/2, y+h/2, w/2, h/2, 'F');
+        else doc.rect(x, y, w, h, 'F');
+        doc.restoreGraphicsState && doc.restoreGraphicsState();
+      } else {
+        // stickers and raster/other uploads: embed as-is (best-effort raster fallback within the vector page)
+        try {
+          const box = this.itemBox(it);
+          let src = it.url;
+          if (it.kind === 'sticker') { const s = D.STICKERS.find(x=>x.id===it.shapeId)||D.STICKERS[0]; src = svgIcon(s.svg, it.hex || '#1C1B19'); }
+          if (src) { const img = await this.loadImg(src); doc.addImage(img, 'PNG', toMM(it.x-stg.box.x), toMM(it.y-stg.box.y), toMM(box.w), toMM(box.h)); }
+        } catch(e){}
+      }
+    }
+    return doc;
+  }
   async renderMockupCanvas(dd, view){
     const D = ST(), stg = stageInfo(view), items = dd.views[view].items, MULT = 2.5;
     const canvas = document.createElement('canvas'); canvas.width = Math.round(stg.w*MULT); canvas.height = Math.round(stg.h*MULT);
@@ -1351,28 +1689,42 @@ class Component extends DCLogic {
     const now = new Date();
     const stamp = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
     const files = [];
-    const printPages = [], mockupPages = [];
+    const orderRef = stamp + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+    const printPages = [], mockupPages = [], placementPages = [];
     for (let di = 0; di < this.state.designs.length; di++) {
       const dd = this.state.designs[di];
-      const qty = this.dQty(dd);
+      const sizeLines = (dd.lines && dd.lines.length) ? dd.lines.filter(l => (+l.q||0) > 0) : [{ s: 'M', q: this.dQty(dd) }];
       const vs = viewsFor(dd.pid).filter(v => dd.views[v] && dd.views[v].items.length);
       for (const view of vs) {
         const items = dd.views[view].items;
         const allRasterOnly = items.every(it => it.kind === 'upload' && it.source !== 'vector');
         const fmt = allRasterOnly ? 'png' : 'pdf';
         const canvas = await this.renderPrintCanvas(dd, view);
-        const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-4x';
-        const cmW = PRINT_CM[view] || 30, cmH = cmW * (canvas.height / canvas.width);
-        if (fmt === 'png') {
-          files.push({ name: base + '-png.png', dataUrl: canvas.toDataURL('image/png') });
-        } else {
-          printPages.push({ canvas, cmW, cmH });
-          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
-        }
-        const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Copies>' + Math.max(1, qty) + '</Copies>\n\n</JHDR>\n';
-        files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
         const mCanvas = await this.renderMockupCanvas(dd, view);
         mockupPages.push({ canvas: mCanvas });
+        for (const line of sizeLines) {
+          const size = line.s, lineQty = +line.q || 1;
+          const scale = sizePrintScale(size);
+          const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + String(size).replace(/[^a-z0-9]+/gi,'') + '-4x';
+          const cmW = (PRINT_CM[view] || 30) * scale, cmH = cmW * (canvas.height / canvas.width);
+          if (fmt === 'png') {
+            files.push({ name: base + '-png.png', dataUrl: canvas.toDataURL('image/png') });
+          } else {
+            printPages.push({ canvas, cmW, cmH });
+            files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+          }
+          const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Size>' + size + '</Size>\n    <Copies>' + Math.max(1, lineQty) + '</Copies>\n\n</JHDR>\n';
+          files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
+          const pCanvas = await this.renderPlacementCanvas(dd, view, orderRef, lineQty, size, scale);
+          placementPages.push({ canvas: pCanvas });
+          try {
+            const vecDoc = await this.renderVectorCmykPdf(dd, view, cmW, cmH);
+            files.push({ name: base + '-vector-cmyk.pdf', dataUrl: vecDoc.output('datauristring') });
+          } catch(e){}
+        }
+        items.filter(it => it.kind==='upload' && it.cmykOriginal && it.originalBytesB64).forEach(it => {
+          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original-cmyk.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
+        });
       }
     }
     let combinedPdf = null;
@@ -1381,6 +1733,9 @@ class Component extends DCLogic {
     let mockupPdf = null;
     mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h], compress: true }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
     if (mockupPdf) files.push({ name: 'production-pack-' + stamp + '.pdf', dataUrl: mockupPdf.output('datauristring') });
+    let placementPdf = null;
+    placementPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!placementPdf) placementPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h], compress: true }); else placementPdf.addPage([w,h]); placementPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
+    if (placementPdf) files.push({ name: 'production-pack-' + stamp + '-placement-sheet.pdf', dataUrl: placementPdf.output('datauristring') });
     this.setState({ compiling: false, productionFiles: files });
     try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); this.toastMsg('Production pack ready', files.length + ' file(s) — will download at checkout.'); }
     catch(e){ this.toastMsg('Production pack too large', 'Generated ' + files.length + ' files but they don\u2019t fit in local storage — reduce artwork or views.'); }
@@ -1429,6 +1784,23 @@ class Component extends DCLogic {
       return { designs, staging, sel: [], ctx: null, past: [...s.past, s.designs].slice(-30), future: [], dirty: true };
     });
   }
+  /* Font-size scaling only lands on whole px, so a single guess can miss the target ink
+     width/height by a fraction of a cm (rounding) — binary-search the nearest size that
+     hits the requested measurement exactly, then hold that size (no further rounding). */
+  fitTextToWidth(id, targetW){
+    const view = this.curView(), merged = this.VW(view).items.concat(this.state.staging||[]);
+    const it = merged.find(x=>x.id===id); if (!it) return;
+    let lo = 4, hi = 1200, best = it.size;
+    for (let i=0;i<22;i++){ const mid=(lo+hi)/2; const w = this.itemBox({...it, size:mid}).w; if (w < targetW) lo = mid; else hi = mid; best = mid; }
+    this.updateOne(id, { size: +best.toFixed(2) });
+  }
+  fitTextToHeight(id, targetH){
+    const view = this.curView(), merged = this.VW(view).items.concat(this.state.staging||[]);
+    const it = merged.find(x=>x.id===id); if (!it) return;
+    let lo = 4, hi = 1200, best = it.size;
+    for (let i=0;i<22;i++){ const mid=(lo+hi)/2; const h = this.itemBox({...it, size:mid}).h; if (h < targetH) lo = mid; else hi = mid; best = mid; }
+    this.updateOne(id, { size: +best.toFixed(2) });
+  }
   mutateItemsLive(ids, fn){
     this.setState(s => {
       const designs = JSON.parse(JSON.stringify(s.designs));
@@ -1463,7 +1835,7 @@ class Component extends DCLogic {
     const box = stageInfo(this.curView()).box, b = this.selBounds(); if (!b) return;
     const d = { l: [box.x - b.x, 0], c: [box.x + box.w/2 - (b.x + b.w/2), 0], r: [box.x + box.w - (b.x + b.w), 0],
                 t: [0, box.y - b.y], m: [0, box.y + box.h/2 - (b.y + b.h/2)], b: [0, box.y + box.h - (b.y + b.h)] }[mode];
-    this.updateSel(it => ({ x: Math.round(it.x + d[0]), y: Math.round(it.y + d[1]) }));
+    this.updateSel(it => ({ x: +(it.x + d[0]).toFixed(2), y: +(it.y + d[1]).toFixed(2) }));
   }
   scaleSel(f){
     const b = this.selBounds(); if (!b) return;
@@ -1726,8 +2098,10 @@ class Component extends DCLogic {
 
     const outlineStyleFor = it => {
       if (!it.ol) return 'none';
-      const oc = D.INK[it.oci]||'#1C1B19';
-      return ['-1px -1px 0 '+oc,'1px -1px 0 '+oc,'-1px 1px 0 '+oc,'1px 1px 0 '+oc].join(',');
+      const oc = it.ohex || D.INK[it.oci]||'#1C1B19';
+      const w = Math.max(1, Math.round(mmToPx(it.ow!=null?it.ow:0.6)));
+      const s=[]; for(let dx=-w;dx<=w;dx++) for(let dy=-w;dy<=w;dy++) if(dx||dy) s.push(dx+'px '+dy+'px 0 '+oc);
+      return s.join(',');
     };
     const tsc = Math.max(0.2, st.fitScale * st.zoom), hs = +(16 / tsc).toFixed(2), bw = +(1.5 / tsc).toFixed(2), stem = +(26 / tsc).toFixed(2);
     const common = it => ({
@@ -1741,12 +2115,12 @@ class Component extends DCLogic {
     });
     const textFieldItems = items.filter(i=>i.kind==='text'||i.kind==='field').map(it => {
       const img = this.getTextImage(it);
-      return { ...common(it), textImgRef: this.mkIconRef(img ? img.url : ''), imgW: img ? img.w : 1, imgH: img ? img.h : it.size };
+      return { ...common(it), textImgRef: this.mkIconRef(img ? img.url : ''), imgW: img ? img.w*(it.sx||1) : 1, imgH: img ? img.h*(it.sy||1) : it.size };
     });
     const vectorItems = items.filter(i=>i.kind==='shape'||i.kind==='sticker').map(it => {
       const set = it.kind==='shape' ? D.SHAPES : D.STICKERS;
       const s = set.find(x=>x.id===it.shapeId) || set[0];
-      const icon = svgIcon(s.svg, it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19')));
+      const icon = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))));
       return { ...common(it), iconRef: this.mkIconRef(icon) };
     });
     const mediaItems = items.filter(i=>i.kind==='upload'||i.kind==='frame').map(it => {
@@ -1824,6 +2198,7 @@ class Component extends DCLogic {
     const bounds = this.selBounds();
     const specOn = st.spec && !!bounds && !preview;
     const selHex = sel ? (sel.hex || D.INK[sel.ci] || '#1C1B19') : '#1C1B19';
+    const olHex = sel ? (sel.ohex || D.INK[sel.oci] || '#1C1B19') : '#1C1B19';
     const isTextSel = !!sel && (sel.kind==='text'||sel.kind==='field');
     const faces = viewsFor(d.pid).filter(v => d.views[v].items.length);
 
@@ -2000,18 +2375,54 @@ class Component extends DCLogic {
       selSize: sel ? sel.size : 0, setSize: e => this.updateSel({ size:+e.target.value }),
       selLs: sel ? (sel.ls||0) : 0, setLs: e => this.updateSel({ ls:+e.target.value }),
       inkOpts: D.INK.map((hex,i) => ({ hex, ring: ring(sel && !sel.hex && sel.ci===i), pick: () => this.updateSel({ ci:i, hex: undefined }) })),
-      selHex, selHexLabel: selHex.toUpperCase(), customRing: ring(sel && !!sel.hex), setHex: e => this.updateSel({ hex: e.target.value }),
+      selHex, selHexLabel: selHex.toUpperCase(), selHexPrint: printSafeHex(selHex), customRing: ring(sel && !!sel.hex), setHex: e => this.updateSel({ hex: e.target.value }),
+      toggleCmykPicker: () => this.setState(s => ({ cmykPickerOpen: !s.cmykPickerOpen })), cmykPickerOpen: !!this.state.cmykPickerOpen,
+      svRef: this.mkSvRef(), svDown: e => this.startSvPick(e),
+      svDotX: (this.state.pickSat != null ? this.state.pickSat : 1) * 100,
+      svDotY: (1 - (this.state.pickVal != null ? this.state.pickVal : 1)) * 100,
+      hueRef: this.mkHueRef(), hueDown: e => this.startHuePick(e),
+      huePct: (this.state.pickHue || 0) / 360 * 100,
+      hueDotColor: '#' + hsvToRgb(this.state.pickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join(''),
+      kVal: this.state.cmykK != null ? this.state.cmykK : rgbToCmyk(selHex)[3],
+      setK: e => { const k = +e.target.value; this.setState({ cmykK: k }); const [c,m,y] = rgbToCmyk(selHex); this.updateSel({ hex: hexFromCmyk(c,m,y,k) }); },
       toggleOutline: () => sel && this.updateSel({ ol: !sel.ol }), olBg: sel&&sel.ol?'#4A4FE4':'#DDD8CC', olKnob: sel&&sel.ol?'17px':'3px', selOutline: !!sel&&!!sel.ol,
-      outlineOpts: D.INK.map((hex,i) => ({ hex, ring: ring(sel&&sel.oci===i), pick: () => this.updateSel({ oci:i }) })),
+      outlineOpts: D.INK.map((hex,i) => ({ hex, ring: ring(sel&&sel.oci===i&&!sel.ohex), pick: () => this.updateSel({ oci:i, ohex:null }) })),
+      toggleOlCmykPicker: () => this.setState(s => ({ olCmykPickerOpen: !s.olCmykPickerOpen })), olCmykPickerOpen: !!this.state.olCmykPickerOpen,
+      olCustomRing: ring(sel && !!sel.ohex),
+      olHex, olHexPrint: printSafeHex(olHex),
+      olSvRef: this.mkOlSvRef(), olSvDown: e => this.startOlSvPick(e),
+      olSvDotX: (this.state.olPickSat != null ? this.state.olPickSat : 1) * 100,
+      olSvDotY: (1 - (this.state.olPickVal != null ? this.state.olPickVal : 1)) * 100,
+      olHueRef: this.mkOlHueRef(), olHueDown: e => this.startOlHuePick(e),
+      olHuePct: (this.state.olPickHue || 0) / 360 * 100,
+      olHueDotColor: '#' + hsvToRgb(this.state.olPickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join(''),
+      olWidthMm: sel ? +((sel.ow!=null?sel.ow:0.6).toFixed(1)) : 0.6, setOlWidthMm: e => this.updateSel({ ow: +e.target.value }),
       vectorColourOpts: D.COLOURS.map((c,i) => ({ hex:c[1], name:c[0], ring: ring(sel&&sel.ci===i), pick: () => this.updateSel({ ci:i }) })),
       frameOpts: D.FRAMES.map(f => ({ t:f.t, clip:f.clip, bg: sel&&sel.frameId===f.id ? '#4A4FE4' : '#DDD8CC', pick: () => this.updateSel({ frameId:f.id }) })),
       selSource: sel && sel.source === 'vector' ? 'PDF / AI · vector, CMYK kept' : sel && sel.kind==='frame' ? 'Frame' : 'Raster · RGB',
       embCompat: 'up to 12 colours',
       selXcm: selBox ? toCm(selBox.x - box.x) : 0, selYcm: selBox ? toCm(selBox.y - box.y) : 0, selWcm: selBox ? toCm(selBox.w) : 0, selHcm: selBox ? toCm(selBox.h) : 0,
-      setXcm: e => this.updateSel({ x: Math.round(box.x + toPx(e.target.value)) }), setYcm: e => this.updateSel({ y: Math.round(box.y + toPx(e.target.value)) }),
-      setWcm: e => { if (!sel || isTextSel) return; const w = Math.max(5, toPx(e.target.value)); this.updateSel({ w, h: w * (sel.h/sel.w) }); },
-      setHcm: e => { if (!sel || isTextSel) return; const h = Math.max(5, toPx(e.target.value)); this.updateSel({ h, w: h * (sel.w/sel.h) }); },
-      sizeDisabled: isTextSel,
+      commitOnEnter: e => { if (e.key === 'Enter') e.target.blur(); },
+      setXcm: e => this.updateSel({ x: +(box.x + toPx(e.target.value)).toFixed(2) }), setYcm: e => this.updateSel({ y: +(box.y + toPx(e.target.value)).toFixed(2) }),
+      setWcm: e => {
+        if (!sel) return; const w = Math.max(5, toPx(e.target.value)), locked = this.state.aspectLocked !== false;
+        if (isTextSel) {
+          if (locked) this.fitTextToWidth(sel.id, w);
+          else { const img = this.getTextImage(sel); if (img) this.updateOne(sel.id, { sx: +(w/img.w).toFixed(4) }); }
+        } else if (locked) this.updateSel({ w, h: w * (sel.h/sel.w) }); else this.updateSel({ w });
+      },
+      setHcm: e => {
+        if (!sel) return; const h = Math.max(5, toPx(e.target.value)), locked = this.state.aspectLocked !== false;
+        if (isTextSel) {
+          if (locked) this.fitTextToHeight(sel.id, h);
+          else { const img = this.getTextImage(sel); if (img) this.updateOne(sel.id, { sy: +(h/img.h).toFixed(4) }); }
+        } else if (locked) this.updateSel({ h, w: h * (sel.w/sel.h) }); else this.updateSel({ h });
+      },
+      toggleAspectLock: () => this.setState(s => { const locking = s.aspectLocked === false; if (locking) this.updateSel({ sx:1, sy:1 }); return { aspectLocked: locking }; }),
+      aspectLocked: this.state.aspectLocked !== false, aspectUnlocked: this.state.aspectLocked === false,
+      aspectLockTitle: this.state.aspectLocked === false ? 'Unlocked \u2014 W/H resize independently' : 'Locked \u2014 W/H resize together',
+      aspectLockBg: this.state.aspectLocked === false ? 'transparent' : '#F4F4FE', aspectLockInk: this.state.aspectLocked === false ? '#8B867B' : '#4A4FE4',
+      sizeDisabled: false,
       selRot: sel ? Math.round(sel.rot||0) : 0, setRot: e => this.updateSel({ rot: Math.max(-180, Math.min(180, +e.target.value||0)) }),
 
       hasWarning: !!warnItem && !preview, warningMsg: 'Outside the print area — this will be cut off.',
