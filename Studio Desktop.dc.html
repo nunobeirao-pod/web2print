@@ -25,6 +25,7 @@
     input[type=color]::-webkit-color-swatch-wrapper{padding:0}
     input[type=color]::-webkit-color-swatch{border:1px solid #DDD8CC;border-radius:8px}
     ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#DDD8CC;border-radius:8px}
+    .w2p-carousel-row::-webkit-scrollbar{display:none}
   </style>
 </helmet>
 <div data-screen-label="Design Studio — Desktop" style="height:100dvh;display:grid;grid-template-rows:56px minmax(0,1fr);grid-template-columns:minmax(0,1fr);user-select:none;background:#FBFAF8">
@@ -196,11 +197,13 @@
     </div>
 
     <!-- DESIGN CAROUSEL — one tile per product/design in the project, + to add another -->
-    <div style="background:#FFFFFF;border-top:1px solid #E6E2D8;display:flex;align-items:center;justify-content:center;gap:14px;padding:16px 16px;flex-shrink:0;min-height:98px">
-      <div style="display:flex;align-items:center;gap:14px;overflow-x:auto;min-width:0">
+    <div style="background:{{ carouselBg }};display:flex;align-items:center;justify-content:center;gap:14px;padding:16px 16px;flex-shrink:0;min-height:98px">
+      <div class="w2p-carousel-row" style="display:flex;align-items:center;gap:14px;overflow-x:auto;overflow-y:hidden;min-width:0;scrollbar-width:none;padding:10px 10px 0 0">
       <sc-for list="{{ carouselDesigns }}" as="c" hint-placeholder-count="1">
-        <div onClick="{{ c.pick }}" style="flex:0 0 auto;display:flex;align-items:center;gap:12px;border:2px solid {{ c.border }};background:{{ c.bg }};border-radius:12px;padding:8px 18px 8px 8px;cursor:pointer">
-          <div style="width:64px;height:66px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2;position:relative">
+        <div style="flex:0 0 auto;position:relative">
+        <button onClick="{{ c.remove }}" title="Remove" aria-label="Remove design" style="position:absolute;top:-6px;right:-6px;z-index:2;width:20px;height:20px;border-radius:50%;background:#1C1B19;border:1.5px solid #FBFAF8;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0"><span style="width:9px;height:2px;background:#fff;border-radius:1px"></span></button>
+        <div onClick="{{ c.pick }}" style="width:100px;height:100px;box-sizing:border-box;border:2px solid {{ c.border }};background:{{ c.bg }};border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden">
+          <div style="width:56px;height:{{ c.thumbH }}px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2;position:relative">
             <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:scale({{ c.thumbScale }});transform-origin:0 0;pointer-events:none">
               <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
               <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
@@ -211,10 +214,11 @@
               </sc-for>
             </div>
           </div>
-          <div style="min-width:0">
-            <div style="font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px">{{ c.name }}</div>
-            <div style="font-size:12px;color:#8B867B;white-space:nowrap">{{ c.colourName }}</div>
+          <div style="min-width:0;text-align:center;max-width:96px">
+            <div style="font-size:10.5px;font-weight:600;line-height:1.15">{{ c.nameLine1 }}</div>
+            <div style="font-size:10.5px;font-weight:600;line-height:1.15">{{ c.nameLine2 }}</div>
           </div>
+        </div>
         </div>
       </sc-for>
       </div>
@@ -1574,15 +1578,18 @@ class Component extends DCLogic {
   async renderPrintCanvas(dd, view){
     const stg = stageInfo(view), items = dd.views[view].items;
     const cpp = cmPerPx(view);
-    const boxWcm = ST().PRINT_CM ? ST().PRINT_CM[view] : (PRINT_CM[view] || 30);
-    const boxHcm = stg.box.h * cpp;
     const DPI = 300;
-    const wpx = Math.max(1, Math.round((PRINT_CM[view]||30) * DPI/2.54));
-    const hpx = Math.max(1, Math.round(boxHcm * DPI/2.54));
+    // Crop to the union ink bbox of the actual artwork, not the whole print-area box —
+    // the file should be just the design at its real size, not a mostly-blank page.
+    let x1=Infinity, y1=Infinity, x2=-Infinity, y2=-Infinity;
+    items.forEach(it => { const b = this.itemBox(it); x1=Math.min(x1,b.x); y1=Math.min(y1,b.y); x2=Math.max(x2,b.x+b.w); y2=Math.max(y2,b.y+b.h); });
+    if (x2 <= x1) { x1 = stg.box.x; y1 = stg.box.y; x2 = stg.box.x+stg.box.w; y2 = stg.box.y+stg.box.h; }
+    const wStage = x2 - x1, hStage = y2 - y1;
+    const scale = DPI/2.54 * cpp;
+    const wpx = Math.max(1, Math.round(wStage * scale)), hpx = Math.max(1, Math.round(hStage * scale));
     const canvas = document.createElement('canvas'); canvas.width = wpx; canvas.height = hpx;
     const ctx = canvas.getContext('2d');
-    const scale = wpx / stg.box.w;
-    ctx.save(); ctx.scale(scale, scale); ctx.translate(-stg.box.x, -stg.box.y);
+    ctx.save(); ctx.scale(wpx/wStage, hpx/hStage); ctx.translate(-x1, -y1);
     for (const it of items) await this.drawItemOnCanvas(ctx, it);
     ctx.restore();
     return canvas;
@@ -1753,7 +1760,7 @@ class Component extends DCLogic {
         const totalQty = sizeLines.reduce((t,l) => t + (+l.q||1), 0) || this.dQty(dd);
         const sizesLabel = sizeLines.map(l => l.s).join('+');
         const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-4x';
-        const cmW = PRINT_CM[view] || 30, cmH = cmW * (canvas.height / canvas.width);
+        const cmW = canvas.width / (300/2.54), cmH = canvas.height / (300/2.54);
         if (fmt === 'png') {
           files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
         } else {
@@ -2224,7 +2231,10 @@ class Component extends DCLogic {
     }));
     const productPicks = D.PRODUCTS.map(p => ({ t: p.t, border: st.newPid===p.id ? '#4A4FE4' : '#DDD8CC', bg: st.newPid===p.id ? '#F4F4FE' : '#fff', ink: st.newPid===p.id ? '#4A4FE4' : '#1C1B19', pick: () => this.setState({ newPid: p.id }), pickAndAdd: () => { this.setState({ newPid: p.id, addOpen: false }, () => this.addDesign()); } }));
     const carouselDesigns = st.designs.map((dd, i) => ({
-      ...this.thumbFor(dd, 64), name: prod(dd.pid).t, colourName: D.COLOURS[dd.colourIdx][0],
+      ...this.thumbFor(dd, 56), name: prod(dd.pid).t, colourName: D.COLOURS[dd.colourIdx][0],
+      thumbH: +(stageInfo(viewsFor(dd.pid)[0]).h * 56 / stageInfo(viewsFor(dd.pid)[0]).w).toFixed(1),
+      remove: e => { e.stopPropagation(); this.removeDesign(i); },
+      nameLine1: (prod(dd.pid).t.split(' ')[0]||''), nameLine2: prod(dd.pid).t.split(' ').slice(1).join(' '),
       border: st.active===i ? '#4A4FE4' : '#E6E2D8', bg: st.active===i ? '#F4F4FE' : '#fff', pick: () => this.switchDesign(i),
     }));
 
@@ -2386,6 +2396,7 @@ class Component extends DCLogic {
       addRosterRow: () => this.addRosterRow(), fill11: () => this.fill11(), clearRoster: () => this.clearRoster(),
       proofRows,
       designRows, productPicks, carouselDesigns, addDesign: () => this.addDesign(), duplicateDesign: () => this.duplicateDesign(), newColourway: () => this.newColourway(),
+      carouselBg: '#FBFAF8',
       addOpen: st.addOpen, addPad: st.addOpen ? '14px' : '0', addDisplay: st.addOpen ? 'block' : 'none',
       toggleAdd: () => this.setState(s => ({ addOpen: !s.addOpen })), closeAdd: () => this.setState({ addOpen: false }),
       addSameProduct: () => { this.duplicateDesign(); this.setState({ addOpen: false }); },
