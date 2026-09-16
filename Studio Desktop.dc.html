@@ -765,7 +765,7 @@
             <span style="font-family:inherit;font-weight:700;font-size:20px">{{ cartSubtotal }}</span>
           </div>
           <sc-if value="{{ hasCartItems }}" hint-placeholder-val="{{ false }}">
-            <a href="Checkout.dc.html" style="display:block;text-align:center;box-sizing:border-box;width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Checkout</a>
+            <button onClick="{{ goCheckout }}" disabled="{{ checkoutBusy }}" style="display:block;text-align:center;box-sizing:border-box;width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:{{ checkoutCursor }}" style-hover="background:#3A3833">{{ checkoutLabel }}</button>
           </sc-if>
           <sc-if value="{{ noCartItems }}" hint-placeholder-val="{{ true }}">
             <button onClick="{{ openReview }}" style="width:100%;background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 0;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Continue</button>
@@ -1464,7 +1464,8 @@ class Component extends DCLogic {
         const scale = Math.min(1400 / base.width, 1400 / base.height, 3);
         const viewport = page.getViewport({ scale });
         const c = document.createElement('canvas'); c.width = Math.ceil(viewport.width); c.height = Math.ceil(viewport.height);
-        await page.render({ canvasContext: c.getContext('2d'), viewport }).promise;
+        const cctx = c.getContext('2d', { alpha: true });
+        await page.render({ canvasContext: cctx, viewport, background: 'rgba(0,0,0,0)' }).promise;
         this._vector = this._vector || {}; this._vector[name] = bytes;
         const isCmyk = /DeviceCMYK/.test(String.fromCharCode.apply(null, bytes.subarray(0, Math.min(bytes.length, 400000))));
         this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { cmykOriginal: isCmyk, originalBytesB64: isCmyk ? btoa(String.fromCharCode.apply(null, bytes)) : null });
@@ -2233,6 +2234,9 @@ class Component extends DCLogic {
       goAccount: () => { location.href = 'Dashboard.dc.html'; },
       cartCount: aQty, cartOpen: st.cartOpen, hasCartItems: aQty > 0, noCartItems: !(aQty > 0), cartCursor: aQty > 0 ? 'pointer' : 'default', cartInk: aQty > 0 ? '#1C1B19' : '#C9C6BB',
       toggleCart: () => this.setState(s => ({ cartOpen: this.approvedQty() > 0 ? !s.cartOpen : false })), closeCart: () => this.setState({ cartOpen: false }),
+      checkoutBusy: !!st.checkingOut, checkoutCursor: st.checkingOut ? 'wait' : 'pointer',
+      checkoutLabel: st.checkingOut ? 'Preparing your files…' : 'Checkout',
+      goCheckout: async () => { if (this.state.checkingOut) return; this.setState({ checkingOut: true }); await this.compileProductionFiles(); location.href = 'Checkout.dc.html'; },
       openReview: () => this.setState(s => ({ reviewOpen: true, reviewOk: false, reviewStep: 1, reviewDesign: s.active })), closeReview: () => this.setState({ reviewOpen: false }),
       reviewStep1: st.reviewStep === 1, reviewStep2: st.reviewStep === 2, reviewTitle: st.reviewStep === 1 ? 'Review your design' : 'Review my design',
       reviewBack: () => this.setState({ reviewStep: 1 }), reviewBackVis: st.reviewStep === 2 ? 'visible' : 'hidden',
