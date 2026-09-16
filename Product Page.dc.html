@@ -431,7 +431,7 @@ a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
   </section>
 
   <!-- FLOATING CTA (same button as main CTA, always visible while scrolling) -->
-  <div class="pdp-sticky-cta" style="display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:center;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
+  <div class="pdp-sticky-cta" style="display:{{ floatingCtaDisplay }};position:fixed;left:0;right:0;bottom:0;z-index:45;background:#FBFAF8;border-top:1px solid #E6E2D8;padding:12px 16px;align-items:center;justify-content:center;gap:12px;box-shadow:0 -6px 20px rgba(28,27,25,0.08)">
     <div style="max-width:1440px;width:100%;display:flex;justify-content:center;padding:0 48px">
       <a href="Studio%20Desktop.dc.html" style="text-decoration:none;display:block;width:100%;max-width:420px"><button style="background:{{ ctaBg }};color:{{ ctaInk }};border:1px solid {{ ctaBg }};border-radius:999px;padding:14px 0 12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 200ms ease-out;width:100%;display:flex;flex-direction:column;align-items:center;gap:3px" style-hover="filter:brightness(0.94)"><span>Start Creating — €{{ price2dp }}</span><span style="font-size:11px;font-weight:500;opacity:0.85">In stock: ready to ship</span></button></a>
     </div>

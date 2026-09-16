@@ -170,7 +170,7 @@
       <!-- warning -->
       <sc-if value="{{ hasWarning }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;top:16px;left:calc(50% + {{ floatShift }}px);transform:translateX(-50%);z-index:20;background:#fff;border:1px solid #E6E2D8;border-radius:10px;padding:6px 6px 6px 14px;display:flex;gap:12px;align-items:center">
-          <span style="width:8px;height:8px;border-radius:50%;background:#A34B33;flex-shrink:0"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:{{ warningDotColor }};flex-shrink:0"></span>
           <span style="font-size:12.5px;color:#1C1B19">{{ warningMsg }}</span>
           <button onClick="{{ fixWarning }}" style="background:#1C1B19;color:#fff;border:none;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:500;cursor:pointer">Move inside</button>
         </div>
@@ -2246,13 +2246,14 @@ class Component extends DCLogic {
       return { ...common(it), clip: frame ? frame.clip : 'none', hasUrl: !!it.url, noUrl: !it.url, fit: frame ? 'cover' : 'contain', imgRef: this.mkIconRef(it.url) };
     });
 
-    let warnItem = null;
+    let warnItem = null, warnFullyOut = false;
     for (const it of items) {
-      if (it.staged) continue;
+      if (it.staged) { warnItem = it; warnFullyOut = true; break; }
       const b = this.itemBox(it);
       const pts = [[b.x,b.y],[b.x+b.w,b.y],[b.x,b.y+b.h],[b.x+b.w,b.y+b.h],[b.x+b.w/2,b.y+b.h/2],[b.x+b.w/2,b.y+b.h],[b.x,b.y+b.h/2],[b.x+b.w,b.y+b.h/2]];
       const gv = D.GARMENT_VIEWS[view];
-      if (pts.some(([px,py]) => !this.insideMask(view, px/stage.w, py/stage.h, gv && gv.box))) { warnItem = it; break; }
+      const outsideFlags = pts.map(([px,py]) => !this.insideMask(view, px/stage.w, py/stage.h, gv && gv.box));
+      if (outsideFlags.some(Boolean)) { warnItem = it; warnFullyOut = outsideFlags.every(Boolean); break; }
     }
 
     const roster = d.roster || [];
@@ -2552,7 +2553,9 @@ class Component extends DCLogic {
       sizeDisabled: false,
       selRot: sel ? Math.round(sel.rot||0) : 0, setRot: e => this.updateSel({ rot: Math.max(-180, Math.min(180, +e.target.value||0)) }),
 
-      hasWarning: !!warnItem && !preview, warningMsg: 'Outside the print area — this will be cut off.',
+      hasWarning: !!warnItem && !preview,
+      warningMsg: warnFullyOut ? 'Fully outside the print area — it can be used on another view instead.' : 'Outside the print area — this will be cut off.',
+      warningDotColor: warnFullyOut ? '#4A4FE4' : '#A34B33',
       fixWarning: () => { if (!warnItem) return; const b = this.itemBox(warnItem); this.updateOne(warnItem.id, { x: Math.round(box.x+box.w/2-b.w/2), y: Math.round(box.y+box.h/2-b.h/2) }); },
 
       zoomPct: Math.round(st.zoom*100)+'%', zoomIn: () => this.zoomIn(), zoomOut: () => this.zoomOut(), resetView: () => this.resetView(), resetDesign: () => this.resetDesign(),
