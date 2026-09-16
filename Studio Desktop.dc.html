@@ -1443,8 +1443,14 @@ class Component extends DCLogic {
     if (file.size > 5 * 1024 * 1024) { this.toastMsg('Too large', 'Artwork files must be under 5 MB.'); return; }
     const name = file.name || 'Artwork';
     const isPdfLike = /pdf|illustrator|postscript/i.test(file.type) || /\.(pdf|ai|eps)$/i.test(name);
+    const isSvg = /svg/i.test(file.type) || /\.svg$/i.test(name);
     if (isPdfLike) this.rasterisePdf(file, name);
-    else {
+    else if (isSvg) {
+      const r = new FileReader();
+      r.onload = () => this.placeArtwork(r.result, name, 'vector', { svgOriginalUrl: r.result });
+      r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
+      r.readAsDataURL(file);
+    } else {
       const r = new FileReader();
       r.onload = () => this.placeArtwork(r.result, name, 'raster');
       r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
@@ -1467,8 +1473,7 @@ class Component extends DCLogic {
         const cctx = c.getContext('2d', { alpha: true });
         await page.render({ canvasContext: cctx, viewport, background: 'rgba(0,0,0,0)' }).promise;
         this._vector = this._vector || {}; this._vector[name] = bytes;
-        const isCmyk = /DeviceCMYK/.test(String.fromCharCode.apply(null, bytes.subarray(0, Math.min(bytes.length, 400000))));
-        this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { cmykOriginal: isCmyk, originalBytesB64: isCmyk ? btoa(String.fromCharCode.apply(null, bytes)) : null });
+        this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { originalBytesB64: btoa(String.fromCharCode.apply(null, bytes)) });
         this.toastMsg('Added', name + ' · page 1 previewed, vector kept for print.');
       } catch (err) { this.toastMsg('Preview unavailable', 'Accepted for print, but ' + name + ' could not be previewed.'); }
     };
@@ -1701,6 +1706,7 @@ class Component extends DCLogic {
         const allRasterOnly = items.every(it => it.kind === 'upload' && it.source !== 'vector');
         const fmt = allRasterOnly ? 'png' : 'pdf';
         const canvas = await this.renderPrintCanvas(dd, view);
+        const pngDataUrl = canvas.toDataURL('image/png');
         const mCanvas = await this.renderMockupCanvas(dd, view);
         mockupPages.push({ canvas: mCanvas });
         for (const line of sizeLines) {
@@ -1709,27 +1715,26 @@ class Component extends DCLogic {
           const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + String(size).replace(/[^a-z0-9]+/gi,'') + '-4x';
           const cmW = (PRINT_CM[view] || 30) * scale, cmH = cmW * (canvas.height / canvas.width);
           if (fmt === 'png') {
-            files.push({ name: base + '-png.png', dataUrl: canvas.toDataURL('image/png') });
+            files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
           } else {
-            printPages.push({ canvas, cmW, cmH });
-            files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+            printPages.push({ canvas, pngDataUrl, cmW, cmH });
+            files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(pngDataUrl, 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
           }
           const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Size>' + size + '</Size>\n    <Copies>' + Math.max(1, lineQty) + '</Copies>\n\n</JHDR>\n';
           files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
           const pCanvas = await this.renderPlacementCanvas(dd, view, orderRef, lineQty, size, scale);
           placementPages.push({ canvas: pCanvas });
-          try {
-            const vecDoc = await this.renderVectorCmykPdf(dd, view, cmW, cmH);
-            files.push({ name: base + '-vector-cmyk.pdf', dataUrl: vecDoc.output('datauristring') });
-          } catch(e){}
         }
-        items.filter(it => it.kind==='upload' && it.cmykOriginal && it.originalBytesB64).forEach(it => {
-          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original-cmyk.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
+        items.filter(it => it.kind==='upload' && it.source==='vector' && it.originalBytesB64).forEach(it => {
+          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
+        });
+        items.filter(it => it.kind==='upload' && it.source==='vector' && it.svgOriginalUrl).forEach(it => {
+          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.svg', dataUrl: it.svgOriginalUrl });
         });
       }
     }
     let combinedPdf = null;
-    printPages.forEach(p => { const wmm = p.cmW*10, hmm = p.cmH*10; if (!combinedPdf) combinedPdf = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm], compress: true }); else combinedPdf.addPage([wmm,hmm]); combinedPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, wmm, hmm); });
+    printPages.forEach(p => { const wmm = p.cmW*10, hmm = p.cmH*10; if (!combinedPdf) combinedPdf = new window.jspdf.jsPDF({ unit:'mm', format:[wmm,hmm], compress: true }); else combinedPdf.addPage([wmm,hmm]); combinedPdf.addImage(p.pngDataUrl, 'PNG', 0, 0, wmm, hmm); });
     if (combinedPdf) files.push({ name: 'production-pack-' + stamp + '-print-pack.pdf', dataUrl: combinedPdf.output('datauristring') });
     let mockupPdf = null;
     mockupPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!mockupPdf) mockupPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h], compress: true }); else mockupPdf.addPage([w,h]); mockupPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
@@ -1738,8 +1743,22 @@ class Component extends DCLogic {
     placementPages.forEach(p => { const w = p.canvas.width, h = p.canvas.height; if (!placementPdf) placementPdf = new window.jspdf.jsPDF({ unit:'px', format:[w,h], compress: true }); else placementPdf.addPage([w,h]); placementPdf.addImage(p.canvas.toDataURL('image/png'), 'PNG', 0, 0, w, h); });
     if (placementPdf) files.push({ name: 'production-pack-' + stamp + '-placement-sheet.pdf', dataUrl: placementPdf.output('datauristring') });
     this.setState({ compiling: false, productionFiles: files });
-    try { window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files })); this.toastMsg('Production pack ready', files.length + ' file(s) — will download at checkout.'); }
-    catch(e){ this.toastMsg('Production pack too large', 'Generated ' + files.length + ' files but they don\u2019t fit in local storage — reduce artwork or views.'); }
+    try {
+      window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files }));
+      this.toastMsg('Production pack ready', files.length + ' file(s) — will download at checkout.');
+    } catch(e) {
+      // Too big for local storage as a whole pack (many sizes × views × vector duplicates) — retry
+      // with just the essential print file per job, dropped rather than silently serving a STALE
+      // pack left over from a previous design (which is worse than an honest "couldn't save").
+      try {
+        const essential = files.filter(f => /-pdf\.pdf$|-png\.png$|\.jhdr$|placement-sheet\.pdf$/.test(f.name));
+        window.localStorage.setItem('w2p_production_pack', JSON.stringify({ generatedAt: Date.now(), files: essential }));
+        this.toastMsg('Production pack trimmed', essential.length + ' essential file(s) saved — vector/CMYK extras were too large for this many sizes/views.');
+      } catch(e2) {
+        window.localStorage.removeItem('w2p_production_pack');
+        this.toastMsg('Production pack failed', 'Too large to save — reduce sizes, views or artwork and try again. Nothing stale will be shown at checkout.');
+      }
+    }
   }
 
   updateSel(patch){
