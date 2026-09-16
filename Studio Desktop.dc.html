@@ -63,6 +63,7 @@
     </div>
     <div style="flex:1"></div>
     <div style="display:{{ undoDisplay }};gap:2px;flex-shrink:0">
+      <button onClick="{{ resetDesign }}" title="Reset design" aria-label="Reset design" style="width:36px;height:36px;border-radius:8px;border:1px solid #DDD8CC;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1C1B19" style-hover="background:#F1EEE8;border-color:#1C1B19"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"></path><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg></button>
       <button onClick="{{ undo }}" title="Undo (⌘Z)" aria-label="Undo" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:{{ undoInk }}" style-hover="background:#F1EEE8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"></path></svg></button>
       <button onClick="{{ redo }}" title="Redo (⇧⌘Z)" aria-label="Redo" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:{{ redoInk }}" style-hover="background:#F1EEE8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3"></path></svg></button>
     </div>
@@ -96,7 +97,8 @@
     <div style="flex:1;min-width:0;min-height:0;display:flex;flex-direction:column">
     <!-- CANVAS -->
     <div style="flex:1;min-width:0;position:relative;background:#FBFAF8">
-      <div ref="{{ canvasRef }}" onMouseDown="{{ deselect }}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <div ref="{{ canvasRef }}" onMouseDown="{{ startPanOrDeselect }}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:{{ canvasCursor }}">
+        <div style="position:relative;transform:translate({{ panX }}px,{{ panY }}px)">
         <div style="transform:scale({{ totalScale }});transition:transform 200ms ease-out;position:relative;width:{{ stageW }}px;height:{{ stageH }}px">
           <img ref="{{ garmentRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none">
           <sc-if value="{{ showGuides }}" hint-placeholder-val="{{ false }}">
@@ -161,6 +163,7 @@
             <div style="position:absolute;left:{{ specLineX }}px;top:{{ specTopLabelY }}px;transform:translate(6px,-50%);font-size:{{ specFont }};color:#4A4FE4;background:#F4F4FE;padding:0.15em 0.5em;border-radius:0.3em;white-space:nowrap;pointer-events:none;z-index:6">{{ specTopLabel }}</div>
             <div style="position:absolute;left:{{ specDimX }}px;top:{{ specDimY }}px;transform:translate(-50%,0.4em);font-size:{{ specFont }};color:#1C1B19;background:#fff;border:1px solid #DDD8CC;padding:0.15em 0.5em;border-radius:0.3em;white-space:nowrap;pointer-events:none;z-index:6">{{ specDims }}</div>
           </sc-if>
+        </div>
         </div>
       </div>
 
@@ -977,7 +980,7 @@ const TEMPLATES_DEF = [
 class Component extends DCLogic {
   state = {
     panel: 'Colour', sel: [], shareOpen: false, designsOpen: false, addOpen: false, hoverColour: null, staging: [], compiling: false, productionFiles: [], reviewOpen: false, reviewOk: false, reviewStep: 1, reviewDesign: 0, view: 'Front', active: 0, zoom: 1, ctx: null,
-    grid: false, snap: (this && this.props && this.props.snapToGridDefault) !== false, guides: true, spec: false, previewMode: false, fitScale: 1, cartOpen: false,
+    grid: false, snap: (this && this.props && this.props.snapToGridDefault) !== false, guides: true, spec: false, previewMode: false, fitScale: 1, cartOpen: false, panX: 0, panY: 0,
     elTab: 'text', newPid: null, stickerInk: 0, dirty: false, winW: 1440, inspPinned: false,
     designs: (() => {
       const d = newDesign('tee', 0, (this && this.props && this.props.defaultPrintMethod) || 'dtf');
@@ -1147,6 +1150,7 @@ class Component extends DCLogic {
   checkoutIframeRef = node => { this._checkoutIframe = node; };
   componentDidMount(){
     this.resumeSavedDesign();
+    setTimeout(() => { this._initialDesigns = JSON.parse(JSON.stringify(this.state.designs)); }, 0);
     this._onCheckoutMsg = async (ev) => {
       if (!ev.data || ev.data.source !== 'w2p-checkout') return;
       if (ev.data.type === 'pay-now') {
@@ -1397,6 +1401,19 @@ class Component extends DCLogic {
     });
   }
   deselect(){ this.setState({ sel: [], ctx: null }); }
+  startPanOrDeselect(e){
+    if (e.button !== 0) return;
+    const sx = e.clientX, sy = e.clientY;
+    const basePanX = this.state.panX, basePanY = this.state.panY;
+    let moved = false;
+    const move = ev => {
+      const dx = ev.clientX-sx, dy = ev.clientY-sy;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+      if (moved) this.setState({ panX: basePanX+dx, panY: basePanY+dy });
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); if (!moved) this.deselect(); };
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', up);
+  }
   selItems(){ const items = this.VW(this.curView()).items.concat(this.state.staging||[]); return this.state.sel.map(id => items.find(x => x.id === id)).filter(Boolean); }
   selItem(){ return this.selItems()[0]; }
   itemBox(it){
@@ -2165,7 +2182,15 @@ class Component extends DCLogic {
   togglePreview(){ this.setState(s=>({ previewMode: !s.previewMode, sel: [], panel: null, ctx: null })); }
   zoomIn(){ this.setState(s=>({ zoom: Math.min(2.5, +(s.zoom+0.1).toFixed(2)) })); }
   zoomOut(){ this.setState(s=>({ zoom: Math.max(0.5, +(s.zoom-0.1).toFixed(2)) })); }
-  resetView(){ this.setState({ zoom: 1 }); }
+  resetView(){ this.setState({ zoom: 1, panX: 0, panY: 0 }); }
+  resetDesign(){
+    this.setState(s => ({
+      zoom: 1, panX: 0, panY: 0, sel: [], ctx: null, staging: [], active: 0,
+      designs: this._initialDesigns ? JSON.parse(JSON.stringify(this._initialDesigns)) : s.designs,
+      past: [...s.past, s.designs].slice(-30), future: [], dirty: true,
+    }));
+    this.toastMsg('Reset', 'Design restored to how it was when you opened the Studio.');
+  }
 
   renderVals(){
     const st = this.state, D = ST();
@@ -2434,6 +2459,7 @@ class Component extends DCLogic {
 
       garmentRef: this.mkIconRef(garmentImg), edgeRef: this.mkIconRef(edgeImg), stageW: stage.w, stageH: stage.h,
       canvasRef: this.canvasRef, totalScale: +(st.fitScale * st.zoom).toFixed(3),
+      startPanOrDeselect: e => this.startPanOrDeselect(e), panX: st.panX||0, panY: st.panY||0, canvasCursor: st.zoom > 1 ? 'grab' : 'default',
       showGuides: st.guides && !preview, showGrid: st.grid && !preview,
       boxX: box.x, boxY: box.y, boxW: box.w, boxH: box.h,
       viewLabel: view, itemCount: items.length, printAreaCm: PRINT_CM[view] + ' × ' + +(box.h * cm).toFixed(0) + ' cm',
@@ -2529,7 +2555,7 @@ class Component extends DCLogic {
       hasWarning: !!warnItem && !preview, warningMsg: 'Outside the print area — this will be cut off.',
       fixWarning: () => { if (!warnItem) return; const b = this.itemBox(warnItem); this.updateOne(warnItem.id, { x: Math.round(box.x+box.w/2-b.w/2), y: Math.round(box.y+box.h/2-b.h/2) }); },
 
-      zoomPct: Math.round(st.zoom*100)+'%', zoomIn: () => this.zoomIn(), zoomOut: () => this.zoomOut(), resetView: () => this.resetView(),
+      zoomPct: Math.round(st.zoom*100)+'%', zoomIn: () => this.zoomIn(), zoomOut: () => this.zoomOut(), resetView: () => this.resetView(), resetDesign: () => this.resetDesign(),
       toggleGrid: () => this.toggleGrid(), gridInk: st.grid?'#4A4FE4':'#4A473F', gridBg: st.grid?'#F4F4FE':'transparent',
       toggleSnap: () => this.toggleSnap(), snapInk: st.snap?'#4A4FE4':'#4A473F', snapBg: st.snap?'#F4F4FE':'transparent',
       toggleGuides: () => this.toggleGuides(), guidesInk: st.guides?'#4A4FE4':'#4A473F', guidesBg: st.guides?'#F4F4FE':'transparent',
