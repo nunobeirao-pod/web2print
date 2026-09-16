@@ -933,10 +933,7 @@ function cmPerPx(view){ const s = stageInfo(view); return (PRINT_CM[view] || 30)
 function mmToPx(mm){ return mm / (cmPerPx('Front')*10); }
 /* Scale factor from the Studio's M-reference canvas to a given order size, e.g. XXL prints
    wider than S — the production file's physical cm size follows the size chart, not a fixed cm. */
-function sizePrintScale(size){
-  const T = (ST().SIZE_PRINT_CM) || {}; const m = T.M || PRINT_CM.Front;
-  return (T[size] || m) / m;
-}
+function sizePrintScale(size){ return 1; }
 function rgbToCmyk(hex){
   hex = hex || '#1C1B19'; const n = parseInt(hex.slice(1),16), r=(n>>16&255)/255, g=(n>>8&255)/255, b=(n&255)/255;
   const k = 1 - Math.max(r,g,b);
@@ -1753,22 +1750,20 @@ class Component extends DCLogic {
         const pngDataUrl = canvas.toDataURL('image/png');
         const mCanvas = await this.renderMockupCanvas(dd, view);
         mockupPages.push({ canvas: mCanvas });
-        for (const line of sizeLines) {
-          const size = line.s, lineQty = +line.q || 1;
-          const scale = sizePrintScale(size);
-          const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + String(size).replace(/[^a-z0-9]+/gi,'') + '-4x';
-          const cmW = (PRINT_CM[view] || 30) * scale, cmH = cmW * (canvas.height / canvas.width);
-          if (fmt === 'png') {
-            files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
-          } else {
-            printPages.push({ canvas, pngDataUrl, cmW, cmH });
-            files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(pngDataUrl, 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
-          }
-          const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Size>' + size + '</Size>\n    <Copies>' + Math.max(1, lineQty) + '</Copies>\n\n</JHDR>\n';
-          files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
-          const pCanvas = await this.renderPlacementCanvas(dd, view, orderRef, lineQty, size, scale);
-          placementPages.push({ canvas: pCanvas });
+        const totalQty = sizeLines.reduce((t,l) => t + (+l.q||1), 0) || this.dQty(dd);
+        const sizesLabel = sizeLines.map(l => l.s).join('+');
+        const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-4x';
+        const cmW = PRINT_CM[view] || 30, cmH = cmW * (canvas.height / canvas.width);
+        if (fmt === 'png') {
+          files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
+        } else {
+          printPages.push({ canvas, pngDataUrl, cmW, cmH });
+          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(pngDataUrl, 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
         }
+        const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Sizes>' + sizesLabel + '</Sizes>\n    <Copies>' + Math.max(1, totalQty) + '</Copies>\n\n</JHDR>\n';
+        files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
+        const pCanvas = await this.renderPlacementCanvas(dd, view, orderRef, totalQty, sizesLabel, 1);
+        placementPages.push({ canvas: pCanvas });
         items.filter(it => it.kind==='upload' && it.source==='vector' && it.originalBytesB64).forEach(it => {
           files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
         });
