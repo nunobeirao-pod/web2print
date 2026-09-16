@@ -361,12 +361,54 @@
           <sc-if value="{{ selIsVector }}" hint-placeholder-val="{{ false }}">
             <div>
               <div style="font-size:12px;color:#4A473F;margin-bottom:8px">Colour</div>
-              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">
+              <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:8px">
                 <sc-for list="{{ vectorColourOpts }}" as="c" hint-placeholder-count="12">
                   <button onClick="{{ c.pick }}" title="{{ c.name }}" aria-label="{{ c.name }}" style="width:100%;aspect-ratio:1;border-radius:8px;background:{{ c.hex }};border:1px solid rgba(28,27,25,.12);box-shadow:{{ c.ring }};cursor:pointer;padding:0"></button>
                 </sc-for>
+                <button onClick="{{ toggleCmykPicker }}" title="Custom colour (CMYK)" aria-label="Custom colour" style="width:100%;aspect-ratio:1;border-radius:8px;cursor:pointer;position:relative;box-shadow:{{ customRing }};background:conic-gradient(#E64545,#F0B429,#41573B,#4A4FE4,#A34B33,#E64545);border:none;padding:0"></button>
               </div>
+              <sc-if value="{{ cmykPickerOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-bottom:8px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
+                  <div style="position:relative;width:100%">
+                    <canvas ref="{{ svRef }}" width="220" height="140" onMouseDown="{{ svDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
+                    <div style="position:absolute;top:{{ svDotY }}%;left:{{ svDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ selHex }}"></div>
+                  </div>
+                  <div style="position:relative;width:100%;height:20px">
+                    <canvas ref="{{ hueRef }}" width="220" height="20" onMouseDown="{{ hueDown }}" style="width:100%;height:20px;border-radius:10px;cursor:pointer"></canvas>
+                    <div style="position:absolute;top:50%;left:{{ huePct }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);transform:translate(-50%,-50%);pointer-events:none;background:{{ hueDotColor }}"></div>
+                  </div>
+                </div>
+              </sc-if>
             </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12.5px;font-weight:500">Outline</span>
+              <button onClick="{{ toggleOutline }}" role="switch" aria-label="Outline" style="width:36px;height:22px;border-radius:999px;border:none;background:{{ olBg }};position:relative;cursor:pointer;padding:0;transition:background 150ms"><span style="position:absolute;top:3px;left:{{ olKnob }};width:16px;height:16px;border-radius:50%;background:#fff;transition:left 150ms"></span></button>
+            </div>
+            <sc-if value="{{ selOutline }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:8px;margin-top:-8px">
+                <sc-for list="{{ outlineOpts }}" as="k" hint-placeholder-count="5">
+                  <button onClick="{{ k.pick }}" aria-label="{{ k.hex }}" style="width:32px;height:32px;border-radius:8px;background:{{ k.hex }};border:1px solid rgba(28,27,25,.12);box-shadow:{{ k.ring }};cursor:pointer;padding:0"></button>
+                </sc-for>
+                <button onClick="{{ toggleOlCmykPicker }}" title="Custom outline colour" aria-label="Custom outline colour" style="width:32px;height:32px;border-radius:8px;cursor:pointer;position:relative;flex-shrink:0;box-shadow:{{ olCustomRing }};background:conic-gradient(#E64545,#F0B429,#41573B,#4A4FE4,#A34B33,#E64545);border:none;padding:0"></button>
+              </div>
+              <sc-if value="{{ olCmykPickerOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:2px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
+                  <div style="position:relative;width:100%">
+                    <canvas ref="{{ olSvRef }}" width="220" height="140" onMouseDown="{{ olSvDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
+                    <div style="position:absolute;top:{{ olSvDotY }}%;left:{{ olSvDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ olHex }}"></div>
+                  </div>
+                  <div style="position:relative;width:100%;height:20px">
+                    <canvas ref="{{ olHueRef }}" width="220" height="20" onMouseDown="{{ olHueDown }}" style="width:100%;height:20px;border-radius:10px;cursor:pointer"></canvas>
+                    <div style="position:absolute;top:50%;left:{{ olHuePct }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);transform:translate(-50%,-50%);pointer-events:none;background:{{ olHueDotColor }}"></div>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+                <span style="font-size:12.5px;font-weight:500;flex-shrink:0">Line thickness</span>
+                <input type="range" min="0.1" max="5" step="0.1" value="{{ olWidthMm }}" onChange="{{ setOlWidthMm }}" style="flex:1;accent-color:#1C1B19">
+                <span style="width:48px;font-size:12px;color:#4A473F;text-align:right;font-variant-numeric:tabular-nums">{{ olWidthMm }} mm</span>
+              </div>
+            </sc-if>
           </sc-if>
 
           <!-- uploads / frames -->
@@ -946,10 +988,22 @@ function hexFromCmyk(c,m,y,k){
   return '#' + h(chan(0)) + h(chan(1)) + h(chan(2));
 }
 function hexL(hex){ const n = parseInt(hex.slice(1),16); return (0.2126*(n>>16&255)+0.7152*(n>>8&255)+0.0722*(n&255))/255; }
-function svgIcon(fn, color){
-  const body = fn(color || '#1C1B19');
+function svgIcon(fn, color, outline){
+  let body = fn(color || '#1C1B19');
+  if (outline && outline.hex && outline.w > 0) {
+    body = body.replace(/\s*\/>\s*$/, ` stroke="${outline.hex}" stroke-width="${outline.w}" stroke-linejoin="round"/>`);
+  }
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">' + body + '</svg>';
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+/* Outline spec (hex + SVG-user-unit width) for a shape/sticker item, given its rendered pixel width. */
+function vecOutlineSpec(it, D){
+  if (!it || !it.ol) return null;
+  const hex = it.ohex || D.INK[it.oci] || '#1C1B19';
+  const wmm = it.ow != null ? it.ow : 0.6;
+  const wpx = mmToPx(wmm);
+  const w = wpx * 100 / Math.max(1, it.w || 100);
+  return { hex, w };
 }
 const ICON = {
   AI: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z',
@@ -1263,7 +1317,7 @@ class Component extends DCLogic {
       texts: items.filter(i=>i.kind==='text'||i.kind==='field').map(it => { const f = D.FONTS[it.fi] || D.FONTS[0]; return { x: it.x, y: it.y, rot: it.rot||0, text: it.text, size: it.size, ls: it.ls||0, family: f[1], weight: it.bold ? 900 : f[2], fontStyle: it.italic?'italic':'normal', decoration: it.underline?'underline':'none', color: it.hex || D.INK[it.ci] || '#1C1B19', textShadow: olFor(it), textAlign: it.align || 'center' }; }),
       pics: items.filter(i=>i.kind!=='text'&&i.kind!=='field').map(it => {
         let url = it.url || '', fit = 'contain', clip = 'none';
-        if (it.kind==='shape'||it.kind==='sticker') { const set = it.kind==='shape' ? D.SHAPES : D.STICKERS; const sh = set.find(x=>x.id===it.shapeId) || set[0]; url = svgIcon(sh.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19')))); }
+        if (it.kind==='shape'||it.kind==='sticker') { const set = it.kind==='shape' ? D.SHAPES : D.STICKERS; const sh = set.find(x=>x.id===it.shapeId) || set[0]; const ol = vecOutlineSpec(it, D); url = svgIcon(sh.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))), ol && { hex: printSafeHex(ol.hex), w: ol.w }); }
         if (it.kind==='frame') { const fr = D.FRAMES.find(f=>f.id===it.frameId); clip = fr ? fr.clip : 'none'; fit = 'cover'; }
         return { x: it.x, y: it.y, w: it.w, h: it.h, rot: it.rot||0, fit, clip, imgRef: this.mkIconRef(url) };
       }),
@@ -1557,7 +1611,7 @@ class Component extends DCLogic {
     if (it.kind === 'shape' || it.kind === 'sticker') {
       const set = it.kind === 'shape' ? D.SHAPES : D.STICKERS;
       const s = set.find(x=>x.id===it.shapeId) || set[0];
-      src = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))));
+      src = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))), (() => { const ol = vecOutlineSpec(it, D); return ol && { hex: printSafeHex(ol.hex), w: ol.w }; })());
     } else { src = it.url || ''; }
     if (!src) return;
     try {
@@ -1710,7 +1764,7 @@ class Component extends DCLogic {
         try {
           const box = this.itemBox(it);
           let src = it.url;
-          if (it.kind === 'sticker') { const s = D.STICKERS.find(x=>x.id===it.shapeId)||D.STICKERS[0]; src = svgIcon(s.svg, it.hex || '#1C1B19'); }
+          if (it.kind === 'sticker') { const s = D.STICKERS.find(x=>x.id===it.shapeId)||D.STICKERS[0]; const ol = vecOutlineSpec(it, D); src = svgIcon(s.svg, it.hex || '#1C1B19', ol); }
           if (src) { const img = await this.loadImg(src); doc.addImage(img, 'PNG', toMM(it.x-stg.box.x), toMM(it.y-stg.box.y), toMM(box.w), toMM(box.h)); }
         } catch(e){}
       }
@@ -2238,7 +2292,7 @@ class Component extends DCLogic {
     const vectorItems = items.filter(i=>i.kind==='shape'||i.kind==='sticker').map(it => {
       const set = it.kind==='shape' ? D.SHAPES : D.STICKERS;
       const s = set.find(x=>x.id===it.shapeId) || set[0];
-      const icon = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))));
+      const icon = svgIcon(s.svg, printSafeHex(it.hex || (D.COLOURS[it.ci] ? D.COLOURS[it.ci][1] : (D.INK[it.ci]||'#1C1B19'))), (() => { const ol = vecOutlineSpec(it, D); return ol && { hex: printSafeHex(ol.hex), w: ol.w }; })());
       return { ...common(it), iconRef: this.mkIconRef(icon) };
     });
     const mediaItems = items.filter(i=>i.kind==='upload'||i.kind==='frame').map(it => {
@@ -2319,9 +2373,10 @@ class Component extends DCLogic {
     const selBox = sel ? this.itemBox(sel) : null;
     const bounds = this.selBounds();
     const specOn = st.spec && !!bounds && !preview;
-    const selHex = sel ? (sel.hex || D.INK[sel.ci] || '#1C1B19') : '#1C1B19';
-    const olHex = sel ? (sel.ohex || D.INK[sel.oci] || '#1C1B19') : '#1C1B19';
     const isTextSel = !!sel && (sel.kind==='text'||sel.kind==='field');
+    const isVecSel = !!sel && (sel.kind==='shape'||sel.kind==='sticker');
+    const selHex = sel ? (sel.hex || (isVecSel ? (D.COLOURS[sel.ci] && D.COLOURS[sel.ci][1]) : D.INK[sel.ci]) || '#1C1B19') : '#1C1B19';
+    const olHex = sel ? (sel.ohex || D.INK[sel.oci] || '#1C1B19') : '#1C1B19';
     const faces = viewsFor(d.pid).filter(v => d.views[v].items.length);
 
     const ctxSets = {
