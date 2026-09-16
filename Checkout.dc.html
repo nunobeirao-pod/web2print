@@ -226,7 +226,15 @@ class Component extends DCLogic {
       return parsed.files || [];
     } catch(e) { return []; }
   }
-  goBack = () => { if (window.history.length > 1) window.history.back(); else { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; } };
+  componentDidMount(){
+    this._onMsg = (ev) => {
+      if (!ev.data || ev.data.source !== 'w2p-studio') return;
+      if (ev.data.type === 'pay-now-done') { this.autoDownloadProduction(); this.setState({ phase: 'success' }); }
+    };
+    window.addEventListener('message', this._onMsg);
+  }
+  componentWillUnmount(){ window.removeEventListener('message', this._onMsg); }
+  goBack(){ if (window.parent !== window) window.parent.postMessage({ source: 'w2p-checkout', type: 'close' }, '*'); else if (window.history.length > 1) window.history.back(); else { if (window.__navigate) window.__navigate('Homepage.dc.html'); else location.href = 'Homepage.dc.html'; } }
   renderVals() {
     const st = this.state;
     const unit = 33.95;
@@ -237,7 +245,7 @@ class Component extends DCLogic {
     const bg = (k) => st.pay === k ? '#F4F4FE' : '#fff';
     const dot = (k) => st.pay === k ? '#4A4FE4' : 'transparent';
     return {
-      goBack: this.goBack,
+      goBack: () => this.goBack(),
       isSuccess: st.phase === 'success', isCheckout: st.phase !== 'success',
       productionFiles: this.readProductionFiles(), hasProductionFiles: st.phase === 'success' && this.readProductionFiles().length > 0,
       isGuest: !st.signedIn,
@@ -257,9 +265,13 @@ class Component extends DCLogic {
       ctaLabel: st.phase === 'processing' ? 'Processing payment…' : 'Pay now',
       completeOrder: () => {
         if (st.phase === 'processing') return;
-        this.autoDownloadProduction();
         this.setState({ phase: 'processing' });
-        setTimeout(() => this.setState({ phase: 'success' }), 1400);
+        if (window.parent !== window) {
+          window.parent.postMessage({ source: 'w2p-checkout', type: 'pay-now' }, '*');
+        } else {
+          this.autoDownloadProduction();
+          setTimeout(() => this.setState({ phase: 'success' }), 1400);
+        }
       },
     };
   }

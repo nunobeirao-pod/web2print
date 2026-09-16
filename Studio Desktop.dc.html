@@ -901,6 +901,12 @@
       <span style="font-weight:600">{{ toastTitle }}</span><span style="color:rgba(255,255,255,.72)">{{ toastSub }}</span>
     </div>
   </sc-if>
+
+  <sc-if value="{{ checkoutOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:#fff;z-index:200">
+      <iframe ref="{{ checkoutIframeRef }}" src="Checkout.dc.html" title="Checkout" style="width:100%;height:100%;border:none;display:block"></iframe>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}, &quot;defaultPrintMethod&quot;: {&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;dtf&quot;,&quot;tsType&quot;:&quot;'dtf'|'emb'|'oth'&quot;,&quot;options&quot;:[&quot;dtf&quot;,&quot;emb&quot;,&quot;oth&quot;],&quot;section&quot;:&quot;Defaults&quot;}, &quot;snapToGridDefault&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Defaults&quot;}}">
@@ -1162,8 +1168,19 @@ class Component extends DCLogic {
     if (!prevState) return;
     if (prevState.view !== this.state.view || prevState.active !== this.state.active || prevState.panel !== this.state.panel || prevState.inspPinned !== this.state.inspPinned || prevState.sel.length !== this.state.sel.length) setTimeout(() => this.measureFit(), 0);
   }
+  checkoutIframeRef = node => { this._checkoutIframe = node; };
   componentDidMount(){
     this.resumeSavedDesign();
+    this._onCheckoutMsg = async (ev) => {
+      if (!ev.data || ev.data.source !== 'w2p-checkout') return;
+      if (ev.data.type === 'pay-now') {
+        await this.compileProductionFiles();
+        if (this._checkoutIframe && this._checkoutIframe.contentWindow) this._checkoutIframe.contentWindow.postMessage({ source: 'w2p-studio', type: 'pay-now-done' }, '*');
+      } else if (ev.data.type === 'close') {
+        this.setState({ checkoutOpen: false });
+      }
+    };
+    window.addEventListener('message', this._onCheckoutMsg);
     // custom Google Fonts may still be loading when justify/text metrics are first computed
     // (canvas measureText falls back to a generic font meanwhile) — re-measure once real fonts land
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.forceUpdate());
@@ -1188,7 +1205,7 @@ class Component extends DCLogic {
       mk.src = './' + gv.mask;
     });
   }
-  componentWillUnmount(){ window.removeEventListener('keydown', this.onKey); }
+  componentWillUnmount(){ window.removeEventListener('keydown', this.onKey); window.removeEventListener('message', this._onCheckoutMsg); }
   onKey = e => {
     const t = e.target; const tag = t && t.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
@@ -2277,9 +2294,10 @@ class Component extends DCLogic {
       goAccount: () => { location.href = 'Dashboard.dc.html'; },
       cartCount: aQty, cartOpen: st.cartOpen, hasCartItems: aQty > 0, noCartItems: !(aQty > 0), cartCursor: aQty > 0 ? 'pointer' : 'default', cartInk: aQty > 0 ? '#1C1B19' : '#C9C6BB',
       toggleCart: () => this.setState(s => ({ cartOpen: this.approvedQty() > 0 ? !s.cartOpen : false })), closeCart: () => this.setState({ cartOpen: false }),
-      checkoutBusy: !!st.checkingOut, checkoutCursor: st.checkingOut ? 'wait' : 'pointer',
-      checkoutLabel: st.checkingOut ? 'Preparing your files…' : 'Checkout',
-      goCheckout: async () => { if (this.state.checkingOut) return; this.setState({ checkingOut: true }); await this.compileProductionFiles(); location.href = 'Checkout.dc.html'; },
+      checkoutBusy: false, checkoutCursor: 'pointer',
+      checkoutLabel: 'Checkout',
+      goCheckout: () => this.setState({ checkoutOpen: true }),
+      checkoutOpen: !!st.checkoutOpen, checkoutIframeRef: this.checkoutIframeRef,
       openReview: () => this.setState(s => ({ reviewOpen: true, reviewOk: false, reviewStep: 1, reviewDesign: s.active })), closeReview: () => this.setState({ reviewOpen: false }),
       reviewStep1: st.reviewStep === 1, reviewStep2: st.reviewStep === 2, reviewTitle: st.reviewStep === 1 ? 'Review your design' : 'Review my design',
       reviewBack: () => this.setState({ reviewStep: 1 }), reviewBackVis: st.reviewStep === 2 ? 'visible' : 'hidden',
