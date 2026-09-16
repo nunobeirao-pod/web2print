@@ -1236,6 +1236,11 @@ class Component extends DCLogic {
       const url = c.toDataURL('image/png'); this._paint[key] = url; return url;
     } catch (e) { return null; }
   }
+  bytesToBase64(bytes){
+    let bin = ''; const CHUNK = 8192;
+    for (let i = 0; i < bytes.length; i += CHUNK) bin += String.fromCharCode.apply(null, bytes.subarray(i, i+CHUNK));
+    return btoa(bin);
+  }
   mkIconRef(url){ return node => { if (node && url && node.src !== url) node.src = url; }; }
   snapshot(){ return JSON.parse(JSON.stringify(this.state.designs)); }
   commit(mutate){
@@ -1473,9 +1478,28 @@ class Component extends DCLogic {
         const cctx = c.getContext('2d', { alpha: true });
         await page.render({ canvasContext: cctx, viewport, background: 'rgba(0,0,0,0)' }).promise;
         this._vector = this._vector || {}; this._vector[name] = bytes;
-        this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { originalBytesB64: btoa(String.fromCharCode.apply(null, bytes)) });
+        this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { originalBytesB64: this.bytesToBase64(bytes) });
         this.toastMsg('Added', name + ' · page 1 previewed, vector kept for print.');
-      } catch (err) { this.toastMsg('Preview unavailable', 'Accepted for print, but ' + name + ' could not be previewed.'); }
+      } catch (err) {
+        // Native Illustrator binary (not saved "PDF-compatible") — pdf.js can't rasterise a
+        // preview, but the file is still valid for print: place a placeholder graphic so the
+        // design isn't silently missing the item, and keep the original bytes for the pack.
+        try {
+          const bytes = new Uint8Array(r.result);
+          const c = document.createElement('canvas'); c.width = 400; c.height = 300;
+          const cx = c.getContext('2d');
+          cx.fillStyle = '#F1EEE8'; cx.fillRect(0,0,400,300);
+          cx.strokeStyle = '#C9C6BB'; cx.lineWidth = 3; cx.setLineDash([10,8]); cx.strokeRect(6,6,388,288);
+          cx.fillStyle = '#8B867B'; cx.font = '700 42px "Helvetica Neue", Arial, sans-serif'; cx.textAlign = 'center';
+          cx.fillText('AI', 200, 150);
+          cx.font = '500 15px "Helvetica Neue", Arial, sans-serif';
+          cx.fillText(name.length > 30 ? name.slice(0,27)+'…' : name, 200, 190);
+          cx.font = '400 12px "Helvetica Neue", Arial, sans-serif';
+          cx.fillText('No preview available — kept for print', 200, 212);
+          this.placeArtwork(c.toDataURL('image/png'), name, 'vector', { originalBytesB64: this.bytesToBase64(bytes), noPreview: true });
+          this.toastMsg('Added without preview', name + ' kept for print — could not render on screen (' + (err && err.message ? err.message : 'unknown error') + ').');
+        } catch (err2) { this.toastMsg('Upload failed', name + ' could not be read at all (' + (err2 && err2.message ? err2.message : 'unknown error') + ').'); }
+      }
     };
     r.onerror = () => this.toastMsg('Upload failed', 'That file could not be read.');
     r.readAsArrayBuffer(file);
