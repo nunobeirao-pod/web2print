@@ -12,6 +12,7 @@
   <script src="./image-slot.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bangers&family=Barlow+Condensed:wght@700&family=Bebas+Neue&family=Bungee&family=Fjalla+One&family=Graduate&family=Lobster&family=Montserrat:wght@800&family=Oswald:wght@600&family=Pacifico&family=Permanent+Marker&family=Playfair+Display:wght@800&family=Rubik+Mono+One&family=Squada+One&family=Staatliches&family=Teko:wght@700&display=swap" rel="stylesheet">
@@ -1723,6 +1724,37 @@ class Component extends DCLogic {
     }
     return doc;
   }
+  /* True vector pass-through for a view whose ONLY artwork is uploaded PDF/AI files: embed the
+     ORIGINAL page (pdf-lib copies its content stream/colours as-is — CMYK stays CMYK, no
+     rasterising) onto a new page sized to exactly the physical print dimensions the item was
+     placed/scaled to on the canvas, instead of flattening it into our own raster PNG. */
+  async renderVectorPrintPdf(dd, view){
+    if (!window.PDFLib) return null;
+    const stg = stageInfo(view), items = dd.views[view].items, cpp = cmPerPx(view);
+    const vectorItems = items.filter(it => it.kind==='upload' && it.source==='vector' && it.originalBytesB64);
+    if (!vectorItems.length || vectorItems.length !== items.length) return null; // mixed content: fall back to raster
+    let x1=Infinity, y1=Infinity, x2=-Infinity, y2=-Infinity;
+    items.forEach(it => { const b = this.itemBox(it); x1=Math.min(x1,b.x); y1=Math.min(y1,b.y); x2=Math.max(x2,b.x+b.w); y2=Math.max(y2,b.y+b.h); });
+    const wCm = (x2-x1)*cpp, hCm = (y2-y1)*cpp;
+    const { PDFDocument } = window.PDFLib;
+    const out = await PDFDocument.create();
+    const ptPerCm = 72/2.54;
+    const page = out.addPage([wCm*ptPerCm, hCm*ptPerCm]);
+    for (const it of vectorItems) {
+      try {
+        const bytes = Uint8Array.from(atob(it.originalBytesB64), c => c.charCodeAt(0));
+        const src = await PDFDocument.load(bytes);
+        const [embedded] = await out.embedPdf(src, [0]);
+        const b = this.itemBox(it);
+        const w = b.w*cpp*ptPerCm, h = b.h*cpp*ptPerCm;
+        const x = (b.x-x1)*cpp*ptPerCm, yTop = (b.y-y1)*cpp*ptPerCm;
+        page.drawPage(embedded, { x, y: hCm*ptPerCm - yTop - h, width: w, height: h, rotate: window.PDFLib.degrees(-(it.rot||0)) });
+      } catch(e){}
+    }
+    const pdfBytes = await out.save();
+    let bin = ''; for (let i=0;i<pdfBytes.length;i++) bin += String.fromCharCode(pdfBytes[i]);
+    return { dataUrl: 'data:application/pdf;base64,' + btoa(bin), cmW: wCm, cmH: hCm };
+  }
   async renderMockupCanvas(dd, view){
     const D = ST(), stg = stageInfo(view), items = dd.views[view].items, MULT = 2.5;
     const canvas = document.createElement('canvas'); canvas.width = Math.round(stg.w*MULT); canvas.height = Math.round(stg.h*MULT);
@@ -1740,6 +1772,18 @@ class Component extends DCLogic {
     if (!window.jspdf) { this.toastMsg('Production pack failed', 'PDF library did not load — click Add to Cart again.'); return; }
     this.setState({ compiling: true });
     try { await document.fonts.ready; } catch(e){}
+    // document.fonts.ready only waits for fonts the browser has already started fetching —
+    // a webfont that's never been painted yet (e.g. a text item edited right before checkout)
+    // may not be requested at all, silently measuring/rendering with a fallback font instead.
+    // Explicitly request every font actually used so ink measurements are never off.
+    try {
+      const D = ST(); const specs = new Set();
+      this.state.designs.forEach(dd => Object.values(dd.views).forEach(v => v.items.forEach(it => {
+        if (it.kind==='text'||it.kind==='field') { const f = D.FONTS[it.fi]||D.FONTS[0]; const fam = (f[1]||'').split(',')[0].replace(/["']/g,'').trim(); specs.add((it.italic?'italic ':'') + (it.bold?900:f[2]) + ' 60px "' + fam + '"'); }
+      })));
+      await Promise.all([...specs].map(s => document.fonts.load(s).catch(()=>{})));
+      await document.fonts.ready;
+    } catch(e){}
     const now = new Date();
     const stamp = now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '-' + String(now.getHours()).padStart(2,'0') + String(now.getMinutes()).padStart(2,'0');
     const files = [];
@@ -1753,30 +1797,37 @@ class Component extends DCLogic {
         const items = dd.views[view].items;
         const allRasterOnly = items.every(it => it.kind === 'upload' && it.source !== 'vector');
         const fmt = allRasterOnly ? 'png' : 'pdf';
-        const canvas = await this.renderPrintCanvas(dd, view);
-        const pngDataUrl = canvas.toDataURL('image/png');
+        const vecPrint = await this.renderVectorPrintPdf(dd, view);
+        const canvas = vecPrint ? null : await this.renderPrintCanvas(dd, view);
+        const pngDataUrl = canvas ? canvas.toDataURL('image/png') : null;
         const mCanvas = await this.renderMockupCanvas(dd, view);
         mockupPages.push({ canvas: mCanvas });
         const totalQty = sizeLines.reduce((t,l) => t + (+l.q||1), 0) || this.dQty(dd);
         const sizesLabel = sizeLines.map(l => l.s).join('+');
         const base = 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-4x';
-        const cmW = canvas.width / (300/2.54), cmH = canvas.height / (300/2.54);
-        if (fmt === 'png') {
-          files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
+        if (vecPrint) {
+          files.push({ name: base + '-vector-cmyk.pdf', dataUrl: vecPrint.dataUrl });
         } else {
-          printPages.push({ canvas, pngDataUrl, cmW, cmH });
-          files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(pngDataUrl, 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+          const cmW = canvas.width / (300/2.54), cmH = canvas.height / (300/2.54);
+          if (fmt === 'png') {
+            files.push({ name: base + '-png.png', dataUrl: pngDataUrl });
+          } else {
+            printPages.push({ canvas, pngDataUrl, cmW, cmH });
+            files.push({ name: base + '-pdf.pdf', dataUrl: (() => { const p = new window.jspdf.jsPDF({ unit:'mm', format:[cmW*10, cmH*10], compress: true }); p.addImage(pngDataUrl, 'PNG', 0, 0, cmW*10, cmH*10); return p.output('datauristring'); })() });
+          }
         }
         const jhdr = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<JHDR>\n\n    <PrintMode name="720x2400 BASE PRINT MODE"/>\n\n    <Sizes>' + sizesLabel + '</Sizes>\n    <Copies>' + Math.max(1, totalQty) + '</Copies>\n\n</JHDR>\n';
         files.push({ name: base + '-' + fmt + '.jhdr', dataUrl: 'data:application/xml;base64,' + btoa(jhdr) });
         const pCanvas = await this.renderPlacementCanvas(dd, view, orderRef, totalQty, sizesLabel, 1);
         placementPages.push({ canvas: pCanvas });
-        items.filter(it => it.kind==='upload' && it.source==='vector' && it.originalBytesB64).forEach(it => {
-          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
-        });
-        items.filter(it => it.kind==='upload' && it.source==='vector' && it.svgOriginalUrl).forEach(it => {
-          files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.svg', dataUrl: it.svgOriginalUrl });
-        });
+        if (!vecPrint) {
+          items.filter(it => it.kind==='upload' && it.source==='vector' && it.originalBytesB64).forEach(it => {
+            files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.pdf', dataUrl: 'data:application/pdf;base64,' + it.originalBytesB64 });
+          });
+          items.filter(it => it.kind==='upload' && it.source==='vector' && it.svgOriginalUrl).forEach(it => {
+            files.push({ name: 'production-pack-' + stamp + '-' + (di+1) + '-' + view.toLowerCase() + '-' + (it.name||'artwork').replace(/\.[^.]+$/,'').replace(/[^a-z0-9-]+/gi,'_') + '-original.svg', dataUrl: it.svgOriginalUrl });
+          });
+        }
       }
     }
     let combinedPdf = null;
