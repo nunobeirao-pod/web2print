@@ -171,6 +171,9 @@ a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}
         <sc-if value="{{ processing }}" hint-placeholder-val="{{ false }}"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 700ms linear infinite"></span></sc-if>
         {{ ctaLabel }}
       </button>
+      <sc-if value="{{ payError }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:12px;font-size:12.5px;color:#B54708;background:#FFF6ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 14px">{{ payError }}</div>
+      </sc-if>
     </div>
 
     <!-- RIGHT: SUMMARY -->
@@ -229,7 +232,11 @@ class Component extends DCLogic {
   componentDidMount(){
     this._onMsg = (ev) => {
       if (!ev.data || ev.data.source !== 'w2p-studio') return;
-      if (ev.data.type === 'pay-now-done') { this.autoDownloadProduction(); this.setState({ phase: 'success' }); }
+      if (ev.data.type === 'pay-now-done') {
+        clearTimeout(this._payTimeout);
+        if (ev.data.error) { this.setState({ phase: 'checkout', payError: ev.data.error }); return; }
+        this.autoDownloadProduction(); this.setState({ phase: 'success' });
+      }
     };
     window.addEventListener('message', this._onMsg);
   }
@@ -265,14 +272,16 @@ class Component extends DCLogic {
       ctaLabel: st.phase === 'processing' ? 'Processing payment…' : 'Pay now',
       completeOrder: () => {
         if (st.phase === 'processing') return;
-        this.setState({ phase: 'processing' });
+        this.setState({ phase: 'processing', payError: null });
         if (window.parent !== window) {
           window.parent.postMessage({ source: 'w2p-checkout', type: 'pay-now' }, '*');
+          this._payTimeout = setTimeout(() => this.setState({ phase: 'checkout', payError: 'Timed out preparing files \u2014 please try again.' }), 25000);
         } else {
           this.autoDownloadProduction();
           setTimeout(() => this.setState({ phase: 'success' }), 1400);
         }
       },
+      payError: st.payError,
     };
   }
 }

@@ -1174,8 +1174,11 @@ class Component extends DCLogic {
     this._onCheckoutMsg = async (ev) => {
       if (!ev.data || ev.data.source !== 'w2p-checkout') return;
       if (ev.data.type === 'pay-now') {
-        await this.compileProductionFiles();
-        if (this._checkoutIframe && this._checkoutIframe.contentWindow) this._checkoutIframe.contentWindow.postMessage({ source: 'w2p-studio', type: 'pay-now-done' }, '*');
+        let errMsg = null;
+        try { await this.compileProductionFiles(); } catch (e) { errMsg = (e && e.message) || 'Unknown error compiling production files.'; }
+        if (this._checkoutIframe && this._checkoutIframe.contentWindow) {
+          this._checkoutIframe.contentWindow.postMessage({ source: 'w2p-studio', type: 'pay-now-done', error: errMsg }, '*');
+        }
       } else if (ev.data.type === 'close') {
         this.setState({ checkoutOpen: false });
       }
