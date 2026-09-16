@@ -571,7 +571,7 @@ class Component extends DCLogic {
             try { window.localStorage.setItem('w2p_resume_id', String(d.id).replace('studio-', '')); } catch(e){}
             if (window.__navigate) window.__navigate('Studio Desktop.dc.html'); else location.href = 'Studio Desktop.dc.html';
           } else {
-            if (window.__navigate) window.__navigate('Create your own.dc.html'); else location.href = 'Create%20your%20own.dc.html';
+            if (window.__navigate) window.__navigate('Studio Desktop.dc.html'); else location.href = 'Studio%20Desktop.dc.html';
           }
         },
         showReorderNote: st.reorderNoteFor === d.id,

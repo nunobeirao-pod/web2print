@@ -196,7 +196,7 @@ class Component extends DCLogic {
       goSignin: go('signin'), goSignup: go('signup'), goForgot: go('forgot'), goSent: go('sent'),
       goOnboard1: go('onboard1'), goOnboard2: go('onboard2'), goWelcome: go('welcome'), goGuest: go('guest'),
       signIn: go('welcome'),
-      markSignedInDesign: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
+      markSignedInDesign: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Studio%20Desktop.dc.html'; },
       markSignedInShop: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
       email: st.email, setEmail: e => this.setState({ email: e.target.value }),
       emailBorder: emailValid ? (st.email ? '#41573B' : '#DDD8CC') : '#A34B33',

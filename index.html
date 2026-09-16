@@ -648,7 +648,7 @@ class Component extends DCLogic {
       openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
       openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
       goCatalogue: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
-      goEditor: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; },
+      goEditor: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Studio%20Desktop.dc.html'; },
       goCheckout: () => { if (window.__navigate) window.__navigate('Checkout.dc.html'); else location.href = 'Checkout.dc.html'; },
       categoryTiles: [
         { slot: 'cat-tees', img: 'uploads/tees%20banner%20.png', ph: 'Tees', label: 'Tees', href: 'Tees.dc.html' },
@@ -738,8 +738,8 @@ class Component extends DCLogic {
         ];
       })(),
       quickstart: [
-        { slot: 'qs-scratch', img: this.res('T2'), credit: 'Photo by Haryo Setyadi on Unsplash', chref: 'https://unsplash.com/@uyk', ph: 'Blank heavyweight tee on table, tools around', title: 'Start from scratch', desc: 'A blank garment and a full studio. Total creative control.', cta: 'Open the Studio', go: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; }, ctaBg: '#FBFAF8', ctaInk: '#1C1B19' },
-        { slot: 'qs-templates', img: this.res('QSTEMPLATES'), credit: null, chref: null, ph: 'Wall of printed designs, studio pinboard', title: 'Use templates', desc: 'Professionally designed starting points, ready to make yours.', cta: 'Browse templates', go: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Create%20your%20own.dc.html'; }, ctaBg: '#FBFAF8', ctaInk: '#1C1B19' },
+        { slot: 'qs-scratch', img: this.res('T2'), credit: 'Photo by Haryo Setyadi on Unsplash', chref: 'https://unsplash.com/@uyk', ph: 'Blank heavyweight tee on table, tools around', title: 'Start from scratch', desc: 'A blank garment and a full studio. Total creative control.', cta: 'Open the Studio', go: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Studio%20Desktop.dc.html'; }, ctaBg: '#FBFAF8', ctaInk: '#1C1B19' },
+        { slot: 'qs-templates', img: this.res('QSTEMPLATES'), credit: null, chref: null, ph: 'Wall of printed designs, studio pinboard', title: 'Use templates', desc: 'Professionally designed starting points, ready to make yours.', cta: 'Browse templates', go: () => { if (window.__navigate) window.__navigate('Create%20your%20own.dc.html'); else location.href = 'Studio%20Desktop.dc.html'; }, ctaBg: '#FBFAF8', ctaInk: '#1C1B19' },
         { slot: 'qs-ai', img: this.res('QSAI'), credit: null, chref: null, ph: 'Abstract generative artwork on fabric', title: 'Create with AI', desc: 'Describe it in a sentence. Wear it next week.', cta: 'Try Studio AI', go: () => { if (window.__navigate) window.__navigate('AI%20Studio.dc.html'); else location.href = 'AI%20Studio.dc.html'; }, ctaBg: '#4A4FE4', ctaInk: '#fff' },
       ],
       categories: [

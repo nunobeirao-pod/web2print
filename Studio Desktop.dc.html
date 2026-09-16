@@ -313,19 +313,6 @@
             </div>
             <sc-if value="{{ cmykPickerOpen }}" hint-placeholder-val="{{ false }}">
               <div style="margin-top:10px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
-                <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
-                  <span style="font-size:11.5px;font-weight:600;color:#4A473F;letter-spacing:.04em">CMYK · PRINT-SAFE</span>
-                  <div style="display:flex;gap:6px;align-items:center">
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                      <span style="width:22px;height:22px;border-radius:6px;background:{{ selHex }};border:1px solid rgba(28,27,25,.12)"></span>
-                      <span style="font-size:9px;color:#8B867B">RGB</span>
-                    </div>
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                      <span style="width:22px;height:22px;border-radius:6px;background:{{ selHexPrint }};border:1px solid rgba(28,27,25,.12)"></span>
-                      <span style="font-size:9px;color:#8B867B">CMYK</span>
-                    </div>
-                  </div>
-                </div>
                 <div style="position:relative;width:100%">
                   <canvas ref="{{ svRef }}" width="220" height="140" onMouseDown="{{ svDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
                   <div style="position:absolute;top:{{ svDotY }}%;left:{{ svDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ selHex }}"></div>
@@ -349,19 +336,6 @@
               </div>
               <sc-if value="{{ olCmykPickerOpen }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:2px;border:1px solid #E6E2D8;border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center">
-                  <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
-                    <span style="font-size:11.5px;font-weight:600;color:#4A473F;letter-spacing:.04em">CMYK · PRINT-SAFE</span>
-                    <div style="display:flex;gap:6px;align-items:center">
-                      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                        <span style="width:22px;height:22px;border-radius:6px;background:{{ olHex }};border:1px solid rgba(28,27,25,.12)"></span>
-                        <span style="font-size:9px;color:#8B867B">RGB</span>
-                      </div>
-                      <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-                        <span style="width:22px;height:22px;border-radius:6px;background:{{ olHexPrint }};border:1px solid rgba(28,27,25,.12)"></span>
-                        <span style="font-size:9px;color:#8B867B">CMYK</span>
-                      </div>
-                    </div>
-                  </div>
                   <div style="position:relative;width:100%">
                     <canvas ref="{{ olSvRef }}" width="220" height="140" onMouseDown="{{ olSvDown }}" style="width:100%;height:140px;border-radius:8px;cursor:crosshair;display:block"></canvas>
                     <div style="position:absolute;top:{{ olSvDotY }}%;left:{{ olSvDotX }}%;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.25);transform:translate(-50%,-50%);pointer-events:none;background:{{ olHex }}"></div>
@@ -1303,8 +1277,9 @@ class Component extends DCLogic {
       node._paintedHue = hue;
       const ctx = node.getContext('2d'), w = node.width, h = node.height;
       const [hr,hg,hb] = hsvToRgb(hue, 1, 1);
+      const hueHex = printSafeHex('#'+[hr,hg,hb].map(v=>v.toString(16).padStart(2,'0')).join(''));
       const grad1 = ctx.createLinearGradient(0, 0, w, 0);
-      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, 'rgb(' + hr + ',' + hg + ',' + hb + ')');
+      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, hueHex);
       ctx.fillStyle = grad1; ctx.fillRect(0, 0, w, h);
       const grad2 = ctx.createLinearGradient(0, 0, 0, h);
       grad2.addColorStop(0, 'rgba(0,0,0,0)'); grad2.addColorStop(1, '#000');
@@ -1317,14 +1292,14 @@ class Component extends DCLogic {
       node._painted = true;
       const ctx = node.getContext('2d'), w = node.width, h = node.height;
       const grad = ctx.createLinearGradient(0, 0, w, 0);
-      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); grad.addColorStop(i/360, 'rgb('+r+','+g+','+b+')'); }
+      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); const safe = printSafeHex('#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('')); grad.addColorStop(i/360, safe); }
       ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
     };
   }
   applyHs(hue, sat, val){
     this.setState({ pickHue: hue, pickSat: sat, pickVal: val });
     const [r,g,b] = hsvToRgb(hue, sat, val);
-    const hex = '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    const hex = printSafeHex('#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''));
     this.updateSel({ hex });
   }
   startSvPick(e){
@@ -1360,8 +1335,9 @@ class Component extends DCLogic {
       node._paintedHue = hue;
       const ctx = node.getContext('2d'), w = node.width, h = node.height;
       const [hr,hg,hb] = hsvToRgb(hue, 1, 1);
+      const hueHex = printSafeHex('#'+[hr,hg,hb].map(v=>v.toString(16).padStart(2,'0')).join(''));
       const grad1 = ctx.createLinearGradient(0, 0, w, 0);
-      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, 'rgb(' + hr + ',' + hg + ',' + hb + ')');
+      grad1.addColorStop(0, '#fff'); grad1.addColorStop(1, hueHex);
       ctx.fillStyle = grad1; ctx.fillRect(0, 0, w, h);
       const grad2 = ctx.createLinearGradient(0, 0, 0, h);
       grad2.addColorStop(0, 'rgba(0,0,0,0)'); grad2.addColorStop(1, '#000');
@@ -1374,14 +1350,14 @@ class Component extends DCLogic {
       node._painted = true;
       const ctx = node.getContext('2d'), w = node.width, h = node.height;
       const grad = ctx.createLinearGradient(0, 0, w, 0);
-      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); grad.addColorStop(i/360, 'rgb('+r+','+g+','+b+')'); }
+      for (let i = 0; i <= 360; i += 30) { const [r,g,b] = hsvToRgb(i, 1, 1); const safe = printSafeHex('#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('')); grad.addColorStop(i/360, safe); }
       ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
     };
   }
   applyOlHs(hue, sat, val){
     this.setState({ olPickHue: hue, olPickSat: sat, olPickVal: val });
     const [r,g,b] = hsvToRgb(hue, sat, val);
-    const hex = '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    const hex = printSafeHex('#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''));
     this.updateSel({ ohex: hex });
   }
   startOlSvPick(e){
@@ -2507,7 +2483,7 @@ class Component extends DCLogic {
       svDotY: (1 - (this.state.pickVal != null ? this.state.pickVal : 1)) * 100,
       hueRef: this.mkHueRef(), hueDown: e => this.startHuePick(e),
       huePct: (this.state.pickHue || 0) / 360 * 100,
-      hueDotColor: '#' + hsvToRgb(this.state.pickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join(''),
+      hueDotColor: printSafeHex('#' + hsvToRgb(this.state.pickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join('')),
       kVal: this.state.cmykK != null ? this.state.cmykK : rgbToCmyk(selHex)[3],
       setK: e => { const k = +e.target.value; this.setState({ cmykK: k }); const [c,m,y] = rgbToCmyk(selHex); this.updateSel({ hex: hexFromCmyk(c,m,y,k) }); },
       toggleOutline: () => sel && this.updateSel({ ol: !sel.ol }), olBg: sel&&sel.ol?'#4A4FE4':'#DDD8CC', olKnob: sel&&sel.ol?'17px':'3px', selOutline: !!sel&&!!sel.ol,
@@ -2520,7 +2496,7 @@ class Component extends DCLogic {
       olSvDotY: (1 - (this.state.olPickVal != null ? this.state.olPickVal : 1)) * 100,
       olHueRef: this.mkOlHueRef(), olHueDown: e => this.startOlHuePick(e),
       olHuePct: (this.state.olPickHue || 0) / 360 * 100,
-      olHueDotColor: '#' + hsvToRgb(this.state.olPickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join(''),
+      olHueDotColor: printSafeHex('#' + hsvToRgb(this.state.olPickHue || 0, 1, 1).map(v=>v.toString(16).padStart(2,'0')).join('')),
       olWidthMm: sel ? +((sel.ow!=null?sel.ow:0.6).toFixed(1)) : 0.6, setOlWidthMm: e => this.updateSel({ ow: +e.target.value }),
       vectorColourOpts: D.COLOURS.map((c,i) => ({ hex:c[1], name:c[0], ring: ring(sel&&sel.ci===i), pick: () => this.updateSel({ ci:i }) })),
       frameOpts: D.FRAMES.map(f => ({ t:f.t, clip:f.clip, bg: sel&&sel.frameId===f.id ? '#4A4FE4' : '#DDD8CC', pick: () => this.updateSel({ frameId:f.id }) })),
