@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Responsive Preview — Standalone</title>
+<style>
+  body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#1C1B19;text-decoration:none}
+  .toolbar{position:sticky;top:0;z-index:50;background:#1C1B19;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12.5px}
+  .toolbar .spacer{flex:1}
+  .toolbar button{height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.35);background:transparent;color:#fff;font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer}
+  .toolbar button.active{background:#4A4FE4;border-color:#4A4FE4}
+
+  .mobile-view{display:none}
+  .desktop-view{display:block}
+  @media (max-width:767px){
+    .mobile-view{display:block}
+    .desktop-view{display:none}
+  }
+  html[data-mode="mobile"] .mobile-view{display:block !important}
+  html[data-mode="mobile"] .desktop-view{display:none !important}
+  html[data-mode="desktop"] .mobile-view{display:none !important}
+  html[data-mode="desktop"] .desktop-view{display:block !important}
+
+  /* ---------- DESKTOP (reference: Homepage.dc.html) ---------- */
+  .d-nav{position:sticky;top:0;z-index:10;background:rgba(251,250,248,0.92);border-bottom:1px solid #E6E2D8}
+  .d-nav-inner{max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px}
+  .d-logo{font-size:18px;font-weight:600;letter-spacing:-0.01em}
+  .d-links{display:flex;gap:18px;font-size:13px;font-weight:500}
+  .d-links a.accent{color:#4A4FE4;font-weight:700}
+  .d-hero{height:70vh;min-height:480px;background:#1C1B19;display:flex;align-items:flex-end;padding:0 48px 56px;box-sizing:border-box}
+  .d-hero h1{color:#fff;font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-0.01em;margin:0 0 22px;max-width:640px;line-height:1.1}
+  .d-btn-primary{display:inline-block;background:#fff;color:#1C1B19;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;cursor:pointer}
+  .d-section{max-width:1440px;margin:0 auto;padding:64px 48px}
+  .d-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .d-cat-circle{aspect-ratio:1;border-radius:50%;background:#F1EEE8;margin-bottom:10px}
+  .d-promo{border-radius:16px;padding:32px 40px;background:#1C1B19;color:#fff;margin:48px 0}
+  .d-promo .t{font-size:26px;font-weight:700;margin-bottom:6px}
+  .d-promo .s{font-size:13px;color:#B8B2A5}
+  .d-products{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .d-card-img{aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:10px}
+  .d-label{font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:18px}
+  .d-name{font-size:13.5px;font-weight:600}
+  .d-price{font-size:13px;color:#4A473F;margin-top:2px}
+
+  /* ---------- MOBILE (reference: Homepage Mobile.dc.html) ---------- */
+  .m-frame{max-width:390px;margin:0 auto}
+  .m-header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8}
+  .m-icon-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;flex-shrink:0}
+  .m-hero{height:280px;background:#1C1B19;display:flex;align-items:flex-end;padding:24px;box-sizing:border-box}
+  .m-hero h1{color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px;line-height:1.15}
+  .m-btn-primary{background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:0 22px;height:44px;font-size:14px;font-weight:600;cursor:pointer}
+  .m-section{padding:24px 16px}
+  .m-label{font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+  .m-cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+  .m-cat-circle{aspect-ratio:1;border-radius:50%;background:#F1EEE8;margin-bottom:8px}
+  .m-promo{border-radius:12px;padding:20px;background:#1C1B19;color:#fff;margin-bottom:24px}
+  .m-promo .t{font-size:14px;font-weight:700;margin-bottom:4px}
+  .m-promo .s{font-size:12px;color:#B8B2A5}
+  .m-products{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+  .m-card-img{aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:8px}
+  .m-name{font-size:12.5px;font-weight:600}
+  .m-price{font-size:12px;color:#4A473F}
+  .m-input{width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff}
+
+  .fill{width:24px;height:2px;background:currentColor;position:relative}
+  .fill:before,.fill:after{content:'';position:absolute;left:0;right:0;height:2px;background:currentColor}
+  .fill:before{top:-7px}
+  .fill:after{top:7px}
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <span>Preview tool — not part of final design. Viewport: <strong><span id="widthReadout">—</span>px</strong></span>
+    <span class="spacer"></span>
+    <button id="btnAuto" class="active">Auto</button>
+    <button id="btnMobile">Force Mobile</button>
+    <button id="btnDesktop">Force Desktop</button>
+  </div>
+
+  <!-- ================= DESKTOP ================= -->
+  <div class="desktop-view">
+    <nav class="d-nav">
+      <div class="d-nav-inner">
+        <div class="d-logo">Web2Print</div>
+        <div class="d-links">
+          <a href="#" class="accent">Start Creating</a>
+          <a href="#">Shop</a>
+          <a href="#">Inspiration</a>
+          <a href="#">For Teams</a>
+        </div>
+      </div>
+    </nav>
+    <div class="d-hero">
+      <div>
+        <h1>Your idea. Your piece.</h1>
+        <button class="d-btn-primary">Start Creating</button>
+      </div>
+    </div>
+    <div class="d-section">
+      <div class="d-label">Shop by category</div>
+      <div class="d-cats">
+        <div><div class="d-cat-circle"></div><div class="d-name">Hoodies</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Tees</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Athleisure</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Accessories</div></div>
+      </div>
+      <div class="d-promo"><div class="t">GET €10 OFF</div><div class="s">On your first order, over €120.</div></div>
+      <div class="d-label">Best sellers</div>
+      <div class="d-products">
+        <div><div class="d-card-img"></div><div class="d-name">Regular Hoodie 300</div><div class="d-price">From 39,00€</div></div>
+        <div><div class="d-card-img"></div><div class="d-name">Classic Tee 180</div><div class="d-price">From 22,00€</div></div>
+        <div><div class="d-card-img"></div><div class="d-name">Oversized Hoodie 330</div><div class="d-price">From 45,00€</div></div>
+        <div><div class="d-card-img"></div><div class="d-name">Crop Tee 190</div><div class="d-price">From 21,00€</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE ================= -->
+  <div class="mobile-view">
+    <div class="m-frame">
+      <div class="m-header">
+        <button class="m-icon-btn" aria-label="Menu"><span class="fill"></span></button>
+        <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Web2Print</div>
+        <button class="m-icon-btn" aria-label="Cart">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg>
+        </button>
+      </div>
+      <div class="m-hero">
+        <div>
+          <h1>Your idea. Your piece.</h1>
+          <button class="m-btn-primary">Start Creating</button>
+        </div>
+      </div>
+      <div class="m-section">
+        <div class="m-label">Shop by category</div>
+        <div class="m-cats">
+          <div><div class="m-cat-circle"></div><div class="m-name">Hoodies</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Tees</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Athleisure</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Accessories</div></div>
+        </div>
+        <div class="m-promo"><div class="t">GET €10 OFF</div><div class="s">On your first order, over €120.</div></div>
+        <div class="m-label">Best sellers</div>
+        <div class="m-products">
+          <div><div class="m-card-img"></div><div class="m-name">Regular Hoodie 300</div><div class="m-price">From 39,00€</div></div>
+          <div><div class="m-card-img"></div><div class="m-name">Classic Tee 180</div><div class="m-price">From 22,00€</div></div>
+        </div>
+        <div style="border-top:1px solid #EEEBE3;padding-top:20px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Newsletter</div>
+          <input class="m-input" type="email" placeholder="Email address">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var html = document.documentElement;
+  var btnAuto = document.getElementById('btnAuto');
+  var btnMobile = document.getElementById('btnMobile');
+  var btnDesktop = document.getElementById('btnDesktop');
+  var widthReadout = document.getElementById('widthReadout');
+
+  function setActive(btn){
+    [btnAuto, btnMobile, btnDesktop].forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+  btnAuto.addEventListener('click', function(){ html.removeAttribute('data-mode'); setActive(btnAuto); });
+  btnMobile.addEventListener('click', function(){ html.setAttribute('data-mode','mobile'); setActive(btnMobile); });
+  btnDesktop.addEventListener('click', function(){ html.setAttribute('data-mode','desktop'); setActive(btnDesktop); });
+
+  function updateWidth(){ widthReadout.textContent = window.innerWidth; }
+  window.addEventListener('resize', updateWidth);
+  updateWidth();
+</script>
+</body>
+</html>
