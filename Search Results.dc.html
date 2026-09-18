@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}</style>
+</helmet>
+<div data-screen-label="Search Results" style="min-height:100vh">
+  <div style="padding:24px 48px;display:flex;align-items:center;gap:24px;border-bottom:1px solid #E6E2D8">
+    <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;text-decoration:none;flex-shrink:0">Web2Print</a>
+    <dc-import name="Input" placeholder="Search…" value="hoodie" hint-size="260,50"></dc-import>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:32px 24px 80px">
+
+    <div style="margin-bottom:8px;font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em">State — Results</div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+      <h1 style="margin:0;font-size:22px;font-weight:700;letter-spacing:-0.01em">Results for "hoodie" <span style="font-size:14px;font-weight:400;color:#8B867B">— 12 products</span></h1>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span style="border:1px solid #1C1B19;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600">All</span>
+        <span style="border:1px solid #DDD8CC;border-radius:999px;padding:6px 14px;font-size:12px;color:#4A473F">Hoodies</span>
+        <span style="border:1px solid #DDD8CC;border-radius:999px;padding:6px 14px;font-size:12px;color:#4A473F">Sort: Relevance ▾</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="border-radius:12px;overflow:hidden;background:#fff">
+          <div style="height:140px;background:#EFEBE2"></div>
+          <div style="padding:12px 2px">
+            <div style="font-size:13px;font-weight:600">{{ p.name }}</div>
+            <div style="font-size:12.5px;color:#4A473F;margin-top:4px">{{ p.price }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;justify-content:center">
+      <span style="width:30px;height:30px;border-radius:8px;background:#1C1B19;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600">1</span>
+      <span style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#4A473F">2</span>
+      <span style="width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:#4A473F">3</span>
+      <span style="font-size:12.5px;color:#8B867B;margin-left:4px">Next →</span>
+    </div>
+
+    <div style="margin:56px 0 8px;font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em">State — Loading (reused from Design System §11)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <sc-for list="{{ threeItems }}" as="_" hint-placeholder-count="3">
+        <div style="border-radius:12px;overflow:hidden;background:#fff">
+          <div style="height:140px;background:#F1EEE8"></div>
+          <div style="padding:12px 2px">
+            <div style="height:12px;width:75%;background:#F1EEE8;border-radius:4px;margin-bottom:8px"></div>
+            <div style="height:12px;width:40%;background:#F1EEE8;border-radius:4px"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin:56px 0 8px;font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em">State — No results (reused verbatim from Design System §8, Fase 1)</div>
+    <div style="border:1px solid #E6E2D8;border-radius:12px;padding:20px;background:#fff;max-width:360px">
+      <div style="text-align:center;padding:8px 0">
+        <div style="font-size:12.5px;color:#4A473F;margin-bottom:4px">No results for "<strong>hoddie</strong>"</div>
+        <div style="font-size:11.5px;color:#8B867B;margin-bottom:12px">Check the spelling or try a different term.</div>
+        <dc-import name="Link" label="Browse all products" tone="brand" hint-size="120,20"></dc-import>
+      </div>
+    </div>
+
+    <div style="margin:56px 0 8px;font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em">State — Error (reused from Design System §11)</div>
+    <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px;background:#FDECEA;max-width:320px">
+      <div style="font-size:11.5px;color:#C42B2B;font-weight:600;margin-bottom:6px">Couldn't load search results.</div>
+      <dc-import name="Link" label="Try again" tone="brand" hint-size="60,18"></dc-import>
+    </div>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      products: [
+        { name: 'Regular Hoodie 300', price: 'From 39,00€' },
+        { name: 'Oversized Hoodie 330', price: 'From 45,00€' },
+        { name: 'Crop Hoodie 260', price: 'From 36,00€' },
+        { name: 'Zip Hoodie 320', price: 'From 49,00€' }
+      ],
+      threeItems: [1, 2, 3]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

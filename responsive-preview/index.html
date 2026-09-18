@@ -43,7 +43,6 @@
   .d-label{font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:18px}
   .d-name{font-size:13.5px;font-weight:600}
   .d-price{font-size:13px;color:#4A473F;margin-top:2px}
-  .d-cats a{display:block;color:inherit}
 
   /* ---------- MOBILE (reference: Homepage Mobile.dc.html) ---------- */
   .m-frame{max-width:390px;margin:0 auto}
@@ -63,27 +62,12 @@
   .m-card-img{aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:8px}
   .m-name{font-size:12.5px;font-weight:600}
   .m-price{font-size:12px;color:#4A473F}
-  .m-cats a{display:block;color:inherit}
   .m-input{width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff}
 
-  .m-device{width:390px;margin:0 auto;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff;position:relative}
-  .m-menu-overlay{position:absolute;inset:0;background:#fff;z-index:20;display:none;flex-direction:column}
-  .m-menu-overlay.open{display:flex}
-  .m-menu-header{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8}
-  .m-menu-body{flex:1;overflow-y:auto;padding:8px 16px}
-  .m-menu-row{display:flex;align-items:center;justify-content:space-between;padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;box-sizing:border-box;text-align:left;font-family:inherit;color:#1C1B19}
-  .m-menu-chevron{transition:transform 0.2s ease;color:#8B867B}
-  .m-menu-row[aria-expanded="true"] .m-menu-chevron{transform:rotate(90deg)}
-  .m-submenu{display:none;padding:4px 4px 12px 16px;flex-direction:column;gap:12px;border-bottom:1px solid #EEEBE3;font-size:14px;color:#4A473F}
-  .m-submenu.open{display:flex}
-  .m-menu-link{padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600}
-  .m-menu-link.accent{color:#4A4FE4}
-  .m-menu-footer{display:flex;gap:20px;padding:24px 4px 8px;margin-top:8px;border-top:1px solid #EEEBE3}
-
-  .m-cart-backdrop{position:fixed;inset:0;background:rgba(20,20,18,0.18);z-index:30;display:none}
-  .m-cart-backdrop.open{display:block}
-  .m-cart-panel{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -8px 24px rgba(28,27,25,0.08);padding:20px 16px;z-index:31;max-width:390px;margin:0 auto;transform:translateY(100%);transition:transform 0.25s ease}
-  .m-cart-panel.open{transform:translateY(0)}
+  .fill{width:24px;height:2px;background:currentColor;position:relative}
+  .fill:before,.fill:after{content:'';position:absolute;left:0;right:0;height:2px;background:currentColor}
+  .fill:before{top:-7px}
+  .fill:after{top:7px}
 </style>
 </head>
 <body>
@@ -91,37 +75,37 @@
   <div class="toolbar">
     <span>Preview tool — not part of final design. Viewport: <strong><span id="widthReadout">—</span>px</strong></span>
     <span class="spacer"></span>
-    <button id="btnAuto" type="button" class="active">Auto</button>
-    <button id="btnMobile" type="button">Force Mobile</button>
-    <button id="btnDesktop" type="button">Force Desktop</button>
+    <button id="btnAuto" class="active">Auto</button>
+    <button id="btnMobile">Force Mobile</button>
+    <button id="btnDesktop">Force Desktop</button>
   </div>
 
   <!-- ================= DESKTOP ================= -->
   <div class="desktop-view">
     <nav class="d-nav">
       <div class="d-nav-inner">
-        <a href="../Homepage.dc.html" class="d-logo" style="color:inherit">Web2Print</a>
+        <div class="d-logo">Web2Print</div>
         <div class="d-links">
-          <a href="../Studio%20Desktop.dc.html" class="accent">Start Creating</a>
-          <a href="../Shop%20All.dc.html">Shop</a>
-          <a href="../Inspiration.dc.html">Inspiration</a>
-          <a href="../For%20Teams.dc.html">For Teams</a>
+          <a href="#" class="accent">Start Creating</a>
+          <a href="#">Shop</a>
+          <a href="#">Inspiration</a>
+          <a href="#">For Teams</a>
         </div>
       </div>
     </nav>
     <div class="d-hero">
       <div>
         <h1>Your idea. Your piece.</h1>
-        <a href="../Studio%20Desktop.dc.html"><button class="d-btn-primary">Start Creating</button></a>
+        <button class="d-btn-primary">Start Creating</button>
       </div>
     </div>
     <div class="d-section">
       <div class="d-label">Shop by category</div>
       <div class="d-cats">
-        <a href="../Hoodies%20and%20Sweats.dc.html" style="display:block"><div class="d-cat-circle"></div><div class="d-name">Hoodies</div></a>
-        <a href="../Tees.dc.html" style="display:block"><div class="d-cat-circle"></div><div class="d-name">Tees</div></a>
-        <a href="../Athleisure.dc.html" style="display:block"><div class="d-cat-circle"></div><div class="d-name">Athleisure</div></a>
-        <a href="../Accessories.dc.html" style="display:block"><div class="d-cat-circle"></div><div class="d-name">Accessories</div></a>
+        <div><div class="d-cat-circle"></div><div class="d-name">Hoodies</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Tees</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Athleisure</div></div>
+        <div><div class="d-cat-circle"></div><div class="d-name">Accessories</div></div>
       </div>
       <div class="d-promo"><div class="t">GET €10 OFF</div><div class="s">On your first order, over €120.</div></div>
       <div class="d-label">Best sellers</div>
@@ -135,56 +119,28 @@
   </div>
 
   <!-- ================= MOBILE ================= -->
-  <div class="mobile-view" style="padding:32px 16px 80px">
-    <div class="m-device">
+  <div class="mobile-view">
+    <div class="m-frame">
       <div class="m-header">
-        <button id="menuBtn" type="button" class="m-icon-btn" aria-label="Menu" aria-expanded="false">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
-        </button>
-        <a href="../Homepage.dc.html" style="font-size:16px;font-weight:600;letter-spacing:-0.01em;color:inherit">Web2Print</a>
-        <button id="cartBtn" type="button" class="m-icon-btn" aria-label="Cart">
+        <button class="m-icon-btn" aria-label="Menu"><span class="fill"></span></button>
+        <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Web2Print</div>
+        <button class="m-icon-btn" aria-label="Cart">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg>
         </button>
       </div>
       <div class="m-hero">
         <div>
           <h1>Your idea. Your piece.</h1>
-          <a href="#" onclick="return false;"><button class="m-btn-primary">Start Creating</button></a>
-        </div>
-      </div>
-
-      <div id="menuOverlay" class="m-menu-overlay">
-        <div class="m-menu-header">
-          <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Menu</div>
-          <button id="menuClose" type="button" class="m-icon-btn" aria-label="Close menu">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-        </div>
-        <div class="m-menu-body">
-          <button id="shopRow" type="button" class="m-menu-row" aria-expanded="false" aria-controls="shopSubmenu">Shop <span class="m-menu-chevron">›</span></button>
-          <div id="shopSubmenu" class="m-submenu">
-            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Hoodies &amp; Sweats</a>
-            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Tees</a>
-            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Athleisure</a>
-            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Accessories</a>
-          </div>
-          <a href="#" onclick="return false;" class="m-menu-link accent" style="display:block">Start Creating</a>
-          <a href="../Inspiration%20Mobile.dc.html" class="m-menu-link" style="display:block">Inspiration</a>
-          <a href="../For%20Teams%20Mobile.dc.html" class="m-menu-link" style="display:block">For Teams</a>
-          <a href="../Who%20We%20Are%20Mobile.dc.html" class="m-menu-link" style="display:block;border-bottom:none">Who We Are</a>
-          <div class="m-menu-footer">
-            <button class="m-icon-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.2-3.8 4-5.6 7-5.6s5.8 1.8 7 5.6"/></svg></button>
-            <button class="m-icon-btn" aria-label="Wishlist"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.5-9.3C1.2 7.3 3 4.5 6.2 4.3c2-.1 3.6 1 5.8 3.3 2.2-2.3 3.8-3.4 5.8-3.3 3.2.2 5 3 3.7 6.4C19.5 15.4 12 20 12 20z"/></svg></button>
-          </div>
+          <button class="m-btn-primary">Start Creating</button>
         </div>
       </div>
       <div class="m-section">
         <div class="m-label">Shop by category</div>
         <div class="m-cats">
-          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Hoodies</div></a>
-          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Tees</div></a>
-          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Athleisure</div></a>
-          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Accessories</div></a>
+          <div><div class="m-cat-circle"></div><div class="m-name">Hoodies</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Tees</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Athleisure</div></div>
+          <div><div class="m-cat-circle"></div><div class="m-name">Accessories</div></div>
         </div>
         <div class="m-promo"><div class="t">GET €10 OFF</div><div class="s">On your first order, over €120.</div></div>
         <div class="m-label">Best sellers</div>
@@ -199,22 +155,8 @@
       </div>
     </div>
   </div>
-  <div id="cartBackdrop" class="m-cart-backdrop"></div>
-  <div id="cartPanel" class="m-cart-panel" role="dialog" aria-label="Cart">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div style="font-size:16px;font-weight:600">0 items in your cart</div>
-      <button id="cartClose" type="button" class="m-icon-btn" aria-label="Close cart">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
-    <div style="border:1px dashed #DDD8CC;border-radius:14px;padding:28px;text-align:center">
-      <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your cart is empty</div>
-      <a href="../Category%20Listing%20Mobile.dc.html"><button class="m-btn-primary" style="padding:0 22px">Keep shopping</button></a>
-    </div>
-  </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function(){
   var html = document.documentElement;
   var btnAuto = document.getElementById('btnAuto');
   var btnMobile = document.getElementById('btnMobile');
@@ -232,40 +174,6 @@ document.addEventListener('DOMContentLoaded', function(){
   function updateWidth(){ widthReadout.textContent = window.innerWidth; }
   window.addEventListener('resize', updateWidth);
   updateWidth();
-
-  // ---- Mobile menu (hamburger) ----
-  var menuBtn = document.getElementById('menuBtn');
-  var menuOverlay = document.getElementById('menuOverlay');
-  var menuClose = document.getElementById('menuClose');
-  function openMenu(){ menuOverlay.classList.add('open'); menuBtn.setAttribute('aria-expanded','true'); }
-  function closeMenu(){ menuOverlay.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }
-  menuBtn.addEventListener('click', openMenu);
-  menuClose.addEventListener('click', closeMenu);
-
-  // ---- Shop accordion ----
-  var shopRow = document.getElementById('shopRow');
-  var shopSubmenu = document.getElementById('shopSubmenu');
-  shopRow.addEventListener('click', function(){
-    var isOpen = shopRow.getAttribute('aria-expanded') === 'true';
-    shopRow.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-    shopSubmenu.classList.toggle('open', !isOpen);
-  });
-  // tapping a menu link closes the whole menu (selection behaviour)
-  document.querySelectorAll('.m-menu-link, #shopSubmenu a').forEach(function(el){
-    el.addEventListener('click', closeMenu);
-  });
-
-  // ---- Cart panel ----
-  var cartBtn = document.getElementById('cartBtn');
-  var cartPanel = document.getElementById('cartPanel');
-  var cartBackdrop = document.getElementById('cartBackdrop');
-  var cartClose = document.getElementById('cartClose');
-  function openCart(){ cartPanel.classList.add('open'); cartBackdrop.classList.add('open'); }
-  function closeCart(){ cartPanel.classList.remove('open'); cartBackdrop.classList.remove('open'); }
-  cartBtn.addEventListener('click', openCart);
-  cartClose.addEventListener('click', closeCart);
-  cartBackdrop.addEventListener('click', closeCart);
-});
 </script>
 </body>
 </html>

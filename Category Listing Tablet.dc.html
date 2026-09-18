@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+.tab-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="Category Listing — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.3). Built from Shop All.dc.html (Desktop) + Category Listing Mobile.dc.html — neither file touched.</div>
+
+  <!-- NAV — Desktop inline pattern, unchanged -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span style="display:flex;align-items:center;gap:4px;cursor:pointer">Shop<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span>Inspiration</span><span>For Teams</span><span>Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="account" title="Account" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BANNER -->
+  <div style="position:relative;height:240px;background:#EFEBE2;display:flex;align-items:flex-end">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,20,18,0.45),transparent 60%)"></div>
+    <div style="position:relative;padding:0 32px 28px;color:#fff;max-width:480px">
+      <h1 style="margin:0 0 8px;font-weight:700;font-size:36px;letter-spacing:-0.01em">Shop All</h1>
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.85)">Everything you can make your own.</p>
+    </div>
+  </div>
+
+  <!-- CATEGORY QUICKLINKS -->
+  <section style="padding:24px 32px 0">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ quicklinks }}" as="q" hint-placeholder-count="5">
+        <span style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 18px;font-size:13px;font-weight:500">{{ q }}</span>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MOST WORN — scroll strip kept as on Desktop -->
+  <section style="padding:40px 32px 0">
+    <h2 style="margin:0 0 14px;font-weight:700;font-size:22px;letter-spacing:-0.01em">Most worn</h2>
+    <div class="tab-scroll" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ mostWorn }}" as="p" hint-placeholder-count="4">
+        <div style="flex:0 0 160px">
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;margin-bottom:8px"></div>
+          <div style="font-size:12.5px;font-weight:500">{{ p.name }}</div>
+          <div style="font-size:12.5px;font-weight:600">€{{ p.price }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FILTERS / SORT / GRID -->
+  <div style="padding:48px 32px 64px">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;position:relative">
+      <span onClick="{{ toggleFilters }}" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #1C1B19;border-radius:999px;padding:10px 18px;font-size:12.5px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer" style-hover="background:#1C1B19;color:#fff">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M8 12h12M4 17h16"></path></svg>Filters
+      </span>
+      <span style="font-size:13px;color:#4A473F;margin-right:auto"><strong style="color:#1C1B19">{{ resultCount }}</strong> products</span>
+      <span onClick="{{ toggleSort }}" style="border:1px solid #DDD8CC;border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:500;cursor:pointer;display:flex;gap:8px;align-items:center">Sort — {{ sortLabel }} <span style="color:#8B867B;font-size:10px">▾</span></span>
+
+      <sc-if value="{{ filtersOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:0;top:52px;background:#fff;border-radius:14px;box-shadow:0 16px 48px rgba(28,27,25,0.16);border:1px solid #EEEBE3;padding:8px;z-index:20;min-width:240px">
+          <sc-for list="{{ facets }}" as="f" hint-placeholder-count="3">
+            <div style="border-bottom:1px solid #EEEBE3;padding:12px 10px">
+              <div style="font-size:13.5px;font-weight:600;margin-bottom:10px">{{ f.title }}</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="3">
+                  <dc-import name="Checkbox" label="{{ o }}" checked="{{ false }}" hint-size="140,20"></dc-import>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;right:0;top:52px;background:#fff;border-radius:12px;box-shadow:0 12px 40px rgba(28,27,25,0.14);border:1px solid #EEEBE3;padding:8px;z-index:20;min-width:190px">
+          <sc-for list="{{ sortOptions }}" as="s" hint-placeholder-count="4"><div style="padding:9px 12px;font-size:13px;border-radius:8px">{{ s }}</div></sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- GRID — 4-up Desktop / 2-up Mobile -> 3-up Tablet -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px 16px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="9">
+        <div>
+          <div style="position:relative;aspect-ratio:4/5;background:#EFEBE2;border-radius:4px">
+            <sc-if value="{{ p.fire }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:10px;left:10px;font-size:16px">🔥</span></sc-if>
+            <span style="position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(251,250,248,0.92);display:flex;align-items:center;justify-content:center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg>
+            </span>
+          </div>
+          <div style="padding-top:12px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-size:13.5px;font-weight:500">{{ p.name }}</span><span style="font-size:14px;font-weight:600">€{{ p.price }}</span></div>
+            <div style="font-size:11.5px;color:#8B867B">{{ p.bestFor }}</div>
+            <div style="display:flex;align-items:center;gap:5px">
+              <sc-for list="{{ p.swatches }}" as="sw" hint-placeholder-count="4"><span style="width:12px;height:12px;border-radius:50%;background:{{ sw }};border:1px solid rgba(28,27,25,0.15);display:block"></span></sc-for>
+              <span style="font-size:10.5px;color:#8B867B;margin-left:2px">+{{ p.more }}</span>
+            </div>
+            <dc-import name="Button" label="Make this yours →" variant="primary" hint-size="150,36"></dc-import>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- LOADING / EMPTY / ERROR — reused from Fase 1, same as Desktop/Mobile -->
+  <div style="padding:0 32px 56px;display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em">States — reused, not redesigned</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:520px">
+      <div><div style="aspect-ratio:4/5;border-radius:4px;background:#F1EEE8;margin-bottom:8px"></div><div style="height:10px;width:70%;background:#F1EEE8;border-radius:4px"></div></div>
+      <div style="border:1px dashed #DDD8CC;border-radius:12px;padding:16px;text-align:center;display:flex;align-items:center;justify-content:center"><span style="font-size:12px;font-weight:600">No products found</span></div>
+      <div style="border-radius:12px;padding:16px;background:#FDECEA;color:#C42B2B;font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center">Couldn't load products.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #E6E2D8;padding:40px 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between">
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Company</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Returns &amp; exchanges<br/>Privacy policy<br/>Shipping policy<br/>Terms &amp; conditions</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">My account<br/>Track your order<br/>Make a return</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Contact<br/>FAQs<br/>Live chat</div></div>
+    </div>
+    <div style="margin-top:28px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+  </footer>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> nav keeps the Desktop inline pattern. Filters/Sort keep Desktop's inline dropdown-on-pill-button pattern (not Mobile's bottom sheet) — a 240–260px dropdown fits comfortably at 768px+, so there was no need to adopt the Mobile sheet pattern here. Product grid drops from 4-up to 3-up per the Phase 3B.1 rule; Most Worn keeps its horizontal scroll from both references. No pagination exists on Desktop or Mobile, so none was invented here. Loading/Empty/Error states are the same ones already approved, shown at 3-up instead of redesigning them.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filtersOpen: false, sortOpen: false };
+  renderVals() {
+    return {
+      quicklinks: ['Tees', 'Hoodies', 'Sweats', 'Athleisure', 'Accessories'],
+      mostWorn: [
+        { name: 'Heavyweight Tee', price: '24' },
+        { name: 'Oversized Hoodie', price: '54' },
+        { name: 'Zip Hoodie', price: '62' },
+        { name: 'Crewneck Sweat', price: '44' }
+      ],
+      resultCount: 24,
+      sortLabel: 'Best selling',
+      toggleFilters: () => this.setState(s => ({ filtersOpen: !s.filtersOpen, sortOpen: false })),
+      filtersOpen: this.state.filtersOpen,
+      toggleSort: () => this.setState(s => ({ sortOpen: !s.sortOpen, filtersOpen: false })),
+      sortOpen: this.state.sortOpen,
+      facets: [
+        { title: 'Size', options: ['S', 'M', 'L'] },
+        { title: 'Colour', options: ['Black', 'White', 'Navy'] },
+        { title: 'Product', options: ['Tees', 'Hoodies', 'Accessories'] }
+      ],
+      sortOptions: ['Best selling', 'Newest', 'Price: low to high', 'Price: high to low'],
+      products: Array.from({ length: 9 }, (_, i) => ({
+        name: ['Heavyweight Tee', 'Oversized Hoodie', 'Zip Hoodie', 'Crewneck Sweat', 'Classic Polo', 'Structured Cap', 'Tote Bag', 'Sports Bra', 'Crop Tee'][i],
+        price: [24, 54, 62, 44, 38, 19, 14, 28, 21][i],
+        bestFor: ['Everyday', 'Group trips', 'Layering', 'Teams', 'Smart casual', 'Accessory', 'Accessory', 'Active', 'Everyday'][i],
+        fire: i < 2,
+        swatches: ['#1C1B19', '#F5F3ED', '#1F2A44', '#2E5A44'],
+        more: 3
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

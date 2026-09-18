@@ -27,6 +27,8 @@ a:hover{text-decoration:underline}
 
     <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:0 0 8px 8px">Developer Handoff</div>
     <a href="#handoff" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19;font-weight:700" style-hover="background:#F3F0E9;text-decoration:none">Overview</a>
+    <a href="#architecture" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19;font-weight:700" style-hover="background:#F3F0E9;text-decoration:none">System Architecture</a>
+    <a href="#implementation-handoff" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19;font-weight:700" style-hover="background:#F3F0E9;text-decoration:none">Implementation Handoff</a>
 
     <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:20px 0 8px 8px">Design Tokens</div>
     <a href="#colors" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Colours</a>
@@ -61,7 +63,7 @@ a:hover{text-decoration:underline}
 <!-- ================= DEVELOPER HANDOFF ================= -->
     <section id="handoff" style="margin-bottom:72px;background:#F3F0E9;border-radius:16px;padding:40px 44px">
       <div style="font-size:11.5px;font-weight:600;letter-spacing:0.08em;color:#4A4FE4;text-transform:uppercase;margin-bottom:10px">Developer Handoff</div>
-      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px">Building this in Next.js + Medusa</h2>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px">Building this into a real product</h2>
       <p style="font-size:14.5px;color:#1C1B19;line-height:1.65;margin:0 0 28px;max-width:760px"><strong>Every value on this page is the visual source of truth for the project.</strong> It was extracted directly from the live storefront and studio (not invented), and the 8 components below (Button, Link, Input, Select, Checkbox, Radio, Badge, IconButton) are the same components rendered on this page — not documentation-only mockups. When implementing in Next.js, port these tokens and component contracts 1:1; do not re-derive colours or spacing from screenshots.</p>
 
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
@@ -79,7 +81,7 @@ a:hover{text-decoration:underline}
         </div>
         <div>
           <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Grid / Layout</div>
-          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Content max-width 1440px, centred. Horizontal padding 48px desktop / 32px tablet / 20px mobile. The Studio is a fixed 56px-toolbar + fluid canvas layout, not a content-width grid.</p>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Content max-width 1440px, centred. Horizontal padding 48px desktop / 32px tablet / 16px mobile (page padding — see §Tablet/Mobile detail for the distinction from section and component spacing). The Studio is a fixed 56px-toolbar + fluid canvas layout, not a content-width grid.</p>
         </div>
         <div>
           <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Responsive breakpoints</div>
@@ -87,7 +89,7 @@ a:hover{text-decoration:underline}
         </div>
         <div>
           <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Components</div>
-          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">8 base components shipped: Button, Link, Input, Select, Checkbox, Radio (colour swatch), Badge, IconButton. Full per-component contract in <a href="#component-specs">Component Specs</a> below.</p>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">8 Core Components shipped: Button, Link, Input, Select, Checkbox, Radio (colour swatch), Badge, IconButton. These are Design System primitives — see <a href="#architecture">System Architecture</a> for how Product Patterns and Studio Patterns build on them. Full per-component contract in <a href="#component-specs">Component Specs</a> below.</p>
         </div>
         <div>
           <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">States</div>
@@ -128,6 +130,7 @@ a:hover{text-decoration:underline}
       <div style="margin-top:28px;padding-top:24px;border-top:1px solid #DDD8CC">
         <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">Mobile — Phase 3A <span style="color:#B8B2A5;font-weight:400">390px reference, verified to 320px</span></div>
         <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0 0 10px">New mobile-reference files, built alongside — not instead of — the approved desktop files (none of which were altered): <a href="Homepage%20Mobile.dc.html">Homepage Mobile</a>, <a href="Category%20Listing%20Mobile.dc.html">Category Listing Mobile</a>, <a href="Product%20Page%20Mobile.dc.html">Product Page Mobile</a>, <a href="Cart%20Mobile.dc.html">Cart Mobile</a>, <a href="Checkout%20Mobile.dc.html">Checkout Mobile</a>, <a href="Mobile%20Navigation.dc.html">Mobile Navigation</a>. Full breakdown in §13 Responsive Behaviour → "Mobile detail — Phase 3A".</p>
+        <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0">Phase 3A.1 — added Mobile references for the pages the navigation audit found missing: <a href="Inspiration%20Mobile.dc.html">Inspiration Mobile</a>, <a href="For%20Teams%20Mobile.dc.html">For Teams Mobile</a>, <a href="Who%20We%20Are%20Mobile.dc.html">Who We Are Mobile</a>. Studio Desktop still has no Mobile reference — its "Start Creating" links remain a non-navigating placeholder in the Responsive Preview.</p>
       </div>
 
       <div style="margin-top:28px;padding-top:24px;border-top:1px solid #DDD8CC">
@@ -138,6 +141,118 @@ a:hover{text-decoration:underline}
           <li>Do not introduce new colours, radii or shadow values without adding them here first.</li>
           <li>Keep the current visual design as-is — this handoff documents the existing site, it does not propose a redesign.</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ================= IMPLEMENTATION HANDOFF ================= -->
+    <section id="implementation-handoff" style="margin-bottom:72px;background:#1C1B19;color:#fff;border-radius:16px;padding:40px 44px">
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:0.08em;color:#B8B2A5;text-transform:uppercase;margin-bottom:10px">Layer 6 — separate from the Design System itself</div>
+      <h2 style="font-size:24px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px">Implementation Handoff</h2>
+      <p style="font-size:14px;line-height:1.65;margin:0 0 24px;max-width:760px;color:rgba(255,255,255,0.85)">Everything above (Tokens, Foundation, Core Components, Product Patterns, Studio Patterns) is <strong>technology-agnostic</strong>. This section is the one place technology is named — the intended build target is <strong>React / Next.js</strong> for the frontend and <strong>MedusaJS</strong> for commerce (products, cart, checkout, orders), but the Design System does not depend on either: a different stack could implement the exact same tokens and component contracts.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px">
+        <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">What belongs here</div>
+          <ul style="margin:0;padding-left:16px;font-size:12.5px;color:rgba(255,255,255,0.8);line-height:1.7">
+            <li>React/Next.js component structure, routing, data fetching</li>
+            <li>MedusaJS product/cart/checkout/order integration</li>
+            <li>API contracts, commerce logic, application state</li>
+            <li>Any framework-specific implementation notes</li>
+          </ul>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">What does not belong here</div>
+          <ul style="margin:0;padding-left:16px;font-size:12.5px;color:rgba(255,255,255,0.8);line-height:1.7">
+            <li>Colours, type, spacing, radius, shadows (Layer 1)</li>
+            <li>Component visual contracts (Layer 3)</li>
+            <li>UX decisions already made in Product/Studio Patterns</li>
+          </ul>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:20px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">AI implementation guidance</div>
+        <p style="font-size:12.5px;color:rgba(255,255,255,0.8);line-height:1.6;margin:0 0 10px"><strong>AI implementation must not redefine the Design System.</strong> The human-approved specification above is the source of truth.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#41573B;background:#fff;display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:8px">AI may</div>
+            <ul style="margin:0;padding-left:16px;font-size:12px;color:rgba(255,255,255,0.8);line-height:1.7">
+              <li>Implement tokens/components in code</li>
+              <li>Generate already-specified variants</li>
+              <li>Detect inconsistencies and flag them</li>
+              <li>Help write/maintain documentation</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:11.5px;font-weight:700;color:#C42B2B;background:#fff;display:inline-block;padding:2px 8px;border-radius:4px;margin-bottom:8px">AI may not</div>
+            <ul style="margin:0;padding-left:16px;font-size:12px;color:rgba(255,255,255,0.8);line-height:1.7">
+              <li>Invent new tokens or variants</li>
+              <li>Change UX decisions already made</li>
+              <li>Decide commerce/backend architecture</li>
+              <li>Mix backend logic into the Design System</li>
+              <li>Introduce a technology dependency into the Design System itself</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- ================= SYSTEM ARCHITECTURE ================= -->
+    <section id="architecture" style="margin-bottom:72px">
+      <h2 style="font-size:24px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px">System Architecture</h2>
+      <p style="font-size:13.5px;color:#8B867B;margin:0 0 24px;max-width:760px">The Design System is <strong>technology-agnostic</strong>: it defines visual language, interaction rules, accessibility and responsive behaviour independently of any framework or backend. It is not "a Design System for Next.js + Medusa" — those are one possible <em>implementation</em> of it (see <a href="#implementation-handoff">Implementation Handoff</a>). Nothing in this section changes any approved visual value — it only clarifies how the existing pieces relate.</p>
+
+      <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:28px">
+        <div style="background:#1C1B19;color:#fff;border-radius:10px 10px 0 0;padding:14px 18px;font-size:13px;font-weight:700">Layer 1 — Design Tokens <span style="font-weight:400;color:#B8B2A5;font-size:12px">colour, type, spacing, radius, shadows, breakpoints (§1–6)</span></div>
+        <div style="background:#3A3833;color:#fff;padding:14px 18px;font-size:13px;font-weight:700">Layer 2 — Foundation / Accessibility <span style="font-weight:400;color:#DDD8CC;font-size:12px">focus, keyboard, tap targets, contrast, states</span></div>
+        <div style="background:#4A473F;color:#fff;padding:14px 18px;font-size:13px;font-weight:700">Layer 3 — Core Components <span style="font-weight:400;color:#DDD8CC;font-size:12px">Button, Link, Input, Select, Checkbox, Radio, Badge, IconButton (§Component Specs)</span></div>
+        <div style="background:#8B867B;color:#fff;padding:14px 18px;font-size:13px;font-weight:700">Layer 4 — Product Patterns <span style="font-weight:400;color:#F3F0E9;font-size:12px">Product Card, Cart Item, Checkout Summary, Product Gallery, Product Selector, Category Grid — built FROM Core Components, not primitives themselves</span></div>
+        <div style="background:#B8B2A5;color:#1C1B19;padding:14px 18px;font-size:13px;font-weight:700">Layer 5 — Studio Patterns <span style="font-weight:400;color:#4A473F;font-size:12px">Studio toolbar, colour/outline pickers, panels — reuse tokens + Core Components, but are Studio-specific, not Design System primitives</span></div>
+        <div style="background:#F3F0E9;color:#1C1B19;border-radius:0 0 10px 10px;padding:14px 18px;font-size:13px;font-weight:700">Layer 6 — Implementation <span style="font-weight:400;color:#8B867B;font-size:12px">React / Next.js / Medusa / APIs / commerce logic — see Implementation Handoff, not part of the Design System itself</span></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px">
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Primitive vs semantic tokens</div>
+          <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0 0 10px">Colours in §1 are listed by name and hex for clarity, but conceptually split into two roles. Today several semantic roles intentionally point to the <em>same</em> primitive value — that's a starting point, not a merge: each can be repointed independently later without touching every component.</p>
+          <table style="width:100%;border-collapse:collapse;font-size:11.5px">
+            <tr style="color:#8B867B;text-align:left"><th style="padding:4px 6px;font-weight:600">Semantic role</th><th style="padding:4px 6px;font-weight:600">Primitive today</th></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.brand</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#4A4FE4</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.link</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#4A4FE4</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.focus</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#4A4FE4</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.text</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#1C1B19</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.surface</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#FFFFFF</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.border</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#E6E2D8</td></tr>
+            <tr><td style="padding:4px 6px;border-top:1px solid #EEEBE3">color.success / warning / error</td><td style="padding:4px 6px;border-top:1px solid #EEEBE3">#41573B / #A34B33 / #C42B2B</td></tr>
+          </table>
+        </div>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Spacing: global vs component-specific</div>
+          <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0 0 10px"><strong>Global spacing tokens</strong> (§3): 4/8/12/16/24/32/48/64/80/96 — used for gaps, margins, section rhythm. <strong>Component-specific tokens</strong> exist where a component's own anatomy needs a value the global scale doesn't name directly — e.g. <code>button.height</code> (44px), <code>input.height</code> (~50px), <code>header.height</code> (56–68px). These aren't "arbitrary" — they're documented per component in §Component Specs, not hidden magic numbers.</p>
+          <div style="font-size:12.5px;color:#4A473F;line-height:1.6"><strong>Resolved contradiction:</strong> mobile page padding was listed as 20px in one place and built as 16px in the approved Mobile files (Homepage Mobile, Category Listing Mobile, etc.). The built, approved value is <strong>16px</strong> — the documentation above now matches it. This was a documentation error, not a visual change.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Product Patterns <span style="color:#B8B2A5;font-weight:400">Layer 4 — already documented, now classified</span></div>
+          <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#4A473F;line-height:1.7">
+            <li>Product Card — §9 Cards, §10 E-commerce</li>
+            <li>Cart Item / Mini Cart — §10 E-commerce</li>
+            <li>Checkout Summary — Checkout screens</li>
+            <li>Product Gallery — Product Page</li>
+            <li>Product Selector (colour + size) — built from Radio + Button/chip patterns</li>
+            <li>Category Grid — §10 E-commerce, Category Listing pages</li>
+          </ul>
+        </div>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:8px">Studio Patterns <span style="color:#B8B2A5;font-weight:400">Layer 5 — not Design System primitives</span></div>
+          <ul style="margin:0;padding-left:16px;font-size:12.5px;color:#4A473F;line-height:1.7">
+            <li>Studio toolbar (zoom, grid, snap, guides toggles)</li>
+            <li>Colour picker (CMYK) + outline controls, for text/shapes/stickers</li>
+            <li>Inspector panels (product/design/layer controls)</li>
+            <li>Canvas print-area warnings</li>
+          </ul>
+          <p style="font-size:11.5px;color:#8B867B;margin:10px 0 0">These reuse Design System tokens and, where applicable, Core Components — but are Studio-specific workflows, not general-purpose primitives other pages should import.</p>
+        </div>
       </div>
     </section>
 
@@ -691,7 +806,7 @@ a:hover{text-decoration:underline}
 <!-- ================= COMPONENT SPECS ================= -->
     <section id="component-specs" style="margin-bottom:72px">
       <h2 style="font-size:24px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px">Component Specifications</h2>
-      <p style="font-size:13.5px;color:#8B867B;margin:0 0 28px">Full contract for each of the 8 shipped components — the values a Next.js implementation should reproduce exactly.</p>
+      <p style="font-size:13.5px;color:#8B867B;margin:0 0 28px">Full contract for each of the 8 Core Components — technology-agnostic values any implementation (Next.js, plain HTML, another framework) should reproduce exactly. See <a href="#architecture">System Architecture</a> for how these differ from Product Patterns.</p>
 
       <sc-for list="{{ componentSpecs }}" as="c" hint-placeholder-count="8">
         <div style="border:1px solid #E6E2D8;border-radius:14px;padding:24px 28px;margin-bottom:20px;background:#fff">
@@ -765,6 +880,37 @@ a:hover{text-decoration:underline}
           <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
             <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Screens already mobile-ready</div>
             <div style="font-size:12px;color:#4A473F;line-height:1.6">404, Order Confirmation, Password Recovery, Search Results and Cookie Banner (Phase 2) were built single-column/fluid and verified at 390px as-is — no separate mobile file was created for these, per the reuse rule.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">Tablet detail — Phase 3B.1 <span style="color:#B8B2A5;font-weight:400">base/infrastructure only — no Tablet pages built yet</span></div>
+        <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0 0 14px">Tablet fills the gap the Desktop/Mobile breakpoints already implied (Desktop ≥1024px, Mobile &lt;768px) — so <strong>Tablet = 768–1023px</strong>, verified at 768 / 834 / 1024. No existing rule was overridden to get this range.</p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Container &amp; gutters</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Fluid, no max-width needed below the 1440px Desktop cap. Side padding 32px (the value already named for Tablet in this section) — between Desktop's 48px and Mobile's 16–20px.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Grid</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Grids that run 4-up on Desktop and 2-up on Mobile (product/category grids) run <strong>3-up</strong> on Tablet. Grids that already scroll horizontally on both Desktop and Mobile (Trending, category-tile rows) keep scrolling — no new pattern.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Header / Navigation</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Keeps the <strong>Desktop</strong> inline nav, not the Mobile hamburger — the nav already uses <code>gap:clamp(10px,1.1vw,18px)</code> with no fixed widths, so it compresses instead of overflowing down to 768px. The hamburger pattern stays a &lt;768px-only rule, as already documented.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Spacing</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Section padding drops one or two steps on the existing 4px scale — Desktop's 96/64px sections use 48–64px on Tablet — never a new, off-scale value.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Media &amp; typography</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Both already fluid (<code>aspect-ratio</code> images, <code>clamp()</code> headings) and need no Tablet-specific override — they were already safe at this width before this phase.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Components &amp; overflow</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Same components, same states (loading/empty/error/disabled/validation/payment-refused) — no Tablet variants. Standing rule from the Phase 3A.4 fix: never a fixed-px container width — always <code>width:100%;max-width:&lt;value&gt;</code>, so nothing overflows between 768–1024px.</div>
           </div>
         </div>
       </div>

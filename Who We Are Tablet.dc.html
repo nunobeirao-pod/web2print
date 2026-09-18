@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+.tab-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="Who We Are — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.9). Built from Who We Are.dc.html (Desktop) + Who We Are Mobile.dc.html — neither touched.</div>
+
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span>Shop</span><span>Inspiration</span><span>For Teams</span><span style="border-bottom:2px solid #1C1B19">Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <section style="position:relative;min-height:460px;display:flex;align-items:flex-end;background:#1C1B19;padding:0 32px 48px;box-sizing:border-box">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.1) 30%,rgba(20,20,18,0.68) 100%)"></div>
+    <div style="position:relative;color:#fff;max-width:560px">
+      <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:16px">Who we are</div>
+      <h1 style="margin:0 0 16px;font-weight:700;font-size:clamp(34px,5vw,48px);line-height:1.1;letter-spacing:-0.01em">We turn ideas into something you can wear.</h1>
+      <p style="margin:0 0 24px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.85)">From a photo, a memory, a sentence or simply an idea in your head — we make it easier to turn something personal into something real.</p>
+      <div style="display:flex;gap:10px">
+        <dc-import name="Button" label="Start Creating" variant="secondary" hint-size="140,44"></dc-import>
+        <dc-import name="Button" label="See How It Works" variant="tertiary" hint-size="150,44"></dc-import>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:56px 32px 0;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center">
+    <div>
+      <h2 style="margin:0 0 20px;font-weight:700;font-size:clamp(24px,3.2vw,32px);line-height:1.2;letter-spacing:-0.01em">Most ideas never leave the screen. We wanted to change that.</h2>
+      <p style="margin:0 0 14px;font-size:14px;line-height:1.6">You might have a photo you love.<br>An inside joke only your friends understand.<br>A memory you want to keep.<br>Or an idea that exists only in your head.</p>
+      <p style="margin:0 0 14px;font-size:14px;line-height:1.6">Turning that into something you can actually wear shouldn't require design skills, complicated software or a conversation with a printing company.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6;font-weight:600">That's why we created a simpler way to go from idea to piece.</p>
+    </div>
+    <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px"></div>
+  </section>
+
+  <section style="padding:56px 32px 0">
+    <h2 style="margin:0 0 20px;font-weight:700;font-size:22px;letter-spacing:-0.01em">From screen to garment.</h2>
+    <div class="tab-scroll" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ processSteps }}" as="p" hint-placeholder-count="5">
+        <div style="flex:0 0 160px">
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;margin-bottom:10px"></div>
+          <div style="font-size:11px;font-weight:600;color:#8B867B;margin-bottom:4px">{{ p.num }} — {{ p.title }}</div>
+          <p style="margin:0;font-size:12px;line-height:1.4">{{ p.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div style="background:#F3F0E9;padding:40px 32px;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">The Studio</div>
+      <h2 style="margin:0 0 14px;font-weight:700;font-size:22px;line-height:1.25;letter-spacing:-0.01em">Technology when it helps. Humans where it matters.</h2>
+      <p style="margin:0 0 12px;font-size:13.5px;line-height:1.6;color:#4A473F">We use technology to make creating easier — not to take the creative decision away from you.</p>
+      <p style="margin:0;font-size:13.5px;line-height:1.6;color:#4A473F">Our tools can help you start, improve an image or explore an idea. But you're always in control of what gets made.</p>
+    </div>
+    <div style="background:#EFEBE2;min-height:260px"></div>
+  </section>
+  <section style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+    <div style="background:#EFEBE2;min-height:260px"></div>
+    <div style="background:#1C1B19;color:#fff;padding:40px 32px;display:flex;flex-direction:column;justify-content:center">
+      <p style="margin:0 0 12px;font-size:13.5px;line-height:1.6;color:rgba(255,255,255,0.85)">And when your design leaves the screen, real people take over.</p>
+      <p style="margin:0 0 12px;font-size:13.5px;line-height:1.6;color:rgba(255,255,255,0.85)">Production. Quality control. Packing. Support.</p>
+      <p style="margin:0;font-size:14px;line-height:1.6;font-weight:600">Digital where it makes things easier. Human where it makes things better.</p>
+    </div>
+  </section>
+
+  <section style="padding:56px 32px 0">
+    <h2 style="margin:0 0 28px;font-weight:700;font-size:26px;letter-spacing:-0.01em">What matters to us.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+      <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+        <div>
+          <h3 style="margin:0 0 8px;font-weight:700;font-size:17px">{{ v.title }}</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.6;color:#4A473F">{{ v.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:#1C1B19;color:#fff;padding:72px 32px;text-align:center;margin-top:56px">
+    <p style="margin:0 0 28px;font-weight:700;font-size:clamp(24px,3.4vw,32px);line-height:1.35;letter-spacing:-0.01em">Some things are too personal to come off a shelf.</p>
+    <div style="font-size:17px;line-height:1.7;color:rgba(255,255,255,0.9)">A birthday. • A friendship. • A stupid joke.<br>A photograph. • A team. • A memory.<br>An idea that only makes sense to you.</div>
+    <p style="margin:28px 0 0;font-weight:700;font-size:18px">That's exactly the point.</p>
+  </section>
+
+  <section style="padding:64px 32px 96px;text-align:center">
+    <h2 style="margin:0 0 16px;font-weight:700;font-size:clamp(26px,3.6vw,38px);letter-spacing:-0.01em">Enough about us. What do you want to make?</h2>
+    <p style="margin:0 0 24px;font-size:14px;line-height:1.6;color:#4A473F;max-width:460px;margin-left:auto;margin-right:auto">Your idea can start with a photo, a sentence or nothing more than a thought.</p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <dc-import name="Button" label="Start Creating" variant="primary" hint-size="150,44"></dc-import>
+      <dc-import name="Button" label="Explore Products" variant="secondary" hint-size="150,44"></dc-import>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid #E6E2D8;padding:40px 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between">
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Company</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Returns &amp; exchanges<br/>Privacy policy<br/>Shipping policy<br/>Terms &amp; conditions</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">My account<br/>Track your order<br/>Make a return</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Contact<br/>FAQs<br/>Live chat</div></div>
+    </div>
+    <div style="margin-top:28px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+  </footer>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> "Why we exist" and the Studio/Human split panels keep Desktop's 2-col composition (both halves still fit at 768px+, so Mobile's stacked version wasn't needed). "From screen to garment" (5 steps) keeps the intentional horizontal scroll from both references. "What matters to us" keeps Desktop's 2-col grid (Mobile was 1-col — Tablet has room for Desktop's version here). No new copy, images or sections.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      processSteps: [
+        { num: '01', title: 'Your idea', desc: 'Your design starts with you.' },
+        { num: '02', title: 'Ready to print', desc: 'We check that your design is ready to become something physical.' },
+        { num: '03', title: 'Made by us', desc: 'Your piece moves into production.' },
+        { num: '04', title: 'Checked by hand', desc: 'Before it leaves us, the finished piece goes through quality control.' },
+        { num: '05', title: 'Ready for you', desc: 'Packed and sent on its way.' }
+      ],
+      values: [
+        { title: 'No surprises.', desc: "We'd rather tell you what to expect than promise something we can't deliver. From the design to the final piece, clarity matters." },
+        { title: "Good enough isn't enough.", desc: "The garment matters as much as what's printed on it. A great idea deserves a piece you'd actually want to wear." },
+        { title: "Easy doesn't mean impersonal.", desc: 'Technology should remove friction, not human connection. When you need help, there should still be a person on the other side.' },
+        { title: 'Always getting better.', desc: "We test, learn and improve. From the Studio to the products and the way we produce them, there's always a better version to build." }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -817,7 +817,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
               <sc-for list="{{ r.tiles }}" as="c" hint-placeholder-count="2">
                 <div style="width:{{ c.size }}px;max-width:100%">
-                  <div style="position:relative;width:{{ c.size }}px;height:{{ c.size }}px;max-width:100%;background:#F3F1EC;border-radius:12px;overflow:hidden">
+                  <div style="position:relative;width:{{ c.size }}px;height:{{ c.size }}px;max-width:100%;background:#F3F0E9;border-radius:12px;overflow:hidden">
                     <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:translate({{ c.fitX }}px,{{ c.fitY }}px) scale({{ c.fitScale }});transform-origin:0 0;pointer-events:none">
                       <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
                       <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
@@ -853,7 +853,7 @@
           <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:24px">
             <sc-for list="{{ rvTiles }}" as="c" hint-placeholder-count="2">
               <div style="width:{{ c.size }}px;max-width:100%">
-                  <div style="position:relative;width:{{ c.size }}px;height:{{ c.size }}px;max-width:100%;background:#F3F1EC;border-radius:12px;overflow:hidden">
+                  <div style="position:relative;width:{{ c.size }}px;height:{{ c.size }}px;max-width:100%;background:#F3F0E9;border-radius:12px;overflow:hidden">
                     <div style="position:absolute;left:0;top:0;width:{{ c.stageW }}px;height:{{ c.stageH }}px;transform:translate({{ c.fitX }}px,{{ c.fitY }}px) scale({{ c.fitScale }});transform-origin:0 0;pointer-events:none">
                       <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:fill">
                       <sc-for list="{{ c.texts }}" as="t" hint-placeholder-count="0">
@@ -874,7 +874,7 @@
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px">
             <sc-for list="{{ rvColours }}" as="c" hint-placeholder-count="6">
-              <button onClick="{{ c.pick }}" title="{{ c.name }}" aria-label="{{ c.name }}" style="width:62px;height:62px;border-radius:10px;border:2px solid {{ c.border }};background:#F3F1EC;padding:0;cursor:pointer;position:relative;overflow:hidden;box-sizing:border-box">
+              <button onClick="{{ c.pick }}" title="{{ c.name }}" aria-label="{{ c.name }}" style="width:62px;height:62px;border-radius:10px;border:2px solid {{ c.border }};background:#F3F0E9;padding:0;cursor:pointer;position:relative;overflow:hidden;box-sizing:border-box">
                 <img ref="{{ c.imgRef }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain">
                 <sc-if value="{{ c.hasQty }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-1px;right:-1px;min-width:18px;height:18px;border-radius:999px;background:#4A4FE4;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;padding:0 5px;box-sizing:border-box">{{ c.qty }}</span></sc-if>
               </button>

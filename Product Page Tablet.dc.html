@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+.tab-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="Product Page — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.4). Built from Product Page.dc.html (Desktop) + Product Page Mobile.dc.html — neither file touched.</div>
+
+  <!-- NAV — Desktop inline pattern -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span style="display:flex;align-items:center;gap:4px;cursor:pointer">Shop<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span>Inspiration</span><span>For Teams</span><span>Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div style="padding:18px 32px 0;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;color:#8B867B">
+    Shop / Hoodies / <span style="color:#1C1B19">Regular Hoodie 300</span>
+  </div>
+
+  <!-- MAIN — Desktop's 2-col info+gallery kept: 768px still fits gallery + a 320px info column -->
+  <div style="padding:16px 32px 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,320px);gap:24px;align-items:start">
+
+    <!-- GALLERY -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="aspect-ratio:4/5;border-radius:12px;background:#EFEBE2"></div>
+        <div style="aspect-ratio:4/5;border-radius:12px;background:#EFEBE2"></div>
+      </div>
+      <div style="aspect-ratio:16/10;border-radius:12px;background:#EFEBE2"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="aspect-ratio:4/5;border-radius:12px;background:#EFEBE2"></div>
+        <div style="aspect-ratio:4/5;border-radius:12px;background:#EFEBE2"></div>
+      </div>
+    </div>
+
+    <!-- INFO — sticky, same pattern as Desktop (fits comfortably at 768px+) -->
+    <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:18px;padding-bottom:32px">
+      <div>
+        <h1 style="margin:0 0 6px;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:-0.01em;text-transform:uppercase">Regular Hoodie 300</h1>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="color:#41573B;font-size:13px">★★★★★</span><span style="font-size:12px;color:#4A473F">4.9 · 214 reviews</span></div>
+        <p style="margin:0 0 10px;font-size:13px;line-height:1.5;color:#4A473F">A heavyweight hoodie built for everyday layering. 300 gsm brushed cotton, dropped shoulders, double-layer hood, kangaroo pocket.</p>
+        <div style="font-weight:700;font-size:20px">€39.00 <span style="font-size:11px;font-weight:400;color:#8B867B;text-transform:uppercase">VAT included</span></div>
+      </div>
+
+      <div style="border-top:1px solid #EEEBE3;border-bottom:1px solid #EEEBE3;padding:10px 0;font-size:11.5px;color:#4A473F;text-align:center">10,000+ happy customers · Made in Portugal · 30-day guarantee</div>
+
+      <div>
+        <span style="font-size:12.5px;color:#4A473F">Colour: <strong style="color:#1C1B19">Navy</strong></span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <sc-for list="{{ colours }}" as="c" hint-placeholder-count="5">
+            <dc-import name="Radio" color="{{ c }}" selected="{{ false }}" hint-size="22,22"></dc-import>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <span style="font-size:12.5px;color:#4A473F">Size</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <sc-for list="{{ sizes }}" as="s" hint-placeholder-count="6">
+            <span style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid {{ s.border }};background:{{ s.bg }};color:{{ s.ink }};font-size:13px;font-weight:500;border-radius:8px">{{ s.label }}</span>
+          </sc-for>
+          <dc-import name="Link" label="Size guide" tone="brand" hint-size="70,18"></dc-import>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <dc-import name="Button" label="Start Creating — €39.00" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1"><dc-import name="Button" label="Order Blank" variant="secondary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import></div>
+          <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="44,44"></dc-import>
+        </div>
+        <div style="font-size:11.5px;color:#4A473F">Klarna. 3 payments of €13.00 at 0% interest.</div>
+      </div>
+
+      <div style="border-top:1px solid #EEEBE3">
+        <sc-for list="{{ accordions }}" as="a" hint-placeholder-count="4">
+          <div style="border-bottom:1px solid #EEEBE3">
+            <div onClick="{{ a.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:14px 2px;cursor:pointer;font-size:13.5px;font-weight:600">{{ a.title }} <span style="color:#8B867B;font-size:13px;transform:{{ a.rot }};transition:transform 150ms">⌄</span></div>
+            <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 14px;font-size:12.5px;color:#4A473F;line-height:1.6">{{ a.body }}</p></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEWS — already 3-col on Desktop, unchanged -->
+  <section style="padding:64px 32px 0;text-align:center">
+    <h2 style="margin:0 0 24px;font-weight:700;font-size:clamp(26px,3.5vw,36px);letter-spacing:-0.01em">What people are saying.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left">
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+        <div style="background:#F3F0E9;border-radius:14px;padding:22px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between">
+          <p style="margin:0;font-size:13.5px;line-height:1.5">"{{ r.quote }}"</p>
+          <div style="color:#41573B;font-size:12px;margin-top:14px">★★★★★ <span style="color:#8B867B;margin-left:6px">{{ r.name }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MADE BY YOU — scroll strip kept -->
+  <section style="background:#F3F0E9;margin-top:56px;padding:40px 32px">
+    <h2 style="margin:0 0 16px;font-weight:700;font-size:28px;letter-spacing:-0.01em">Made by you</h2>
+    <div class="tab-scroll" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ ugc }}" as="u" hint-placeholder-count="4">
+        <div style="flex:0 0 150px">
+          <div style="aspect-ratio:9/16;background:#1C1B19;border-radius:8px;margin-bottom:8px"></div>
+          <div style="font-size:12px;font-weight:500">{{ u }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #E6E2D8;padding:40px 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between">
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Company</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Returns &amp; exchanges<br/>Privacy policy<br/>Shipping policy<br/>Terms &amp; conditions</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">My account<br/>Track your order<br/>Make a return</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Contact<br/>FAQs<br/>Live chat</div></div>
+    </div>
+    <div style="margin-top:28px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+  </footer>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation &amp; sticky CTA decision:</strong> the Desktop two-column layout (gallery + sticky info panel containing the CTA) is kept as-is for Tablet — at 768–1023px there's still enough room for a fluid gallery column plus a 280–320px info column, so Mobile's separate floating sticky-bottom-bar pattern was not adopted here; the CTA already lives inside the sticky info column, exactly as on Desktop. Colour swatches reuse the Radio component (same 44×44px tap target from Phase 1.1); size chips are 44×44px. Reviews were already 3-up on Desktop, so no grid change was needed there. Gallery mosaic uses 2-up image pairs (down from Desktop's larger multi-row mosaic) to fit the narrower gallery column.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: {} };
+  renderVals() {
+    const accItems = [
+      { key: 'details', title: 'Details', body: '300 gsm brushed cotton, dropped shoulders, double-layer hood, kangaroo pocket. Garment-dyed for a lived-in feel from day one.' },
+      { key: 'materials', title: 'Materials & care', body: '100% cotton fleece. Machine wash cold, tumble dry low.' },
+      { key: 'print', title: 'Print areas', body: 'Front, back and sleeve — same zones available in the Studio.' },
+      { key: 'shipping', title: 'Shipping & returns', body: 'Ships in 3–5 business days. 30-day returns on unprinted items.' }
+    ];
+    return {
+      colours: ['#1F2A44', '#F5F3ED', '#2E5A44', '#5E2233', '#1C1B19'],
+      sizes: [
+        { label: 'S', border: '#DDD8CC', bg: '#fff', ink: '#4A473F' },
+        { label: 'M', border: '#1C1B19', bg: '#1C1B19', ink: '#fff' },
+        { label: 'L', border: '#DDD8CC', bg: '#fff', ink: '#4A473F' },
+        { label: 'XL', border: '#DDD8CC', bg: '#fff', ink: '#4A473F' }
+      ],
+      accordions: accItems.map(a => ({
+        title: a.title, body: a.body,
+        open: !!this.state.open[a.key],
+        rot: this.state.open[a.key] ? 'rotate(180deg)' : 'none',
+        toggle: () => this.setState(s => ({ open: { ...s.open, [a.key]: !s.open[a.key] } }))
+      })),
+      reviews: [
+        { quote: 'Fits exactly as described, print quality is excellent.', name: 'Marta S.' },
+        { quote: 'Ordered a size up as suggested — perfect fit.', name: 'Diogo P.' },
+        { quote: 'Fast shipping, great fabric weight.', name: 'Rui A.' }
+      ],
+      ugc: ['@joana.tees', '@ruimadrid', '@catmomclub', '@teamnorth']
+    };
+  }
+}
+
+</script>
+</body>
+</html>

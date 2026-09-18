@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+.tab-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="Homepage — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.2). Same content/identity as Homepage.dc.html — Desktop and Mobile files untouched.</div>
+
+  <!-- NAV — Desktop inline pattern, unchanged; compresses via existing clamp() gaps -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span style="display:flex;align-items:center;gap:4px;cursor:pointer">Shop<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <span>Inspiration</span><span>For Teams</span><span>Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="account" title="Account" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="position:relative;height:72vh;min-height:460px;background:#1C1B19;display:flex;align-items:center">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.35) 0%,rgba(20,20,18,0.04) 45%,rgba(20,20,18,0.55) 100%)"></div>
+    <div style="position:relative;width:100%;padding:0 32px;display:flex;justify-content:flex-end">
+      <div style="max-width:440px;text-align:right">
+        <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.9);margin-bottom:14px">Create custom clothing in minutes</div>
+        <h1 style="margin:0 0 14px;font-weight:700;font-size:clamp(40px,6vw,60px);line-height:1.02;letter-spacing:-0.02em;color:#fff">Make it yours.</h1>
+        <div style="font-size:14.5px;line-height:1.5;color:rgba(255,255,255,0.88);margin-bottom:24px">Quality garments. Ideas without limits. Imagined by you, produced by us.</div>
+        <div style="display:flex;gap:12px;justify-content:flex-end">
+          <dc-import name="Button" label="Start Creating" variant="secondary" hint-size="140,44"></dc-import>
+          <button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.6);border-radius:999px;padding:0 22px;height:44px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="border-color:#fff;background:rgba(255,255,255,0.1)">Shop Products</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK START / HOW IT WORKS — 2-col grid already fluid, unchanged structure -->
+  <section style="padding:24px 0 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;background:#F3F0E9">
+      <div style="min-height:clamp(280px,34vw,380px);background:#1C1B19"></div>
+      <div style="padding:clamp(24px,4vw,48px);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#4A473F;margin-bottom:12px">You imagine, we create</div>
+        <h2 style="margin:0 0 20px;font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.1;letter-spacing:-0.01em">How it works</h2>
+        <div style="width:100%;max-width:380px;display:flex;flex-direction:column;text-align:left">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <div style="display:flex;gap:16px;align-items:center;padding:18px 0;border-top:1px solid #DDD8CC">
+              <span style="font-size:24px;font-weight:700;color:#4A4FE4;flex:none;width:42px">{{ s.num }}</span>
+              <div><div style="font-size:16px;font-weight:700;margin-bottom:4px">{{ s.title }}</div><p style="margin:0;font-size:13px;color:#4A473F;line-height:1.5">{{ s.desc }}</p></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:20px"><dc-import name="Button" label="Start Creating →" variant="brand" hint-size="150,44"></dc-import></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BESTSELLERS — scroll strip kept as on Desktop/Mobile -->
+  <section style="padding:40px 32px 0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+      <h2 style="margin:0;font-weight:700;font-size:32px;letter-spacing:-0.01em">Bestsellers</h2>
+      <dc-import name="Link" label="See all" tone="ink" hint-size="50,18"></dc-import>
+    </div>
+    <div class="tab-scroll" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="flex:0 0 210px">
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;margin-bottom:10px"></div>
+          <div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:500"><span>{{ p.name }}</span><span style="font-weight:600">{{ p.price }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CATEGORIES — 4-up Desktop / 2-up Mobile -> 3-up Tablet -->
+  <section style="padding:32px 0 0">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px">
+      <sc-for list="{{ categories }}" as="c" hint-placeholder-count="3">
+        <div style="position:relative;aspect-ratio:1;background:#EFEBE2;display:flex;align-items:flex-end;color:#fff">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.65) 100%)"></div>
+          <div style="position:relative;padding:20px;font-weight:700;font-size:26px;letter-spacing:-0.01em">{{ c }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- MADE BY YOU — scroll strip kept as on Desktop/Mobile -->
+  <section style="background:#F3F0E9;padding:48px 32px">
+    <h2 style="margin:0 0 6px;font-weight:700;font-size:34px;letter-spacing:-0.01em">Made by you</h2>
+    <p style="margin:0 0 20px;font-size:13.5px;color:#4A473F;max-width:440px">Real people, real prints. See what they made — then make yours.</p>
+    <div class="tab-scroll" style="display:flex;gap:16px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ ugc }}" as="u" hint-placeholder-count="4">
+        <div style="flex:0 0 170px">
+          <div style="aspect-ratio:9/16;background:#1C1B19;border-radius:8px;margin-bottom:10px"></div>
+          <div style="font-size:12.5px;font-weight:500">{{ u.handle }}</div>
+          <div style="font-size:12.5px;font-weight:700;text-transform:uppercase">{{ u.occasion }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- REVIEWS — 4-up Desktop -> 3-up Tablet -->
+  <section style="padding:56px 32px 0;text-align:center">
+    <div style="font-size:12.5px;color:#4A473F;margin-bottom:14px">Excellent 4.9 out of 5 <span style="color:#41573B">★★★★★</span> Verified reviews</div>
+    <h2 style="margin:0 0 32px;font-weight:700;font-size:clamp(28px,4vw,42px);letter-spacing:-0.01em">The reviews are in.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left">
+      <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+        <div style="background:#fff;border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:220px">
+          <p style="margin:0;font-size:14px;line-height:1.5">"{{ r.quote }}"</p>
+          <div style="margin-top:16px"><span style="color:#41573B;font-size:12.5px">★★★★★</span><div style="font-size:12.5px;font-weight:600;margin-top:8px">{{ r.name }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section style="padding:56px 32px;text-align:center">
+    <h2 style="margin:0 0 12px;font-weight:700;font-size:clamp(28px,4vw,42px);letter-spacing:-0.01em">First to see every drop.</h2>
+    <div style="display:flex;gap:10px;max-width:400px;margin:0 auto">
+      <div style="flex:1"><dc-import name="Input" placeholder="Email address" hint-size="100%,50"></dc-import></div>
+      <dc-import name="Button" label="Subscribe" variant="primary" hint-size="110,50"></dc-import>
+    </div>
+  </section>
+
+  <!-- FOOTER — same flex-wrap columns as Desktop, wraps naturally at Tablet width -->
+  <footer style="border-top:1px solid #E6E2D8;padding:40px 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between">
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Company</div><div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:#4A473F">Returns &amp; exchanges<br/>Privacy policy<br/>Shipping policy<br/>Terms &amp; conditions</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">My account<br/>Track your order<br/>Make a return</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Contact<br/>FAQs<br/>Live chat</div></div>
+    </div>
+    <div style="margin-top:28px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+  </footer>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> nav stays the Desktop inline pattern (fluid clamp() gaps, no hamburger); hero/quick-start/newsletter keep the same fluid grid and clamp() typography they already had; Categories and Reviews drop from 4-up to 3-up per the Phase 3B.1 rule; Bestsellers and Made-by-you keep their existing horizontal scroll. Side padding is 32px per §13. No content removed, no copy changed.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      steps: [
+        { num: '01', title: 'Pick your piece', desc: 'Choose the style, colour and fit you want.' },
+        { num: '02', title: 'Make it yours', desc: 'Upload something, add text or create from an idea.' },
+        { num: '03', title: 'We take it from here', desc: 'We produce, check and ship your piece.' }
+      ],
+      products: [
+        { name: 'Heavyweight Tee', price: '€24' },
+        { name: 'Oversized Hoodie', price: '€54' },
+        { name: 'Zip Hoodie', price: '€62' },
+        { name: 'Crewneck Sweat', price: '€44' }
+      ],
+      categories: ['Hoodies & Sweats', 'Tees', 'Athleisure'],
+      ugc: [
+        { handle: '@joana.tees', occasion: 'Birthday Crew' },
+        { handle: '@ruimadrid', occasion: 'Boys Trip' },
+        { handle: '@catmomclub', occasion: 'Pet Friends' },
+        { handle: '@teamnorth', occasion: 'Team Kit' }
+      ],
+      reviews: [
+        { quote: 'The full-service print platform that makes custom apparel easy.', name: '2,400+ orders shipped' },
+        { quote: 'Fast, easy and the print quality is genuinely great.', name: 'Marta S.' },
+        { quote: 'Ordered for the whole team — zero hassle.', name: 'Diogo P.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

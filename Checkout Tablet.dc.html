@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#4A4FE4;text-decoration:none}a:hover{text-decoration:underline}</style></helmet>
+<div data-screen-label="Checkout — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.6). Built from Checkout.dc.html (Desktop) + Checkout Mobile.dc.html — neither file touched.</div>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:100vh">
+
+    <!-- LEFT — form, same structure/grouping as Desktop -->
+    <div style="padding:32px;box-sizing:border-box">
+      <a href="Homepage.dc.html" style="font-size:16px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;display:block;margin-bottom:28px">Web2Print</a>
+
+      <div style="text-align:center;font-size:12.5px;color:#4A473F;margin-bottom:12px">Express checkout</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px">
+        <button style="background:#4A4FE4;color:#fff;border:none;border-radius:8px;padding:12px 0;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer">shop</button>
+        <button style="background:#FFC439;color:#003087;border:none;border-radius:8px;padding:12px 0;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;font-style:italic">PayPal</button>
+        <button style="background:#000;color:#fff;border:none;border-radius:8px;padding:12px 0;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer"> Pay</button>
+        <button style="background:#fff;color:#1C1B19;border:1px solid #DDD8CC;border-radius:8px;padding:12px 0;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer">G Pay</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><span style="flex:1;height:1px;background:#EEEBE3"></span><span style="font-size:11px;color:#B8B2A5">OR</span><span style="flex:1;height:1px;background:#EEEBE3"></span></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
+        <h2 style="margin:0;font-size:15px;font-weight:600">Contact</h2>
+        <dc-import name="Link" label="Sign in" tone="ink" hint-size="50,16"></dc-import>
+      </div>
+      <div style="margin-bottom:8px"><dc-import name="Input" placeholder="Email" hint-size="100%,48"></dc-import></div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+        <dc-import name="Checkbox" checked="{{ false }}" hint-size="18,18"></dc-import>
+        <span style="font-size:12.5px;color:#4A473F">Email me with news and offers</span>
+      </div>
+
+      <h2 style="margin:0 0 12px;font-size:15px;font-weight:600">Delivery</h2>
+      <div style="margin-bottom:8px"><dc-import name="Select" options="{{ countries }}" hint-size="100%,48"></dc-import></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+        <dc-import name="Input" placeholder="First name" hint-size="100%,48"></dc-import>
+        <dc-import name="Input" placeholder="Last name" hint-size="100%,48"></dc-import>
+      </div>
+      <div style="margin-bottom:8px"><dc-import name="Input" placeholder="Address" hint-size="100%,48"></dc-import></div>
+      <div style="margin-bottom:8px"><dc-import name="Input" placeholder="Apartment, suite, etc. (optional)" hint-size="100%,48"></dc-import></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <dc-import name="Input" placeholder="Postal code" hint-size="100%,48"></dc-import>
+        <dc-import name="Input" placeholder="City" hint-size="100%,48"></dc-import>
+        <dc-import name="Select" options="{{ cities }}" hint-size="100%,48"></dc-import>
+      </div>
+      <div style="margin-bottom:22px"><dc-import name="Input" placeholder="Phone" hint-size="100%,48"></dc-import></div>
+
+      <h2 style="margin:0 0 12px;font-size:15px;font-weight:600">Shipping method</h2>
+      <div style="background:#F5F3ED;border-radius:8px;padding:14px;font-size:12.5px;color:#8B867B;margin-bottom:22px">Enter your shipping address to view available shipping methods.</div>
+
+      <h2 style="margin:0 0 6px;font-size:15px;font-weight:600">Payment</h2>
+      <div style="font-size:11.5px;color:#8B867B;margin-bottom:12px">All transactions are secure and encrypted.</div>
+      <div style="border:1.5px solid #4A4FE4;border-radius:10px 10px 0 0;background:#F4F4FE;padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;font-weight:500">Credit card</span><span style="font-size:10.5px;color:#8B867B">VISA · Mastercard · +2</span>
+      </div>
+      <div style="border:1.5px solid #4A4FE4;border-top:none;padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+        <dc-import name="Input" placeholder="Card number" hint-size="100%,46"></dc-import>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <dc-import name="Input" placeholder="MM / YY" hint-size="100%,46"></dc-import>
+          <dc-import name="Input" placeholder="Security code" hint-size="100%,46"></dc-import>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border:1.5px solid #E6E2D8;border-top:none"><span style="font-size:13px;font-weight:500">Apple Pay</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border:1.5px solid #E6E2D8;border-top:none;border-radius:0 0 10px 10px;margin-bottom:18px"><span style="font-size:13px;font-weight:500">PayPal</span></div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+        <dc-import name="Checkbox" checked="{{ false }}" hint-size="18,18"></dc-import>
+        <span style="font-size:12.5px;color:#4A473F">Save my information for a faster checkout</span>
+      </div>
+
+      <dc-import name="Button" label="Pay now" variant="brand" fullWidth="{{ true }}" hint-size="100%,52"></dc-import>
+    </div>
+
+    <!-- RIGHT — summary, same structure as Desktop -->
+    <aside style="background:#F5F3ED;padding:32px;box-sizing:border-box">
+      <div style="display:flex;gap:14px;margin-bottom:20px">
+        <div style="position:relative;width:56px;height:56px;border-radius:8px;background:#EFEBE2;flex-shrink:0">
+          <span style="position:absolute;top:-6px;right:-6px;background:#1C1B19;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">1</span>
+        </div>
+        <div style="flex:1;display:flex;justify-content:space-between;align-items:baseline">
+          <div><div style="font-size:13.5px;font-weight:600">Regular Hoodie 300</div><div style="font-size:12px;color:#8B867B;margin-top:2px">Navy / M</div></div>
+          <span style="font-weight:700;font-size:14px">€33,95</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:22px">
+        <div style="flex:1"><dc-import name="Input" placeholder="Discount code or gift card" hint-size="100%,46"></dc-import></div>
+        <dc-import name="Button" label="Apply" variant="secondary" hint-size="80,46"></dc-import>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span>€33,95</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Shipping</span><span style="color:#8B867B;font-size:12px">Enter shipping address</span></div>
+      </div>
+      <div style="border-top:1px solid #E6E2D8;margin-top:16px;padding-top:14px;display:flex;justify-content:space-between;align-items:baseline">
+        <span style="font-size:14px;font-weight:600">Total</span>
+        <span style="font-weight:700;font-size:20px">€33,95</span>
+      </div>
+      <div style="font-size:11px;color:#8B867B;margin-top:4px">Including €6,35 in taxes</div>
+    </aside>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> the Desktop two-column layout (form + summary) is preserved — at 768–1023px each column still fits its field groups (name/last-name pair, postal/city/city-select triple) using <code>minmax(0,1fr)</code>, so there was no need to collapse to Mobile's single-column + accordion summary. Side padding reduced to 32px per §13. Payment method rows, validation styling and the "Pay now" CTA reuse the exact same components/states as Desktop — Payment refused and processing/loading states are the ones already approved in Fase 1/2, not redesigned here.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return { countries: ['Portugal', 'Spain', 'France'], cities: ['Lisbon', 'Porto', 'Coimbra'] };
+  }
+}
+
+</script>
+</body>
+</html>

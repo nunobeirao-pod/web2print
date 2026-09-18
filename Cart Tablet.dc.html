@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}</style></helmet>
+<div data-screen-label="Cart — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.5). Built from the cart drawer in Homepage.dc.html/Shop All.dc.html (Desktop) + Cart Mobile.dc.html — none touched.</div>
+
+  <!-- NAV — Desktop inline pattern -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span>Shop</span><span>Inspiration</span><span>For Teams</span><span>Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" active="{{ true }}" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <div style="padding:32px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+    <div style="flex:1;min-width:240px;color:#8B867B;font-size:13px;line-height:1.6">
+      Page content sits behind the cart drawer, same as Desktop. At 768–1023px the drawer already fits comfortably — no structural change was needed from the Desktop drawer (<code>width:460px;max-width:100vw</code>).
+    </div>
+
+    <!-- CART DRAWER PANEL — same proportions as Desktop, already safe at Tablet width -->
+    <div style="width:100%;max-width:420px;background:#fff;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 22px 0">
+        <span style="font-size:18px;font-weight:600">1 item in your cart</span>
+        <dc-import name="IconButton" icon="close" title="Close" hint-size="36,36"></dc-import>
+      </div>
+      <div style="padding:18px 22px 22px">
+        <div style="background:#F3F0E9;border-radius:12px;padding:14px 16px;text-align:center;font-size:13px;margin-bottom:16px">
+          Add 41,00€ more for free shipping
+          <div style="height:5px;background:rgba(28,27,25,0.15);border-radius:999px;margin-top:10px;overflow:hidden"><div style="height:100%;width:49%;background:#1C1B19"></div></div>
+        </div>
+        <div style="background:#F3F0E9;border-radius:14px;padding:16px;display:flex;gap:14px;margin-bottom:16px">
+          <div style="width:66px;height:66px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"></div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:600">Regular Hoodie 300</div>
+            <div style="font-size:12.5px;color:#4A473F;margin-top:2px">39,00€ · Navy / M</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+              <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.7);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600">− 1 +</div>
+              <div style="display:flex;gap:12px">
+                <dc-import name="Link" label="Edit Design" tone="brand" hint-size="70,16"></dc-import>
+                <span style="font-size:12px;font-weight:500;color:#8B867B;cursor:pointer">Remove</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:#F3F0E9;border-radius:14px;padding:16px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-size:14px;font-weight:600">You may also like</span></div>
+          <div style="display:flex;gap:10px;overflow-x:auto">
+            <sc-for list="{{ upsell }}" as="u" hint-placeholder-count="3">
+              <div style="flex:0 0 88px">
+                <div style="width:88px;height:88px;background:#EFEBE2;border-radius:8px;margin-bottom:6px"></div>
+                <div style="font-size:10.5px;font-weight:500">{{ u.name }}</div>
+                <div style="font-size:10.5px;color:#4A473F">{{ u.price }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:11.5px;color:#4A473F;margin-bottom:16px">Worldwide Shipping · Secure Payments · Easy Returns</div>
+        <div style="background:#F3F0E9;border-radius:14px;padding:20px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+            <div><div style="font-size:16px;font-weight:700">Subtotal</div><div style="font-size:12px;color:#8B867B">1 item</div></div>
+            <span style="font-weight:700;font-size:20px">39,00€</span>
+          </div>
+          <dc-import name="Button" label="Checkout" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+          <div style="text-align:center;font-size:11.5px;color:#8B867B;margin-top:10px">Shipping &amp; taxes calculated at checkout</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:0 32px 32px;display:flex;gap:24px;flex-wrap:wrap">
+    <div style="flex:1;min-width:260px">
+      <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px">Loading / Skeleton — reused from Fase 1</div>
+      <div style="max-width:420px;background:#fff;border:1px solid #E6E2D8;border-radius:16px;padding:20px">
+        <div style="display:flex;gap:14px;margin-bottom:14px">
+          <div style="width:66px;height:66px;border-radius:8px;background:#F1EEE8;flex-shrink:0"></div>
+          <div style="flex:1"><div style="height:12px;width:60%;background:#F1EEE8;border-radius:4px;margin-bottom:8px"></div><div style="height:10px;width:40%;background:#F1EEE8;border-radius:4px"></div></div>
+        </div>
+        <div style="height:44px;background:#F1EEE8;border-radius:999px"></div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:260px">
+      <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px">Empty cart — reused from Phase 2/3A</div>
+      <div style="max-width:420px;border:1px dashed #DDD8CC;border-radius:14px;padding:28px;text-align:center">
+        <div style="font-size:14px;font-weight:600;margin-bottom:6px">Your cart is empty</div>
+        <div style="font-size:12.5px;color:#8B867B;margin-bottom:16px">Items you add will show up here.</div>
+        <dc-import name="Button" label="Keep shopping" variant="primary" hint-size="140,44"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;padding:0 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> the cart drawer already uses <code>width:460px;max-width:100vw</code> on Desktop — no structural change was required for 768–1023px, it already renders safely. Presented here at max-width:420px so it sits comfortably in this reference page's 32px-gutter layout, but the ratio/proportions match the Desktop drawer. Cart item, upsell strip, subtotal and Checkout CTA are the same content and components as Desktop; loading and empty states reuse the Fase 1/Cart Mobile patterns without modification.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return { upsell: [{ name: 'Classic Tee 180', price: '22,00€' }, { name: 'Structured Cap', price: '19,00€' }, { name: 'Tote Bag', price: '14,00€' }] };
+  }
+}
+
+</script>
+</body>
+</html>

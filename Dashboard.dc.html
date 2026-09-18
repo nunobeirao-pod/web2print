@@ -156,7 +156,7 @@ input,select{font-family:inherit}
                 </tr></thead>
                 <tbody>
                   <sc-for list="{{ od.items }}" as="it" hint-placeholder-count="2">
-                    <tr style="border-top:1px solid #F1EEE7">
+                    <tr style="border-top:1px solid #EEEBE3">
                       <td style="padding:14px 16px"><div style="display:flex;gap:10px;align-items:center"><div style="width:44px;height:52px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2;cursor:pointer" onClick="{{ it.openLightbox }}"><image-slot id="{{ it.slot }}" src="{{ it.img }}" credit="{{ it.credit }}" credit-href="{{ it.creditHref }}" shape="rect" placeholder="{{ it.ph }}"></image-slot></div><span style="font-weight:500">{{ it.product }}</span></div></td>
                       <td style="padding:14px 16px;color:#4A473F">{{ it.desc }}</td>
                       <td style="padding:14px 16px;color:#4A473F">{{ it.size }}</td>
@@ -423,7 +423,7 @@ class Component extends DCLogic {
     ],
     savedDesigns: [
       { id: 1, name: 'Birthday Mum 2027', product: 'Regular Hoodie 300', edited: '2 days ago', status: 'Ready', bg: '#EFEBE2', garment: '#D9C9AE', print: 'MUM', printInk: '#1C1B19', editing: false, nameInput: '' },
-      { id: 2, name: 'Weekend Madrid', product: 'Oversized Hoodie 330', edited: '5h ago', status: 'Draft', bg: '#F1EEE7', garment: '#F3C4D0', print: 'MADRID', printInk: '#1C1B19', editing: false, nameInput: '' },
+      { id: 2, name: 'Weekend Madrid', product: 'Oversized Hoodie 330', edited: '5h ago', status: 'Draft', bg: '#EEEBE3', garment: '#F3C4D0', print: 'MADRID', printInk: '#1C1B19', editing: false, nameInput: '' },
       { id: 3, name: "João's Bachelor Party", product: 'Heavyweight Tee', edited: 'Last week', status: 'Ordered', bg: '#EFEBE2', garment: '#26241F', print: "JOÃO'S\nPARTY", printInk: '#B0A28E', editing: false, nameInput: '' },
     ],
     reorderNoteFor: null, trashedDesigns: [], pwModalId: null, pwInput: '', pwError: false,
@@ -464,11 +464,11 @@ class Component extends DCLogic {
       stage: 4, eta: 'Delivered Feb 18', carrier: 'CTT Expresso', trackUrl: 'https://www.ctt.pt/particulares/seguir-encomenda' },
   ];
   static STATUS_STYLE = {
-    'Order Confirmed': { bg: '#F1EEE7', ink: '#4A473F' }, 'In Production': { bg: '#FBF0DC', ink: '#8A5F1E' },
+    'Order Confirmed': { bg: '#EEEBE3', ink: '#4A473F' }, 'In Production': { bg: '#FBF0DC', ink: '#8A5F1E' },
     'Quality Check': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Shipped': { bg: '#F4F4FE', ink: '#4A4FE4' },
     'Out for Delivery': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Delivered': { bg: '#EDF2EA', ink: '#41573B' },
   };
-  static DESIGN_STATUS_STYLE = { 'Draft': { bg: '#F1EEE7', ink: '#4A473F' }, 'Ready': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Ordered': { bg: '#EDF2EA', ink: '#41573B' } };
+  static DESIGN_STATUS_STYLE = { 'Draft': { bg: '#EEEBE3', ink: '#4A473F' }, 'Ready': { bg: '#F4F4FE', ink: '#4A4FE4' }, 'Ordered': { bg: '#EDF2EA', ink: '#41573B' } };
   componentDidMount(){
     try {
       const fromStudio = JSON.parse(window.localStorage.getItem('w2p_saved_designs') || '[]');
@@ -508,7 +508,7 @@ class Component extends DCLogic {
       navItems: navDefs.map(n => ({
         ...n,
         bg: section === n.label ? '#1C1B19' : 'transparent', ink: section === n.label ? '#FBFAF8' : '#4A473F',
-        hoverBg: section === n.label ? '#1C1B19' : '#F1EEE7', weight: section === n.label ? 600 : 400,
+        hoverBg: section === n.label ? '#1C1B19' : '#EEEBE3', weight: section === n.label ? 600 : 400,
         pick: () => this.setState({ section: n.label, viewOrderId: null }),
       })),
       isOrdersList: section === 'Orders' && !viewOrder, isOrderDetails: section === 'Orders' && !!viewOrder,

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+.tab-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="For Teams — Tablet" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Tablet reference — 768–1023px (Phase 3B.9). Built from For Teams.dc.html (Desktop) + For Teams Mobile.dc.html — neither touched.</div>
+
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="padding:0 32px;height:64px;display:flex;align-items:center;gap:20px">
+      <a href="Homepage.dc.html" style="font-size:17px;font-weight:600;letter-spacing:-0.01em;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(8px,1.4vw,16px);font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden">
+        <a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span>Shop</span><span>Inspiration</span><span style="border-bottom:2px solid #1C1B19">For Teams</span><span>Who we are</span>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:flex-end;align-items:center;margin-left:auto;flex-shrink:0">
+        <dc-import name="IconButton" icon="search" title="Search" hint-size="32,32"></dc-import>
+        <dc-import name="IconButton" icon="cart" title="Cart" hint-size="32,32"></dc-import>
+      </div>
+    </div>
+  </nav>
+
+  <section style="padding:48px 32px 0;display:grid;grid-template-columns:1.1fr 0.9fr;gap:32px;align-items:center">
+    <div>
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">For teams &amp; business</div>
+      <h1 style="margin:0 0 16px;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.1;letter-spacing:-0.01em">Custom merch for your whole team.</h1>
+      <p style="margin:0 0 22px;font-size:14px;line-height:1.6;color:#4A473F">Orders of 50 pieces or more get volume pricing, a dedicated quote, and the option to mix different products in one run — tees, hoodies and caps together.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <dc-import name="Button" label="Start creating" variant="primary" hint-size="130,44"></dc-import>
+        <dc-import name="Button" label="Need inspiration?" variant="secondary" hint-size="150,44"></dc-import>
+      </div>
+    </div>
+    <div style="aspect-ratio:4/3;background:#EFEBE2;border-radius:4px"></div>
+  </section>
+
+  <section style="padding:48px 32px 0">
+    <h2 style="margin:0 0 6px;font-weight:700;font-size:24px;letter-spacing:-0.01em">Volume pricing</h2>
+    <p style="margin:0 0 16px;font-size:13px;color:#8B867B">Per-piece price drops automatically as quantity grows.</p>
+    <div class="tab-scroll" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">
+      <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="5">
+        <div style="flex:0 0 120px;border:1px solid {{ t.border }};background:{{ t.bg }};border-radius:12px;padding:18px 10px;text-align:center">
+          <div style="font-size:12px;font-weight:600;color:#8B867B;margin-bottom:8px">{{ t.qty }}</div>
+          <div style="font-size:22px;font-weight:700">-{{ t.discount }}%</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:56px 32px 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px 20px">
+      <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+        <div>
+          <h3 style="margin:0 0 8px;font-weight:700;font-size:16px">{{ f.title }}</h3>
+          <p style="margin:0;font-size:13px;line-height:1.55;color:#4A473F">{{ f.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:64px 32px 0">
+    <div style="border:1px solid #E6E2D8;border-radius:16px;padding:28px">
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px">Check your quote</div>
+      <p style="margin:0 0 18px;font-size:13px;color:#8B867B">Add all the pieces you want. We'll get back to you with a final price and lead time.</p>
+      <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px;margin-bottom:14px">
+        <div style="display:flex;gap:12px;margin-bottom:12px">
+          <div style="width:48px;height:48px;border-radius:8px;background:#EFEBE2;flex-shrink:0"></div>
+          <div style="flex:1;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px">Heavyweight Tee ▾</div>
+          <div style="flex:1;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px">Front ▾</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="border:1px solid #DDD8CC;border-radius:8px;padding:10px 14px;font-size:13.5px;width:80px;text-align:center">50</div>
+          <div style="font-size:13.5px;color:#4A473F">€24.00</div>
+          <div style="font-size:13.5px;font-weight:600">€1,200.00</div>
+        </div>
+      </div>
+      <dc-import name="Link" label="+ Add another item" tone="brand" hint-size="140,18"></dc-import>
+      <div style="border-top:1px solid #EEEBE3;margin-top:16px;padding-top:14px;display:flex;flex-direction:column;gap:8px;max-width:280px;margin-left:auto">
+        <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>Subtotal</span><span>€1,200.00</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>VAT</span><span>€276.00</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid #EEEBE3;padding-top:8px"><span>TOTAL</span><span>€1,476.00</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:64px 32px 96px;text-align:center">
+    <h2 style="margin:0 0 20px;font-weight:700;font-size:clamp(26px,3.5vw,36px);letter-spacing:-0.01em">Ready? Let's do this together.</h2>
+    <dc-import name="Button" label="Start creating" variant="primary" hint-size="150,44"></dc-import>
+  </section>
+
+  <footer style="border-top:1px solid #E6E2D8;padding:40px 32px">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between">
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Company</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Returns &amp; exchanges<br/>Privacy policy<br/>Shipping policy<br/>Terms &amp; conditions</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">My account<br/>Track your order<br/>Make a return</div></div>
+      <div><div style="font-size:14px;font-weight:600;margin-bottom:14px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.7">Contact<br/>FAQs<br/>Live chat</div></div>
+    </div>
+    <div style="margin-top:28px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+  </footer>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 32px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Tablet adaptation:</strong> Hero keeps Desktop's 2-col split (text+image), already fluid. Volume pricing keeps the intentional horizontal scroll (5 tiers don't fit comfortably as fixed columns at 768px). Features go from Desktop's 4-up to 2-up (Mobile was 1-up) — an intermediate composition. The quote form's wide multi-column row (image/product/area/qty/price/subtotal) doesn't fit at 768px without cramming, so it uses the same compact stacked-card composition as Mobile, just at the wider Tablet container — this is the one place Tablet leans on the Mobile pattern, because the Desktop row genuinely doesn't fit.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      tiers: [
+        { qty: '50+', discount: 10, border: '#DDD8CC', bg: '#fff' },
+        { qty: '100+', discount: 18, border: '#DDD8CC', bg: '#fff' },
+        { qty: '250+', discount: 25, border: '#DDD8CC', bg: '#fff' },
+        { qty: '500+', discount: 32, border: '#DDD8CC', bg: '#fff' },
+        { qty: '1000+', discount: 38, border: '#4A4FE4', bg: '#F4F4FE' }
+      ],
+      features: [
+        { title: 'Mixed product runs', desc: 'Combine tees, hoodies and caps in a single order and quote.' },
+        { title: 'Roster personalisation', desc: 'Individual names, numbers or sizes across the same design.' },
+        { title: 'Dedicated account contact', desc: 'One person handling your order from quote to delivery.' },
+        { title: 'Guaranteed delivery dates', desc: 'Fixed production slots for events and launch dates.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
