@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./image-slot.js"></script><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.ft-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="For Teams — Mobile" style="display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0 0 16px">390px reference, verified down to 320px. Same content/identity as For Teams.dc.html — desktop file untouched.</p>
+  <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff">
+
+    <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8">
+      <dc-import name="IconButton" icon="grid" title="Menu" hint-size="36,36"></dc-import>
+      <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Web2Print</div>
+      <dc-import name="IconButton" icon="cart" title="Cart" hint-size="36,36"></dc-import>
+    </div>
+
+    <div style="padding:32px 20px 0">
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:14px">For teams &amp; business</div>
+      <h1 style="margin:0 0 14px;font-size:28px;font-weight:700;line-height:1.15;letter-spacing:-0.01em">Custom merch for your whole team.</h1>
+      <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#4A473F">Orders of 50 pieces or more get volume pricing, a dedicated quote, and the option to mix different products in one run — tees, hoodies and caps together.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+        <dc-import name="Button" label="Start creating" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+        <dc-import name="Button" label="Need inspiration?" variant="secondary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+      </div>
+      <div style="aspect-ratio:4/3;background:#EFEBE2;border-radius:4px"></div>
+    </div>
+
+    <div style="padding:32px 20px 0">
+      <h2 style="margin:0 0 6px;font-size:20px;font-weight:700;letter-spacing:-0.01em">Volume pricing</h2>
+      <p style="margin:0 0 16px;font-size:12.5px;color:#8B867B">Per-piece price drops automatically as quantity grows.</p>
+      <div class="ft-scroll" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px">
+        <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="5">
+          <div style="flex:0 0 92px;border:1px solid {{ t.border }};background:{{ t.bg }};border-radius:12px;padding:16px 8px;text-align:center">
+            <div style="font-size:11.5px;font-weight:600;color:#8B867B;margin-bottom:6px">{{ t.qty }}</div>
+            <div style="font-size:20px;font-weight:700">-{{ t.discount }}%</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding:32px 20px 0;display:flex;flex-direction:column;gap:20px">
+      <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+        <div>
+          <h3 style="margin:0 0 6px;font-size:15px;font-weight:700">{{ f.title }}</h3>
+          <p style="margin:0;font-size:13px;line-height:1.55;color:#4A473F">{{ f.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="padding:32px 20px 0">
+      <div style="border:1px solid #E6E2D8;border-radius:16px;padding:20px">
+        <div style="font-size:17px;font-weight:700;margin-bottom:4px">Check your quote</div>
+        <p style="margin:0 0 16px;font-size:12.5px;color:#8B867B">Add all the pieces you want. We'll get back to you with a final price and lead time.</p>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:14px;margin-bottom:12px">
+          <div style="display:flex;gap:10px;margin-bottom:10px">
+            <div style="width:44px;height:44px;border-radius:8px;background:#EFEBE2;flex-shrink:0"></div>
+            <div style="flex:1;border:1px solid #DDD8CC;border-radius:8px;padding:10px 12px;font-size:13px">Heavyweight Tee ▾</div>
+          </div>
+          <div style="border:1px solid #DDD8CC;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:10px">Front ▾</div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="border:1px solid #DDD8CC;border-radius:8px;padding:8px 12px;font-size:13px;width:70px;text-align:center">50</div>
+            <div style="font-size:13px;color:#4A473F">€24.00</div>
+            <div style="font-size:13px;font-weight:600">€1,200.00</div>
+          </div>
+        </div>
+        <dc-import name="Link" label="+ Add another item" tone="brand" hint-size="130,18"></dc-import>
+        <div style="border-top:1px solid #EEEBE3;margin-top:16px;padding-top:12px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#4A473F"><span>Subtotal</span><span>€1,200.00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:#4A473F"><span>VAT</span><span>€276.00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700;border-top:1px solid #EEEBE3;padding-top:6px"><span>TOTAL</span><span>€1,476.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:40px 20px;text-align:center">
+      <h2 style="margin:0 0 18px;font-size:24px;font-weight:700;letter-spacing:-0.01em">Ready? Let's do this together.</h2>
+      <dc-import name="Button" label="Start creating" variant="primary" hint-size="150,44"></dc-import>
+    </div>
+
+    <div style="padding:32px 20px;border-top:1px solid #E6E2D8">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:8px">Company</div><div style="font-size:12.5px;color:#4A473F;line-height:1.6">Returns &amp; exchanges · Privacy policy · Shipping policy · Terms &amp; conditions</div></div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:8px">Client Services</div><div style="font-size:12.5px;color:#4A473F;line-height:1.6">My account · Track your order · Make a return</div></div>
+        <div><div style="font-size:13px;font-weight:600;margin-bottom:8px">Contact us</div><div style="font-size:12.5px;color:#4A473F;line-height:1.6">Contact · FAQs · Live chat</div></div>
+      </div>
+      <div style="margin-top:24px;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+    </div>
+  </div>
+  <div style="max-width:390px;font-size:12px;color:#4A473F;line-height:1.7;margin-top:16px">
+    <strong>Mobile adaptation:</strong> hero becomes a single column (text, then image); 5-tier pricing and 4-feature grids become a scroll strip / single-column stack; the quote form's per-line grid collapses into a stacked card layout, keeping the same fields, totals and "Add another item" action.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      tiers: [
+        { qty: '50+', discount: 10, border: '#DDD8CC', bg: '#fff' },
+        { qty: '100+', discount: 18, border: '#DDD8CC', bg: '#fff' },
+        { qty: '250+', discount: 25, border: '#DDD8CC', bg: '#fff' },
+        { qty: '500+', discount: 32, border: '#DDD8CC', bg: '#fff' },
+        { qty: '1000+', discount: 38, border: '#4A4FE4', bg: '#F4F4FE' }
+      ],
+      features: [
+        { title: 'Mixed product runs', desc: 'Combine tees, hoodies and caps in a single order and quote.' },
+        { title: 'Roster personalisation', desc: 'Individual names, numbers or sizes across the same design.' },
+        { title: 'Dedicated account contact', desc: 'One person handling your order from quote to delivery.' },
+        { title: 'Guaranteed delivery dates', desc: 'Fixed production slots for events and launch dates.' }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
