@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}</style></helmet>
+<div data-screen-label="Mobile Navigation" style="padding:32px 16px 80px;display:flex;flex-direction:column;align-items:center;gap:32px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0">Reference frame: 390px, verified down to 320px. New pattern for Phase 3A — not wired into the live desktop nav files.</p>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Closed</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:12px;overflow:hidden">
+      <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8;background:#fff">
+        <dc-import name="IconButton" icon="grid" title="Menu" hint-size="36,36"></dc-import>
+        <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Web2Print</div>
+        <div style="display:flex;gap:4px">
+          <dc-import name="IconButton" icon="search" title="Search" hint-size="36,36"></dc-import>
+          <dc-import name="IconButton" icon="cart" title="Cart" hint-size="36,36"></dc-import>
+        </div>
+      </div>
+      <div style="height:80px;background:#F1EEE8"></div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Open — full-screen overlay</div>
+    <div style="width:390px;height:560px;border:1px solid #E6E2D8;border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column">
+      <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8;flex-shrink:0">
+        <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Menu</div>
+        <dc-import name="IconButton" icon="close" title="Close menu" hint-size="36,36"></dc-import>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:8px 16px">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600">Shop <span style="color:#8B867B">›</span></div>
+          <div style="padding:4px 4px 12px 16px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid #EEEBE3">
+            <span style="font-size:14px;color:#4A473F">Hoodies &amp; Sweats</span>
+            <span style="font-size:14px;color:#4A473F">Tees</span>
+            <span style="font-size:14px;color:#4A473F">Athleisure</span>
+            <span style="font-size:14px;color:#4A473F">Accessories</span>
+          </div>
+          <div style="padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:700;color:#4A4FE4">Start Creating</div>
+          <div style="padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600">Inspiration</div>
+          <div style="padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600">For Teams</div>
+          <div style="padding:16px 4px;font-size:16px;font-weight:600">Who We Are</div>
+        </div>
+        <div style="display:flex;gap:20px;padding:24px 4px 8px;border-top:1px solid #EEEBE3;margin-top:8px">
+          <dc-import name="IconButton" icon="account" title="Account" hint-size="36,36"></dc-import>
+          <dc-import name="IconButton" icon="wishlist" title="Wishlist" hint-size="36,36"></dc-import>
+          <dc-import name="IconButton" icon="language" title="Language" hint-size="36,36"></dc-import>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:390px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Behaviour:</strong><br/>
+    • Tap the menu icon (36×36px IconButton, §Component Specs) → menu slides/fades in full-screen, ink #1C1B19 on #FBFAF8, same tokens as desktop.<br/>
+    • Top-level items are 44px+ tall tap rows with a bottom hairline (#EEEBE3) — reuses the divider token from §1.<br/>
+    • "Shop" expands an accordion in place (no second nav pattern) — sub-links indent 16px, colour #4A473F per §1 Ink Muted.<br/>
+    • Close via the × IconButton, tapping the backdrop (when overlay is a drawer rather than full-screen), or selecting a link — all three dismiss the menu and restore body scroll.<br/>
+    • No new colours, radii or type sizes — H3 (16px/600) for top-level items, Body (14px/400) for sub-links, per §2.
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

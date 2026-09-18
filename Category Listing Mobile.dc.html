@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}</style></helmet>
+<div data-screen-label="Category Listing — Mobile" style="display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px;gap:32px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0">390px reference. Same product data/cards as Shop All.dc.html / Tees.dc.html etc. — desktop files untouched.</p>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Normal</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff">
+      <div style="height:56px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid #E6E2D8">
+        <dc-import name="IconButton" icon="back" title="Back" hint-size="36,36"></dc-import>
+        <div style="font-size:15px;font-weight:600">Hoodies &amp; Sweats</div>
+      </div>
+      <div style="padding:16px">
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <div style="flex:1;height:40px;border:1px solid #DDD8CC;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600">Filter</div>
+          <div style="flex:1;height:40px;border:1px solid #DDD8CC;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600">Sort</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+            <div>
+              <div style="aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:8px;position:relative">
+                <dc-import name="Badge" label="New" tone="info" hint-size="40,22"></dc-import>
+              </div>
+              <div style="font-size:12.5px;font-weight:600">{{ p.name }}</div>
+              <div style="font-size:12px;color:#4A473F">{{ p.price }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Filter drawer (bottom sheet)</div>
+    <div style="width:390px;height:460px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff;position:relative">
+      <div style="position:absolute;inset:0;background:rgba(20,20,18,0.18)"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -8px 24px rgba(28,27,25,0.08);padding:20px 16px;max-height:80%">
+        <div style="width:36px;height:4px;background:#DDD8CC;border-radius:999px;margin:0 auto 16px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-size:15px;font-weight:700">Filter</div>
+          <dc-import name="IconButton" icon="close" title="Close" hint-size="36,36"></dc-import>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+          <dc-import name="Checkbox" label="Hoodies" checked="{{ true }}" hint-size="140,20"></dc-import>
+          <dc-import name="Checkbox" label="Sweatshirts" checked="{{ false }}" hint-size="140,20"></dc-import>
+          <dc-import name="Checkbox" label="Zip-ups" checked="{{ false }}" hint-size="140,20"></dc-import>
+        </div>
+        <dc-import name="Button" label="Show 24 results" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Loading / Empty / Error — reused from Fase 1</div>
+    <div style="width:390px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <sc-for list="{{ twoItems }}" as="_" hint-placeholder-count="2">
+          <div><div style="aspect-ratio:1;border-radius:12px;background:#F1EEE8;margin-bottom:8px"></div><div style="height:12px;width:70%;background:#F1EEE8;border-radius:4px"></div></div>
+        </sc-for>
+      </div>
+      <div style="border:1px dashed #DDD8CC;border-radius:12px;padding:20px;text-align:center"><div style="font-size:12.5px;font-weight:600">No products in this category yet</div></div>
+      <div style="border-radius:12px;padding:12px;background:#FDECEA;font-size:11.5px;color:#C42B2B;font-weight:600;text-align:center">Couldn't load products. <span style="text-decoration:underline">Try again</span></div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return { products: [{ name: 'Regular Hoodie 300', price: 'From 39,00€' }, { name: 'Oversized Hoodie 330', price: 'From 45,00€' }, { name: 'Crop Hoodie 260', price: 'From 36,00€' }, { name: 'Zip Hoodie 320', price: 'From 49,00€' }], twoItems: [1, 2] };
+  }
+}
+
+</script>
+</body>
+</html>

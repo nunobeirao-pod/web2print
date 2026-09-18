@@ -7,10 +7,10 @@
 </head>
 <body>
 <x-dc>
-<button onClick="{{ onClick }}" title="{{ title }}" aria-label="{{ title }}" style="width:{{ size }}px;height:{{ size }}px;border-radius:8px;border:{{ border }};background:{{ bg }};color:{{ ink }};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" style-hover="background:{{ hoverBg }}">{{ svg }}</button>
+<button onClick="{{ onClick }}" disabled="{{ isDisabled }}" title="{{ title }}" aria-label="{{ title }}" style="width:{{ size }}px;height:{{ size }}px;border-radius:8px;border:{{ border }};background:{{ bg }};color:{{ ink }};display:flex;align-items:center;justify-content:center;cursor:{{ cursor }};flex-shrink:0" style-hover="background:{{ hoverBg }}">{{ svg }}</button>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:50,&quot;height&quot;:50},&quot;icon&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;cart&quot;,&quot;options&quot;:[&quot;search&quot;,&quot;account&quot;,&quot;wishlist&quot;,&quot;cart&quot;,&quot;close&quot;,&quot;back&quot;,&quot;undo&quot;,&quot;grid&quot;,&quot;share&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cart&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onClick&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:50,&quot;height&quot;:50},&quot;icon&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;cart&quot;,&quot;options&quot;:[&quot;search&quot;,&quot;account&quot;,&quot;wishlist&quot;,&quot;cart&quot;,&quot;close&quot;,&quot;back&quot;,&quot;undo&quot;,&quot;grid&quot;,&quot;share&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;disabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cart&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onClick&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
 class Component extends DCLogic {
   renderVals() {
     const h = React.createElement;
@@ -27,15 +27,18 @@ class Component extends DCLogic {
       share: s([h('circle', { key: 1, cx: 6, cy: 12, r: 2.4 }), h('circle', { key: 2, cx: 17, cy: 6, r: 2.4 }), h('circle', { key: 3, cx: 17, cy: 18, r: 2.4 }), h('path', { key: 4, d: 'M8.1 10.8L15 7M8.1 13.2L15 17' })])
     };
     const active = !!this.props.active;
+    const disabled = !!this.props.disabled;
     return {
       svg: icons[this.props.icon] || icons.search,
       title: this.props.title ?? '',
       size: this.props.size ?? 36,
-      bg: active ? '#1C1B19' : 'transparent',
-      ink: active ? '#FFFFFF' : '#1C1B19',
+      bg: disabled ? 'transparent' : (active ? '#1C1B19' : 'transparent'),
+      ink: disabled ? '#B8B2A5' : (active ? '#FFFFFF' : '#1C1B19'),
       border: 'none',
-      hoverBg: active ? '#1C1B19' : '#F3F0E9',
-      onClick: this.props.onClick || (() => {})
+      hoverBg: disabled ? 'transparent' : (active ? '#1C1B19' : '#F3F0E9'),
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      isDisabled: disabled,
+      onClick: disabled ? (() => {}) : (this.props.onClick || (() => {}))
     };
   }
 }

@@ -25,7 +25,10 @@ a:hover{text-decoration:underline}
     <div style="font-size:15px;font-weight:700;letter-spacing:-0.01em;margin-bottom:2px">Web2Print</div>
     <div style="font-size:11.5px;color:#8B867B;margin-bottom:24px">Design System · v1</div>
 
-    <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:0 0 8px 8px">Design Tokens</div>
+    <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:0 0 8px 8px">Developer Handoff</div>
+    <a href="#handoff" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19;font-weight:700" style-hover="background:#F3F0E9;text-decoration:none">Overview</a>
+
+    <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:20px 0 8px 8px">Design Tokens</div>
     <a href="#colors" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Colours</a>
     <a href="#typography" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Typography</a>
     <a href="#spacing" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Spacing</a>
@@ -40,6 +43,7 @@ a:hover{text-decoration:underline}
     <a href="#ecommerce" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">E-commerce</a>
     <a href="#feedback" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Feedback &amp; States</a>
     <a href="#icons" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Iconography</a>
+    <a href="#component-specs" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19;font-weight:700" style-hover="background:#F3F0E9;text-decoration:none">Component Specs ↗</a>
 
     <div style="font-size:10.5px;font-weight:700;letter-spacing:0.06em;color:#B8B2A5;text-transform:uppercase;margin:20px 0 8px 8px">Foundations</div>
     <a href="#responsive" style="display:block;padding:7px 8px;border-radius:6px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9;text-decoration:none">Responsive Behaviour</a>
@@ -53,6 +57,89 @@ a:hover{text-decoration:underline}
       <h1 style="margin:0 0 14px;font-size:40px;font-weight:700;letter-spacing:-0.01em">Web2Print UI Kit</h1>
       <p style="margin:0;font-size:15px;color:#4A473F;line-height:1.6;max-width:640px">The tokens and components that power the storefront and the design studio. Every value here is pulled from the live product — not invented — so this page and the site never drift apart. When a screen needs a new colour, spacing, or button style, add it here first, then reference it.</p>
     </div>
+
+<!-- ================= DEVELOPER HANDOFF ================= -->
+    <section id="handoff" style="margin-bottom:72px;background:#F3F0E9;border-radius:16px;padding:40px 44px">
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:0.08em;color:#4A4FE4;text-transform:uppercase;margin-bottom:10px">Developer Handoff</div>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px">Building this in Next.js + Medusa</h2>
+      <p style="font-size:14.5px;color:#1C1B19;line-height:1.65;margin:0 0 28px;max-width:760px"><strong>Every value on this page is the visual source of truth for the project.</strong> It was extracted directly from the live storefront and studio (not invented), and the 8 components below (Button, Link, Input, Select, Checkbox, Radio, Badge, IconButton) are the same components rendered on this page — not documentation-only mockups. When implementing in Next.js, port these tokens and component contracts 1:1; do not re-derive colours or spacing from screenshots.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px">
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Colours</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Warm off-white base (#FBFAF8), near-black ink (#1C1B19), one brand blue (#4A4FE4) used only for actions/links/live status. Full palette incl. hover/disabled/tint variants in <a href="#colors">§1</a>.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Typography</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Single family: Helvetica Neue → Helvetica → Arial → system sans. 11-step scale from 52px Display to 10px micro-copy. See <a href="#typography">§2</a>. User-authored canvas text in the Studio uses a separate ~14-font content palette — not a UI token.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Spacing</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">4px base scale: 4/8/12/16/24/32/48/64/80/96. Use these exclusively for margin/padding/gap — no arbitrary values. See <a href="#spacing">§3</a>.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Grid / Layout</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Content max-width 1440px, centred. Horizontal padding 48px desktop / 32px tablet / 20px mobile. The Studio is a fixed 56px-toolbar + fluid canvas layout, not a content-width grid.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Responsive breakpoints</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Desktop ≥1024px · Tablet 768–1023px · Mobile &lt;768px. Full behaviour per breakpoint in <a href="#responsive">§13</a>.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Components</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">8 base components shipped: Button, Link, Input, Select, Checkbox, Radio (colour swatch), Badge, IconButton. Full per-component contract in <a href="#component-specs">Component Specs</a> below.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">States</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Every interactive component documents default/hover/focus/active/disabled. E-commerce components additionally document loading, empty, error, out-of-stock and selected — see <a href="#ecommerce">§10</a>.</p>
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:6px">Iconography</div>
+          <p style="font-size:13px;color:#4A473F;line-height:1.6;margin:0">Line icons only, 1.7px stroke, round caps/joins, no fill. See <a href="#icons">§12</a>.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid #DDD8CC">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">New screens — Phase 2</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+          <div style="background:#fff;border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px"><a href="404.dc.html">404 — Page Not Found</a></div>
+            <p style="font-size:12px;color:#4A473F;margin:0 0 6px;line-height:1.5"><strong>Objective:</strong> tell the user the page doesn't exist and offer a way back. <strong>Components:</strong> Button, Link. <strong>States:</strong> single static state. <strong>Responsive:</strong> centred column, fluid font-size via clamp(), buttons wrap on narrow screens.</p>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px"><a href="Order Confirmation.dc.html">Order Confirmation</a></div>
+            <p style="font-size:12px;color:#4A473F;margin:0 0 6px;line-height:1.5"><strong>Objective:</strong> confirm a completed order. <strong>Structure:</strong> success icon, order ref, item list, subtotal/shipping/total, delivery address, payment method, next-steps note, actions. <strong>Components:</strong> Button, Link, image-slot. <strong>Note:</strong> address and payment method are placeholders — populated dynamically from the Medusa order object. <strong>Reuses:</strong> the same success pattern already live in Checkout.dc.html's <code>isSuccess</code> state (not altered) — this page is the fuller reference for the missing summary/address/payment fields; flagged for validation whether Checkout.dc.html should be updated to match. <strong>Responsive:</strong> single column, cards stack full-width below ~640px.</p>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px"><a href="Password Recovery.dc.html">Password Recovery</a></div>
+            <p style="font-size:12px;color:#4A473F;margin:0 0 6px;line-height:1.5"><strong>Objective:</strong> let a user request a password reset. <strong>States:</strong> Initial, Validation (empty/invalid — reuses Fase 1 Input error pattern verbatim), Success, Error. <strong>Components:</strong> Input, Button, Link. <strong>Note:</strong> visual flow only — the reset mechanism itself is a backend concern. <strong>Responsive:</strong> single 420px column, centred, full-width below that.</p>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px"><a href="Search Results.dc.html">Search Results</a></div>
+            <p style="font-size:12px;color:#4A473F;margin:0 0 6px;line-height:1.5"><strong>Objective:</strong> close the search flow: Search → Loading → Results → No results → Error. <strong>Structure:</strong> search input, term + count, filter chips, sort, product grid, pagination. <strong>Reuses verbatim:</strong> the Fase 1 Loading skeleton and No-results copy/markup (not altered), plus the Feedback error pattern. <strong>Components:</strong> Input, Link, product card, pagination pattern (§8). <strong>Responsive:</strong> grid reflows per §13; filters wrap under the heading on narrow screens.</p>
+          </div>
+          <div style="background:#fff;border-radius:12px;padding:16px 18px;grid-column:span 2">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px"><a href="Cookie Banner.dc.html">Cookie Banner</a></div>
+            <p style="font-size:12px;color:#4A473F;margin:0 0 6px;line-height:1.5"><strong>Objective:</strong> cookie consent, neutral placeholder copy pending legal text. <strong>States:</strong> Default banner (Accept all / Reject / Manage preferences), expanded Preferences panel (Necessary locked-on, Analytics, Marketing toggles). <strong>Components:</strong> Button, Link, the existing toggle visual from §7 Forms. <strong>Responsive:</strong> banner switches from a row to a stacked column below ~640px (message above, actions below, full-width buttons).</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid #DDD8CC">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">Mobile — Phase 3A <span style="color:#B8B2A5;font-weight:400">390px reference, verified to 320px</span></div>
+        <p style="font-size:12.5px;color:#4A473F;line-height:1.6;margin:0 0 10px">New mobile-reference files, built alongside — not instead of — the approved desktop files (none of which were altered): <a href="Homepage%20Mobile.dc.html">Homepage Mobile</a>, <a href="Category%20Listing%20Mobile.dc.html">Category Listing Mobile</a>, <a href="Product%20Page%20Mobile.dc.html">Product Page Mobile</a>, <a href="Cart%20Mobile.dc.html">Cart Mobile</a>, <a href="Checkout%20Mobile.dc.html">Checkout Mobile</a>, <a href="Mobile%20Navigation.dc.html">Mobile Navigation</a>. Full breakdown in §13 Responsive Behaviour → "Mobile detail — Phase 3A".</p>
+      </div>
+
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid #DDD8CC">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:8px">Usage rules</div>
+        <ul style="margin:0;padding-left:18px;font-size:13px;color:#4A473F;line-height:1.7">
+          <li>Never hardcode a colour, radius or spacing value that already exists as a token above — reference the token.</li>
+          <li>One Primary button per view/section; destructive actions use the Warning/Error colour, never Primary styling.</li>
+          <li>Do not introduce new colours, radii or shadow values without adding them here first.</li>
+          <li>Keep the current visual design as-is — this handoff documents the existing site, it does not propose a redesign.</li>
+        </ul>
+      </div>
+    </section>
 
     <!-- ================= COLORS ================= -->
     <section id="colors" style="margin-bottom:72px">
@@ -176,12 +263,20 @@ a:hover{text-decoration:underline}
         <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #E6E2D8">
           <div style="width:110px;font-size:13px;font-weight:700">Link</div>
           <dc-import name="Link" label="Edit design" tone="brand" hint-size="90,20"></dc-import>
+          <span style="font-size:11px;color:#41573B;font-weight:600">✓ Resolved — Phase 1.1: tab to this link for the focus ring</span>
         </div>
         <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #E6E2D8">
           <div style="width:110px;font-size:13px;font-weight:700">Icon</div>
           <dc-import name="IconButton" icon="cart" title="Cart" hint-size="36,36"></dc-import>
           <dc-import name="IconButton" icon="undo" title="Undo" hint-size="36,36"></dc-import>
           <dc-import name="IconButton" icon="share" title="Share" active="{{ true }}" hint-size="36,36"></dc-import>
+          <dc-import name="IconButton" icon="cart" title="Cart" disabled="{{ true }}" hint-size="36,36"></dc-import>
+          <span style="font-size:11px;color:#41573B;font-weight:600">✓ Resolved — Phase 1.1: Disabled</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid #E6E2D8">
+          <div style="width:110px;font-size:13px;font-weight:700">Loading <span style="display:block;font-size:10.5px;color:#8B867B;font-weight:400">new — Fase 1</span></div>
+          <dc-import name="Button" label="Pay Now" variant="primary" loading="{{ true }}" hint-size="160,44"></dc-import>
+          <dc-import name="Button" label="Save design" variant="brand" loading="{{ true }}" hint-size="160,44"></dc-import>
         </div>
       </div>
     </section>
@@ -197,9 +292,12 @@ a:hover{text-decoration:underline}
           <div style="font-size:13px;font-weight:700;margin-bottom:10px">Text input — live &lt;dc-import name="Input"&gt;</div>
           <div style="display:flex;gap:14px;flex-wrap:wrap">
             <div style="width:170px"><dc-import name="Input" placeholder="First name" hint-size="170,50"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Default</div></div>
-            <div style="width:170px"><dc-import name="Input" value="ana@" error="{{ true }}" hint-size="170,50"></dc-import><div style="font-size:11px;color:#C42B2B;margin-top:6px">Error — invalid email</div></div>
+            <div style="width:170px"><dc-import name="Input" value="ana@" error="{{ true }}" message="Enter a valid email address" hint-size="170,60"></dc-import><div style="font-size:11px;color:#C42B2B;margin-top:6px">Error — invalid email</div></div>
             <div style="width:170px"><dc-import name="Input" placeholder="First name" disabled="{{ true }}" hint-size="170,50"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Disabled</div></div>
+            <div style="width:170px"><dc-import name="Input" value="Ana Ferreira" hint-size="170,50"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Filled <span style="color:#B8B2A5">— new, Fase 1</span></div></div>
+            <div style="width:170px"><dc-import name="Input" value="ana@web2print.pt" success="{{ true }}" message="Looks good" hint-size="170,50"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Success <span style="color:#B8B2A5">— new, Fase 1</span></div></div>
           </div>
+          <p style="font-size:11.5px;color:#8B867B;margin:10px 0 0">Focus is a real interactive state — click any field above to see the 2px brand-blue outline. Error/Success messages sit directly under the field with an icon, so meaning never depends on colour alone.</p>
         </div>
 
         <div>
@@ -234,6 +332,7 @@ a:hover{text-decoration:underline}
             <div style="text-align:center"><dc-import name="Radio" color="#1F2A44" selected="{{ false }}" hint-size="32,32"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Swatch — unselected</div></div>
             <div style="text-align:center"><dc-import name="Radio" color="#1F2A44" selected="{{ true }}" hint-size="32,32"></dc-import><div style="font-size:11px;color:#8B867B;margin-top:6px">Swatch — selected</div></div>
           </div>
+          <p style="font-size:11px;color:#41573B;font-weight:600;margin:12px 0 0">✓ Resolved — Phase 1.1: visual size stays 32px (or whatever size prop is set); an invisible hit-area layer inside the button enlarges the tap target to 44×44px minimum without growing the swatch or the grid gap.</p>
         </div>
 
         <div>
@@ -288,6 +387,14 @@ a:hover{text-decoration:underline}
           <div style="font-size:12.5px;color:#8B867B;display:flex;gap:6px;align-items:center">Shop <span>›</span> Hoodies <span>›</span> <span style="color:#1C1B19;font-weight:600">Regular Hoodie 300</span></div>
         </div>
         <div style="border:1px solid #E6E2D8;border-radius:12px;padding:20px;background:#fff">
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px">Search — No results <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="text-align:center;padding:8px 0">
+            <div style="font-size:12.5px;color:#4A473F;margin-bottom:4px">No results for "<strong>hoddie</strong>"</div>
+            <div style="font-size:11.5px;color:#8B867B;margin-bottom:12px">Check the spelling or try a different term.</div>
+            <dc-import name="Link" label="Browse all products" tone="brand" hint-size="120,20"></dc-import>
+          </div>
+        </div>
+        <div style="border:1px solid #E6E2D8;border-radius:12px;padding:20px;background:#fff">
           <div style="font-size:13px;font-weight:700;margin-bottom:12px">Pagination</div>
           <div style="display:flex;gap:6px;align-items:center">
             <span style="width:30px;height:30px;border-radius:8px;background:#1C1B19;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600">1</span>
@@ -328,6 +435,23 @@ a:hover{text-decoration:underline}
           <div style="font-size:11.5px;color:#B8B2A5;line-height:1.5">On your first order, over €120.</div>
           <div style="font-size:10.5px;color:#8B867B;margin-top:12px">Promotional card</div>
         </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Product card — Loading / Skeleton <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+        <p style="font-size:11.5px;color:#8B867B;margin:0 0 14px">Same grid, dimensions, radius and spacing as the Product card above — content replaced with placeholders.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <sc-for list="{{ threeItems }}" as="_" hint-placeholder-count="3">
+            <div style="border-radius:12px;overflow:hidden;background:#fff">
+              <div style="height:140px;background:#F1EEE8"></div>
+              <div style="padding:12px 2px">
+                <div style="height:12px;width:75%;background:#F1EEE8;border-radius:4px;margin-bottom:8px"></div>
+                <div style="height:12px;width:40%;background:#F1EEE8;border-radius:4px"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:#8B867B">Mobile/tablet: same card, grid reflows per §13 Responsive Behaviour — no new breakpoint rules.</div>
       </div>
     </section>
 
@@ -374,6 +498,62 @@ a:hover{text-decoration:underline}
                 <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.7);border-radius:999px;padding:4px 10px;font-size:12.5px">− 1 +</div>
                 <a href="#buttons" style="font-size:11.5px;font-weight:600">Edit design</a>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Cart — Loading / Skeleton <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="background:#F3F0E9;border-radius:14px;padding:16px;display:flex;gap:14px;max-width:420px;margin-bottom:10px">
+            <div style="width:64px;height:64px;border-radius:8px;background:#E6E2D8;flex-shrink:0"></div>
+            <div style="flex:1">
+              <div style="height:11px;width:60%;background:#E6E2D8;border-radius:4px;margin-bottom:8px"></div>
+              <div style="height:10px;width:40%;background:#E6E2D8;border-radius:4px;margin-bottom:12px"></div>
+              <div style="height:24px;width:70px;background:#E6E2D8;border-radius:999px"></div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.55);border:1px solid #E6E2D8;border-radius:14px;padding:20px;max-width:420px">
+            <div style="height:14px;width:40%;background:#F1EEE8;border-radius:4px;margin-bottom:10px"></div>
+            <div style="height:44px;background:#F1EEE8;border-radius:999px"></div>
+          </div>
+          <p style="font-size:11px;color:#8B867B;margin:10px 0 0">Mirrors the exact cart item and summary structure above — image, name/variant lines, qty pill, and the checkout summary block.</p>
+        </div>
+
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Empty cart <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="border:1px dashed #DDD8CC;border-radius:14px;padding:32px;text-align:center;max-width:420px">
+            <div style="font-size:13.5px;font-weight:600;margin-bottom:6px">Your cart is empty</div>
+            <div style="font-size:12px;color:#8B867B;margin-bottom:16px">Items you add will show up here.</div>
+            <dc-import name="Button" label="Keep shopping" variant="primary" hint-size="140,44"></dc-import>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Functional states — Loading / Error / Out of stock / Disabled</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+            <div>
+              <div style="display:flex;gap:10px;align-items:center;border:1px solid #E6E2D8;border-radius:12px;padding:12px">
+                <div style="width:44px;height:44px;border-radius:8px;background:#F1EEE8;flex-shrink:0"></div>
+                <div style="flex:1"><div style="height:10px;width:80%;background:#F1EEE8;border-radius:4px;margin-bottom:6px"></div><div style="height:10px;width:50%;background:#F1EEE8;border-radius:4px"></div></div>
+              </div>
+              <div style="font-size:11px;color:#8B867B;margin-top:6px">Loading</div>
+            </div>
+            <div>
+              <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px;background:#FDECEA"><div style="font-size:11.5px;color:#C42B2B;font-weight:600">Couldn't load this product.</div><dc-import name="Link" label="Try again" tone="brand" hint-size="60,18"></dc-import></div>
+              <div style="font-size:11px;color:#8B867B;margin-top:6px">Error</div>
+            </div>
+            <div>
+              <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px;position:relative">
+                <div style="width:44px;height:44px;border-radius:8px;background:#EFEBE2;margin-bottom:8px"></div>
+                <dc-import name="Badge" label="Out of stock" tone="neutral" hint-size="90,26"></dc-import>
+              </div>
+              <div style="font-size:11px;color:#8B867B;margin-top:6px">Unavailable</div>
+            </div>
+            <div>
+              <div style="border:1px solid #E6E2D8;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:center;height:70px">
+                <dc-import name="Button" label="Add to cart" variant="primary" disabled="{{ true }}" hint-size="120,44"></dc-import>
+              </div>
+              <div style="font-size:11px;color:#8B867B;margin-top:6px">Disabled</div>
             </div>
           </div>
         </div>
@@ -442,6 +622,55 @@ a:hover{text-decoration:underline}
           </div>
         </div>
       </div>
+
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:24px;max-width:520px">
+        <div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:10px">Page error (generic) <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="border:1px solid #E6E2D8;border-radius:16px;padding:40px 28px;text-align:center;background:#fff">
+            <div style="width:48px;height:48px;border-radius:50%;background:#FDECEA;color:#C42B2B;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;margin:0 auto 16px">!</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px">This page couldn't load</div>
+            <div style="font-size:13px;color:#4A473F;margin-bottom:20px;line-height:1.5">Something went wrong on our end. Your cart and saved designs are safe.</div>
+            <div style="display:flex;gap:10px;justify-content:center">
+              <dc-import name="Button" label="Try again" variant="primary" hint-size="110,44"></dc-import>
+              <dc-import name="Button" label="Go back" variant="secondary" hint-size="110,44"></dc-import>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:10px">Payment refused <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="border:1px solid #E6E2D8;border-radius:16px;padding:32px 28px;text-align:center;background:#fff">
+            <div style="width:48px;height:48px;border-radius:50%;background:#FDECEA;color:#C42B2B;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 16px">✕</div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px">Payment wasn't completed</div>
+            <div style="font-size:13px;color:#4A473F;margin-bottom:20px;line-height:1.5">Your order hasn't been confirmed and you haven't been charged. Check your payment details and try again.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <dc-import name="Button" label="Try again" variant="primary" hint-size="110,44"></dc-import>
+              <dc-import name="Button" label="Change payment method" variant="secondary" hint-size="180,44"></dc-import>
+            </div>
+          </div>
+          <p style="font-size:11px;color:#8B867B;margin:10px 0 0">Gateway-specific decline reasons (e.g. insufficient funds, card declined) are not assumed here — use this shell with the message your Medusa payment provider returns.</p>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:10px">Checkout — Loading / Skeleton <span style="color:#B8B2A5;font-weight:400">— new, Fase 1</span></div>
+          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px">
+            <div style="border:1px solid #E6E2D8;border-radius:16px;padding:20px;background:#fff">
+              <div style="height:12px;width:35%;background:#F1EEE8;border-radius:4px;margin-bottom:14px"></div>
+              <div style="height:44px;background:#F1EEE8;border-radius:8px;margin-bottom:10px"></div>
+              <div style="height:44px;background:#F1EEE8;border-radius:8px;margin-bottom:10px"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div style="height:44px;background:#F1EEE8;border-radius:8px"></div>
+                <div style="height:44px;background:#F1EEE8;border-radius:8px"></div>
+              </div>
+            </div>
+            <div style="border:1px solid #E6E2D8;border-radius:16px;padding:20px;background:#fff">
+              <div style="height:12px;width:50%;background:#F1EEE8;border-radius:4px;margin-bottom:14px"></div>
+              <div style="height:60px;background:#F1EEE8;border-radius:10px;margin-bottom:10px"></div>
+              <div style="height:44px;background:#F1EEE8;border-radius:999px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ================= ICONS ================= -->
@@ -457,6 +686,37 @@ a:hover{text-decoration:underline}
           </div>
         </sc-for>
       </div>
+    </section>
+
+<!-- ================= COMPONENT SPECS ================= -->
+    <section id="component-specs" style="margin-bottom:72px">
+      <h2 style="font-size:24px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px">Component Specifications</h2>
+      <p style="font-size:13.5px;color:#8B867B;margin:0 0 28px">Full contract for each of the 8 shipped components — the values a Next.js implementation should reproduce exactly.</p>
+
+      <sc-for list="{{ componentSpecs }}" as="c" hint-placeholder-count="8">
+        <div style="border:1px solid #E6E2D8;border-radius:14px;padding:24px 28px;margin-bottom:20px;background:#fff">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+            <div style="font-size:17px;font-weight:700">{{ c.name }}</div>
+            <div style="font-size:11px;color:#B8B2A5;font-family:monospace">&lt;dc-import name="{{ c.name }}"&gt;</div>
+          </div>
+          <p style="font-size:13px;color:#4A473F;margin:0 0 16px;line-height:1.5">{{ c.purpose }}</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;font-size:12.5px">
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Variants</div>{{ c.variants }}</div>
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">States</div>{{ c.states }}</div>
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Dimensions</div>{{ c.dimensions }}</div>
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Spacing</div>{{ c.spacing }}</div>
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Typography</div>{{ c.typography }}</div>
+            <div><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Border radius</div>{{ c.radius }}</div>
+            <div style="grid-column:span 3"><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Colours</div>{{ c.colors }}</div>
+            <div style="grid-column:span 3"><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Responsive behaviour</div>{{ c.responsive }}</div>
+            <div style="grid-column:span 3"><div style="font-weight:700;color:#8B867B;font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">Hover / focus / active / disabled</div>{{ c.interaction }}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid #EEEBE3">
+            <div style="font-size:12.5px;color:#41573B"><strong>Use when:</strong> {{ c.doUse }}</div>
+            <div style="font-size:12.5px;color:#A34B33"><strong>Don't use when:</strong> {{ c.dontUse }}</div>
+          </div>
+        </div>
+      </sc-for>
     </section>
 
     <!-- ================= RESPONSIVE ================= -->
@@ -476,6 +736,36 @@ a:hover{text-decoration:underline}
         <div style="border:1px solid #E6E2D8;border-radius:12px;padding:20px;background:#fff">
           <div style="font-size:13px;font-weight:700;margin-bottom:8px">Mobile (&lt;768px)</div>
           <div style="font-size:12px;color:#4A473F;line-height:1.6">Nav links collapse into a menu; Studio inspector becomes a bottom-toggled overlay (<code>narrow</code> state) with a floating tools button in the toolbar.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px">Mobile detail — Phase 3A <span style="color:#B8B2A5;font-weight:400">reference frame 390px, verified to 320px</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px">
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Grid &amp; container</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">16px side padding (vs 48px desktop). Multi-column desktop grids (4/5-up carousels, category rails) collapse to 2 columns. Content is always <code>minmax(0,1fr)</code> — never a fixed px width.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Spacing &amp; typography</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Same 4px scale and type sizes as desktop — no separate mobile scale. Section spacing tightens to the lower end of the scale (16–32px) instead of 48–96px.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Navigation</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">The flat desktop link row is replaced by a hamburger IconButton opening a full-screen overlay menu (top-level items 44px+ tap rows, in-place accordion for sub-links). Full spec: <a href="Mobile Navigation.dc.html">Mobile Navigation.dc.html</a>.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Drawers (Cart / Login)</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Already responsive as built — both use <code>width:460px;max-width:100vw</code>, so they naturally become full-width sheets on mobile with no code change. Verified in Cart Mobile.dc.html.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Touch targets</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">Button ≥44px, size chips 44×44px, Radio/Swatch has a 44×44px invisible hit-area (Phase 1.1) around its unchanged visual size. <strong>Open gap:</strong> IconButton is 36×36px, below the 44px guideline — not resized here (would change desktop toolbars); flagged for a decision.</div>
+          </div>
+          <div style="border:1px solid #E6E2D8;border-radius:12px;padding:16px 18px">
+            <div style="font-size:12.5px;font-weight:700;margin-bottom:4px">Screens already mobile-ready</div>
+            <div style="font-size:12px;color:#4A473F;line-height:1.6">404, Order Confirmation, Password Recovery, Search Results and Cookie Banner (Phase 2) were built single-column/fluid and verified at 390px as-is — no separate mobile file was created for these, per the reuse rule.</div>
+          </div>
         </div>
       </div>
     </section>
@@ -595,7 +885,98 @@ class Component extends DCLogic {
       { name: 'Share', el: svgIcon('share', [h('circle', { key: 1, cx: 6, cy: 12, r: 2.4 }), h('circle', { key: 2, cx: 17, cy: 6, r: 2.4 }), h('circle', { key: 3, cx: 17, cy: 18, r: 2.4 }), h('path', { key: 4, d: 'M8.1 10.8L15 7M8.1 13.2L15 17' })]) }
     ];
 
-    return { colorGroups, typeScale, spacingScale, radiusScale, shadowScale, buttonVariants, icons };
+    const componentSpecs = [
+      { name: 'Button', purpose: 'Primary interactive trigger for an action (Checkout, Add to cart, Save design).',
+        variants: 'Primary (solid ink), Brand (solid brand blue), Secondary (outlined), Tertiary (ghost, toolbar).',
+        states: 'Default, Hover, Active, Focus, Disabled, Loading (spinner replaces label, same disabled interaction — added Fase 1).',
+        dimensions: 'Primary/Secondary/Brand: 44–48px tall. Tertiary: 34–36px tall.',
+        spacing: 'Padding 22–28px horizontal (pill variants), 12–14px (Tertiary).',
+        typography: '14px / weight 600 / Helvetica Neue.',
+        colors: 'Primary bg #1C1B19 → hover #3A3833, ink #FFFFFF. Brand bg #4A4FE4 → hover #3B40C9. Secondary bg #FFFFFF border #DDD8CC → hover border #1C1B19. Tertiary bg transparent → hover bg #F3F0E9. Disabled: solid variants bg #C9C6BB; outlined/ghost ink #B8B2A5.',
+        radius: '999px (Primary/Brand/Secondary pill). 8px (Tertiary).',
+        responsive: 'Fixed width by default; set fullWidth for stacked mobile CTAs (checkout, add to cart).',
+        interaction: 'Focus = 2px solid #4A4FE4 outline, 2px offset, on every variant. Disabled = cursor not-allowed, hover disabled.',
+        doUse: 'one primary action per view/section.', dontUse: 'two Primary buttons side by side, or Tertiary for destructive actions.' },
+      { name: 'Link', purpose: 'Inline navigational or secondary action inside text or a list row (Edit design, Sign in, Create account).',
+        variants: 'Ink (body colour), Brand (brand blue).',
+        states: 'Default, Hover (underline).',
+        dimensions: 'Inline — sized by surrounding text.',
+        spacing: 'None — inherits parent layout gap.',
+        typography: '12–13px / weight 600.',
+        colors: 'Ink #1C1B19. Brand #4A4FE4.',
+        radius: 'n/a',
+        responsive: 'Wraps with text; no fixed width.',
+        interaction: '✓ Resolved — Phase 1.1: Focus = 2px solid #4A4FE4 outline, 3px offset, plus underline — never colour-only, visible on every background used by the project. Hover adds underline only.',
+        doUse: 'secondary or inline actions.', dontUse: 'the sole action for a critical flow — use Button.' },
+      { name: 'Input', purpose: 'Single-line free-text entry (email, name, address, search).',
+        variants: 'type: text, email, password, number.',
+        states: 'Default, Focus, Filled, Error, Disabled, Success (added Fase 1 — border #41573B, ✓ message).',
+        dimensions: '~50px tall, width:100% of parent.',
+        spacing: 'Padding 14px 16px.',
+        typography: '14px / weight 400.',
+        colors: 'Border #DDD8CC (default) / #C42B2B (error) / #41573B (success) / #E6E2D8 (disabled). Bg #FFFFFF (default/error/success) / #F3F0E9 (disabled). Ink #1C1B19 / #B8B2A5 (disabled).',
+        radius: '8px.',
+        responsive: 'Always fluid — width:100%, never a fixed px width.',
+        interaction: 'Focus = border + 2px outline in #4A4FE4, 1px offset.',
+        doUse: 'any free-text field.', dontUse: 'a fixed choice set — use Select, Radio or Checkbox.' },
+      { name: 'Select', purpose: 'Choosing one value from a short fixed list (country, delivery method).',
+        variants: 'Single native select.',
+        states: 'Default, Focus, Disabled.',
+        dimensions: 'Same shape as Input — ~50px tall, width:100%.',
+        spacing: 'Padding 14px 16px.',
+        typography: '14px / weight 400.',
+        colors: 'Same as Input.',
+        radius: '8px.',
+        responsive: 'Always fluid.',
+        interaction: 'Same focus ring as Input.',
+        doUse: '4+ options where a dropdown saves space.', dontUse: '2–3 options — prefer a segmented control or Radio swatches.' },
+      { name: 'Checkbox', purpose: 'A single independent yes/no choice (marketing opt-in, review-gate confirmation).',
+        variants: 'With or without a label.',
+        states: 'Off, On, Disabled.',
+        dimensions: '20×20px box.',
+        spacing: '10px gap to label.',
+        typography: 'Label 14px / weight 400.',
+        colors: 'On: bg #1C1B19. Off: bg #FFFFFF border #1C1B19. Disabled: bg #F3F0E9 border #DDD8CC.',
+        radius: '4px.',
+        responsive: 'Fixed size — does not scale.',
+        interaction: 'No distinct hover documented. Disabled removes pointer and click handling.',
+        doUse: 'one independent binary choice.', dontUse: 'mutually exclusive options — use Radio.' },
+      { name: 'Radio (colour swatch)', purpose: 'Selecting one garment colourway from a visual set. This is a visual-swatch selector, not a generic radio input.',
+        variants: 'size prop, default 32px (26–28px in compact contexts like cart/mini selectors).',
+        states: 'Unselected, Selected.',
+        dimensions: 'Visual size 32×32px default (size prop). ✓ Resolved — Phase 1.1: tap target is a separate, invisible 44×44px hit-area centred inside the button — the swatch itself never grows.',
+        spacing: 'n/a — laid out in a wrapping flex row by the parent.',
+        typography: 'n/a (colour-only, no text).',
+        colors: 'Fill = the swatch colour itself. Border rgba(28,27,25,.12) always. Selected ring: 2px #fff + 4px #1C1B19 double box-shadow.',
+        radius: '8px.',
+        responsive: 'Desktop: visual size = tap target look, no visible change. Mobile: same 32px visual swatch, but the invisible 44×44px hit-area guarantees a compliant tap target even in dense grids.',
+        interaction: 'No hover state documented; a single click (anywhere inside the 44×44px hit-area) toggles selection.',
+        doUse: 'colour/finish selection specifically.', dontUse: 'generic multi-choice text options — use Select.' },
+      { name: 'Badge', purpose: 'A compact, non-interactive status label (order status, discount tag, stock state).',
+        variants: 'tone: success, error, info, neutral.',
+        states: 'Static only — not clickable, no hover/focus.',
+        dimensions: 'Auto width, ~26px tall.',
+        spacing: 'Padding 3px 10px.',
+        typography: '11.5px / weight 600.',
+        colors: 'success bg #EDF2EA ink #41573B · error bg #FDECEA ink #C42B2B · info bg #F4F4FE ink #4A4FE4 · neutral bg #F3F0E9 ink #4A473F.',
+        radius: '999px.',
+        responsive: 'None — intrinsic size.',
+        interaction: 'None — Badge is never interactive.',
+        doUse: 'status or metadata.', dontUse: 'as a button, or with more than ~20 characters of text.' },
+      { name: 'IconButton', purpose: 'An icon-only action inside a dense toolbar or header (cart, undo, share, search, grid toggle).',
+        variants: 'icon (glyph name), active (toggled/pressed state for tools like grid/snap/guides).',
+        states: '✓ Resolved — Phase 1.1: Default, Active, Hover, Disabled.',
+        dimensions: '36×36px default (32px seen in some toolbar contexts — confirm per instance).',
+        spacing: 'n/a — icon is centred, no internal padding token.',
+        typography: 'n/a.',
+        colors: 'Default: transparent bg, ink #1C1B19. Active: bg #1C1B19, ink #FFFFFF. Hover: bg #F3F0E9 (or stays #1C1B19 if active). Disabled: transparent bg, icon #B8B2A5, cursor not-allowed, no hover change — same disabled language as Button.',
+        radius: '8px.',
+        responsive: 'Fixed square; on mobile these collapse into an overflow/tools panel (see Studio inspector, §13).',
+        interaction: 'Always pair with a title/aria-label — no visible text.',
+        doUse: 'repeated toolbar actions where a label would crowd the UI.', dontUse: "a page's primary action — use Button." }
+    ];
+
+    return { colorGroups, typeScale, spacingScale, radiusScale, shadowScale, buttonVariants, icons, componentSpecs, threeItems: [1, 2, 3], twoItems: [1, 2] };
   }
 }
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}</style></helmet>
+<div data-screen-label="Checkout — Mobile" style="display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px;gap:32px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0">390px reference. Same fields/copy as Checkout.dc.html — desktop file untouched.</p>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Normal</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff">
+      <div style="height:56px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid #E6E2D8">
+        <dc-import name="IconButton" icon="back" title="Back" hint-size="36,36"></dc-import>
+        <div style="font-size:15px;font-weight:600">Checkout</div>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700">Contact</div>
+        <dc-import name="Input" type="email" placeholder="Email" hint-size="100%,50"></dc-import>
+        <div style="font-size:13px;font-weight:700;margin-top:6px">Delivery</div>
+        <dc-import name="Select" hint-size="100%,50"></dc-import>
+        <dc-import name="Input" placeholder="Full name" hint-size="100%,50"></dc-import>
+        <dc-import name="Input" placeholder="Address" hint-size="100%,50"></dc-import>
+        <div style="border:1px solid #E6E2D8;border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+          <div style="font-size:13px;font-weight:600">Order summary ▾</div>
+          <div style="font-size:14px;font-weight:700">43,90€</div>
+        </div>
+        <div style="margin-top:6px"><dc-import name="Button" label="Pay Now" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Loading — reused from Fase 1</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;padding:20px;background:#fff">
+      <div style="height:12px;width:35%;background:#F1EEE8;border-radius:4px;margin-bottom:14px"></div>
+      <div style="height:44px;background:#F1EEE8;border-radius:8px;margin-bottom:10px"></div>
+      <div style="height:44px;background:#F1EEE8;border-radius:8px;margin-bottom:10px"></div>
+      <div style="height:44px;background:#F1EEE8;border-radius:999px"></div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Payment refused — reused from Fase 1</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;padding:28px 20px;text-align:center;background:#fff">
+      <div style="width:44px;height:44px;border-radius:50%;background:#FDECEA;color:#C42B2B;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 14px">✕</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Payment wasn't completed</div>
+      <div style="font-size:12.5px;color:#4A473F;margin-bottom:18px;line-height:1.5">Your order hasn't been confirmed and you haven't been charged.</div>
+      <dc-import name="Button" label="Try again" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+    </div>
+  </div>
+
+  <div style="max-width:390px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Mobile adaptation:</strong> the desktop two-column checkout (form + sticky summary) becomes one column; the order summary collapses into a tappable row that expands, keeping the same Input/Select/Button components and the exact same states from Fase 1/2 (loading, payment refused).
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

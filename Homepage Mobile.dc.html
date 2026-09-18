@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}</style></helmet>
+<div data-screen-label="Homepage — Mobile" style="display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0 0 16px">390px reference, verified down to 320px. Same content/identity as Homepage.dc.html — desktop file untouched.</p>
+  <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff">
+    <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8">
+      <dc-import name="IconButton" icon="grid" title="Menu" hint-size="36,36"></dc-import>
+      <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Web2Print</div>
+      <dc-import name="IconButton" icon="cart" title="Cart" hint-size="36,36"></dc-import>
+    </div>
+    <div style="height:280px;background:#1C1B19;display:flex;align-items:flex-end;padding:24px;box-sizing:border-box">
+      <div>
+        <h1 style="color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px;line-height:1.15">Your idea. Your piece.</h1>
+        <a href="Studio%20Desktop.dc.html" style="display:block"><dc-import name="Button" label="Start Creating" variant="primary" hint-size="150,44"></dc-import></a>
+      </div>
+    </div>
+    <div style="padding:24px 16px">
+      <div style="font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Shop by category</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+          <div style="text-align:center">
+            <div style="aspect-ratio:1;border-radius:50%;background:#F1EEE8;margin-bottom:8px"></div>
+            <div style="font-size:12.5px;font-weight:600">{{ c }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border-radius:12px;padding:20px;background:#1C1B19;color:#fff;margin-bottom:24px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">GET €10 OFF</div>
+        <div style="font-size:12px;color:#B8B2A5">On your first order, over €120.</div>
+      </div>
+      <div style="font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px">Best sellers</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="2">
+          <div>
+            <div style="aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:8px"></div>
+            <div style="font-size:12.5px;font-weight:600">{{ p.name }}</div>
+            <div style="font-size:12px;color:#4A473F">{{ p.price }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border-top:1px solid #EEEBE3;padding-top:20px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Newsletter</div>
+        <dc-import name="Input" type="email" placeholder="Email address" hint-size="100%,50"></dc-import>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:390px;font-size:12px;color:#4A473F;line-height:1.7;margin-top:16px">
+    <strong>Mobile adaptation:</strong> multi-column desktop rows (5-up carousels, category rail) collapse to a 2-column grid; hero CTA stacks under the headline instead of sitting beside it; the nav becomes the hamburger pattern documented in Mobile Navigation.dc.html. No new colours, spacing or radii — same tokens as desktop.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      cats: ['Hoodies', 'Tees', 'Athleisure', 'Accessories'],
+      products: [{ name: 'Regular Hoodie 300', price: 'From 39,00€' }, { name: 'Classic Tee 180', price: 'From 22,00€' }]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

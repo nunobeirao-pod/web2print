@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}</style></helmet>
+<div data-screen-label="Cart — Mobile" style="display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px;gap:32px">
+  <p style="font-size:11.5px;color:#8B867B;max-width:390px;text-align:center;margin:0">390px reference. Cart drawer already caps at max-width:100vw on Homepage/Product Page — this is the standalone mobile cart view/states.</p>
+
+  <div>
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;text-align:center">Normal</div>
+    <div style="width:390px;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff">
+      <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8">
+        <div style="font-size:16px;font-weight:600">2 items in your cart</div>
+        <dc-import name="IconButton" icon="close" title="Close" hint-size="36,36"></dc-import>
+      </div>
+      <div style="padding:16px">
+        <div style="background:#F3F0E9;border-radius:14px;padding:14px;display:flex;gap:12px;margin-bottom:12px">
+          <div style="width:56px;height:56px;border-radius:8px;background:#EFEBE2;flex-shrink:0"></div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600">Regular Hoodie 300</div>
+            <div style="font-size:11.5px;color:#4A473F;margin-top:2px">39,00€ · Navy / M</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border-radius:999px;padding:6px 10px;font-size:12px;min-height:32px">− 1 +</div>
+              <dc-import name="Link" label="Remove" tone="ink" hint-size="50,18"></dc-import>
+            </div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #EEEBE3;padding-top:14px;display:flex;flex-direction:column;gap:6px;font-size:13px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;color:#4A473F"><span>Subtotal</span><span>39,00€</span></div>
+          <div style="display:flex;justify-content:space-between;color:#4A473F"><span>Shipping</span><span>4,90€</span></div>
+          <div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>Total</span><span>43,90€</span></div>
+        </div>
+        <dc-import name="Button" label="Checkout" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import>
+      </div>
+    </div>
+  </div>
+
+  <div style="width:390px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:11px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;text-align:center">Loading / Empty — reused from Fase 1</div>
+    <div style="background:#F3F0E9;border-radius:14px;padding:14px;display:flex;gap:12px">
+      <div style="width:56px;height:56px;border-radius:8px;background:#E6E2D8;flex-shrink:0"></div>
+      <div style="flex:1"><div style="height:11px;width:60%;background:#E6E2D8;border-radius:4px;margin-bottom:8px"></div><div style="height:10px;width:40%;background:#E6E2D8;border-radius:4px"></div></div>
+    </div>
+    <div style="border:1px dashed #DDD8CC;border-radius:14px;padding:28px;text-align:center">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your cart is empty</div>
+      <dc-import name="Button" label="Keep shopping" variant="primary" hint-size="140,44"></dc-import>
+    </div>
+  </div>
+
+  <div style="max-width:390px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Mobile adaptation:</strong> the desktop side-drawer becomes a full-width sheet (same component, max-width:100vw already handles this). Line items, quantity stepper and CTA keep identical spacing/typography — only the outer width changes.
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
