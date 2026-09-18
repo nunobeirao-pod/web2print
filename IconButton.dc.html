@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<button onClick="{{ onClick }}" title="{{ title }}" aria-label="{{ title }}" style="width:{{ size }}px;height:{{ size }}px;border-radius:8px;border:{{ border }};background:{{ bg }};color:{{ ink }};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" style-hover="background:{{ hoverBg }}">{{ svg }}</button>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:50,&quot;height&quot;:50},&quot;icon&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;cart&quot;,&quot;options&quot;:[&quot;search&quot;,&quot;account&quot;,&quot;wishlist&quot;,&quot;cart&quot;,&quot;close&quot;,&quot;back&quot;,&quot;undo&quot;,&quot;grid&quot;,&quot;share&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cart&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onClick&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const h = React.createElement;
+    const s = (children) => h('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' }, children);
+    const icons = {
+      search: s([h('circle', { key: 1, cx: 10.5, cy: 10.5, r: 6.5 }), h('path', { key: 2, d: 'M20 20l-4.8-4.8' })]),
+      account: s([h('circle', { key: 1, cx: 12, cy: 8.5, r: 3.3 }), h('path', { key: 2, d: 'M5 20c1.2-3.8 4-5.6 7-5.6s5.8 1.8 7 5.6' })]),
+      wishlist: s([h('path', { key: 1, d: 'M12 20s-7.5-4.6-9.5-9.3C1.2 7.3 3 4.5 6.2 4.3c2-.1 3.6 1 5.8 3.3 2.2-2.3 3.8-3.4 5.8-3.3 3.2.2 5 3 3.7 6.4C19.5 15.4 12 20 12 20z' })]),
+      cart: s([h('path', { key: 1, d: 'M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z' }), h('path', { key: 2, d: 'M8.5 8V6a3.5 3.5 0 0 1 7 0v2' })]),
+      close: s([h('path', { key: 1, d: 'M6 6l12 12M18 6L6 18' })]),
+      back: s([h('path', { key: 1, d: 'M15 5L8 12L15 19' })]),
+      undo: s([h('path', { key: 1, d: 'M6 8H16a5 5 0 0 1 0 10h-2' }), h('path', { key: 2, d: 'M6 8l4-4M6 8l4 4' })]),
+      grid: s([h('rect', { key: 1, x: 4, y: 4, width: 7, height: 7, rx: 1 }), h('rect', { key: 2, x: 13, y: 4, width: 7, height: 7, rx: 1 }), h('rect', { key: 3, x: 4, y: 13, width: 7, height: 7, rx: 1 }), h('rect', { key: 4, x: 13, y: 13, width: 7, height: 7, rx: 1 })]),
+      share: s([h('circle', { key: 1, cx: 6, cy: 12, r: 2.4 }), h('circle', { key: 2, cx: 17, cy: 6, r: 2.4 }), h('circle', { key: 3, cx: 17, cy: 18, r: 2.4 }), h('path', { key: 4, d: 'M8.1 10.8L15 7M8.1 13.2L15 17' })])
+    };
+    const active = !!this.props.active;
+    return {
+      svg: icons[this.props.icon] || icons.search,
+      title: this.props.title ?? '',
+      size: this.props.size ?? 36,
+      bg: active ? '#1C1B19' : 'transparent',
+      ink: active ? '#FFFFFF' : '#1C1B19',
+      border: 'none',
+      hoverBg: active ? '#1C1B19' : '#F3F0E9',
+      onClick: this.props.onClick || (() => {})
+    };
+  }
+}
+
+</script>
+</body>
+</html>
