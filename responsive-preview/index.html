@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Responsive Preview — Standalone</title>
+<style>
+  body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#1C1B19;text-decoration:none}
+  a:hover{color:#4A4FE4}
+  .toolbar{position:fixed;bottom:14px;right:14px;z-index:999;background:rgba(28,27,25,0.92);backdrop-filter:blur(8px);color:#fff;padding:6px;border-radius:999px;display:flex;align-items:center;gap:6px;font-size:11px;box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+  .toolbar .spacer{display:none}
+  .toolbar .lbl{display:none}
+  .toolbar button{height:28px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer}
+  .toolbar button.active{background:#4A4FE4;border-color:#4A4FE4}
+  .scrollrow::-webkit-scrollbar{display:none}
+
+  /* ---------- breakpoint visibility: Mobile <768, Tablet 768-1023, Desktop >=1024 ---------- */
+  .mobile-view{display:none} .tablet-view{display:none} .desktop-view{display:none}
+  @media (max-width:767px){ .mobile-view{display:block} }
+  @media (min-width:768px) and (max-width:1023px){ .tablet-view{display:block} }
+  @media (min-width:1024px){ .desktop-view{display:block} }
+  html[data-mode="mobile"] .mobile-view{display:block !important}
+  html[data-mode="mobile"] .tablet-view,html[data-mode="mobile"] .desktop-view{display:none !important}
+  html[data-mode="desktop"] .desktop-view{display:block !important}
+  html[data-mode="desktop"] .mobile-view,html[data-mode="desktop"] .tablet-view{display:none !important}
+
+  /* ---------- DESKTOP (reference: Homepage.dc.html) ---------- */
+  .d-nav{position:sticky;top:0;z-index:10;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8}
+  .d-nav-inner{max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:24px}
+  .d-logo{font-size:18px;font-weight:600;letter-spacing:-0.01em;flex:none}
+  .d-links{display:flex;gap:20px;font-size:13px;font-weight:500;align-items:center}
+  .d-links a.accent{color:#4A4FE4;font-weight:700}
+  .d-icons{display:flex;gap:16px;margin-left:auto;align-items:center}
+  .d-icon-btn{width:36px;height:36px;border-radius:8px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#1C1B19}
+  .d-hero{position:relative;height:72vh;min-height:500px;background:#1C1B19;display:flex;align-items:center}
+  .d-hero-inner{position:relative;width:100%;max-width:1440px;margin:0 auto;padding:0 48px;display:flex;justify-content:flex-end}
+  .d-hero-copy{max-width:520px;text-align:right;color:#fff}
+  .d-hero-eyebrow{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.9);margin-bottom:16px}
+  .d-hero h1{font-size:clamp(40px,6.5vw,68px);font-weight:700;letter-spacing:-0.02em;margin:0 0 16px;line-height:1.02}
+  .d-hero p{font-size:15px;line-height:1.6;color:rgba(255,255,255,0.88);margin:0 0 28px}
+  .d-hero-ctas{display:flex;gap:12px;justify-content:flex-end}
+  .d-btn-primary{display:inline-block;background:#fff;color:#1C1B19;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;cursor:pointer}
+  .d-btn-ghost{display:inline-block;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;cursor:pointer}
+  .d-section{max-width:1440px;margin:0 auto;padding:64px 48px}
+  .d-label{font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:18px}
+  .d-h2{font-size:32px;font-weight:700;letter-spacing:-0.01em;margin:0 0 20px}
+  .d-quickstart{display:grid;grid-template-columns:1fr 1fr;background:#F3F0E9}
+  .d-quickstart .vid{min-height:380px;background:#1C1B19}
+  .d-quickstart .copy{padding:56px;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}
+  .d-step{display:flex;gap:16px;align-items:center;padding:18px 0;border-top:1px solid #DDD8CC;text-align:left;width:100%;max-width:380px}
+  .d-step .n{font-size:26px;font-weight:700;color:#4A4FE4;flex:none;width:44px}
+  .d-scrollrow{display:flex;gap:16px;overflow-x:auto;padding-bottom:6px}
+  .d-card{flex:0 0 240px}
+  .d-card-img{aspect-ratio:4/5;border-radius:4px;background:#EFEBE2;margin-bottom:10px}
+  .d-name{font-size:14px;font-weight:500}
+  .d-price{font-size:14px;font-weight:600}
+  .d-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+  .d-cat-tile{position:relative;aspect-ratio:1;background:#EFEBE2;display:flex;align-items:flex-end;color:#fff}
+  .d-cat-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.65) 100%)}
+  .d-cat-tile span{position:relative;padding:24px;font-weight:700;font-size:30px;letter-spacing:-0.01em}
+  .d-ugc{flex:0 0 200px}
+  .d-ugc-img{aspect-ratio:9/16;border-radius:8px;background:#1C1B19;margin-bottom:10px}
+  .d-reviews{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:left}
+  .d-review{background:#fff;border-radius:14px;padding:26px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between}
+  .d-newsletter{text-align:center;padding:64px 48px}
+  .d-newsletter-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
+  .d-newsletter-form input{flex:1;height:50px;border:1px solid #DDD8CC;border-radius:8px;padding:0 16px;font-size:14px;font-family:inherit}
+  .d-footer{border-top:1px solid #E6E2D8;padding:48px 48px}
+  .d-footer-inner{max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between}
+  .d-footer-col{font-size:12.5px;color:#4A473F;line-height:1.8}
+  .d-footer-col .h{font-size:14px;font-weight:600;color:#1C1B19;margin-bottom:14px}
+  .d-tagline{max-width:1440px;margin:28px auto 0;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#4A473F}
+
+  /* ---------- TABLET (reference: Homepage Tablet.dc.html) ---------- */
+  .t-nav-inner{padding:0 32px;height:64px;display:flex;align-items:center;gap:16px}
+  .t-hero{position:relative;height:72vh;min-height:460px;background:#1C1B19;display:flex;align-items:center}
+  .t-hero-inner{position:relative;width:100%;padding:0 32px;display:flex;justify-content:flex-end}
+  .t-hero-copy{max-width:420px;text-align:right;color:#fff}
+  .t-section{padding:32px}
+  .t-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+  .t-reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+
+  /* ---------- MOBILE (reference: Homepage Mobile.dc.html) ---------- */
+  .m-frame{max-width:390px;margin:0 auto}
+  .m-header{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8}
+  .m-icon-btn{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;cursor:pointer;flex-shrink:0}
+  .m-hero{height:280px;background:#1C1B19;display:flex;align-items:flex-end;padding:24px;box-sizing:border-box}
+  .m-hero h1{color:#fff;font-size:26px;font-weight:700;letter-spacing:-0.01em;margin:0 0 14px;line-height:1.15}
+  .m-btn-primary{background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:0 22px;height:44px;font-size:14px;font-weight:600;cursor:pointer}
+  .m-section{padding:24px 16px}
+  .m-label{font-size:12px;font-weight:700;color:#8B867B;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px}
+  .m-cats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+  .m-cat-circle{aspect-ratio:1;border-radius:50%;background:#F1EEE8;margin-bottom:8px}
+  .m-promo{border-radius:12px;padding:20px;background:#1C1B19;color:#fff;margin-bottom:24px}
+  .m-promo .t{font-size:14px;font-weight:700;margin-bottom:4px}
+  .m-promo .s{font-size:12px;color:#B8B2A5}
+  .m-products{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+  .m-card-img{aspect-ratio:1;border-radius:12px;background:#EFEBE2;margin-bottom:8px}
+  .m-name{font-size:12.5px;font-weight:600}
+  .m-price{font-size:12px;color:#4A473F}
+  .m-cats a{display:block;color:inherit}
+  .m-input{width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:14px 16px;font-size:14px;font-family:inherit;background:#fff}
+
+  .m-device{width:100%;max-width:390px;margin:0 auto;border:1px solid #E6E2D8;border-radius:16px;overflow:hidden;background:#fff;position:relative}
+  .m-menu-overlay{position:absolute;inset:0;background:#fff;z-index:20;display:none;flex-direction:column}
+  .m-menu-overlay.open{display:flex}
+  .m-menu-header{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #E6E2D8}
+  .m-menu-body{flex:1;overflow-y:auto;padding:8px 16px}
+  .m-menu-row{display:flex;align-items:center;justify-content:space-between;padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600;cursor:pointer;background:none;border-left:none;border-right:none;border-top:none;width:100%;box-sizing:border-box;text-align:left;font-family:inherit;color:#1C1B19}
+  .m-menu-chevron{transition:transform 0.2s ease;color:#8B867B}
+  .m-menu-row[aria-expanded="true"] .m-menu-chevron{transform:rotate(90deg)}
+  .m-submenu{display:none;padding:4px 4px 12px 16px;flex-direction:column;gap:12px;border-bottom:1px solid #EEEBE3;font-size:14px;color:#4A473F}
+  .m-submenu.open{display:flex}
+  .m-menu-link{padding:16px 4px;border-bottom:1px solid #EEEBE3;font-size:16px;font-weight:600}
+  .m-menu-link.accent{color:#4A4FE4}
+  .m-menu-footer{display:flex;gap:20px;padding:24px 4px 8px;margin-top:8px;border-top:1px solid #EEEBE3}
+
+  .m-cart-backdrop{position:fixed;inset:0;background:rgba(20,20,18,0.18);z-index:30;display:none}
+  .m-cart-backdrop.open{display:block}
+  .m-cart-panel{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -8px 24px rgba(28,27,25,0.08);padding:20px 16px;z-index:31;max-width:390px;margin:0 auto;transform:translateY(100%);transition:transform 0.25s ease}
+  .m-cart-panel.open{transform:translateY(0)}
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <span class="lbl">Viewport: <span id="widthReadout">—</span>px</span>
+    <button id="btnAuto" type="button" class="active">Auto</button>
+    <button id="btnMobile" type="button">Mobile</button>
+    <button id="btnDesktop" type="button">Desktop</button>
+  </div>
+
+  <!-- ================= DESKTOP (Homepage.dc.html) ================= -->
+  <div class="desktop-view">
+    <div style="background:#1C1B19;color:#FBFAF8;overflow:hidden">
+      <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:34px;display:flex;align-items:center;gap:32px;font-size:12px;font-weight:500;white-space:nowrap;overflow-x:auto">
+        <span>24/48h delivery to Portugal, Spain &amp; France</span>
+        <span>Save more with quantity pricing</span>
+        <a href="../For%20Teams.dc.html" style="color:inherit">For Teams — bulk pricing &amp; dedicated support</a>
+        <a href="../Studio%20Desktop.dc.html" style="color:inherit">Design it yourself in our Studio</a>
+      </div>
+    </div>
+    <nav class="d-nav">
+      <div class="d-nav-inner">
+        <a href="../Homepage.dc.html" class="d-logo">Web2Print</a>
+        <div class="d-links">
+          <a href="../Studio%20Desktop.dc.html" class="accent">Start Creating</a>
+          <a href="../Shop%20All.dc.html">Shop</a>
+          <a href="../Inspiration.dc.html">Inspiration</a>
+          <a href="../For%20Teams.dc.html">For Teams</a>
+          <a href="../Who%20We%20Are.dc.html">Who we are</a>
+        </div>
+        <div class="d-icons">
+          <button class="d-icon-btn" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
+          <button class="d-icon-btn" aria-label="Language"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"/></svg></button>
+          <button class="d-icon-btn" aria-label="Account"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.2-3.8 4-5.6 7-5.6s5.8 1.8 7 5.6"/></svg></button>
+          <button class="d-icon-btn" aria-label="Wishlist"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7.5-4.6-9.5-9.3C1.2 7.3 3 4.5 6.2 4.3c2-.1 3.6 1 5.8 3.3 2.2-2.3 3.8-3.4 5.8-3.3 3.2.2 5 3 3.7 6.4C19.5 15.4 12 20 12 20z"/></svg></button>
+          <button id="cartBtnD" type="button" class="d-icon-btn" aria-label="Cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="d-hero">
+      <video autoplay muted loop playsinline src="https://assets.mixkit.co/videos/1163/1163-720.mp4" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.28) 0%,rgba(20,20,18,0.04) 45%,rgba(20,20,18,0.55) 100%)"></div>
+      <div class="d-hero-inner">
+        <div class="d-hero-copy">
+          <div class="d-hero-eyebrow">Create custom clothing in minutes</div>
+          <h1>Make it yours.</h1>
+          <p>Quality garments. Ideas without limits. Imagined by you, produced by us.</p>
+          <div class="d-hero-ctas">
+            <a href="../Studio%20Desktop.dc.html"><button class="d-btn-primary">Start Creating</button></a>
+            <a href="../Shop%20All.dc.html"><button class="d-btn-ghost">Shop Products</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-quickstart">
+      <div class="vid"></div>
+      <div class="copy">
+        <div class="d-label">You imagine, we create</div>
+        <h2 class="d-h2">How it works</h2>
+        <div class="d-step"><span class="n">01</span><div><div style="font-weight:700;margin-bottom:4px">Pick your piece</div><div style="font-size:13px;color:#4A473F">Choose the style, colour and fit you want.</div></div></div>
+        <div class="d-step"><span class="n">02</span><div><div style="font-weight:700;margin-bottom:4px">Make it yours</div><div style="font-size:13px;color:#4A473F">Upload something, add text or create from an idea.</div></div></div>
+        <div class="d-step"><span class="n">03</span><div><div style="font-weight:700;margin-bottom:4px">We take it from here</div><div style="font-size:13px;color:#4A473F">We produce, check and ship your piece.</div></div></div>
+        <div style="margin-top:20px"><a href="../Studio%20Desktop.dc.html"><button class="d-btn-primary" style="background:#1C1B19;color:#fff">Start Creating →</button></a></div>
+      </div>
+    </div>
+
+    <div class="d-section" style="padding-bottom:0">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><h2 class="d-h2" style="margin:0">Bestsellers</h2><a href="../Shop%20All.dc.html" style="font-size:13px">See all</a></div>
+      <div class="d-scrollrow">
+        <div class="d-card"><div class="d-card-img"></div><div class="d-name">Regular Hoodie 300</div><div class="d-price">€39</div></div>
+        <div class="d-card"><div class="d-card-img"></div><div class="d-name">Oversized Hoodie 330</div><div class="d-price">€44</div></div>
+      </div>
+    </div>
+
+    <div class="d-cats" style="margin:64px 0">
+      <a href="../Tees.dc.html" class="d-cat-tile"><span>Tees</span></a>
+      <a href="../Hoodies%20and%20Sweats.dc.html" class="d-cat-tile"><span>Hoodies &amp; Sweats</span></a>
+      <a href="../Athleisure.dc.html" class="d-cat-tile"><span>Athleisure</span></a>
+      <a href="../Accessories.dc.html" class="d-cat-tile"><span>Accessories</span></a>
+    </div>
+
+    <div class="d-section" style="padding-top:0;background:#F3F0E9">
+      <h2 class="d-h2">Made by you</h2>
+      <p style="margin:0 0 20px;font-size:14px;color:#4A473F;max-width:460px">Real people, real prints. See what they made — then make yours.</p>
+      <div class="d-scrollrow">
+        <div class="d-ugc"><div class="d-ugc-img"></div><div class="d-name">@marta.k</div><div style="font-size:12.5px;font-weight:700;text-transform:uppercase">Birthday gift</div></div>
+        <div class="d-ugc"><div class="d-ugc-img"></div><div class="d-name">@studio.rui</div><div style="font-size:12.5px;font-weight:700;text-transform:uppercase">Company merch</div></div>
+        <div class="d-ugc"><div class="d-ugc-img"></div><div class="d-name">@lenaonline</div><div style="font-size:12.5px;font-weight:700;text-transform:uppercase">Festival</div></div>
+        <div class="d-ugc"><div class="d-ugc-img"></div><div class="d-name">@theo.wears</div><div style="font-size:12.5px;font-weight:700;text-transform:uppercase">Team event</div></div>
+      </div>
+    </div>
+
+    <div class="d-section" style="text-align:center">
+      <div style="font-size:13px;color:#4A473F;margin-bottom:14px">Excellent 4.9 out of 5 <span style="color:#41573B">★★★★★</span> Verified reviews</div>
+      <h2 class="d-h2" style="text-align:center">The reviews are in.</h2>
+      <div class="d-reviews">
+        <div class="d-review"><div style="font-weight:700;font-size:32px">4.9<span style="font-size:14px;font-weight:400;color:#8B867B">/5</span></div><p style="margin:14px 0 0;font-size:13.5px;color:#4A473F">The full-service print platform that makes custom apparel <strong style="color:#1C1B19">easy</strong>.</p><div style="font-size:12.5px;color:#8B867B;margin-top:16px">2,400+ orders shipped</div></div>
+        <div class="d-review"><p style="margin:0;font-size:14px">"I needed merch fast and didn't want to think about it. I sent my logo and got exactly what I imagined."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">Marta Coelho</div><div style="font-size:12px;color:#8B867B">Studio Lumen</div></div></div>
+        <div class="d-review"><p style="margin:0;font-size:14px">"Everything was handled for us — sizing, colours, delivery. We just picked and it showed up."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">Bruno Antunes</div><div style="font-size:12px;color:#8B867B">North Run Club</div></div></div>
+        <div class="d-review"><p style="margin:0;font-size:14px">"The pieces feel premium, not printed. Our clients keep asking where we got them."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">Inês Ferreira</div><div style="font-size:12px;color:#8B867B">Casa Nova Studio</div></div></div>
+      </div>
+    </div>
+
+    <div class="d-newsletter">
+      <h2 class="d-h2" style="text-align:center">First to see every drop.</h2>
+      <p style="margin:0 0 24px;font-size:14px;color:#8B867B">Collections, studio features and community looks. One email a month.</p>
+      <div class="d-newsletter-form">
+        <input type="email" placeholder="Email address">
+        <button class="d-btn-primary" style="background:#1C1B19;color:#fff">Subscribe</button>
+      </div>
+    </div>
+
+    <footer class="d-footer">
+      <div class="d-footer-inner">
+        <div class="d-footer-col"><div class="h">Company</div>Returns &amp; exchanges<br>Privacy policy<br>Shipping policy<br>Terms &amp; conditions</div>
+        <div class="d-footer-col"><div class="h">Client Services</div>My account<br>Track your order<br>Make a return</div>
+        <div class="d-footer-col"><div class="h">Contact us</div>Contact<br>FAQs<br>Live chat</div>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <a href="https://facebook.com/web2print" target="_blank" rel="noopener" title="Facebook" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#1C1B19"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.2-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5V21h3.1z"></path></svg></a>
+          <a href="https://instagram.com/web2print" target="_blank" rel="noopener" title="Instagram" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#1C1B19"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="https://tiktok.com/@web2print" target="_blank" rel="noopener" title="TikTok" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#1C1B19"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 4v9.4a3.4 3.4 0 1 1-3-3.38"></path><path d="M14 5.6c.7 1.7 2.2 2.8 4 2.9"></path></svg></a>
+        </div>
+      </div>
+      <div style="max-width:1440px;margin:20px auto 0;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+        <div class="d-tagline" style="margin:0">Web2Print ® Wear what you imagine</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <img src="../uploads/American%20Express-100.jpg" alt="Amex" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Apple%20Pay-100.jpg" alt="Apple Pay" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Google%20Pay-100.jpg" alt="Google Pay" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/MasterCard-100.jpg" alt="Mastercard" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Paypal-100.jpg" alt="PayPal" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Shop-100.jpg" alt="Shop Pay" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Visa-100.jpg" alt="Visa" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/Klarna-100.jpg" alt="Klarna" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+          <img src="../uploads/After%20Pay-100.jpg" alt="Afterpay" style="width:38px;height:24px;border:1px solid #E6E2D8;border-radius:3px;object-fit:cover">
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ================= TABLET (Homepage Tablet.dc.html) ================= -->
+  <div class="tablet-view">
+    <nav class="d-nav">
+      <div class="t-nav-inner">
+        <a href="../Homepage.dc.html" class="d-logo">Web2Print</a>
+        <div class="d-links" style="gap:12px">
+          <a href="../Studio%20Desktop.dc.html" class="accent">Start Creating</a>
+          <a href="../Shop%20All.dc.html">Shop</a>
+          <a href="../Inspiration.dc.html">Inspiration</a>
+          <a href="../For%20Teams.dc.html">For Teams</a>
+        </div>
+        <div class="d-icons">
+          <button id="cartBtnT" type="button" class="d-icon-btn" aria-label="Cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="t-hero">
+      <div class="t-hero-inner">
+        <div class="t-hero-copy">
+          <div class="d-hero-eyebrow">Create custom clothing in minutes</div>
+          <h1 style="font-size:clamp(36px,5.5vw,56px);color:#fff;font-weight:700;letter-spacing:-0.02em;margin:0 0 14px;line-height:1.05">Make it yours.</h1>
+          <p style="font-size:14px;color:rgba(255,255,255,0.88);margin:0 0 22px">Quality garments. Ideas without limits. Imagined by you, produced by us.</p>
+          <div class="d-hero-ctas">
+            <a href="../Studio%20Desktop.dc.html"><button class="d-btn-primary">Start Creating</button></a>
+            <a href="../Shop%20All.dc.html"><button class="d-btn-ghost">Shop Products</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-section" style="padding-top:32px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><h2 class="d-h2" style="margin:0;font-size:26px">Bestsellers</h2><a href="../Shop%20All.dc.html" style="font-size:13px">See all</a></div>
+      <div class="d-scrollrow scrollrow">
+        <div class="d-card" style="flex-basis:200px"><div class="d-card-img"></div><div class="d-name">Regular Hoodie 300</div><div class="d-price">From 39,00€</div></div>
+        <div class="d-card" style="flex-basis:200px"><div class="d-card-img"></div><div class="d-name">Classic Tee 180</div><div class="d-price">From 22,00€</div></div>
+        <div class="d-card" style="flex-basis:200px"><div class="d-card-img"></div><div class="d-name">Oversized Hoodie 330</div><div class="d-price">From 45,00€</div></div>
+        <div class="d-card" style="flex-basis:200px"><div class="d-card-img"></div><div class="d-name">Crop Tee 190</div><div class="d-price">From 21,00€</div></div>
+      </div>
+    </div>
+
+    <div class="t-cats" style="margin:32px 0">
+      <a href="../Category%20Listing%20Tablet.dc.html" class="d-cat-tile"><span>Hoodies &amp; Sweats</span></a>
+      <a href="../Category%20Listing%20Tablet.dc.html" class="d-cat-tile"><span>Tees</span></a>
+      <a href="../Category%20Listing%20Tablet.dc.html" class="d-cat-tile"><span>Athleisure</span></a>
+    </div>
+
+    <div class="t-section" style="background:#F3F0E9">
+      <h2 class="d-h2" style="font-size:26px">Made by you</h2>
+      <p style="margin:0 0 18px;font-size:13.5px;color:#4A473F;max-width:420px">Real people, real prints. See what they made — then make yours.</p>
+      <div class="d-scrollrow scrollrow">
+        <div class="d-ugc" style="flex-basis:170px"><div class="d-ugc-img"></div><div class="d-name">@joana.tees</div><div style="font-size:12px;font-weight:700;text-transform:uppercase">Birthday Crew</div></div>
+        <div class="d-ugc" style="flex-basis:170px"><div class="d-ugc-img"></div><div class="d-name">@ruimadrid</div><div style="font-size:12px;font-weight:700;text-transform:uppercase">Boys Trip</div></div>
+        <div class="d-ugc" style="flex-basis:170px"><div class="d-ugc-img"></div><div class="d-name">@catmomclub</div><div style="font-size:12px;font-weight:700;text-transform:uppercase">Pet Friends</div></div>
+      </div>
+    </div>
+
+    <div class="t-section" style="text-align:center">
+      <div style="font-size:12.5px;color:#4A473F;margin-bottom:14px">Excellent 4.9 out of 5 <span style="color:#41573B">★★★★★</span> Verified reviews</div>
+      <h2 class="d-h2" style="text-align:center;font-size:28px">The reviews are in.</h2>
+      <div class="t-reviews">
+        <div class="d-review"><p style="margin:0;font-size:14px">"The full-service print platform that makes custom apparel easy."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">2,400+ orders shipped</div></div></div>
+        <div class="d-review"><p style="margin:0;font-size:14px">"Fast, easy and the print quality is genuinely great."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">Marta S.</div></div></div>
+        <div class="d-review"><p style="margin:0;font-size:14px">"Ordered for the whole team — zero hassle."</p><div><span style="color:#41573B;font-size:13px">★★★★★</span><div style="font-size:13px;font-weight:600;margin-top:8px">Diogo P.</div></div></div>
+      </div>
+    </div>
+
+    <div class="d-newsletter" style="padding:48px 32px">
+      <h2 class="d-h2" style="text-align:center;font-size:28px">First to see every drop.</h2>
+      <div class="d-newsletter-form">
+        <input type="email" placeholder="Email address">
+        <button class="d-btn-primary" style="background:#1C1B19;color:#fff">Subscribe</button>
+      </div>
+    </div>
+
+    <footer class="d-footer" style="padding:40px 32px">
+      <div class="d-footer-inner" style="max-width:none">
+        <div class="d-footer-col"><div class="h">Company</div>Returns &amp; exchanges<br>Privacy policy<br>Shipping policy<br>Terms &amp; conditions</div>
+        <div class="d-footer-col"><div class="h">Client Services</div>My account<br>Track your order<br>Make a return</div>
+        <div class="d-footer-col"><div class="h">Contact us</div>Contact<br>FAQs<br>Live chat</div>
+      </div>
+      <div class="d-tagline" style="max-width:none;margin-top:28px">Web2Print ® Wear what you imagine</div>
+    </footer>
+  </div>
+
+  <!-- ================= MOBILE (Homepage Mobile.dc.html) ================= -->
+  <div class="mobile-view" style="padding:32px 16px 80px">
+    <div class="m-device">
+      <div class="m-header">
+        <button id="menuBtn" type="button" class="m-icon-btn" aria-label="Menu" aria-expanded="false">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
+        </button>
+        <a href="../Homepage%20Mobile.dc.html" style="font-size:16px;font-weight:600;letter-spacing:-0.01em;color:inherit">Web2Print</a>
+        <button id="cartBtn" type="button" class="m-icon-btn" aria-label="Cart">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 9.4a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg>
+        </button>
+      </div>
+      <div class="m-hero">
+        <div>
+          <h1>Your idea. Your piece.</h1>
+          <a href="#" onclick="return false;"><button class="m-btn-primary">Start Creating</button></a>
+        </div>
+      </div>
+
+      <div id="menuOverlay" class="m-menu-overlay">
+        <div class="m-menu-header">
+          <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">Menu</div>
+          <button id="menuClose" type="button" class="m-icon-btn" aria-label="Close menu">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <div class="m-menu-body">
+          <button id="shopRow" type="button" class="m-menu-row" aria-expanded="false" aria-controls="shopSubmenu">Shop <span class="m-menu-chevron">›</span></button>
+          <div id="shopSubmenu" class="m-submenu">
+            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Hoodies &amp; Sweats</a>
+            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Tees</a>
+            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Athleisure</a>
+            <a href="../Category%20Listing%20Mobile.dc.html" style="color:inherit">Accessories</a>
+          </div>
+          <a href="#" onclick="return false;" class="m-menu-link accent" style="display:block">Start Creating</a>
+          <a href="../Inspiration%20Mobile.dc.html" class="m-menu-link" style="display:block">Inspiration</a>
+          <a href="../For%20Teams%20Mobile.dc.html" class="m-menu-link" style="display:block">For Teams</a>
+          <a href="../Who%20We%20Are%20Mobile.dc.html" class="m-menu-link" style="display:block;border-bottom:none">Who We Are</a>
+          <div class="m-menu-footer">
+            <button class="m-icon-btn" aria-label="Account"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.3"/><path d="M5 20c1.2-3.8 4-5.6 7-5.6s5.8 1.8 7 5.6"/></svg></button>
+            <button class="m-icon-btn" aria-label="Wishlist"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.5-9.3C1.2 7.3 3 4.5 6.2 4.3c2-.1 3.6 1 5.8 3.3 2.2-2.3 3.8-3.4 5.8-3.3 3.2.2 5 3 3.7 6.4C19.5 15.4 12 20 12 20z"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="m-section">
+        <div class="m-label">Shop by category</div>
+        <div class="m-cats">
+          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Hoodies</div></a>
+          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Tees</div></a>
+          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Athleisure</div></a>
+          <a href="../Category%20Listing%20Mobile.dc.html"><div class="m-cat-circle"></div><div class="m-name">Accessories</div></a>
+        </div>
+        <div class="m-promo"><div class="t">GET €10 OFF</div><div class="s">On your first order, over €120.</div></div>
+        <div class="m-label">Best sellers</div>
+        <div class="m-products">
+          <div><div class="m-card-img"></div><div class="m-name">Regular Hoodie 300</div><div class="m-price">From 39,00€</div></div>
+          <div><div class="m-card-img"></div><div class="m-name">Classic Tee 180</div><div class="m-price">From 22,00€</div></div>
+        </div>
+        <div style="border-top:1px solid #EEEBE3;padding-top:20px">
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px">Newsletter</div>
+          <input class="m-input" type="email" placeholder="Email address">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="cartBackdrop" class="m-cart-backdrop"></div>
+  <div id="cartPanel" class="m-cart-panel" role="dialog" aria-label="Cart">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:600">0 items in your cart</div>
+      <button id="cartClose" type="button" class="m-icon-btn" aria-label="Close cart">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div style="border:1px dashed #DDD8CC;border-radius:14px;padding:28px;text-align:center">
+      <div style="font-size:13px;font-weight:600;margin-bottom:6px">Your cart is empty</div>
+      <a href="../Category%20Listing%20Mobile.dc.html"><button class="m-btn-primary" style="padding:0 22px">Keep shopping</button></a>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var html = document.documentElement;
+  var btnAuto = document.getElementById('btnAuto');
+  var btnMobile = document.getElementById('btnMobile');
+  var btnDesktop = document.getElementById('btnDesktop');
+  var widthReadout = document.getElementById('widthReadout');
+
+  function setActive(btn){
+    [btnAuto, btnMobile, btnDesktop].forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+  btnAuto.addEventListener('click', function(){ html.removeAttribute('data-mode'); setActive(btnAuto); });
+  btnMobile.addEventListener('click', function(){ html.setAttribute('data-mode','mobile'); setActive(btnMobile); });
+  btnDesktop.addEventListener('click', function(){ html.setAttribute('data-mode','desktop'); setActive(btnDesktop); });
+
+  function updateWidth(){ widthReadout.textContent = window.innerWidth; }
+  window.addEventListener('resize', updateWidth);
+  updateWidth();
+
+  // ---- Mobile menu (hamburger) ----
+  var menuBtn = document.getElementById('menuBtn');
+  var menuOverlay = document.getElementById('menuOverlay');
+  var menuClose = document.getElementById('menuClose');
+  function openMenu(){ menuOverlay.classList.add('open'); menuBtn.setAttribute('aria-expanded','true'); }
+  function closeMenu(){ menuOverlay.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }
+  menuBtn.addEventListener('click', openMenu);
+  menuClose.addEventListener('click', closeMenu);
+
+  // ---- Shop accordion ----
+  var shopRow = document.getElementById('shopRow');
+  var shopSubmenu = document.getElementById('shopSubmenu');
+  shopRow.addEventListener('click', function(){
+    var isOpen = shopRow.getAttribute('aria-expanded') === 'true';
+    shopRow.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    shopSubmenu.classList.toggle('open', !isOpen);
+  });
+  document.querySelectorAll('.m-menu-link, #shopSubmenu a').forEach(function(el){
+    el.addEventListener('click', closeMenu);
+  });
+
+  // ---- Cart panel (Mobile) ----
+  var cartPanel = document.getElementById('cartPanel');
+  var cartBackdrop = document.getElementById('cartBackdrop');
+  var cartClose = document.getElementById('cartClose');
+  function openCart(){ cartPanel.classList.add('open'); cartBackdrop.classList.add('open'); }
+  function closeCart(){ cartPanel.classList.remove('open'); cartBackdrop.classList.remove('open'); }
+  document.getElementById('cartBtn').addEventListener('click', openCart);
+  cartClose.addEventListener('click', closeCart);
+  cartBackdrop.addEventListener('click', closeCart);
+});
+</script>
+</body>
+</html>
