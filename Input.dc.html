@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#4A4FE4"/><text x="100" y="115" font-size="64" fill="#fff" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">W2P</text></svg></template>
+<input type="{{ type }}" value="{{ value }}" placeholder="{{ placeholder }}" onChange="{{ onChange }}" disabled="{{ disabled }}" style="width:100%;box-sizing:border-box;border:{{ border }};border-radius:8px;padding:14px 16px;font-size:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:{{ bg }};color:{{ ink }};outline:none" style-focus="border-color:#4A4FE4;outline:2px solid #4A4FE4;outline-offset:1px"/>
+<sc-if value="{{ hasMessage }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:12px;color:{{ messageColor }}"><span>{{ messageIcon }}</span><span>{{ message }}</span></div></sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:220,&quot;height&quot;:50},&quot;placeholder&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Email&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;type&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;text&quot;,&quot;options&quot;:[&quot;text&quot;,&quot;email&quot;,&quot;password&quot;,&quot;number&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;error&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;success&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;message&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;disabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onChange&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(e) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const disabled = !!this.props.disabled;
+    const error = !!this.props.error;
+    const success = !!this.props.success;
+    return {
+      type: this.props.type ?? 'text',
+      value: this.props.value ?? '',
+      placeholder: this.props.placeholder ?? '',
+      onChange: this.props.onChange || (() => {}),
+      disabled,
+      border: error ? '1px solid #C42B2B' : (success ? '1px solid #41573B' : (disabled ? '1px solid #E6E2D8' : '1px solid #DDD8CC')),
+      bg: disabled ? '#F3F0E9' : '#FFFFFF',
+      ink: disabled ? '#B8B2A5' : '#1C1B19',
+      hasMessage: !!this.props.message,
+      message: this.props.message ?? '',
+      messageColor: error ? '#C42B2B' : (success ? '#41573B' : '#8B867B'),
+      messageIcon: error ? '⚠' : (success ? '✓' : '')
+    };
+  }
+}
+
+</script>
+</body>
+</html>

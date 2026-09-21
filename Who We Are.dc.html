@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#4A4FE4"/><text x="100" y="115" font-size="64" fill="#fff" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">W2P</text></svg></template>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+</style>
+</helmet>
+<div data-screen-label="Who We Are" style="min-height:100vh">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
+      <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap"><a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
+        <span style="display:flex;align-items:center">
+          <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+            <input autoFocus="{{ true }}" value="{{ searchQ }}" onChange="{{ onSearchChange }}" onKeyDown="{{ onSearchKey }}" placeholder="Search…" style="width:150px;border:none;border-bottom:1px solid #1C1B19;background:transparent;font-size:13.5px;font-family:inherit;color:#1C1B19;outline:none;padding:2px;margin-right:6px"></input>
+          </sc-if>
+          <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
+        </span>
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+          <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4"><span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span></sc-for>
+            </div>
+          </sc-if>
+        </span>
+        <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
+          <sc-if value="{{ isGuestAcct }}" hint-placeholder-val="{{ true }}"><span onClick="{{ goAccount }}" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></span></sc-if>
+          <sc-if value="{{ isSignedIn }}" hint-placeholder-val="{{ false }}"><span onClick="{{ goDashboard }}" title="Account" style="cursor:pointer;width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initials }}</span></sc-if>
+          <sc-if value="{{ showAcctMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70"><a href="Dashboard.dc.html" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#1C1B19" style-hover="background:#F3F0E9">Dashboard</a><span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span></div></sc-if>
+        </span>
+        <span onClick="{{ goWishlist }}" title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <span onClick="{{ toggleCart }}" title="Cart" style="color:inherit;position:relative;cursor:pointer;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-11px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">1</span></span>
+      </div>
+    </div>
+  </nav>
+  <!-- AUTH DRAWER -->
+  <sc-if value="{{ authOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAuth }}" style="position:fixed;inset:0;z-index:92;background:rgba(20,20,18,0.18);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100vw;z-index:93;background:linear-gradient(155deg,rgba(255,255,255,0.32) 0%,rgba(255,255,255,0.08) 18%,rgba(238,235,228,0.42) 45%,rgba(238,235,228,0.5) 100%);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(28,27,25,0.22),inset 1px 0 0 rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.6);color:#1C1B19;overflow-y:auto">
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,0.35),transparent 55%)"></div>
+      <div style="padding:26px 26px 0;display:flex;justify-content:flex-end">
+        <span onClick="{{ closeAuth }}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px" style-hover="background:rgba(255,255,255,0.85)">✕</span>
+      </div>
+      <div style="padding:6px 26px 26px">
+        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:36px;line-height:1.1;letter-spacing:-0.01em">Continue creating.</h1>
+        <p style="margin:0 0 26px;font-size:14.5px;color:#4A473F">Your designs are waiting.</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <input type="email" placeholder="Email" value="{{ authEmail }}" onChange="{{ setAuthEmail }}" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <input type="password" placeholder="Password" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <div style="display:flex;justify-content:flex-end"><span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Forgot password?</span></div>
+          <button onClick="{{ authSignIn }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:17px 0;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Sign in</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;margin:24px 0"><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span><span style="font-size:11.5px;color:#8B867B">or</span><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Google</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Apple</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Microsoft <span style="color:#8B867B;font-size:12px">— Business</span></button>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px">
+          <span>New here? <span style="font-weight:500;color:#4A4FE4;cursor:pointer">Create account</span></span>
+          <span onClick="{{ closeAuth }}" style="color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Continue as guest →</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+
+  <!-- HERO -->
+  <section style="position:relative;height:88vh;min-height:560px;display:flex;align-items:flex-end;overflow:hidden;background:#1C1B19">
+    <div style="position:absolute;inset:0"><video ref="{{ heroVideoRef }}" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" style="width:100%;height:100%;object-fit:cover;display:block"></video></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,18,0.1) 30%,rgba(20,20,18,0.68) 100%);pointer-events:none"></div>
+    <div style="position:relative;z-index:1;max-width:1440px;margin:0 auto;width:100%;box-sizing:border-box;padding:0 48px 72px;color:#fff">
+      <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:18px">Who we are</div>
+      <h1 style="margin:0 0 20px;max-width:760px;font-family:inherit;font-weight:700;font-size:clamp(38px,5.5vw,64px);line-height:1.08;letter-spacing:-0.01em">We turn ideas into something you can wear.</h1>
+      <p style="margin:0 0 32px;max-width:560px;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.85)">From a photo, a memory, a sentence or simply an idea in your head — we make it easier to turn something personal into something real.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="Studio%20Desktop.dc.html"><button style="background:#fff;color:#1C1B19;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#F3F0E9">Start Creating</button></a>
+        <a href="Homepage.dc.html#how-it-works"><button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;padding:15px 32px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#fff">See How It Works</button></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY WE EXIST -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center">
+      <div>
+        <h2 style="margin:0 0 28px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);line-height:1.15;letter-spacing:-0.01em">Most ideas never leave the screen. We wanted to change that.</h2>
+        <p style="margin:0 0 22px;font-size:17px;line-height:1.65;color:#1C1B19">You might have a photo you love.<br>An inside joke only your friends understand.<br>A memory you want to keep.<br>Or an idea that exists only in your head.</p>
+        <p style="margin:0 0 22px;font-size:17px;line-height:1.65;color:#1C1B19">Turning that into something you can actually wear shouldn't require design skills, complicated software or a conversation with a printing company.</p>
+        <p style="margin:0;font-size:17px;line-height:1.65;color:#1C1B19;font-weight:600">That's why we created a simpler way to go from idea to piece.</p>
+      </div>
+      <div style="aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:#EFEBE2"><image-slot id="wwa-why" src="{{ imgWhy }}" shape="rect" placeholder="Lifestyle — someone wearing a personal design"></image-slot></div>
+    </div>
+  </section>
+
+  <!-- FROM SCREEN TO GARMENT -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
+    <h2 style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-0.01em">From screen to garment.</h2>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px">
+      <sc-for list="{{ processSteps }}" as="p" hint-placeholder-count="5">
+        <div>
+          <div style="aspect-ratio:4/5;background:#EFEBE2;border-radius:4px;overflow:hidden;margin-bottom:14px"><image-slot id="{{ p.slot }}" src="{{ p.img }}" shape="rect" placeholder="{{ p.ph }}"></image-slot></div>
+          <div style="font-size:11px;font-weight:600;color:#8B867B;margin-bottom:6px">{{ p.num }} — {{ p.title }}</div>
+          <p style="margin:0;font-size:12.5px;line-height:1.5;color:#1C1B19">{{ p.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- TECHNOLOGY + HUMAN -->
+  <section style="max-width:1440px;margin:96px auto 0;padding:0 48px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;align-items:stretch">
+    <div style="background:#F3F0E9;padding:64px;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#8B867B;margin-bottom:18px">The Studio</div>
+      <h2 style="margin:0 0 20px;font-family:inherit;font-weight:700;font-size:clamp(26px,2.8vw,34px);line-height:1.2;letter-spacing:-0.01em">Technology when it helps. Humans where it matters.</h2>
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:#4A473F">We use technology to make creating easier — not to take the creative decision away from you.</p>
+      <p style="margin:0;font-size:15.5px;line-height:1.6;color:#4A473F">Our tools can help you start, improve an image or explore an idea. But you're always in control of what gets made.</p>
+    </div>
+    <div style="position:relative;background:#EFEBE2;min-height:420px"><image-slot id="wwa-studio" src="{{ imgStudio }}" shape="rect" placeholder="Studio interface / editing a design"></image-slot></div>
+  </section>
+  <section style="max-width:1440px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0">
+    <div style="position:relative;background:#EFEBE2;min-height:420px"><image-slot id="wwa-human" src="{{ imgHuman }}" shape="rect" placeholder="Real person in production — printing or quality check"></image-slot></div>
+    <div style="background:#1C1B19;color:#fff;padding:64px;display:flex;flex-direction:column;justify-content:center">
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.85)">And when your design leaves the screen, real people take over.</p>
+      <p style="margin:0 0 16px;font-size:15.5px;line-height:1.6;color:rgba(255,255,255,0.85)">Production. Quality control. Packing. Support.</p>
+      <p style="margin:0;font-size:16px;line-height:1.6;font-weight:600">Digital where it makes things easier. Human where it makes things better.</p>
+    </div>
+  </section>
+
+  <!-- FROM SCREEN TO GARMENT -->
+  <!-- WHAT MATTERS TO US -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 0">
+    <h2 style="margin:0 0 48px;font-family:inherit;font-weight:700;font-size:clamp(30px,3.6vw,44px);letter-spacing:-0.01em">What matters to us.</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:56px 48px;max-width:1040px">
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">No surprises.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">We'd rather tell you what to expect than promise something we can't deliver. From the design to the final piece, clarity matters.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Good enough isn't enough.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">The garment matters as much as what's printed on it. A great idea deserves a piece you'd actually want to wear.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Easy doesn't mean impersonal.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">Technology should remove friction, not human connection. When you need help, there should still be a person on the other side.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px;font-family:inherit;font-weight:700;font-size:20px">Always getting better.</h3>
+        <p style="margin:0;font-size:15.5px;line-height:1.65;color:#4A473F">We test, learn and improve. From the Studio to the products and the way we produce them, there's always a better version to build.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO MOMENT -->
+  <section style="background:#1C1B19;color:#fff;padding:120px 48px;text-align:center;margin-top:96px">
+    <p style="margin:0 0 40px;font-family:inherit;font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1.35;letter-spacing:-0.01em">Some things are too personal to come off a shelf.</p>
+    <div style="font-size:clamp(20px,2.2vw,28px);line-height:1.7;color:rgba(255,255,255,0.9)">
+      A birthday. • A friendship. • A stupid joke.<br>A photograph. • A team. • A memory.<br>An idea that only makes sense to you.
+    </div>
+    <p style="margin:40px 0 0;font-family:inherit;font-weight:700;font-size:clamp(20px,2.2vw,28px)">That's exactly the point.</p>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 120px;text-align:center">
+    <h2 style="margin:0 0 20px;font-family:inherit;font-weight:700;font-size:clamp(30px,4vw,48px);letter-spacing:-0.01em">Enough about us. What do you want to make?</h2>
+    <p style="margin:0 0 40px;max-width:520px;margin-left:auto;margin-right:auto;font-size:16px;line-height:1.6;color:#4A473F">Your idea can start with a photo, a sentence or nothing more than a thought.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="Studio%20Desktop.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Start Creating</button></a>
+      <a href="Shop%20All.dc.html"><button style="background:transparent;color:#1C1B19;border:1px solid #DDD8CC;border-radius:999px;padding:15px 32px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Explore Products</button></a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#FBFAF8;color:#1C1B19;padding:56px 0 0;position:relative;overflow:hidden;border-top:1px solid #E6E2D8">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Company <sup style="font-size:10px;font-weight:400;color:#8B867B">6</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Company.dc.html#returns" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Returns &amp; exchanges</a>
+          <a href="Company.dc.html#privacy" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Privacy policy</a>
+          <a href="Company.dc.html#shipping" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Shipping policy</a>
+          <a href="Company.dc.html#terms" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Terms &amp; conditions</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Client Services <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Dashboard.dc.html" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">My account</a>
+          <a href="Dashboard.dc.html#track" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Track your order</a>
+          <a href="Dashboard.dc.html#return" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Make a return</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Contact us <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Talk%20to%20us.dc.html?tab=contact" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Contact</a>
+          <a href="Talk%20to%20us.dc.html?tab=faqs" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">FAQs</a>
+          <a href="Talk%20to%20us.dc.html?tab=chat" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Live chat</a>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:2px">
+          <a href="https://facebook.com/web2print" target="_blank" rel="noopener" title="Facebook" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.2-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5V21h3.1z"></path></svg></a>
+          <a href="https://instagram.com/web2print" target="_blank" rel="noopener" title="Instagram" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="https://tiktok.com/@web2print" target="_blank" rel="noopener" title="TikTok" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 4v9.4a3.4 3.4 0 1 1-3-3.38"></path><path d="M14 5.6c.7 1.7 2.2 2.8 4 2.9"></path></svg></a>
+        </div>
+      </div>
+    </div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:40px;display:flex;justify-content:center;line-height:0.9;font-size:19.5vw;font-weight:700;letter-spacing:-0.03em;color:#1C1B19;opacity:0.06;filter:blur(6px);user-select:none;pointer-events:none;white-space:nowrap;z-index:0">Web2Print</div>
+    <div style="margin:36px 0 0;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+    </div>
+    <div style="height:36px"></div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}}">
+class Component extends DCLogic {
+  state = { searchOpen: false, searchQ: '', langOpen: false, lang: 'EN' };
+  static FALLBACK = {
+    VID: 'https://assets.mixkit.co/videos/1163/1163-720.mp4',
+    T3: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=35&w=560&auto=format&fit=crop',
+    T5: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=35&w=560&auto=format&fit=crop',
+    T6: 'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?q=35&w=560&auto=format&fit=crop',
+    T7: 'https://images.unsplash.com/photo-1651761179569-4ba2aa054997?q=35&w=560&auto=format&fit=crop',
+    T8: 'https://images.unsplash.com/photo-1627225924765-552d49cf47ad?q=35&w=560&auto=format&fit=crop',
+    T9: 'https://images.unsplash.com/photo-1521577352947-9bb58764b69a?q=35&w=560&auto=format&fit=crop',
+    H1: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=35&w=560&auto=format&fit=crop',
+    H4: 'https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?q=35&w=560&auto=format&fit=crop',
+  };
+  res(k) { return (window.__resources && window.__resources[k]) || Component.FALLBACK[k]; }
+  renderVals() {
+    const { searchOpen, searchQ, langOpen, lang } = this.state;
+    return {
+      heroVideoRef: (el) => { if (!el) return; const u = this.res('VID'); if (el.getAttribute('src') !== u) { el.src = u; el.play && el.play().catch(() => {}); } },
+      imgWhy: this.res('T3'), imgStudio: this.res('T4') || this.res('T3'), imgHuman: this.res('H1'),
+      toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
+      searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
+      onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
+      openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen: this.state.shopOpen,
+      goAccount: () => { if (window.localStorage && window.localStorage.getItem('w2p_signed_in')) { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; } else { this.setState({ authOpen: true }); } },
+      authOpen: this.state.authOpen, closeAuth: () => this.setState({ authOpen: false }),
+      authEmail: this.state.authEmail || '', setAuthEmail: (e) => this.setState({ authEmail: e.target.value }),
+      authSignIn: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} this.setState({ authOpen: false }); },
+      goWishlist: () => { window.__sectionHint = 'wishlist'; if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html#wishlist'; },
+      isSignedIn: !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')), isGuestAcct: !(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      initials: (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT',
+      acctMenuOpen: !!this._acctOpen, showAcctMenu: !!this._acctOpen && !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      openAcctMenu: () => { this._acctOpen = true; this.forceUpdate(); },
+      closeAcctMenu: () => { this._acctOpen = false; this.forceUpdate(); },
+      goDashboard: () => { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; },
+      logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
+      langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
+      toggleCart: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
+      processSteps: [
+        { slot: 'wwa-step-1', num: '01', title: 'Your idea', desc: 'Your design starts with you.', ph: 'Studio / creation', img: this.res('T5') },
+        { slot: 'wwa-step-2', num: '02', title: 'Ready to print', desc: 'We check that your design is ready to become something physical.', ph: 'File preparation', img: this.res('T6') },
+        { slot: 'wwa-step-3', num: '03', title: 'Made by us', desc: 'Your piece moves into production.', ph: 'DTF production', img: this.res('T7') },
+        { slot: 'wwa-step-4', num: '04', title: 'Checked by hand', desc: 'Before it leaves us, the finished piece goes through quality control.', ph: 'Quality control', img: this.res('T8') },
+        { slot: 'wwa-step-5', num: '05', title: 'Ready for you', desc: 'Packed and sent on its way.', ph: 'Packaging / final piece', img: this.res('T9') },
+      ],
+    };
+  }
+}
+
+</script>
+</body>
+</html>

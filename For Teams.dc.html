@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#4A4FE4"/><text x="100" y="115" font-size="64" fill="#fff" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">W2P</text></svg></template>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1C1B19;text-decoration:none}a:hover{color:#4A4FE4}
+input,select,textarea{font-family:inherit}
+</style>
+</helmet>
+<div data-screen-label="For Teams" style="min-height:100vh">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:50;background:rgba(251,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #E6E2D8">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:68px;display:flex;align-items:center;gap:28px">
+      <a href="Homepage.dc.html" style="font-size:18px;font-weight:600;letter-spacing:-0.01em;color:#1C1B19;flex:none">Web2Print</a>
+      <div style="display:flex;gap:clamp(10px,1.1vw,18px);font-size:13px;font-weight:500;color:#1C1B19;white-space:nowrap"><a href="Studio%20Desktop.dc.html" style="color:#4A4FE4;font-weight:700">Start Creating</a>
+        <span onMouseEnter="{{ openShop }}" onMouseLeave="{{ closeShop }}" style="position:relative;cursor:pointer;padding-bottom:24px;margin-bottom:-24px"><span style="display:flex;align-items:center;gap:4px">Shop<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg></span><sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:22px;left:-14px;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:12px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:8px;display:flex;flex-direction:column;gap:2px;min-width:190px;z-index:60"><a href="Shop%20All.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Shop All</a><a href="Tees.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Tees</a><a href="Hoodies and Sweats.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Hoodies &amp; Sweats</a><a href="Athleisure.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Athleisure</a><a href="Accessories.dc.html" style="padding:9px 14px;border-radius:8px;font-size:13px;color:#1C1B19" style-hover="background:#F3F0E9">Accessories</a></div></sc-if></span><a href="Inspiration.dc.html">Inspiration</a><a href="For%20Teams.dc.html">For Teams</a><a href="Who We Are.dc.html">Who we are</a>
+      </div>
+      <div style="display:flex;gap:18px;justify-content:flex-end;color:#1C1B19;align-items:center;margin-left:auto">
+        <span style="display:flex;align-items:center">
+          <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+            <input autoFocus="{{ true }}" value="{{ searchQ }}" onChange="{{ onSearchChange }}" onKeyDown="{{ onSearchKey }}" placeholder="Search…" style="width:150px;border:none;border-bottom:1px solid #1C1B19;background:transparent;font-size:13.5px;font-family:inherit;color:#1C1B19;outline:none;padding:2px;margin-right:6px"></input>
+          </sc-if>
+          <span onClick="{{ toggleSearch }}" title="Search" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5L21 21"></path></svg></span>
+        </span>
+        <span onMouseEnter="{{ openLang }}" onMouseLeave="{{ closeLang }}" title="Language" style="cursor:pointer;color:inherit;display:flex;align-items:center;position:relative;padding-bottom:32px;margin-bottom:-32px">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.4"></circle><path d="M3.6 12h16.8M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4S14.2 18.1 12 20.4c-2.2-2.3-3.4-5.3-3.4-8.4S9.8 5.9 12 3.6z"></path></svg>
+          <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:8px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:74px;z-index:70">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="4"><span onClick="{{ l.pick }}" style="padding:8px 12px;border-radius:5px;font-size:12.5px;font-weight:{{ l.weight }};color:#1C1B19;cursor:pointer" style-hover="background:#F3F0E9">{{ l.code }}</span></sc-for>
+            </div>
+          </sc-if>
+        </span>
+        <span onMouseEnter="{{ openAcctMenu }}" onMouseLeave="{{ closeAcctMenu }}" style="position:relative;display:flex;align-items:center;padding-bottom:32px;margin-bottom:-32px">
+          <sc-if value="{{ isGuestAcct }}" hint-placeholder-val="{{ true }}"><span onClick="{{ goAccount }}" title="Account" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.8"></circle><path d="M4.8 20c0-3.6 3.2-5.6 7.2-5.6s7.2 2 7.2 5.6"></path></svg></span></sc-if>
+          <sc-if value="{{ isSignedIn }}" hint-placeholder-val="{{ false }}"><span onClick="{{ goDashboard }}" title="Account" style="cursor:pointer;width:26px;height:26px;border-radius:50%;background:#3E4A5C;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center">{{ initials }}</span></sc-if>
+          <sc-if value="{{ showAcctMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:30px;left:0;background:#FBFAF8;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 12px 32px rgba(28,27,25,0.14);padding:6px;display:flex;flex-direction:column;min-width:130px;z-index:70"><a href="Dashboard.dc.html" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#1C1B19" style-hover="background:#F3F0E9">Dashboard</a><span onClick="{{ logout }}" style="padding:9px 12px;border-radius:6px;font-size:12.5px;color:#A34B33;cursor:pointer" style-hover="background:#F7EBE7">Log out</span></div></sc-if>
+        </span>
+        <span onClick="{{ goWishlist }}" title="Wishlist" style="cursor:pointer;color:inherit;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.3-4.4-7.3-9.2A4.1 4.1 0 0 1 12 8.2a4.1 4.1 0 0 1 7.3 2.6C19.3 15.6 12 20 12 20z"></path></svg></span>
+        <span onClick="{{ toggleCart }}" title="Cart" style="color:inherit;position:relative;cursor:pointer;display:flex;align-items:center"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8h13l-1.1 11.2a1.6 1.6 0 0 1-1.6 1.4H8.2a1.6 1.6 0 0 1-1.6-1.4L5.5 8z"></path><path d="M9 8V6.4A3 3 0 0 1 12 3.4a3 3 0 0 1 3 3V8"></path></svg><span style="position:absolute;top:-7px;right:-11px;background:#4A4FE4;color:#fff;border-radius:999px;font-size:10px;font-weight:600;padding:1px 6px">1</span></span>
+      </div>
+    </div>
+  </nav>
+  <!-- AUTH DRAWER -->
+  <sc-if value="{{ authOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAuth }}" style="position:fixed;inset:0;z-index:92;background:rgba(20,20,18,0.18);backdrop-filter:blur(3px)"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:460px;max-width:100vw;z-index:93;background:linear-gradient(155deg,rgba(255,255,255,0.32) 0%,rgba(255,255,255,0.08) 18%,rgba(238,235,228,0.42) 45%,rgba(238,235,228,0.5) 100%);backdrop-filter:blur(28px) saturate(1.8);-webkit-backdrop-filter:blur(28px) saturate(1.8);display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(28,27,25,0.22),inset 1px 0 0 rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.6);color:#1C1B19;overflow-y:auto">
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,0.35),transparent 55%)"></div>
+      <div style="padding:26px 26px 0;display:flex;justify-content:flex-end">
+        <span onClick="{{ closeAuth }}" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px" style-hover="background:rgba(255,255,255,0.85)">✕</span>
+      </div>
+      <div style="padding:6px 26px 26px">
+        <h1 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:36px;line-height:1.1;letter-spacing:-0.01em">Continue creating.</h1>
+        <p style="margin:0 0 26px;font-size:14.5px;color:#4A473F">Your designs are waiting.</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <input type="email" placeholder="Email" value="{{ authEmail }}" onChange="{{ setAuthEmail }}" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <input type="password" placeholder="Password" style="width:100%;box-sizing:border-box;border:1px solid rgba(28,27,25,0.15);border-radius:12px;padding:16px 18px;font-size:14.5px;font-family:inherit;background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);outline:none">
+          <div style="display:flex;justify-content:flex-end"><span style="font-size:12.5px;color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Forgot password?</span></div>
+          <button onClick="{{ authSignIn }}" style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:17px 0;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:#3A3833">Sign in</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;margin:24px 0"><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span><span style="font-size:11.5px;color:#8B867B">or</span><span style="flex:1;height:1px;background:rgba(28,27,25,0.12)"></span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Google</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Apple</button>
+          <button onClick="{{ authSignIn }}" style="background:rgba(255,255,255,0.6);backdrop-filter:blur(6px);border:1px solid rgba(28,27,25,0.15);border-radius:999px;padding:14px 0;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="background:rgba(255,255,255,0.85)">Continue with Microsoft <span style="color:#8B867B;font-size:12px">— Business</span></button>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:26px;font-size:13.5px">
+          <span>New here? <span style="font-weight:500;color:#4A4FE4;cursor:pointer">Create account</span></span>
+          <span onClick="{{ closeAuth }}" style="color:#8B867B;cursor:pointer" style-hover="color:#1C1B19">Continue as guest →</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+
+  <!-- HERO -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 56px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center">
+    <div>
+      <div style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#8B867B;margin-bottom:18px">For teams &amp; business</div>
+      <h1 style="margin:0 0 20px;font-family:inherit;font-weight:700;font-size:clamp(36px,5vw,54px);line-height:1.08;letter-spacing:-0.01em">Custom merch for your whole team.</h1>
+      <p style="margin:0 0 32px;font-size:16px;line-height:1.6;color:#4A473F;max-width:480px">Orders of 50 pieces or more get volume pricing, a dedicated quote, and the option to mix different products in one run — tees, hoodies and caps together.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="Studio%20Desktop.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:0.02em" style-hover="background:#3A3833">Start creating</button></a>
+        <a href="Inspiration.dc.html"><button style="background:transparent;color:#1C1B19;border:1px solid #DDD8CC;border-radius:999px;padding:15px 32px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer" style-hover="border-color:#1C1B19">Need inspiration?</button></a>
+      </div>
+    </div>
+    <div style="aspect-ratio:4/3;background:#EFEBE2;border-radius:4px;overflow:hidden">
+      <image-slot id="teams-hero" shape="rect" placeholder="Team wearing matching printed hoodies"></image-slot>
+    </div>
+  </section>
+
+  <!-- VOLUME PRICING -->
+  <section style="max-width:1440px;margin:0 auto;padding:64px 48px 0">
+    <h2 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:28px;letter-spacing:-0.01em">Volume pricing</h2>
+    <p style="margin:0 0 32px;font-size:14px;color:#8B867B">Per-piece price drops automatically as quantity grows. Final price depends on product mix and print method.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+      <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="5">
+        <div style="border:1px solid {{ t.border }};background:{{ t.bg }};border-radius:12px;padding:24px 20px;text-align:center">
+          <div style="font-size:13px;font-weight:600;color:#8B867B;margin-bottom:10px">{{ t.qty }} pieces</div>
+          <div style="font-family:inherit;font-weight:700;font-size:26px">-{{ t.discount }}%</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section style="max-width:1440px;margin:0 auto;padding:80px 48px 0">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px">
+      <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+        <div>
+          <h3 style="margin:0 0 8px;font-family:inherit;font-weight:700;font-size:17px">{{ f.title }}</h3>
+          <p style="margin:0;font-size:13.5px;line-height:1.6;color:#4A473F">{{ f.desc }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- QUOTE FORM -->
+  <section ref="{{ formRef }}" style="max-width:1440px;margin:96px auto 0;padding:0 48px">
+    <div style="border:1px solid #E6E2D8;background:#fff;border-radius:16px;padding:44px">
+      <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <h2 style="margin:0;font-family:inherit;font-weight:700;font-size:26px">Check your quote</h2>
+            <span title="Add each piece and print areas to see live pricing before you talk to us." style="width:18px;height:18px;border-radius:50%;border:1px solid #8B867B;color:#8B867B;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:default">?</span>
+          </div>
+          <p style="margin:0 0 24px;font-size:14px;color:#8B867B">Add all the pieces you want. We'll get back to you with a final price and lead time.</p>
+
+          <div style="display:grid;grid-template-columns:48px 1.3fr 1fr 70px 90px 100px 24px;gap:14px;padding:0 20px;margin-bottom:8px">
+            <span></span>
+            <span style="font-size:11.5px;font-weight:600;color:#8B867B">Product</span>
+            <span style="font-size:11.5px;font-weight:600;color:#8B867B">Print Area</span>
+            <span style="font-size:11.5px;font-weight:600;color:#8B867B;text-align:center">Quantity</span>
+            <span style="font-size:11.5px;font-weight:600;color:#8B867B;text-align:right">Unit price</span>
+            <span style="font-size:11.5px;font-weight:600;color:#8B867B;text-align:right">Subtotal</span>
+            <span></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:10px">
+            <sc-for list="{{ lineItems }}" as="li" hint-placeholder-count="1">
+              <div style="padding:4px 20px">
+                <div style="display:grid;grid-template-columns:48px 1.3fr 1fr 70px 90px 100px 24px;gap:14px;align-items:start">
+                  <div style="width:48px;height:48px;border-radius:8px;overflow:hidden;flex:none;background:#EFEBE2"><image-slot id="{{ li.imgSlot }}" shape="rect" placeholder="{{ li.product }}"></image-slot></div>
+                  <div style="position:relative">
+                    <span onClick="{{ li.toggleProductMenu }}" style="display:flex;justify-content:space-between;align-items:center;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;cursor:pointer;background:#fff">{{ li.product }}<span style="color:#8B867B;font-size:11px">▾</span></span>
+                    <sc-if value="{{ li.productMenuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ li.closeProductMenu }}" style="position:fixed;inset:0;z-index:9"></div>
+                      <div style="position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#fff;border:1px solid #EEEBE3;border-radius:14px;box-shadow:0 16px 48px rgba(28,27,25,0.16);padding:8px;z-index:10">
+                        <sc-for list="{{ li.productOptions }}" as="po" hint-placeholder-count="6">
+                          <div onClick="{{ po.pick }}" style="padding:10px 14px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:{{ po.weight }}" style-hover="background:#F5F3ED">{{ po.label }}</div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <div style="position:relative">
+                    <span onClick="{{ li.toggleAreaMenu }}" style="display:flex;justify-content:space-between;align-items:center;border:1px solid #DDD8CC;border-radius:8px;padding:12px 14px;font-size:13.5px;cursor:pointer;background:#fff">{{ li.areaLabel }}<span style="color:#8B867B;font-size:11px">▾</span></span>
+                    <sc-if value="{{ li.areaMenuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ li.closeAreaMenu }}" style="position:fixed;inset:0;z-index:9"></div>
+                      <div style="position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#fff;border:1px solid #EEEBE3;border-radius:14px;box-shadow:0 16px 48px rgba(28,27,25,0.16);padding:8px;z-index:10">
+                        <sc-for list="{{ li.areaOptions }}" as="ao" hint-placeholder-count="3">
+                          <div onClick="{{ ao.toggle }}" style="display:flex;align-items:center;gap:9px;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:13.5px" style-hover="background:#F5F3ED">
+                            <span style="width:15px;height:15px;border-radius:4px;border:1.5px solid {{ ao.boxBorder }};background:{{ ao.boxBg }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;flex-shrink:0">{{ ao.check }}</span>{{ ao.label }}
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <input type="number" min="1" value="{{ li.qty }}" onChange="{{ li.setQty }}" style="width:100%;box-sizing:border-box;border:1px solid #DDD8CC;border-radius:8px;padding:12px 10px;font-size:13.5px;text-align:center;outline:none">
+                  <div style="padding:12px 0;font-size:13.5px;color:#4A473F;text-align:right">{{ li.unitPrice }}</div>
+                  <div style="padding:12px 0;font-size:13.5px;font-weight:600;text-align:right">{{ li.lineSubtotal }}</div>
+                  <span onClick="{{ li.remove }}" style="cursor:pointer;color:#8B867B;padding:12px 0;font-size:16px;text-align:center" style-hover="color:#A34B33">✕</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <span onClick="{{ addLineItem }}" style="font-size:13px;color:#4A4FE4;font-weight:500;cursor:pointer;display:inline-block;margin-bottom:22px">+ Add another item</span>
+
+          <div style="border-top:1px solid #EEEBE3;padding-top:16px;margin-bottom:28px;display:flex;flex-direction:column;gap:8px;max-width:260px;margin-left:auto">
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>Subtotal</span><span>{{ quoteSubtotal }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A473F"><span>VAT</span><span>{{ quoteVat }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;border-top:1px solid #EEEBE3;padding-top:8px"><span>TOTAL</span><span>{{ quoteTotal }}</span></div>
+          </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="max-width:1440px;margin:0 auto;padding:96px 48px 120px;text-align:center">
+    <h2 style="margin:0 0 24px;font-family:inherit;font-weight:700;font-size:clamp(28px,3.5vw,40px);letter-spacing:-0.01em">Ready? Let's do this together.</h2>
+    <a href="Studio%20Desktop.dc.html"><button style="background:#1C1B19;color:#fff;border:none;border-radius:999px;padding:16px 32px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:0.02em" style-hover="background:#3A3833">Start creating</button></a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#FBFAF8;color:#1C1B19;padding:56px 0 0;position:relative;overflow:hidden;border-top:1px solid #E6E2D8">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Company <sup style="font-size:10px;font-weight:400;color:#8B867B">6</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Company.dc.html#returns" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Returns &amp; exchanges</a>
+          <a href="Company.dc.html#privacy" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Privacy policy</a>
+          <a href="Company.dc.html#shipping" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Shipping policy</a>
+          <a href="Company.dc.html#terms" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Terms &amp; conditions</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Client Services <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Dashboard.dc.html" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">My account</a>
+          <a href="Dashboard.dc.html#track" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Track your order</a>
+          <a href="Dashboard.dc.html#return" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Make a return</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:20px">Contact us <sup style="font-size:10px;font-weight:400;color:#8B867B">3</sup></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <a href="Talk%20to%20us.dc.html?tab=contact" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Contact</a>
+          <a href="Talk%20to%20us.dc.html?tab=faqs" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">FAQs</a>
+          <a href="Talk%20to%20us.dc.html?tab=chat" style="font-size:13.5px;color:#4A473F" style-hover="color:#1C1B19">Live chat</a>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:2px">
+          <a href="https://facebook.com/web2print" target="_blank" rel="noopener" title="Facebook" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.2h2.5l.4-2.9h-2.9V9.1c0-.8.2-1.4 1.4-1.4h1.6V5.1c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2h-2.5v2.9h2.5V21h3.1z"></path></svg></a>
+          <a href="https://instagram.com/web2print" target="_blank" rel="noopener" title="Instagram" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+          <a href="https://tiktok.com/@web2print" target="_blank" rel="noopener" title="TikTok" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#1C1B19" style-hover="color:#4A4FE4"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 4v9.4a3.4 3.4 0 1 1-3-3.38"></path><path d="M14 5.6c.7 1.7 2.2 2.8 4 2.9"></path></svg></a>
+        </div>
+      </div>
+    </div>
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;top:40px;display:flex;justify-content:center;line-height:0.9;font-size:19.5vw;font-weight:700;letter-spacing:-0.03em;color:#1C1B19;opacity:0.06;filter:blur(6px);user-select:none;pointer-events:none;white-space:nowrap;z-index:0">Web2Print</div>
+    <div style="margin:36px 0 0;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;position:relative;z-index:1;padding-left:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)));padding-right:min(calc(20vw + 17.6px),max(24px,calc((100vw - 900px)/2)))">
+      <div style="font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:#4A473F">Web2Print ® Wear what you imagine</div>
+    </div>
+    <div style="height:36px"></div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  static PRODUCTS = ['Heavyweight Tee', 'Oversized Hoodie', 'Crewneck Sweatshirt', 'Structured Cap', 'Tote Bag', 'Sports Bra'];
+  static PRICES = { 'Heavyweight Tee': 24, 'Oversized Hoodie': 44, 'Crewneck Sweatshirt': 35, 'Structured Cap': 18, 'Tote Bag': 12, 'Sports Bra': 28 };
+  static DESCRIPTIONS = {
+    'Heavyweight Tee': '240 gsm combed cotton, boxy fit, built to hold big prints.',
+    'Oversized Hoodie': '330 gsm brushed cotton, dropped shoulders, roomy fit.',
+    'Crewneck Sweatshirt': '300 gsm brushed cotton, ribbed cuffs and hem, regular fit.',
+    'Structured Cap': 'Adjustable metal closure, reinforced front panel, one size.',
+    'Tote Bag': 'Heavyweight canvas, reinforced handles, one size.',
+    'Sports Bra': 'Compressive four-way stretch, medium support, true to size.',
+  };
+  static PRINT_AREAS = ['Front', 'Back', 'Sleeves'];
+  static LINE_ID = 0;
+  state = {
+    searchOpen: false, searchQ: '', langOpen: false, lang: 'EN', shopOpen: false,
+    lineItems: [{ id: 0, product: 'Heavyweight Tee', areas: ['Front'], qty: 50, areaMenuOpen: false, productMenuOpen: false }],
+  };
+  renderVals() {
+    const { searchOpen, searchQ, langOpen, lang, shopOpen, lineItems } = this.state;
+    return {
+      toggleSearch: () => this.setState(s => ({ searchOpen: !s.searchOpen })),
+      searchOpen, searchQ, onSearchChange: (e) => this.setState({ searchQ: e.target.value }),
+      onSearchKey: (e) => { if (e.key === 'Enter') { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; } },
+      openLang: () => this.setState({ langOpen: true }), closeLang: () => this.setState({ langOpen: false }),
+      openShop: () => this.setState({ shopOpen: true }), closeShop: () => this.setState({ shopOpen: false }), shopOpen,
+      goAccount: () => { if (window.localStorage && window.localStorage.getItem('w2p_signed_in')) { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; } else { this.setState({ authOpen: true }); } },
+      authOpen: this.state.authOpen, closeAuth: () => this.setState({ authOpen: false }),
+      authEmail: this.state.authEmail || '', setAuthEmail: (e) => this.setState({ authEmail: e.target.value }),
+      authSignIn: () => { try { window.localStorage.setItem('w2p_signed_in', '1'); window.localStorage.setItem('w2p_user_initials', 'JT'); } catch (e) {} this.setState({ authOpen: false }); },
+      goWishlist: () => { window.__sectionHint = 'wishlist'; if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html#wishlist'; },
+      isSignedIn: !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')), isGuestAcct: !(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      initials: (window.localStorage && window.localStorage.getItem('w2p_user_initials')) || 'JT',
+      acctMenuOpen: !!this._acctOpen, showAcctMenu: !!this._acctOpen && !!(window.localStorage && window.localStorage.getItem('w2p_signed_in')),
+      openAcctMenu: () => { this._acctOpen = true; this.forceUpdate(); },
+      closeAcctMenu: () => { this._acctOpen = false; this.forceUpdate(); },
+      goDashboard: () => { if (window.__navigate) window.__navigate('Dashboard.dc.html'); else location.href = 'Dashboard.dc.html'; },
+      logout: () => { try { window.localStorage.removeItem('w2p_signed_in'); } catch (e) {} this._acctOpen = false; this.forceUpdate(); },
+      langOpen, langs: ['PT', 'ES', 'FR', 'EN'].map(c => ({ code: c, weight: lang === c ? 700 : 400, pick: () => this.setState({ lang: c, langOpen: false }) })),
+      toggleCart: () => { if (window.__navigate) window.__navigate('Shop%20All.dc.html'); else location.href = 'Shop%20All.dc.html'; },
+      formRef: (el) => { this._formEl = el; },
+      scrollToForm: () => { if (this._formEl) this._formEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); },
+      tiers: [
+        { qty: '50+', discount: 10, border: '#DDD8CC', bg: '#fff' },
+        { qty: '100+', discount: 18, border: '#DDD8CC', bg: '#fff' },
+        { qty: '250+', discount: 25, border: '#DDD8CC', bg: '#fff' },
+        { qty: '500+', discount: 32, border: '#DDD8CC', bg: '#fff' },
+        { qty: '1000+', discount: 38, border: '#4A4FE4', bg: '#F4F4FE' },
+      ],
+      features: [
+        { title: 'Mixed product runs', desc: 'Combine tees, hoodies and caps in a single order and quote.' },
+        { title: 'Roster personalisation', desc: 'Individual names, numbers or sizes across the same design.' },
+        { title: 'Dedicated account contact', desc: 'One person handling your order from quote to delivery.' },
+        { title: 'Guaranteed delivery dates', desc: 'Fixed production slots for events and launch dates.' },
+      ],
+      productOptions: Component.PRODUCTS,
+      lineItems: lineItems.map(li => ({
+        product: li.product, qty: li.qty,
+        description: Component.DESCRIPTIONS[li.product] || '',
+        imgSlot: 'quote-img-' + li.id,
+        unitPrice: '€' + (Component.PRICES[li.product] || 0).toFixed(2),
+        lineSubtotal: '€' + ((Component.PRICES[li.product] || 0) * (Number(li.qty) || 0)).toFixed(2),
+        productMenuOpen: li.productMenuOpen,
+        toggleProductMenu: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, productMenuOpen: !x.productMenuOpen } : x) })),
+        closeProductMenu: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, productMenuOpen: false } : x) })),
+        productOptions: Component.PRODUCTS.map(p => ({
+          label: p, weight: p === li.product ? 700 : 400,
+          pick: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, product: p, productMenuOpen: false } : x) })),
+        })),
+        areaLabel: li.areas.length ? li.areas.join(', ') : 'Select areas',
+        areaMenuOpen: li.areaMenuOpen,
+        toggleAreaMenu: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, areaMenuOpen: !x.areaMenuOpen } : x) })),
+        closeAreaMenu: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, areaMenuOpen: false } : x) })),
+        areaOptions: Component.PRINT_AREAS.map(a => ({
+          label: a, boxBorder: li.areas.includes(a) ? '#4A4FE4' : '#C9C4B8', boxBg: li.areas.includes(a) ? '#4A4FE4' : '#fff', check: li.areas.includes(a) ? '✓' : '',
+          toggle: () => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, areas: x.areas.includes(a) ? x.areas.filter(v => v !== a) : [...x.areas, a] } : x) })),
+        })),
+        setProduct: (e) => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, product: e.target.value } : x) })),
+        setQty: (e) => this.setState(s => ({ lineItems: s.lineItems.map(x => x.id === li.id ? { ...x, qty: e.target.value } : x) })),
+        remove: () => this.setState(s => ({ lineItems: s.lineItems.length > 1 ? s.lineItems.filter(x => x.id !== li.id) : s.lineItems })),
+      })),
+      addLineItem: () => { Component.LINE_ID++; this.setState(s => ({ lineItems: [...s.lineItems, { id: Component.LINE_ID, product: 'Heavyweight Tee', areas: ['Front'], qty: 50, areaMenuOpen: false, productMenuOpen: false }] })); },
+      quoteUnit: '€' + (lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0), 0) / (lineItems.length || 1)).toFixed(2),
+      quoteSubtotal: '€' + lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0).toFixed(2),
+      quoteVat: '€' + (lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0) * 0.23).toFixed(2),
+      quoteTotal: '€' + (lineItems.reduce((sum, li) => sum + (Component.PRICES[li.product] || 0) * (Number(li.qty) || 0), 0) * 1.23).toFixed(2),
+    };
+  }
+}
+</script>
+</body>
+</html>

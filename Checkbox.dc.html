@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#4A4FE4"/><text x="100" y="115" font-size="64" fill="#fff" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">W2P</text></svg></template>
+<label style="display:inline-flex;align-items:center;gap:10px;cursor:{{ cursor }}">
+  <span onClick="{{ toggle }}" style="width:20px;height:20px;border-radius:4px;border:{{ border }};background:{{ bg }};color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ mark }}</span>
+  <sc-if value="{{ hasLabel }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;color:{{ labelInk }}">{{ label }}</span></sc-if>
+</label>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:220,&quot;height&quot;:40},&quot;label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;I agree&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;checked&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;disabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onChange&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(checked: boolean) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const disabled = !!this.props.disabled;
+    const checked = !!this.props.checked;
+    return {
+      hasLabel: !!this.props.label,
+      label: this.props.label ?? '',
+      labelInk: disabled ? '#B8B2A5' : '#1C1B19',
+      mark: checked ? '✓' : '',
+      bg: disabled ? '#F3F0E9' : (checked ? '#1C1B19' : '#FFFFFF'),
+      border: disabled ? '1.5px solid #DDD8CC' : '1.5px solid #1C1B19',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      toggle: disabled ? (() => {}) : (() => (this.props.onChange || (() => {}))(!checked))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

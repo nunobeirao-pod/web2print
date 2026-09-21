@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#4A4FE4"/><text x="100" y="115" font-size="64" fill="#fff" text-anchor="middle" font-family="Helvetica,Arial,sans-serif">W2P</text></svg></template>
+<helmet><style>body{margin:0;background:#FBFAF8;color:#1C1B19;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.w2p-scroll::-webkit-scrollbar{display:none}</style></helmet>
+<div data-screen-label="Studio — Mobile" style="min-height:100vh">
+  <div style="background:#F3F0E9;color:#4A473F;font-size:11.5px;text-align:center;padding:8px 16px">Mobile reference — &lt;768px (Phase 4.3), verified at 320/360/375/390/393px. Built from Studio Desktop.dc.html + Studio Tablet.dc.html. External UX reference (threadheads.com custom tee, structure only — no branding/copy/colours copied): variant selection sits above the canvas tool, secondary info collapses into accordions, volume pricing is a simple table. Studio Desktop/Tablet untouched.</div>
+
+  <div style="max-width:420px;margin:0 auto">
+    <div style="height:52px;background:#fff;border-bottom:1px solid #E6E2D8;display:flex;align-items:center;padding:0 10px;gap:8px">
+      <dc-import name="IconButton" icon="back" title="Back" hint-size="36,36"></dc-import>
+      <div style="flex:1;text-align:center;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Regular Hoodie 300</div>
+      <dc-import name="IconButton" icon="undo" title="Undo" hint-size="36,36"></dc-import>
+      <div style="position:relative">
+        <button onClick="{{ toggleMore }}" title="More" aria-label="More actions" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;font-size:18px;font-weight:700;color:#1C1B19;cursor:pointer">•••</button>
+        <sc-if value="{{ moreOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeMore }}" style="position:fixed;inset:0;z-index:39"></div>
+          <div style="position:absolute;top:40px;right:0;width:170px;background:#fff;border:1px solid #E6E2D8;border-radius:10px;box-shadow:0 8px 24px rgba(28,27,25,.08);padding:6px;z-index:40">
+            <div style="padding:10px 12px;border-radius:7px;font-size:13px" style-hover="background:#F1EEE8">Redo</div>
+            <div style="padding:10px 12px;border-radius:7px;font-size:13px" style-hover="background:#F1EEE8">Reset design</div>
+            <div style="padding:10px 12px;border-radius:7px;font-size:13px" style-hover="background:#F1EEE8">Share</div>
+            <div style="padding:10px 12px;border-radius:7px;font-size:13px" style-hover="background:#F1EEE8">Save</div>
+          </div>
+        </sc-if>
+      </div>
+      <dc-import name="IconButton" icon="cart" title="Order" hint-size="36,36"></dc-import>
+    </div>
+
+    <div style="padding:8px 10px;border-bottom:1px solid #E6E2D8">
+      <div class="w2p-scroll" style="background:#F1EEE8;border-radius:999px;padding:3px;display:inline-flex;gap:2px;overflow-x:auto;max-width:100%">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="3">
+          <span style="padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;background:{{ v.bg }};color:{{ v.ink }};white-space:nowrap">{{ v.label }}</span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;background:#FBFAF8;display:flex;align-items:center;justify-content:center;padding:24px 16px;min-height:320px">
+      <div style="width:220px;aspect-ratio:3/4;background:#EFEBE2;border-radius:4px"></div>
+      <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #E6E2D8;border-radius:10px;padding:6px 6px 6px 10px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(28,27,25,0.08);max-width:90%">
+        <span style="width:8px;height:8px;border-radius:50%;background:#A34B33;flex-shrink:0"></span>
+        <span style="font-size:11.5px">Outside the print area</span>
+      </div>
+    </div>
+
+    <div style="padding:6px 10px 10px;border-top:1px solid #E6E2D8">
+      <div class="w2p-scroll" style="display:flex;gap:8px;overflow-x:auto">
+        <sc-for list="{{ tools }}" as="t" hint-placeholder-count="6">
+          <button onClick="{{ t.pick }}" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;padding:6px 10px;min-width:56px;color:{{ t.ink }}">
+            <span style="width:40px;height:40px;border-radius:10px;background:{{ t.bg }};display:flex;align-items:center;justify-content:center">{{ t.glyph }}</span>
+            <span style="font-size:10.5px;font-weight:500">{{ t.label }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+
+    <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="position:fixed;inset:0;background:rgba(20,20,18,0.18);z-index:30" onClick="{{ closeSheet }}"></div>
+      <div style="position:fixed;left:0;right:0;bottom:0;max-width:420px;margin:0 auto;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -8px 24px rgba(28,27,25,0.08);z-index:31;max-height:70vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #E6E2D8">
+          <span style="font-size:14px;font-weight:600">Colour</span>
+          <dc-import name="IconButton" icon="close" title="Close" onClick="{{ closeSheet }}" hint-size="36,36"></dc-import>
+        </div>
+        <div style="padding:16px">
+          <div style="font-size:12px;font-weight:600;color:#8B867B;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px">Text colour</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+            <sc-for list="{{ colours }}" as="c" hint-placeholder-count="5">
+              <dc-import name="Radio" color="{{ c }}" selected="{{ false }}" hint-size="36,36"></dc-import>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:18px">
+            <dc-import name="Button" label="B" variant="secondary" hint-size="48,44"></dc-import>
+            <dc-import name="Button" label="I" variant="secondary" hint-size="48,44"></dc-import>
+            <dc-import name="Button" label="U" variant="secondary" hint-size="48,44"></dc-import>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid #EEEBE3">
+            <span style="font-size:13px;font-weight:500">Outline</span>
+            <div style="width:36px;height:22px;border-radius:999px;background:#DDD8CC;position:relative"><div style="width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px"></div></div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #E6E2D8;padding:12px 16px;display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;background:#F3F0E9;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600">− 1 +</div>
+      <div style="flex:1"><dc-import name="Button" label="Add to Order — 39,00€" variant="primary" fullWidth="{{ true }}" hint-size="100%,44"></dc-import></div>
+    </div>
+  </div>
+
+  <div style="max-width:700px;margin:0 auto;padding:24px 16px 40px;font-size:12px;color:#4A473F;line-height:1.7">
+    <strong>Mobile adaptation:</strong> the inspector's docked/overlay panel (Desktop/Tablet) becomes a bottom sheet per tool category, opened from a horizontally-scrolling tool strip (Product/Colour/Text/Shapes/Stickers/Layers) — none removed, all reachable, one at a time to keep the canvas visible and in context. Undo/Redo/Reset/Share/Save are grouped: Undo stays inline (most-used), the rest live behind a "•••" overflow — documented reduction of toolbar density, not removal of capability (all remain reachable, just consolidated for the narrower toolbar). The floating print-area warning (Fase 1) and the sticky bottom Qty+CTA bar are reused verbatim. No `width:390px` or other fixed container width is used anywhere — the whole page is `max-width:420px` centred, fluid down to 320px.
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sheetOpen: true, moreOpen: false };
+  renderVals() {
+    return {
+      moreOpen: this.state.moreOpen,
+      toggleMore: () => this.setState(s => ({ moreOpen: !s.moreOpen })),
+      closeMore: () => this.setState({ moreOpen: false }),
+      views: [
+        { label: 'Front', bg: '#1C1B19', ink: '#fff' },
+        { label: 'Back', bg: 'transparent', ink: '#4A473F' },
+        { label: 'Sleeve', bg: 'transparent', ink: '#4A473F' }
+      ],
+      tools: [
+        { label: 'Product', bg: '#F1EEE8', ink: '#1C1B19', glyph: '👕', pick: () => {} },
+        { label: 'Colour', bg: '#1C1B19', ink: '#1C1B19', glyph: '🎨', pick: () => this.setState({ sheetOpen: true }) },
+        { label: 'Text', bg: '#F1EEE8', ink: '#1C1B19', glyph: 'T', pick: () => {} },
+        { label: 'Shapes', bg: '#F1EEE8', ink: '#1C1B19', glyph: '◆', pick: () => {} },
+        { label: 'Stickers', bg: '#F1EEE8', ink: '#1C1B19', glyph: '★', pick: () => {} },
+        { label: 'Layers', bg: '#F1EEE8', ink: '#1C1B19', glyph: '▤', pick: () => {} }
+      ],
+      colours: ['#15181F', '#FFFFFF', '#C42B2B', '#12463A', '#1F2E52'],
+      sheetOpen: this.state.sheetOpen,
+      closeSheet: () => this.setState({ sheetOpen: false })
+    };
+  }
+}
+
+</script>
+</body>
+</html>
